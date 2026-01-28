@@ -1,15 +1,10 @@
 package com.gitmadeeasy.infrastructure.gateways.users;
 
-import jakarta.persistence.*;
-
 import java.util.Objects;
 
-@Entity
-@Table(name = "users")
 public class UserSchema {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private final String firstName;
     private final String lastName;
     private final String emailAddress;
@@ -20,8 +15,12 @@ public class UserSchema {
         this.emailAddress = emailAddress;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getFirstName() {

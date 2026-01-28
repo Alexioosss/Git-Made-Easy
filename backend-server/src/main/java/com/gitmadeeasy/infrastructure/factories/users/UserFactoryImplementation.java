@@ -1,16 +1,15 @@
 package com.gitmadeeasy.infrastructure.factories.users;
 
-import com.gitmadeeasy.infrastructure.dto.users.UserRequest;
-import com.gitmadeeasy.infrastructure.gateways.users.UserSchema;
+import com.gitmadeeasy.entities.users.User;
 
 public class UserFactoryImplementation implements UserFactory {
 
     @Override
-    public UserSchema createSchemaFromRequest(UserRequest request) {
-        return new UserSchema(
-                request.firstName(),
-                request.lastName(),
-                request.emailAddress()
+    public User createUserFromRequest(String firstName, String lastName, String emailAddress) {
+        return new User(
+                firstName,
+                lastName,
+                emailAddress
         );
     }
 }

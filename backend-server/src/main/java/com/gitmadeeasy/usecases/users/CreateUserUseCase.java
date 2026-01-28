@@ -1,5 +1,6 @@
 package com.gitmadeeasy.usecases.users;
 
+import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.infrastructure.dto.users.UserRequest;
 import com.gitmadeeasy.infrastructure.factories.users.UserFactory;
@@ -13,9 +14,27 @@ public class CreateUserUseCase {
         this.userFactory = userFactory;
     }
 
-    void createUser(UserRequest request) {
-        this.userGateway.createUser(
-            this.userFactory.createSchemaFromRequest(request)
+    public User createNewUser(UserRequest request) {
+        if(request.firstName().isEmpty()) {
+            throw new IllegalArgumentException("First Name Cannot Be Left Blank.");
+        }
+
+        if(request.lastName().isEmpty()) {
+            throw new IllegalArgumentException("Last Name Cannot Be Left Blank.");
+        }
+
+        if(request.emailAddress().isEmpty()) {
+            throw new IllegalArgumentException("Email Address Cannot Be Left Blank.");
+        }
+
+        // Implement Email Verification Here To Ensure Email Address Is Valid
+
+        return this.userGateway.createUser(
+            this.userFactory.createUserFromRequest(
+                request.firstName(),
+                request.lastName(),
+                request.emailAddress()
+            )
         );
     }
 }

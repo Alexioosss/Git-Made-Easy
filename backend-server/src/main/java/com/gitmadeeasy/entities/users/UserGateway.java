@@ -1,9 +1,9 @@
 package com.gitmadeeasy.entities.users;
 
-import com.gitmadeeasy.infrastructure.gateways.users.UserSchema;
+import java.util.Optional;
 
 public interface UserGateway {
-    void createUser(UserSchema request);
-    void getUser(Long userId);
-    void deleteUser(Long userId);
+    User createUser(User user);
+    Optional<User> getUserById(String userId);
+    void deleteUser(String userId);
 }

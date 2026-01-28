@@ -1,0 +1,17 @@
+package com.gitmadeeasy.infrastructure.configs;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.google.cloud.firestore.Firestore;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.cloud.FirestoreClient;
+
+@Configuration
+public class FireStoreConfig {
+
+    @Bean
+    public Firestore firestore(FirebaseApp firebaseApp) {
+        return FirestoreClient.getFirestore(firebaseApp);
+    }
+}
