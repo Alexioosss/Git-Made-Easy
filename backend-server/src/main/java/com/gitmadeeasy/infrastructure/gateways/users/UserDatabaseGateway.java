@@ -31,7 +31,8 @@ public class UserDatabaseGateway implements UserGateway {
     }
 
     @Override
-    public void deleteUser(String userId) {
-        this.userRepository.deleteUser(userId);
+    public Optional<User> getUserByEmailAddress(String emailAddress) {
+        return this.userRepository.findByEmail(emailAddress)
+                .map(this.userMapper::toEntity);
     }
 }

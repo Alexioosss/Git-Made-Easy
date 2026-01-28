@@ -1,11 +1,13 @@
 package com.gitmadeeasy.infrastructure.controllers;
 
 import com.gitmadeeasy.entities.users.User;
-import com.gitmadeeasy.infrastructure.dto.users.UserRequest;
+import com.gitmadeeasy.usecases.users.CreateUserRequest;
 import com.gitmadeeasy.infrastructure.dto.users.UserResponse;
-import com.gitmadeeasy.infrastructure.mappers.users.UserResponseMapperImplementation;
-import com.gitmadeeasy.usecases.users.CreateUserUseCase;
+import com.gitmadeeasy.infrastructure.mappers.users.UserResponseMapper;
+import com.gitmadeeasy.usecases.users.CreateUser;
 
+import com.gitmadeeasy.usecases.users.GetUserByEmail;
+import com.gitmadeeasy.usecases.users.GetUserById;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,33 +17,41 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private final CreateUserUseCase createUserUseCase;
-    private final UserResponseMapperImplementation userResponseMapper;
+    private final CreateUser createUserUseCase;
+    private final GetUserById getUserById;
+    private final GetUserByEmail getUserByEmail;
+    private final UserResponseMapper userResponseMapper;
 
-    public UserController(CreateUserUseCase createUserUseCase, UserResponseMapperImplementation userResponseMapper) {
+    public UserController(CreateUser createUserUseCase, GetUserById getUserById, GetUserByEmail getUserByEmail,
+                          UserResponseMapper userResponseMapper) {
         this.createUserUseCase = createUserUseCase;
+        this.getUserById = getUserById;
+        this.getUserByEmail = getUserByEmail;
         this.userResponseMapper = userResponseMapper;
     }
 
     @PostMapping("")
-    ResponseEntity<UserResponse> createUser(@RequestBody UserRequest request) {
-        User createdUser = this.createUserUseCase.createNewUser(request);
+    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest request) {
+        CreateUserRequest newUserRequest = new CreateUserRequest(
+                request.firstName(), request.lastName(), request.emailAddress()
+        );
+        User createdUser = this.createUserUseCase.execute(newUserRequest);
+
         UserResponse userResponse = this.userResponseMapper.toUserResponse(createdUser);
         return ResponseEntity.created(URI.create("/users/" + userResponse.id())).body(userResponse);
     }
 
     @GetMapping("/{userId}")
-    Map<String, Object> getUserById(@PathVariable("userId") String userId) {
-        return Map.of();
+    public ResponseEntity<UserResponse> getUserById(@PathVariable("userId") String userId) {
+        User foundUser = this.getUserById.execute(userId);
+        UserResponse userResponse = this.userResponseMapper.toUserResponse(foundUser);
+        return ResponseEntity.ok(userResponse);
     }
 
     @GetMapping("")
-    Map<String, Object> getUserByEmailAddress(@RequestParam("email") String email) {
-        return Map.of();
-    }
-
-    @DeleteMapping("/{userId}")
-    Map<String, Object> deleteUser(@PathVariable("userId") String userId) {
-        return Map.of();
+    public ResponseEntity<UserResponse> getUserByEmailAddress(@RequestParam("emailAddress") String emailAddress) {
+        User foundUser = this.getUserByEmail.execute(emailAddress);
+        UserResponse userResponse = this.userResponseMapper.toUserResponse(foundUser);
+        return ResponseEntity.ok(userResponse);
     }
 }

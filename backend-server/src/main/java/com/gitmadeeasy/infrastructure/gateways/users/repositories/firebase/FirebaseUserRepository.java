@@ -60,9 +60,4 @@ public class FirebaseUserRepository implements UserRepository {
         }
         return Optional.empty();
     }
-
-    @Override
-    public void deleteUser(String userId) {
-        firestore.collection("users").document(userId).delete();
-    }
 }

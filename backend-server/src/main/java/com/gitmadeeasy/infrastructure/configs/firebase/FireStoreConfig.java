@@ -1,4 +1,4 @@
-package com.gitmadeeasy.infrastructure.configs;
+package com.gitmadeeasy.infrastructure.configs.firebase;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

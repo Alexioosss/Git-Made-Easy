@@ -1,9 +1,9 @@
 package com.gitmadeeasy.infrastructure.configs;
 
 import com.gitmadeeasy.entities.users.UserGateway;
-import com.gitmadeeasy.infrastructure.factories.users.UserFactory;
-import com.gitmadeeasy.usecases.users.CreateUserUseCase;
+import com.gitmadeeasy.usecases.users.CreateUser;
 
+import com.gitmadeeasy.usecases.users.GetUserById;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,7 +11,12 @@ import org.springframework.context.annotation.Configuration;
 public class UseCasesConfiguration {
 
     @Bean
-    public CreateUserUseCase createUserUseCase(UserGateway userGateway, UserFactory userFactory) {
-        return new CreateUserUseCase(userGateway, userFactory);
+    public CreateUser createUserUseCase(UserGateway userGateway) {
+        return new CreateUser(userGateway);
+    }
+
+    @Bean
+    public GetUserById getUserById(UserGateway userGateway) {
+        return new GetUserById(userGateway);
     }
 }

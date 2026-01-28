@@ -1,13 +1,23 @@
 package com.gitmadeeasy.infrastructure.gateways.users;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Entity
+@Table(name = "users")
 public class UserSchema {
 
-    private String id;
-    private final String firstName;
-    private final String lastName;
-    private final String emailAddress;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+//    private String id;
+    private String firstName;
+    private String lastName;
+    private String emailAddress;
+
+
+    // Empty constructor required by JPA
+    protected UserSchema() {}
 
     public UserSchema(String firstName, String lastName, String emailAddress) {
         this.firstName = firstName;
@@ -15,12 +25,20 @@ public class UserSchema {
         this.emailAddress = emailAddress;
     }
 
+//    public String getId() {
+//        return id;
+//    }
+//
+//    public void setId(String id) {
+//        this.id = id;
+//    }
+
     public String getId() {
-        return id;
+        return String.valueOf(id);
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.id = Long.parseLong(id);
     }
 
     public String getFirstName() {

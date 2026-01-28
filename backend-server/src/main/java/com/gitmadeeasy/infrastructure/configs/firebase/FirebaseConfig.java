@@ -1,4 +1,4 @@
-package com.gitmadeeasy.infrastructure.configs;
+package com.gitmadeeasy.infrastructure.configs.firebase;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
