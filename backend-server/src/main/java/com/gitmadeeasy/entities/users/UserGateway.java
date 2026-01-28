@@ -1,9 +1,9 @@
 package com.gitmadeeasy.entities.users;
 
-import com.gitmadeeasy.infrastructure.dto.users.UserRequest;
+import com.gitmadeeasy.infrastructure.gateways.users.UserSchema;
 
 public interface UserGateway {
-    void createUser(UserRequest request);
+    void createUser(UserSchema request);
     void getUser(Long userId);
     void deleteUser(Long userId);
 }
