@@ -1,6 +1,6 @@
 package com.gitmadeeasy.infrastructure.controllers.advice;
 
-import com.gitmadeeasy.entities.users.exceptions.InvalidUserDataException;
+import com.gitmadeeasy.usecases.users.exceptions.InvalidUserDataException;
 import com.gitmadeeasy.usecases.users.exceptions.UserNotFoundWithEmailException;
 import com.gitmadeeasy.usecases.users.exceptions.UserNotFoundWithIdException;
 import org.springframework.http.HttpStatus;

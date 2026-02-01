@@ -8,7 +8,9 @@ import com.gitmadeeasy.usecases.users.CreateUser;
 
 import com.gitmadeeasy.usecases.users.GetUserByEmail;
 import com.gitmadeeasy.usecases.users.GetUserById;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -31,9 +33,10 @@ public class UserController {
     }
 
     @PostMapping("")
-    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
         CreateUserRequest newUserRequest = new CreateUserRequest(
-                request.firstName(), request.lastName(), request.emailAddress()
+                request.firstName(), request.lastName(),
+                request.emailAddress(), request.password()
         );
         User createdUser = this.createUserUseCase.execute(newUserRequest);
 

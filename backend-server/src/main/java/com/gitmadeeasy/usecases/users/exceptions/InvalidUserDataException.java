@@ -1,4 +1,4 @@
-package com.gitmadeeasy.entities.users.exceptions;
+package com.gitmadeeasy.usecases.users.exceptions;
 
 public class InvalidUserDataException extends RuntimeException {
     public InvalidUserDataException(String invalidField) {

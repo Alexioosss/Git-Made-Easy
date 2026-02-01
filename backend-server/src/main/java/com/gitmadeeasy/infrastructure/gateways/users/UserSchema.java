@@ -14,15 +14,17 @@ public class UserSchema {
     private String firstName;
     private String lastName;
     private String emailAddress;
+    private String password;
 
 
     // Empty constructor required by JPA
     protected UserSchema() {}
 
-    public UserSchema(String firstName, String lastName, String emailAddress) {
+    public UserSchema(String firstName, String lastName, String emailAddress, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
+        this.password = password;
     }
 
 //    public String getId() {
@@ -53,6 +55,8 @@ public class UserSchema {
         return emailAddress;
     }
 
+    public String getPassword() { return password; }
+
     @Override
     public String toString() {
         return String.format("%s %s, Email Address: %s", firstName, lastName, emailAddress);
@@ -65,11 +69,12 @@ public class UserSchema {
         return Objects.equals(id, that.id) &&
                 Objects.equals(firstName, that.firstName) &&
                 Objects.equals(lastName, that.lastName) &&
-                Objects.equals(emailAddress, that.emailAddress);
+                Objects.equals(emailAddress, that.emailAddress) &&
+                Objects.equals(password, that.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, emailAddress);
+        return Objects.hash(id, firstName, lastName, emailAddress, password);
     }
 }

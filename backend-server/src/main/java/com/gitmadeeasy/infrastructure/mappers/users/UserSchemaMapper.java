@@ -9,7 +9,8 @@ public class UserSchemaMapper {
         return new UserSchema(
             user.getFirstName(),
             user.getLastName(),
-            user.getEmailAddress()
+            user.getEmailAddress(),
+            user.getPassword()
         );
     }
 
@@ -18,7 +19,8 @@ public class UserSchemaMapper {
             userSchema.getId(),
             userSchema.getFirstName(),
             userSchema.getLastName(),
-            userSchema.getEmailAddress()
+            userSchema.getEmailAddress(),
+            userSchema.getPassword()
         );
     }
 }
