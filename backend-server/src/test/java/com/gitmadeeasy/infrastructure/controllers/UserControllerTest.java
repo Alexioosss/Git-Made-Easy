@@ -7,7 +7,7 @@ import com.gitmadeeasy.infrastructure.dto.users.UserResponse;
 import com.gitmadeeasy.infrastructure.mappers.users.UserResponseMapper;
 import com.gitmadeeasy.testUtil.JsonConverterUtil;
 import com.gitmadeeasy.usecases.users.CreateUser;
-import com.gitmadeeasy.usecases.users.CreateUserRequest;
+import com.gitmadeeasy.usecases.users.dto.CreateUserRequest;
 import com.gitmadeeasy.usecases.users.GetUserByEmail;
 import com.gitmadeeasy.usecases.users.GetUserById;
 import org.junit.jupiter.api.DisplayName;
@@ -36,14 +36,14 @@ class UserControllerTest {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    @DisplayName("Create A User - Valid Request Data")
+    @DisplayName("Create User - Valid Payload Returns Expected Response")
     void createUser_WhenValidData_ReturnsUserResponse() throws Exception {
         CreateUserRequest userRequest = new CreateUserRequest(
                 "Alessio", "Cocuzza",
                 "myemail1@gmail.com", "MyPassword123'"
         );
 
-        User createdUser = new User("1", "Alessio",  "Cocuzza", "myemail1@gmail.com", "MyPassword123'");
+        User createdUser = new User("1", "Alessio",  "Cocuzza", "myemail1@gmail.com", "HashedMyPassword123'");
         UserResponse expectedResponse = this.userResponseMapper.toUserResponse(createdUser);
 
         when(this.createUser.execute(userRequest)).thenReturn(createdUser);

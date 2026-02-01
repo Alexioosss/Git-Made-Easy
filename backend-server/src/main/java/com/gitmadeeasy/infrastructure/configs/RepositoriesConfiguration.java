@@ -1,5 +1,8 @@
 package com.gitmadeeasy.infrastructure.configs;
 
+import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.LessonRepository;
+import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.jpa.AbstractJpaLessonRepository;
+import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.jpa.ConcreteJpaLessonRepository;
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.firebase.FirebaseUserRepository;
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.jpa.AbstractJpaUserRepository;
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.jpa.ConcreteJpaUserRepository;
@@ -19,5 +22,10 @@ public class RepositoriesConfiguration {
     @Bean
     public UserRepository userRepository(AbstractJpaUserRepository jpaUserRepository) {
         return new ConcreteJpaUserRepository(jpaUserRepository);
+    }
+
+    @Bean
+    public LessonRepository lessonRepository(AbstractJpaLessonRepository jpaLessonRepository) {
+        return new ConcreteJpaLessonRepository(jpaLessonRepository);
     }
 }

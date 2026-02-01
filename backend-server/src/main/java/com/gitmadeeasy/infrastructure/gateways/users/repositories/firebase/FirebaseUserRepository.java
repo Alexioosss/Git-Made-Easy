@@ -60,4 +60,19 @@ public class FirebaseUserRepository implements UserRepository {
         }
         return Optional.empty();
     }
+
+    @Override
+    public boolean existsByEmail(String emailAddress) {
+        CollectionReference users = firestore.collection("users");
+        Query query = users.whereEqualTo("emailAddress", emailAddress).limit(1);
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+        try {
+            if(querySnapshot.get().isEmpty()) {
+                return false;
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            // Handle exception
+        }
+        return true;
+    }
 }

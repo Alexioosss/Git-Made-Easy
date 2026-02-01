@@ -20,11 +20,16 @@ public class ConcreteJpaUserRepository implements UserRepository {
 
     @Override
     public Optional<UserSchema> findById(String userId) {
-        return this.jpa.findById(Long.parseLong(userId));
+        return this.jpa.findById(Long.valueOf(userId));
     }
 
     @Override
     public Optional<UserSchema> findByEmail(String emailAddress) {
         return this.jpa.findByEmailAddress(emailAddress);
+    }
+
+    @Override
+    public boolean existsByEmail(String emailAddress) {
+        return this.jpa.existsByEmailAddress(emailAddress);
     }
 }

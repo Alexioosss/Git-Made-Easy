@@ -59,7 +59,12 @@ public class UserSchema {
 
     @Override
     public String toString() {
-        return String.format("%s %s, Email Address: %s", firstName, lastName, emailAddress);
+        return "UserSchema{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                '}';
     }
 
     @Override

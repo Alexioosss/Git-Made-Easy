@@ -8,4 +8,5 @@ public interface UserRepository {
     UserSchema save(UserSchema userSchema);
     Optional<UserSchema> findById(String userId);
     Optional<UserSchema> findByEmail(String emailAddress);
+    boolean existsByEmail(String emailAddress);
 }

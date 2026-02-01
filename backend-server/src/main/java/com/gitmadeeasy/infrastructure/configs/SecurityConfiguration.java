@@ -18,6 +18,10 @@ public class SecurityConfiguration {
             .requestMatchers(HttpMethod.POST, "/users").permitAll()
             .requestMatchers(HttpMethod.GET, "/users/{userId}").permitAll()
             .requestMatchers(HttpMethod.GET, "/users").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/logout").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/refresh").permitAll()
+            .requestMatchers(HttpMethod.POST, "/lessons").permitAll()
             .anyRequest().authenticated()
         )
         .httpBasic(Customizer.withDefaults());

@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface AbstractJpaUserRepository extends JpaRepository<UserSchema, Long> {
     Optional<UserSchema> findByEmailAddress(String emailAddress);
+    boolean existsByEmailAddress(String emailAddress);
 }

@@ -1,6 +1,8 @@
 package com.gitmadeeasy.infrastructure.configs;
 
 import com.gitmadeeasy.entities.security.PasswordHasher;
+import com.gitmadeeasy.entities.security.TokenGateway;
+import com.gitmadeeasy.infrastructure.gateways.security.TokenDatabaseGateway;
 import com.gitmadeeasy.infrastructure.security.BCryptPasswordHasher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,4 +12,7 @@ public class SecurityBeansConfiguration {
 
     @Bean
     public PasswordHasher passwordHasher() { return new BCryptPasswordHasher(); }
+
+    @Bean
+    public TokenGateway tokenGateway() { return new TokenDatabaseGateway(); }
 }

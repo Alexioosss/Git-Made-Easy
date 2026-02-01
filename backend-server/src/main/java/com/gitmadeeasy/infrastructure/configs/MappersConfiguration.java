@@ -1,5 +1,6 @@
 package com.gitmadeeasy.infrastructure.configs;
 
+import com.gitmadeeasy.infrastructure.mappers.lessons.LessonSchemaMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,4 +14,7 @@ public class MappersConfiguration {
     public UserSchemaMapper userSchemaMapper() {
         return new UserSchemaMapper();
     }
+
+    @Bean
+    public LessonSchemaMapper lessonSchemaMapper() { return new LessonSchemaMapper(); }
 }
