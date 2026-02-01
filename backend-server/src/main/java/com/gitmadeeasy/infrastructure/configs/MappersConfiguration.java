@@ -13,9 +13,4 @@ public class MappersConfiguration {
     public UserSchemaMapper userSchemaMapper() {
         return new UserSchemaMapper();
     }
-
-    @Bean
-    public UserResponseMapper userResponseMapper() {
-        return new UserResponseMapper();
-    }
 }

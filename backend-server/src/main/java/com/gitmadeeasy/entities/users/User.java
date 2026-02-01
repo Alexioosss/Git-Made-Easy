@@ -75,4 +75,15 @@ public class User {
         }
         this.isEmailVerified = true;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", isEmailVerified=" + isEmailVerified +
+                '}';
+    }
 }
