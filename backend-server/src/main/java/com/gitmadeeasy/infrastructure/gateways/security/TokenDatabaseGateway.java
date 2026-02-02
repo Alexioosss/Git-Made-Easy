@@ -2,22 +2,33 @@ package com.gitmadeeasy.infrastructure.gateways.security;
 
 import com.gitmadeeasy.entities.security.TokenGateway;
 import com.gitmadeeasy.entities.users.User;
+import org.springframework.beans.factory.annotation.Value;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
+import javax.annotation.PostConstruct;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class TokenDatabaseGateway implements TokenGateway {
-    private final Key key = Keys.hmacShaKeyFor("super-secret-key-super-secret-key".getBytes());
+    @Value("${jwt.secret}") private String secret;
+    private Key key;
     private static final Set<String> tokensBlacklist = new HashSet<>();
+
+    @PostConstruct
+    public void init() {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
 
     @Override
     public String generateToken(User user) {
         return Jwts.builder()
+                .setId(UUID.randomUUID().toString())
                 .setSubject(user.getUserId())
                 .claim("email", user.getEmailAddress())
                 .setIssuedAt(new Date())
@@ -34,6 +45,7 @@ public class TokenDatabaseGateway implements TokenGateway {
     @Override
     public String refreshToken(User user) {
         return  Jwts.builder()
+                .setId(UUID.randomUUID().toString())
                 .setSubject(user.getUserId())
                 .claim("email", user.getEmailAddress())
                 .setIssuedAt(new Date())

@@ -1,5 +1,6 @@
 package com.gitmadeeasy.infrastructure.gateways.lessons;
 
+import com.gitmadeeasy.entities.lessons.LessonDifficulty;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -12,11 +13,12 @@ public class LessonSchema {
 //    private String id;
     private String title;
     private String description;
-    private String difficulty;
+    @Enumerated(EnumType.STRING)
+    private LessonDifficulty difficulty;
 
     protected LessonSchema() {}
 
-    public LessonSchema(String title, String description, String difficulty) {
+    public LessonSchema(String title, String description, LessonDifficulty difficulty) {
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
@@ -42,7 +44,7 @@ public class LessonSchema {
         return description;
     }
 
-    public String getDifficulty() {
+    public LessonDifficulty getDifficulty() {
         return difficulty;
     }
 
@@ -63,7 +65,7 @@ public class LessonSchema {
         return id == that.id &&
                 Objects.equals(title, that.title) &&
                 Objects.equals(description, that.description) &&
-                Objects.equals(difficulty, that.difficulty);
+                difficulty == that.difficulty;
     }
 
     @Override

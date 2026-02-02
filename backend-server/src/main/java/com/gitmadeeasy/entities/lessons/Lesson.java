@@ -6,16 +6,16 @@ public class Lesson {
     private String lessonId;
     private String title;
     private String description;
-    private String difficulty;
+    private LessonDifficulty difficulty;
 
-    public Lesson(String lessonId, String title, String description, String difficulty) {
+    public Lesson(String lessonId, String title, String description, LessonDifficulty difficulty) {
         this.lessonId = lessonId;
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
     }
 
-    public Lesson(String title, String description, String difficulty) {
+    public Lesson(String title, String description, LessonDifficulty difficulty) {
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
@@ -45,11 +45,11 @@ public class Lesson {
         this.description = description;
     }
 
-    public String getDifficulty() {
+    public LessonDifficulty getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(String difficulty) {
+    public void setDifficulty(LessonDifficulty difficulty) {
         this.difficulty = difficulty;
     }
 

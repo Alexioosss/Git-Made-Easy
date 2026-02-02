@@ -1,5 +1,6 @@
 package com.gitmadeeasy.infrastructure.configs;
 
+import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.entities.security.PasswordHasher;
 import com.gitmadeeasy.entities.security.TokenGateway;
 import com.gitmadeeasy.entities.users.UserGateway;
@@ -7,6 +8,7 @@ import com.gitmadeeasy.usecases.auth.LoginUser;
 import com.gitmadeeasy.usecases.auth.LogoutUser;
 import com.gitmadeeasy.usecases.auth.RefreshToken;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
+import com.gitmadeeasy.usecases.lessons.GetLessonById;
 import com.gitmadeeasy.usecases.users.CreateUser;
 
 import com.gitmadeeasy.usecases.users.GetUserByEmail;
@@ -52,7 +54,12 @@ public class UseCasesConfiguration {
     // ----- Lesson-Related Use Cases ----- //
 
     @Bean
-    public CreateLesson createLesson() {
-        return new CreateLesson();
+    public CreateLesson createLesson(LessonGateway lessonGateway) {
+        return new CreateLesson(lessonGateway);
+    }
+
+    @Bean
+    public GetLessonById getLessonById(LessonGateway lessonGateway) {
+        return new GetLessonById(lessonGateway);
     }
 }

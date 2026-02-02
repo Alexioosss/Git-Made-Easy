@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class GlobalExceptionAdvice {
+public class GlobalExceptionAdvice extends BaseErrorAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationErrors(MethodArgumentNotValidException ex) {
@@ -25,13 +25,6 @@ public class GlobalExceptionAdvice {
 
     @ExceptionHandler({InvalidPasswordException.class, UserNotFoundWithEmailException.class })
     public ResponseEntity<ApiError> handleInvalidCredentials(InvalidPasswordException ex) {
-        return buildError(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS",
-                "Email or password is incorrect");
-    }
-
-    private ResponseEntity<ApiError> buildError(HttpStatus statusCode, String code, String message) {
-        return ResponseEntity.status(statusCode).body(
-                ApiError.buildError(code, message, statusCode.value())
-        );
+        return this.buildError(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS", "Email or password is incorrect.");
     }
 }
