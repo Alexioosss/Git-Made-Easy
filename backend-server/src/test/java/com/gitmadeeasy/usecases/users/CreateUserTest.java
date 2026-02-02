@@ -34,8 +34,8 @@ class CreateUserTest {
     }
 
     @Test
-    @DisplayName("Create A User - Valid User Data")
-    void execute_WhenValidRequest_ReturnsCreatedUser() {
+    @DisplayName("Create A User - Valid Payload")
+    void execute_WhenValidPayload_ReturnsCreatedUser() {
         // Arrange
         CreateUserRequest request = new CreateUserRequest(
                 "Alessio", "Cocuzza",
@@ -85,27 +85,32 @@ class CreateUserTest {
         assertEquals(expectedErrorMessage, exception.getMessage());
     }
 
+
+
+    // ----------  HELPER METHODS FOR PARAMETERISED TESTS ---------- //
+
+
     private static Stream<Arguments> invalidUserData() {
         return Stream.of(
                 Arguments.of("Missing First Name",
                         new CreateUserRequest(
                                 null, "Cocuzza", "myemail1@gmail.com", "MyPassword123'"),
-                        "First Name Cannot Be Left Blank."
+                        "first name cannot be left blank"
                 ),
                 Arguments.of("Missing Last Name",
                         new CreateUserRequest(
                                 "Alessio", null, "myemail1@gmail.com", "MyPassword123'"),
-                        "Last Name Cannot Be Left Blank."
+                        "last name cannot be left blank"
                 ),
                 Arguments.of("Missing Email Address",
                         new CreateUserRequest(
                                 "Alessio", "Cocuzza", null, "MyPassword123'"),
-                        "Email Address Cannot Be Left Blank."
+                        "email address cannot be left blank"
                 ),
                 Arguments.of("Missing Password",
                         new CreateUserRequest(
                                 "Alessio", "Cocuzza", "myemail1@gmail.com", null),
-                        "Password Cannot Be Left Blank."
+                        "password cannot be left blank"
                 )
         );
     }

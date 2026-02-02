@@ -5,4 +5,5 @@ import jakarta.validation.constraints.NotBlank;
 
 public record CreateUserRequest(
         @NotBlank String firstName, @NotBlank String lastName,
-        @Email @NotBlank String emailAddress, @NotBlank String password) {}
+        @Email @NotBlank String emailAddress,
+        @NotBlank String password) {}

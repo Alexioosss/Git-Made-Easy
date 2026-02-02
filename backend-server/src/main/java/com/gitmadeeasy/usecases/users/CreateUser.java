@@ -18,19 +18,19 @@ public class CreateUser {
 
     public User execute(CreateUserRequest request) {
         if(request.firstName() == null || request.firstName().isBlank()) {
-            throw new MissingRequiredFieldException("First Name Cannot Be Left Blank.");
+            throw new MissingRequiredFieldException("first name cannot be left blank");
         }
 
         if(request.lastName() == null || request.lastName().isBlank()) {
-            throw new MissingRequiredFieldException("Last Name Cannot Be Left Blank.");
+            throw new MissingRequiredFieldException("last name cannot be left blank");
         }
 
         if(request.emailAddress() == null || request.emailAddress().isBlank()) {
-            throw new MissingRequiredFieldException("Email Address Cannot Be Left Blank.");
+            throw new MissingRequiredFieldException("email address cannot be left blank");
         }
 
         if(request.password() == null || request.password().isBlank()) {
-            throw new MissingRequiredFieldException("Password Cannot Be Left Blank.");
+            throw new MissingRequiredFieldException("password cannot be left blank");
         }
 
         // Ensure the email does not already exist in the database, meaning this email is already registered

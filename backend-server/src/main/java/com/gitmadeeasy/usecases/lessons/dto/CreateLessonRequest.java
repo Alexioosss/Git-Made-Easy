@@ -1,3 +1,8 @@
 package com.gitmadeeasy.usecases.lessons.dto;
 
-public record CreateLessonRequest(String title, String description, String difficulty) {}
+import jakarta.validation.constraints.NotBlank;
+
+public record CreateLessonRequest(
+        @NotBlank String title,
+        @NotBlank String description,
+        @NotBlank String difficulty) {}

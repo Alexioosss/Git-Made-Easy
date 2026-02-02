@@ -28,8 +28,8 @@ class UserDatabaseGatewayTest {
     @DisplayName("Create User - User Does Not Already Exist")
     void createUser_WhenUserDoesNotExistAlready_ReturnsUser() {
         // Arrange
-        User user = new User("Alessio", "Cocuzza", "myemail1@gmail.com", "MyPassword123'");
-        UserSchema userSchema = new UserSchema("Alessio", "Cocuzza", "myemail1@gmail.com", "MyPassword123'");
+        User user = provideUser();
+        UserSchema userSchema = provideUserSchema();
         when(this.userSchemaMapper.toSchema(user)).thenReturn(userSchema);
         when(this.userRepository.save(userSchema)).thenReturn(userSchema);
         when(this.userSchemaMapper.toEntity(userSchema)).thenReturn(user);
@@ -49,8 +49,8 @@ class UserDatabaseGatewayTest {
     @DisplayName("Create User - Repository Throws An Exception / Fails")
     void createUser_WhenRepositoryFails_ThrowsException() {
         // Arrange
-        User user = new User("Alessio", "Cocuzza", "myemail1@gmail.com", "MyPassword123'");
-        UserSchema userSchema = new UserSchema("Alessio", "Cocuzza", "myemail1@gmail.com", "HashedMyPassword123'");
+        User user = provideUser();
+        UserSchema userSchema = provideUserSchema();
         when(this.userSchemaMapper.toSchema(user)).thenReturn(userSchema);
         when(this.userRepository.save(userSchema)).thenThrow(new RuntimeException("Database Error."));
 
@@ -62,8 +62,8 @@ class UserDatabaseGatewayTest {
     @DisplayName("Get User By ID - User Exists / Found")
     void getUserById_WhenUserExists_ReturnsUser() {
         // Arrange
-        UserSchema userSchema = new UserSchema("Alessio", "Cocuzza", "myemail1@gmail.com", "MyPassword123'");
-        User user = new User("Alessio", "Cocuzza", "myemail1@gmail.com", "MyPassword123'");
+        UserSchema userSchema = provideUserSchema();
+        User user = provideUser();
         String userId = "1";
         when(this.userRepository.findById(userId)).thenReturn(Optional.of(userSchema));
         when(this.userSchemaMapper.toEntity(userSchema)).thenReturn(user);
@@ -149,5 +149,18 @@ class UserDatabaseGatewayTest {
         // Assert
         assertFalse(result);
         verify(userRepository).existsByEmail("notfound@gmail.com");
+    }
+
+
+
+    // ----------  HELPER METHODS FOR PARAMETERISED TESTS ---------- //
+
+
+    private static User provideUser() {
+        return new User("Alessio", "Cocuzza", "myemail1@gmail.com", "MyPassword123'");
+    }
+
+    private static UserSchema provideUserSchema() {
+        return new UserSchema("Alessio", "Cocuzza", "myemail1@gmail.com", "MyPassword123'");
     }
 }

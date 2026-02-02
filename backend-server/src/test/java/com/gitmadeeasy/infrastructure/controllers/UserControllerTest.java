@@ -120,6 +120,6 @@ class UserControllerTest {
 
         // Act & Assert
         mockMvc.perform(get("/users").param("emailAddress", "missing@gmail.com"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isNotFound());
     }
 }
