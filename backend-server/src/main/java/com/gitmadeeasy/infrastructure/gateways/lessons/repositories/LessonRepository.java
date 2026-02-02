@@ -7,4 +7,5 @@ import java.util.Optional;
 public interface LessonRepository {
     LessonSchema save(LessonSchema lessonSchema);
     Optional<LessonSchema> findById(String lessonId);
+    boolean existsById(String lessonId);
 }

@@ -1,14 +1,12 @@
 package com.gitmadeeasy.infrastructure.controllers.advice;
 
-import com.gitmadeeasy.usecases.auth.exceptions.InvalidPasswordException;
-import com.gitmadeeasy.usecases.users.exceptions.UserNotFoundWithEmailException;
+import com.gitmadeeasy.usecases.users.exceptions.InvalidCredentialsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,8 +21,8 @@ public class GlobalExceptionAdvice extends BaseErrorAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
-    @ExceptionHandler({InvalidPasswordException.class, UserNotFoundWithEmailException.class })
-    public ResponseEntity<ApiError> handleInvalidCredentials(InvalidPasswordException ex) {
-        return this.buildError(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS", "Email or password is incorrect.");
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ApiError> handleInvalidCredentials(InvalidCredentialsException ex) {
+        return this.buildError(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS", "email or password is incorrect");
     }
 }

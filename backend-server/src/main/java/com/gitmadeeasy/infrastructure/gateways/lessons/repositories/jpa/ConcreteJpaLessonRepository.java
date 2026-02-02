@@ -21,4 +21,9 @@ public class ConcreteJpaLessonRepository implements LessonRepository {
     public Optional<LessonSchema> findById(String lessonId) {
         return this.jpa.findById(Long.valueOf(lessonId));
     }
+
+    @Override
+    public boolean existsById(String lessonId) {
+        return this.jpa.existsById(Long.valueOf(lessonId));
+    }
 }

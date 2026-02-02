@@ -6,8 +6,7 @@ import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.auth.dto.AuthToken;
 import com.gitmadeeasy.usecases.auth.dto.LoginRequest;
-import com.gitmadeeasy.usecases.auth.exceptions.InvalidPasswordException;
-import com.gitmadeeasy.usecases.users.exceptions.UserNotFoundWithEmailException;
+import com.gitmadeeasy.usecases.users.exceptions.InvalidCredentialsException;
 
 public class LoginUser {
     private final UserGateway userGateway;
@@ -22,10 +21,10 @@ public class LoginUser {
 
     public AuthToken execute(LoginRequest request) {
         User user = this.userGateway.getUserByEmailAddress(request.email())
-                .orElseThrow(() -> new UserNotFoundWithEmailException(request.email()));
+                .orElseThrow(InvalidCredentialsException::new);
 
         if(!passwordHasher.matches(request.password(), user.getPassword())) {
-            throw new InvalidPasswordException();
+            throw new InvalidCredentialsException();
         }
 
         String accessToken = this.tokenGateway.generateToken(user);

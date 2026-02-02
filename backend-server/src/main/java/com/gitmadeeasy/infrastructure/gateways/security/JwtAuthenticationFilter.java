@@ -27,28 +27,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authenticationHeader = request.getHeader("Authorization");
+
         if(authenticationHeader != null && authenticationHeader.startsWith("Bearer ")) {
             String token = authenticationHeader.substring(7);
+            request.setAttribute("jwt", token);
 
             try {
-                if(!this.tokenGateway.isTokenValid(token)) {
-                    throw new BadCredentialsException("Token Is Invalid Or Expired.");
+                if(this.tokenGateway.isTokenValid(token)) {
+                    String userId = this.tokenGateway.getUserIdFromToken(token);
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(
+                                    userId, null, Collections.emptyList()
+                            );
+                    authentication.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request)
+                    );
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
-                String userId = this.tokenGateway.getUserIdFromToken(token);
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                userId, null, Collections.emptyList()
-                        );
-                authentication.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch(ExpiredJwtException e) {
-                throw new CredentialsExpiredException("Token Expired", e);
-            } catch(JwtException | IllegalArgumentException e) {
-                SecurityContextHolder.clearContext();
-                throw new BadCredentialsException("Invalid Token", e);
-            }
+            } catch(JwtException | IllegalArgumentException e) { SecurityContextHolder.clearContext(); }
         }
         filterChain.doFilter(request, response);
     }

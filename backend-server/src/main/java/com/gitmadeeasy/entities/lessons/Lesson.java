@@ -1,5 +1,9 @@
 package com.gitmadeeasy.entities.lessons;
 
+import com.gitmadeeasy.entities.tasks.Task;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Lesson {
@@ -7,6 +11,7 @@ public class Lesson {
     private String title;
     private String description;
     private LessonDifficulty difficulty;
+    private List<Task> tasks = new ArrayList<>();
 
     public Lesson(String lessonId, String title, String description, LessonDifficulty difficulty) {
         this.lessonId = lessonId;
@@ -51,6 +56,14 @@ public class Lesson {
 
     public void setDifficulty(LessonDifficulty difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
     @Override

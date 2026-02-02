@@ -29,4 +29,9 @@ public class LessonDatabaseGateway implements LessonGateway {
         return this.lessonRepository.findById(lessonId)
                 .map(this.lessonSchemaMapper::toEntity);
     }
+
+    @Override
+    public boolean existsById(String lessonId) {
+        return this.lessonRepository.existsById(lessonId);
+    }
 }

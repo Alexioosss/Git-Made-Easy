@@ -28,6 +28,8 @@ public class SecurityConfiguration {
             .requestMatchers(HttpMethod.POST, "/auth/refresh").authenticated()
             .requestMatchers(HttpMethod.POST, "/lessons").authenticated()
             .requestMatchers(HttpMethod.GET, "/lessons/{lessonId}").permitAll()
+            .requestMatchers(HttpMethod.POST, "/lessons/{lessonId}/tasks").authenticated()
+            .requestMatchers(HttpMethod.GET, "/lessons/{lessonId}/tasks/{taskId}").permitAll()
             .anyRequest().authenticated()
         )
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
