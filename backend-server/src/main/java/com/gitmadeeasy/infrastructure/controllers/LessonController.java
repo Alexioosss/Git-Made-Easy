@@ -4,8 +4,11 @@ import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
 import com.gitmadeeasy.usecases.lessons.GetLessonById;
 import com.gitmadeeasy.usecases.lessons.dto.CreateLessonRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/lessons")
@@ -19,9 +22,9 @@ public class LessonController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Lesson> createLesson(@RequestBody CreateLessonRequest createLessonRequest) {
+    public ResponseEntity<Lesson> createLesson(@Valid @RequestBody CreateLessonRequest createLessonRequest) {
         Lesson newLesson = createLesson.execute(createLessonRequest);
-        return ResponseEntity.ok(newLesson);
+        return ResponseEntity.created(URI.create("/lessons/" + newLesson.getLessonId())).body(newLesson);
     }
 
     @GetMapping("/{lessonId}")

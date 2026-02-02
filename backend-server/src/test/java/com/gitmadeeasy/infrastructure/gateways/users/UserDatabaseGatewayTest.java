@@ -25,7 +25,7 @@ class UserDatabaseGatewayTest {
     }
 
     @Test
-    @DisplayName("Create User - User Does Not Already Exist")
+    @DisplayName("Create User - Valid User Is Saved And Returned")
     void createUser_WhenUserDoesNotExistAlready_ReturnsUser() {
         // Arrange
         User user = provideUser();
@@ -52,7 +52,7 @@ class UserDatabaseGatewayTest {
         User user = provideUser();
         UserSchema userSchema = provideUserSchema();
         when(this.userSchemaMapper.toSchema(user)).thenReturn(userSchema);
-        when(this.userRepository.save(userSchema)).thenThrow(new RuntimeException("Database Error."));
+        when(this.userRepository.save(userSchema)).thenThrow(new RuntimeException("Database error"));
 
         // Act & Assert
         assertThrows(RuntimeException.class, () -> this.userDatabaseGateway.createUser(user));
@@ -64,7 +64,7 @@ class UserDatabaseGatewayTest {
         // Arrange
         UserSchema userSchema = provideUserSchema();
         User user = provideUser();
-        String userId = "1";
+        final String userId = "1";
         when(this.userRepository.findById(userId)).thenReturn(Optional.of(userSchema));
         when(this.userSchemaMapper.toEntity(userSchema)).thenReturn(user);
 
@@ -81,7 +81,7 @@ class UserDatabaseGatewayTest {
     @DisplayName("Get User By ID - User Does Not Exist / Not Found")
     void getUserById_WhenUserDoesNotExist_ReturnsEmptyOptional() {
         // Arrange
-        String userId = "1";
+        final String userId = "1";
         when(this.userRepository.findById(userId)).thenReturn(Optional.empty());
 
         // Act
@@ -96,7 +96,7 @@ class UserDatabaseGatewayTest {
     @DisplayName("Get User By Email - User Found")
     void getUserByEmail_WhenUserExists_ReturnsUser() {
         // Arrange
-        String email = "test@test.com";
+        final String email = "test@test.com";
         UserSchema schema = new UserSchema("Alessio", "Cocuzza", email, "HashedMyPassword123'");
         User user = new User("Alessio", "Cocuzza", email, "MyPassword123'");
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(schema));
@@ -114,10 +114,11 @@ class UserDatabaseGatewayTest {
     @DisplayName("Get User By Email - User Not Found")
     void getUserByEmail_WhenUserDoesNotExist_ReturnsEmptyOptional() {
         // Arrange
-        when(userRepository.findByEmail("notfound@gmail.com")).thenReturn(Optional.empty());
+        final String email = "notfound@gmail.com";
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         // Act
-        Optional<User> result = userDatabaseGateway.getUserByEmailAddress("notfound@gmail.com");
+        Optional<User> result = userDatabaseGateway.getUserByEmailAddress(email);
 
         // Assert
         assertTrue(result.isEmpty());
@@ -128,27 +129,29 @@ class UserDatabaseGatewayTest {
     @DisplayName("Exists By Email - Email Exists")
     void existsByEmail_WhenExists_ReturnsTrue() {
         // Arrange
-        when(userRepository.existsByEmail("found@gmail.com")).thenReturn(true);
+        final String email = "found@gmail.com";
+        when(userRepository.existsByEmail(email)).thenReturn(true);
 
         // Act
-        boolean result = userDatabaseGateway.existsByEmail("found@gmail.com");
+        boolean exists = userDatabaseGateway.existsByEmail(email);
 
         // Assert
-        assertTrue(result); verify(userRepository).existsByEmail("found@gmail.com");
+        assertTrue(exists); verify(userRepository).existsByEmail(email);
     }
 
     @Test
     @DisplayName("Exists By Email - Email Does Not Exist")
     void existsByEmail_WhenNotExists_ReturnsFalse() {
         // Arrange
-        when(userRepository.existsByEmail("notfound@gmail.com")).thenReturn(false);
+        final String email = "notfound@gmail.com";
+        when(userRepository.existsByEmail(email)).thenReturn(false);
 
         // Act
-        boolean result = userDatabaseGateway.existsByEmail("notfound@gmail.com");
+        boolean exists = userDatabaseGateway.existsByEmail(email);
 
         // Assert
-        assertFalse(result);
-        verify(userRepository).existsByEmail("notfound@gmail.com");
+        assertFalse(exists);
+        verify(userRepository).existsByEmail(email);
     }
 
 
@@ -161,6 +164,6 @@ class UserDatabaseGatewayTest {
     }
 
     private static UserSchema provideUserSchema() {
-        return new UserSchema("Alessio", "Cocuzza", "myemail1@gmail.com", "MyPassword123'");
+        return new UserSchema("Alessio", "Cocuzza", "myemail1@gmail.com", "HashedMyPassword123'");
     }
 }

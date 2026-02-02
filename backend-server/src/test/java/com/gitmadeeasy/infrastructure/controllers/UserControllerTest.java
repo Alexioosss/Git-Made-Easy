@@ -1,8 +1,6 @@
 package com.gitmadeeasy.infrastructure.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gitmadeeasy.entities.users.User;
-import com.gitmadeeasy.infrastructure.configs.SecurityConfiguration;
 import com.gitmadeeasy.infrastructure.dto.users.UserResponse;
 import com.gitmadeeasy.infrastructure.mappers.users.UserResponseMapper;
 import com.gitmadeeasy.testUtil.JsonConverterUtil;
@@ -38,12 +36,9 @@ class UserControllerTest {
     @MockitoBean private GetUserById getUserById;
     @MockitoBean private GetUserByEmail getUserByEmail;
 
-    private static final ObjectMapper mapper = new ObjectMapper();
-
-
 
     @Test
-    @DisplayName("Create User - Valid Payload Returns Expected Response")
+    @DisplayName("Create User - Valid Payload Returns Expected Successful Response")
     void createUser_WhenValidPayload_ReturnsUserResponse() throws Exception {
         CreateUserRequest validRequest = new CreateUserRequest(
                 "Alessio", "Cocuzza",
@@ -75,7 +70,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Get User By ID - User Exists - Returns 200")
+    @DisplayName("Get User By ID - User Exists - Returns Successful Response / 200")
     void getUserById_WhenUserExists_ReturnsUserResponse() throws Exception {
         // Arrange
         User foundUser = new User("1", "Alessio", "Cocuzza", "myemail1@gmail.com", "HashedMyPassword123'");
@@ -89,7 +84,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Get User By ID - User Does Not Exist - Returns 404")
+    @DisplayName("Get User By ID - User Does Not Exist - Returns Unsuccessful Response / 404")
     void getUserById_WhenUserDoesNotExist_ReturnsNotFound() throws Exception {
         // Arrange
         when(this.getUserById.execute("1")).thenThrow(new UserNotFoundWithIdException("1"));
@@ -99,7 +94,7 @@ class UserControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    @Test @DisplayName("Get User By Email - User Exists - Returns 200")
+    @Test @DisplayName("Get User By Email - User Exists - Returns Successful Response / 200")
     void getUserByEmail_WhenUserExists_ReturnsUserResponse() throws Exception {
         // Arrange
         User foundUser = new User("1", "Alessio", "Cocuzza", "myemail@gmail.com", "HashedMyPassword123'");
@@ -113,7 +108,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Get User By Email - User Not Found - Returns 404")
+    @DisplayName("Get User By Email - User Not Found - Returns Unsuccessful Response / 404")
     void getUserByEmail_WhenUserNotFound_ReturnsNotFound() throws Exception {
         // Arrange
         when(getUserByEmail.execute("missing@gmail.com")).thenThrow(new UserNotFoundWithEmailException("missing@gmail.com"));

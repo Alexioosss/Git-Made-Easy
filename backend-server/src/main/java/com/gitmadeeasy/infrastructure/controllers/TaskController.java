@@ -7,6 +7,8 @@ import com.gitmadeeasy.usecases.tasks.dto.CreateTaskRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 @RestController
 @RequestMapping("/lessons/{lessonId}/tasks")
 public class TaskController {
@@ -22,7 +24,7 @@ public class TaskController {
     public ResponseEntity<Task> createTask(@PathVariable("lessonId") String lessonId,
                                            @RequestBody CreateTaskRequest request) {
         Task newTask = this.createTask.execute(lessonId, request);
-        return ResponseEntity.ok(newTask);
+        return ResponseEntity.created(URI.create("/lessons/" + lessonId + "/tasks/" + newTask.getTaskId())).body(newTask);
     }
 
     @GetMapping("/{taskId}")

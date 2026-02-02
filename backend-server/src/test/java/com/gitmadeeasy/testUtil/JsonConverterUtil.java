@@ -13,7 +13,7 @@ public class JsonConverterUtil {
         try {
             return objectMapper.writeValueAsString(value);
         } catch(Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Could not convert the object to JSON.\n", e);
         }
     }
 }
