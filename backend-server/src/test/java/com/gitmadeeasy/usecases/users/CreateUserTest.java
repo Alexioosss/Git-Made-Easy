@@ -4,6 +4,7 @@ import com.gitmadeeasy.entities.security.PasswordHasher;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.users.dto.CreateUserRequest;
+import com.gitmadeeasy.usecases.users.exceptions.DuplicatedEmailException;
 import com.gitmadeeasy.usecases.users.exceptions.MissingRequiredFieldException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,10 +38,7 @@ class CreateUserTest {
     @DisplayName("Create A User - Valid Payload")
     void execute_WhenValidPayload_ReturnsCreatedUser() {
         // Arrange
-        CreateUserRequest request = new CreateUserRequest(
-                "Alessio", "Cocuzza",
-                "myemail1@gmail.com", "MyPassword123'"
-        );
+        CreateUserRequest request = provideValidUserRequest();
         when(passwordHasher.hash("MyPassword123'")).thenReturn("HashedMyPassword123'");
 
         User createdUser = new User("1", "Alessio", "Cocuzza", "myemail1@gmail.com", "HashedMyPassword123'");
@@ -85,6 +83,17 @@ class CreateUserTest {
         assertEquals(expectedErrorMessage, exception.getMessage());
     }
 
+    @Test
+    @DisplayName("Create A User - User Already Exists With Email Address")
+    void execute_WhenUserExistsByEmail_ThrowsDuplicatedEmailException() {
+        // Arrange
+        CreateUserRequest request = provideValidUserRequest();
+        when(this.userGateway.existsByEmail(request.emailAddress())).thenReturn(true);
+
+        // Act & Assert
+        assertThrows(DuplicatedEmailException.class, () -> this.createUser.execute(request));
+    }
+
 
 
     // ----------  HELPER METHODS FOR PARAMETERISED TESTS ---------- //
@@ -112,6 +121,13 @@ class CreateUserTest {
                                 "Alessio", "Cocuzza", "myemail1@gmail.com", null),
                         "password cannot be left blank"
                 )
+        );
+    }
+
+    private static CreateUserRequest provideValidUserRequest() {
+        return new CreateUserRequest(
+                "Alessio", "Cocuzza",
+                "myemail1@gmail.com", "MyPassword123'"
         );
     }
 }

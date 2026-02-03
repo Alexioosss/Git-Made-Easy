@@ -82,11 +82,10 @@ class LessonDatabaseGatewayTest {
     @DisplayName("Get Lesson By ID - Lesson Does Not Exist / Not Found")
     void getLessonById_WhenLessonDoesNotExist_ReturnsEmptyOptional() {
         // Arrange
-        final String lessonId = "1";
-        when(this.lessonRepository.findById(lessonId)).thenReturn(Optional.empty());
+        when(this.lessonRepository.findById(null)).thenReturn(Optional.empty());
 
         // Act
-        Optional<Lesson> foundLesson = this.lessonDatabaseGateway.getLessonById(lessonId);
+        Optional<Lesson> foundLesson = this.lessonDatabaseGateway.getLessonById(null);
 
         // Assert
         assertTrue(foundLesson.isEmpty());
