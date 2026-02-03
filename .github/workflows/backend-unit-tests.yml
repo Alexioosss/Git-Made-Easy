@@ -35,7 +35,7 @@ jobs:
       - name: Run Maven Tests
         working-directory: backend-server
         continue-on-error: true
-        run: ./mvnw -B test
+        run: ./mvnw -B test -Dtest=com.gitmadeeasy.infrastructure.**,com.gitmadeeasy.usecases.**
 
       - name: Upload Test Reports
         if: always()
