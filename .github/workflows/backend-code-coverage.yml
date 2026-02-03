@@ -44,7 +44,7 @@ jobs:
         id: jacoco_reporter
         uses: PavanMudigonda/jacoco-reporter@v5.0
         with:
-          coverage_results_path: backend-server/target/site/jacoco/jacoco.xml
+          coverage_results_path: ./backend-server/target/site/jacoco/jacoco.xml
           coverage_report_name: GitMadeEasy-JaCoCo-Code-Coverage-Report
           coverage_report_title: Git Made Easy - JaCoCo Code Coverage Report
           github_token: ${{ secrets.GITHUB_TOKEN }}
