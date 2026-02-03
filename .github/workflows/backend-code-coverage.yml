@@ -33,7 +33,7 @@ jobs:
           cache: maven
 
       - name: Make mvnw Excecutable
-        working-directory: api
+        working-directory: backend-server
         run: chmod +x ./mvnw
 
       - name: Run Maven Verify With JaCoCo
