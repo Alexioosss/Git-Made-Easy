@@ -4,8 +4,6 @@ import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.users.exceptions.UserNotFoundWithEmailException;
 
-import java.util.Optional;
-
 public class GetUserByEmail {
     private final UserGateway userGateway;
 

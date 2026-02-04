@@ -12,12 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -72,14 +70,15 @@ class LessonControllerTest {
     @DisplayName("Get Lesson By ID - Lesson Exists - Returns Successful Response / 200")
     void getLessonById_WhenLessonExists_ReturnsLesson() throws Exception {
         // Arrange
-        Lesson foundLesson = new Lesson("1",
+        String lessonId = "1";
+        Lesson foundLesson = new Lesson(lessonId,
                 "Intro to Git",
                 "A simple introduction to an industry-standard version control system.",
                 LessonDifficulty.EASY);
         when(this.getLessonById.execute("1")).thenReturn(foundLesson);
 
         // Act & Assert
-        this.mockMvc.perform(get("/lessons/1"))
+        this.mockMvc.perform(get("/lessons/" + lessonId))
                 .andExpect(status().isOk())
                 .andExpect(content().json(JsonConverterUtil.objectToJson(foundLesson)));
     }
@@ -88,10 +87,11 @@ class LessonControllerTest {
     @DisplayName("Get Lesson By ID - Lesson Does Not Exist - Returns Unsuccessful Response / 404")
     void getLessonById_WhenLessonDoesNotExist_ReturnsNotFound() throws Exception {
         // Arrange
-        when(this.getLessonById.execute("1")).thenThrow(new LessonNotFoundWithIdException("1"));
+        String lessonId = "1";
+        when(this.getLessonById.execute(lessonId)).thenThrow(new LessonNotFoundWithIdException(lessonId));
 
         // Act & Assert
-        this.mockMvc.perform(get("/lessons/1"))
+        this.mockMvc.perform(get("/lessons/" + lessonId))
                 .andExpect(status().isNotFound());
     }
 }

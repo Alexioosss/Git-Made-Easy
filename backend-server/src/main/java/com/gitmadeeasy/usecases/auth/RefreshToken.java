@@ -15,12 +15,9 @@ public class RefreshToken {
     }
 
     public AuthToken execute(String token) {
-        User user = this.userGateway.getUserById(
-                this.tokenGateway.getUserIdFromToken(token)
-        ).orElseThrow(() -> new RuntimeException("Invalid Token."));
+        User user = this.userGateway.getUserById(this.tokenGateway.getUserIdFromToken(token))
+                .orElseThrow(() -> new RuntimeException("Invalid Token."));
 
-        return new AuthToken(
-                this.tokenGateway.refreshToken(user)
-        );
+        return new AuthToken(this.tokenGateway.refreshToken(user));
     }
 }

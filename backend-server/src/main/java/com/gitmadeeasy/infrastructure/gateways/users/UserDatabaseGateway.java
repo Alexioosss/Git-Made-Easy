@@ -1,11 +1,11 @@
 package com.gitmadeeasy.infrastructure.gateways.users;
 
-import java.util.Optional;
-
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.UserRepository;
 import com.gitmadeeasy.infrastructure.mappers.users.UserSchemaMapper;
+
+import java.util.Optional;
 
 public class UserDatabaseGateway implements UserGateway {
     private final UserRepository userRepository;

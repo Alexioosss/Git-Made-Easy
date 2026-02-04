@@ -2,12 +2,8 @@ package com.gitmadeeasy.usecases.lessons;
 
 import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.entities.lessons.LessonGateway;
-import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonNotFoundWithIdException;
-
-import java.util.List;
-import java.util.Optional;
 
 public class GetLessonById {
     private final LessonGateway lessonGateway;

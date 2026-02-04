@@ -4,19 +4,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 /**
- * Class to act as an adapter between application/use-case exceptions
+ * Abstract Class to act as an adapter between application/use-case exceptions
  * And HTTP Responses
  * Belongs in the infrastructure layer since it deals with the outside world, and with infrastructural concerns.
  */
 public abstract class BaseErrorAdvice {
-    protected ResponseEntity<ApiError> buildError(
-            HttpStatus httpStatus, String code, String message
-    ) {
+    protected ResponseEntity<ApiError> buildError(HttpStatus httpStatus, String code, String message) {
         return ResponseEntity.status(httpStatus)
-                .body(
-                        ApiError.buildError(
-                                code, message, httpStatus.value()
-                        )
-                );
+                .body(ApiError.buildError(code, message, httpStatus.value()));
     }
 }

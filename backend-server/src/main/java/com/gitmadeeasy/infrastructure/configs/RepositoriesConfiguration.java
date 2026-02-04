@@ -6,11 +6,9 @@ import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.jpa.Concrete
 import com.gitmadeeasy.infrastructure.gateways.tasks.repositories.TaskRepository;
 import com.gitmadeeasy.infrastructure.gateways.tasks.repositories.jpa.AbstractJpaTaskRepository;
 import com.gitmadeeasy.infrastructure.gateways.tasks.repositories.jpa.ConcreteJpaTaskRepository;
-import com.gitmadeeasy.infrastructure.gateways.users.repositories.firebase.FirebaseUserRepository;
+import com.gitmadeeasy.infrastructure.gateways.users.repositories.UserRepository;
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.jpa.AbstractJpaUserRepository;
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.jpa.ConcreteJpaUserRepository;
-import com.google.cloud.firestore.Firestore;
-import com.gitmadeeasy.infrastructure.gateways.users.repositories.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

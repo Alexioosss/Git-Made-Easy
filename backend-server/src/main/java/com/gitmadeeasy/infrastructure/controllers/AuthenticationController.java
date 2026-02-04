@@ -1,13 +1,17 @@
 package com.gitmadeeasy.infrastructure.controllers;
 
-import com.gitmadeeasy.usecases.auth.*;
+import com.gitmadeeasy.usecases.auth.LoginUser;
+import com.gitmadeeasy.usecases.auth.LogoutUser;
+import com.gitmadeeasy.usecases.auth.RefreshToken;
 import com.gitmadeeasy.usecases.auth.dto.AuthToken;
 import com.gitmadeeasy.usecases.auth.dto.LoginRequest;
-import com.google.api.Authentication;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.tomcat.util.http.parser.Authorization;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
@@ -23,7 +27,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthToken> loginUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<AuthToken> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
         AuthToken authToken = loginUser.execute(loginRequest);
         return ResponseEntity.ok(authToken);
     }
@@ -36,7 +40,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<AuthToken> loginUser(HttpServletRequest request) {
+    public ResponseEntity<AuthToken> refreshToken(HttpServletRequest request) {
         String token = (String) request.getAttribute("jwt");
         AuthToken authToken = refreshToken.execute(token);
         return ResponseEntity.ok(authToken);
