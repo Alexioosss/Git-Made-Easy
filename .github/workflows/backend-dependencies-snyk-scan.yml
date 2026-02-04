@@ -1,0 +1,58 @@
+name: Performing Snyk Scan On Backend System For Vulnerabilities In Dependencies and Libraries
+
+on:
+  pull_request:
+    paths:
+      - 'backend-server/src/**'
+      - '.github/workflows/backend-dependencies-snyk-scan.yml'
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'backend-server/src/**'
+      - '.github/workflows/backend-dependencies-snyk-scan.yml'
+
+jobs:
+  backend-dependencies-snyk-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
+      - name: Make mvnw Executable
+        working-directory: backend-server
+        run: chmod +x ./mvnw
+        
+      - name: Run Snyk Scan For Vulnerabilities In Dependencies And Libraries
+        run: snyk test backend-server --all-projects --sarif-file-output=backend-dependency-vulnerabilities.sarif || true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Upload SARIF File Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-dependency-vulnerabilities
+          path: backend-dependency-vulnerabilities.sarif
+
+      - name: Upload Dependencies Scan Summary
+        run: |
+          echo "# Dependencies And Libraries Vulnerabilities Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "## **Total Findings**" >> $GITHUB_STEP_SUMMARY
+          echo "**$(jq -r '.runs[0].results | length' backend-dependency-vulnerabilities.sarif)** Vulnerabilities Detected" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          jq -r '.runs[0].results[] |
+            "# \(.ruleId)\n
+            **Severity:** \(.level)\n
+            **Message:** \(.message.text)\n
+            **Affected Package:** \(.locations[].logicalLocations[].fullyQualifiedName)\n
+            **Fix:** \(.fixes[].description.text)\n
+            "
+          ' backend-dependency-vulnerabilities.sarif >> $GITHUB_STEP_SUMMARY  
