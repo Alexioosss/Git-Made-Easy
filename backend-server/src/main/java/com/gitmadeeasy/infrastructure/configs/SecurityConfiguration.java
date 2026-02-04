@@ -30,7 +30,8 @@ public class SecurityConfiguration {
             .requestMatchers(HttpMethod.GET, "/lessons/{lessonId}").permitAll()
             .requestMatchers(HttpMethod.POST, "/lessons/{lessonId}/tasks").authenticated()
             .requestMatchers(HttpMethod.GET, "/lessons/{lessonId}/tasks/{taskId}").permitAll()
-            .anyRequest().authenticated()
+            .requestMatchers(HttpMethod.POST, "/lessons/{lessonId}/tasks/{taskId}/progress").authenticated()
+            .anyRequest().denyAll()
         )
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .httpBasic(Customizer.withDefaults());

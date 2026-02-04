@@ -71,15 +71,11 @@ public class UserSchema {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         UserSchema that = (UserSchema) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(firstName, that.firstName) &&
-                Objects.equals(lastName, that.lastName) &&
-                Objects.equals(emailAddress, that.emailAddress) &&
-                Objects.equals(password, that.password);
+        return id == that.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, emailAddress, password);
+        return Objects.hash(id);
     }
 }

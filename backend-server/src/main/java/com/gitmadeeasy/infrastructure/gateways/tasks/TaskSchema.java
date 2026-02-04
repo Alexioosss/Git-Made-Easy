@@ -2,6 +2,8 @@ package com.gitmadeeasy.infrastructure.gateways.tasks;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "tasks")
 public class TaskSchema {
@@ -48,5 +50,17 @@ public class TaskSchema {
 
     public String getHint() {
         return hint;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || getClass() != o.getClass()) return false;
+        TaskSchema that = (TaskSchema) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

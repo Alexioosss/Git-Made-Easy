@@ -3,6 +3,9 @@ package com.gitmadeeasy.infrastructure.configs;
 import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.LessonRepository;
 import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.jpa.AbstractJpaLessonRepository;
 import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.jpa.ConcreteJpaLessonRepository;
+import com.gitmadeeasy.infrastructure.gateways.taskAttempts.repositories.TaskAttemptRepository;
+import com.gitmadeeasy.infrastructure.gateways.taskAttempts.repositories.jpa.AbstractJpaTaskAttemptRepository;
+import com.gitmadeeasy.infrastructure.gateways.taskAttempts.repositories.jpa.ConcreteJpaTaskAttemptRepository;
 import com.gitmadeeasy.infrastructure.gateways.tasks.repositories.TaskRepository;
 import com.gitmadeeasy.infrastructure.gateways.tasks.repositories.jpa.AbstractJpaTaskRepository;
 import com.gitmadeeasy.infrastructure.gateways.tasks.repositories.jpa.ConcreteJpaTaskRepository;
@@ -33,5 +36,10 @@ public class RepositoriesConfiguration {
     @Bean
     public TaskRepository taskRepository(AbstractJpaTaskRepository jpaTaskRepository) {
         return new ConcreteJpaTaskRepository(jpaTaskRepository);
+    }
+
+    @Bean
+    public TaskAttemptRepository taskAttemptRepository(AbstractJpaTaskAttemptRepository jpaTaskAttemptRepository) {
+        return new ConcreteJpaTaskAttemptRepository(jpaTaskAttemptRepository);
     }
 }

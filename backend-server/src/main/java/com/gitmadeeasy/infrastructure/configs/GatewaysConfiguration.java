@@ -1,15 +1,19 @@
 package com.gitmadeeasy.infrastructure.configs;
 
 import com.gitmadeeasy.entities.lessons.LessonGateway;
+import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.infrastructure.gateways.lessons.LessonDatabaseGateway;
 import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.LessonRepository;
+import com.gitmadeeasy.infrastructure.gateways.taskAttempts.TaskAttemptDatabaseGateway;
+import com.gitmadeeasy.infrastructure.gateways.taskAttempts.repositories.TaskAttemptRepository;
 import com.gitmadeeasy.infrastructure.gateways.tasks.TaskDatabaseGateway;
 import com.gitmadeeasy.infrastructure.gateways.tasks.repositories.TaskRepository;
 import com.gitmadeeasy.infrastructure.gateways.users.UserDatabaseGateway;
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.UserRepository;
 import com.gitmadeeasy.infrastructure.mappers.lessons.LessonSchemaMapper;
+import com.gitmadeeasy.infrastructure.mappers.taskAttempts.TaskAttemptSchemaMapper;
 import com.gitmadeeasy.infrastructure.mappers.tasks.TaskSchemaMapper;
 import com.gitmadeeasy.infrastructure.mappers.users.UserSchemaMapper;
 import org.springframework.context.annotation.Bean;
@@ -31,5 +35,11 @@ public class GatewaysConfiguration {
     @Bean
     public TaskGateway taskGateway(TaskRepository taskRepository, TaskSchemaMapper taskSchemaMapper) {
         return new TaskDatabaseGateway(taskRepository, taskSchemaMapper);
+    }
+
+    @Bean
+    public TaskAttemptGateway taskAttemptGateway(TaskAttemptRepository taskAttemptRepository,
+                                                 TaskAttemptSchemaMapper taskAttemptSchemaMapper) {
+        return new TaskAttemptDatabaseGateway(taskAttemptRepository, taskAttemptSchemaMapper);
     }
 }

@@ -7,4 +7,5 @@ public interface TaskGateway {
     Task createTask(Task newTask);
     Optional<Task> getTaskByLessonIdAndTaskId(String lessonId, String taskId);
     List<Task> getTasksByLessonId(String lessonId);
+    boolean existsById(String taskId);
 }

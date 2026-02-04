@@ -1,6 +1,7 @@
 package com.gitmadeeasy.infrastructure.configs;
 
 import com.gitmadeeasy.infrastructure.mappers.lessons.LessonSchemaMapper;
+import com.gitmadeeasy.infrastructure.mappers.taskAttempts.TaskAttemptSchemaMapper;
 import com.gitmadeeasy.infrastructure.mappers.tasks.TaskSchemaMapper;
 import com.gitmadeeasy.infrastructure.mappers.users.UserSchemaMapper;
 import org.springframework.context.annotation.Bean;
@@ -19,4 +20,7 @@ public class MappersConfiguration {
 
     @Bean
     public TaskSchemaMapper taskSchemaMapper() { return new TaskSchemaMapper(); }
+
+    @Bean
+    public TaskAttemptSchemaMapper taskAttemptSchemaMapper() { return new TaskAttemptSchemaMapper(); }
 }

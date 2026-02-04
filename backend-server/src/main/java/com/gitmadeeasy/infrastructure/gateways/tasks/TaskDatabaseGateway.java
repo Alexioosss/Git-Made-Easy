@@ -34,4 +34,9 @@ public class TaskDatabaseGateway implements TaskGateway {
         return this.taskRepository.findAllByLessonId(lessonId)
                 .stream().map(this.taskSchemaMapper::toEntity).toList();
     }
+
+    @Override
+    public boolean existsById(String taskId) {
+        return this.taskRepository.existsById(taskId);
+    }
 }

@@ -27,4 +27,9 @@ public class ConcreteJpaTaskRepository implements TaskRepository {
     public List<TaskSchema> findAllByLessonId(String lessonId) {
         return this.jpa.findAllByLessonId(Long.valueOf(lessonId));
     }
+
+    @Override
+    public boolean existsById(String taskId) {
+        return this.jpa.existsById(Long.valueOf(taskId));
+    }
 }

@@ -62,14 +62,11 @@ public class LessonSchema {
     public boolean equals(Object o) {
         if(o == null || getClass() != o.getClass()) return false;
         LessonSchema that = (LessonSchema) o;
-        return id == that.id &&
-                Objects.equals(title, that.title) &&
-                Objects.equals(description, that.description) &&
-                difficulty == that.difficulty;
+        return id == that.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, difficulty);
+        return Objects.hash(id);
     }
 }

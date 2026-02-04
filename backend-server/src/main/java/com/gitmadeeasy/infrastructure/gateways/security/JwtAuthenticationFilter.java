@@ -22,7 +22,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         String authenticationHeader = request.getHeader("Authorization");
 
         if(authenticationHeader != null && authenticationHeader.startsWith("Bearer ")) {
@@ -32,16 +33,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 if(this.tokenGateway.isTokenValid(token)) {
                     String userId = this.tokenGateway.getUserIdFromToken(token);
+
                     UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(
-                                    userId, null, Collections.emptyList()
-                            );
-                    authentication.setDetails(
-                            new WebAuthenticationDetailsSource().buildDetails(request)
-                    );
+                            new UsernamePasswordAuthenticationToken(userId, null, Collections.emptyList());
+
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
-            } catch(JwtException | IllegalArgumentException e) { SecurityContextHolder.clearContext(); }
+            } catch(JwtException | IllegalArgumentException e) {
+                SecurityContextHolder.clearContext();
+            }
         }
         filterChain.doFilter(request, response);
     }

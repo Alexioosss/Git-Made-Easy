@@ -9,4 +9,5 @@ public interface TaskRepository {
     TaskSchema save(TaskSchema taskSchema);
     Optional<TaskSchema> findByLessonIdAndTaskId(String lessonId, String taskId);
     List<TaskSchema> findAllByLessonId(String lessonId);
+    boolean existsById(String taskId);
 }
