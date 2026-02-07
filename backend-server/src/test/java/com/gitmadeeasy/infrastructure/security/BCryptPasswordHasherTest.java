@@ -6,47 +6,39 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BCryptPasswordHasherTest {
+    private static final String RAW_PASSWORD = "MySecurePassword123'";
     private final BCryptPasswordHasher hasher = new BCryptPasswordHasher();
 
     @Test
     @DisplayName("Hash - Valid Password Is Hashed And Returned")
     void hash_WhenProvidedAPassword_ReturnsHashedPassword() {
-        // Arrange
-        String rawPassword = "MySecurePassword123";
-
         // Act
-        String hash1 = hasher.hash(rawPassword);
-        String hash2 = hasher.hash(rawPassword);
+        String hash1 = hasher.hash(RAW_PASSWORD);
+        String hash2 = hasher.hash(RAW_PASSWORD);
 
         // Assert
         assertNotNull(hash1);
         assertNotNull(hash2);
-        assertNotEquals(rawPassword, hash1);
-        assertNotEquals(rawPassword, hash2);
+        assertNotEquals(RAW_PASSWORD, hash1);
+        assertNotEquals(RAW_PASSWORD, hash2);
         assertNotEquals(hash1, hash2);
     }
 
     @Test
     @DisplayName("Matches - Matching Passwords Returns True")
     void matches_WhenPasswordsAreCorrect_ShouldReturnTrue() {
-        // Arrange
-        String rawPassword = "MySecurePassword123";
-
         // Act
-        String hashed = hasher.hash(rawPassword);
+        String hashed = hasher.hash(RAW_PASSWORD);
 
         // Assert
-        assertTrue(hasher.matches(rawPassword, hashed));
+        assertTrue(hasher.matches(RAW_PASSWORD, hashed));
     }
 
     @Test
     @DisplayName("Matches - Mismatching Passwords Returns False")
     void matches_WhenPasswordsAreIncorrect_ShouldReturnFalse() {
-        // Arrange
-        String rawPassword = "MySecurePassword123";
-
         // Act
-        String hashed = hasher.hash(rawPassword);
+        String hashed = hasher.hash(RAW_PASSWORD);
 
         // Assert
         assertFalse(hasher.matches("MySecurePassword", hashed));

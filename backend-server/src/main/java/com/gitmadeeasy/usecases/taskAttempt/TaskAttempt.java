@@ -34,10 +34,8 @@ public class TaskAttempt {
             throw new TaskNotInLessonException(taskId, lessonId);
         }
 
-        TaskProgress taskProgress = this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId);
-        if(taskProgress == null) {
-            taskProgress = new TaskProgress(null, userId, taskId);
-        }
+        TaskProgress taskProgress = this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId)
+                .orElse(new TaskProgress(null, userId, taskId));
 
         if(taskProgress.getStatus() == TaskCompletionStatus.COMPLETED) {
             taskProgress.recordAttempt(request.input());

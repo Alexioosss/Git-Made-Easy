@@ -5,6 +5,8 @@ import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonNotFoundWithIdException;
 
+import java.util.Optional;
+
 public class GetTaskProgress {
     private final TaskAttemptGateway taskAttemptGateway;
     private final LessonGateway lessonGateway;
@@ -14,7 +16,7 @@ public class GetTaskProgress {
         this.lessonGateway = lessonGateway;
     }
 
-    public TaskProgress execute(String userId, String lessonId, String taskId) {
+    public Optional<TaskProgress> execute(String userId, String lessonId, String taskId) {
         if(!this.lessonGateway.existsById(lessonId)) { throw new LessonNotFoundWithIdException(lessonId); }
         return this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId);
     }

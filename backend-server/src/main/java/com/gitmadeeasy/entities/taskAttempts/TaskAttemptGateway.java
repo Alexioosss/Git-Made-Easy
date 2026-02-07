@@ -1,6 +1,8 @@
 package com.gitmadeeasy.entities.taskAttempts;
 
+import java.util.Optional;
+
 public interface TaskAttemptGateway {
     TaskProgress save(TaskProgress progress);
-    TaskProgress findByUserIdAndTaskId(String userId, String taskId);
+    Optional<TaskProgress> findByUserIdAndTaskId(String userId, String taskId);
 }

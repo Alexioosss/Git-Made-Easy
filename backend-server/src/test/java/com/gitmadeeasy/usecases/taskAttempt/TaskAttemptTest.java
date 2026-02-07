@@ -44,7 +44,7 @@ class TaskAttemptTest {
         when(this.lessonGateway.existsById(lessonId)).thenReturn(true);
         Task task = provideTask(taskId, lessonId);
         when(this.taskGateway.getTaskByLessonIdAndTaskId(lessonId, taskId)).thenReturn(Optional.of(task));
-        when(this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId)).thenReturn(null);
+        when(this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId)).thenReturn(Optional.empty());
         when(this.taskAttemptGateway.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
@@ -68,7 +68,7 @@ class TaskAttemptTest {
         when(this.lessonGateway.existsById(lessonId)).thenReturn(true);
         Task task = provideTask(taskId, lessonId);
         when(this.taskGateway.getTaskByLessonIdAndTaskId(lessonId, taskId)).thenReturn(Optional.of(task));
-        when(this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId)).thenReturn(null);
+        when(this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId)).thenReturn(Optional.empty());
         when(this.taskAttemptGateway.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
@@ -92,7 +92,7 @@ class TaskAttemptTest {
         TaskProgress existing = provideTaskProgress("1", userId, taskId);
         existing.markCompleted();
 
-        when(this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId)).thenReturn(existing);
+        when(this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId)).thenReturn(Optional.of(existing));
         when(this.taskAttemptGateway.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
@@ -157,7 +157,7 @@ class TaskAttemptTest {
         existing.recordAttempt("init");
         existing.markFailed("Incorrect Answer");
 
-        when(this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId)).thenReturn(existing);
+        when(this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId)).thenReturn(Optional.of(existing));
         when(this.taskAttemptGateway.save(any()))
                 .thenAnswer(invocation -> cloneOf(invocation.getArgument(0)));
 

@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/lessons/{lessonId}/tasks/{taskId}/progress")
@@ -38,7 +39,9 @@ public class TaskProgressController {
             @PathVariable("lessonId") String lessonId,
             @PathVariable("taskId") String taskId,
             @AuthenticationPrincipal String userId) {
-        TaskProgress progress = this.getTaskProgress.execute(userId, lessonId, taskId);
-        return ResponseEntity.ok(progress);
+        Optional<TaskProgress> progress = this.getTaskProgress.execute(userId, lessonId, taskId);
+        return progress.map(
+                ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }

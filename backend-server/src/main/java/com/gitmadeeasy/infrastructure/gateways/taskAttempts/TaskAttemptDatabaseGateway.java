@@ -4,8 +4,8 @@ import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.infrastructure.gateways.taskAttempts.repositories.TaskAttemptRepository;
 import com.gitmadeeasy.infrastructure.mappers.taskAttempts.TaskAttemptSchemaMapper;
-import com.gitmadeeasy.usecases.taskAttempt.TaskAttempt;
-import com.gitmadeeasy.usecases.taskAttempt.exceptions.TaskProgressNotFoundException;
+
+import java.util.Optional;
 
 public class TaskAttemptDatabaseGateway implements TaskAttemptGateway {
     private final TaskAttemptRepository taskAttemptRepository;
@@ -28,9 +28,8 @@ public class TaskAttemptDatabaseGateway implements TaskAttemptGateway {
     }
 
     @Override
-    public TaskProgress findByUserIdAndTaskId(String userId, String taskId) {
+    public Optional<TaskProgress> findByUserIdAndTaskId(String userId, String taskId) {
         return this.taskAttemptRepository.findByUserIdAndTaskId(userId, taskId)
-                .map(this.taskAttemptSchemaMapper::toEntity)
-                .orElse(null);
+                .map(this.taskAttemptSchemaMapper::toEntity);
     }
 }

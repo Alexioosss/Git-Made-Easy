@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -32,16 +34,14 @@ class GetTaskProgressTest {
         TaskProgress taskProgress = provideTaskProgress(userId, taskId);
         when(this.lessonGateway.existsById(lessonId)).thenReturn(true);
         when(this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId))
-                .thenReturn(taskProgress);
+                .thenReturn(Optional.of(taskProgress));
 
         // Act
-        TaskProgress userTaskProgress = this.getTaskProgress.execute(userId, lessonId, taskId);
+        Optional<TaskProgress> userTaskProgress = this.getTaskProgress.execute(userId, lessonId, taskId);
 
         //Assert
-        assertEquals("1", userTaskProgress.getTaskProgressId());
-        assertEquals("1", userTaskProgress.getTaskId());
-        assertEquals("1", userTaskProgress.getUserId());
-        assertEquals(taskProgress, userTaskProgress);
+        assertTrue(userTaskProgress.isPresent());
+        assertEquals(taskProgress, userTaskProgress.get());
         verify(this.taskAttemptGateway).findByUserIdAndTaskId(userId, taskId);
     }
 
@@ -52,13 +52,13 @@ class GetTaskProgressTest {
         String lessonId = "1", taskId = "1", userId = "1";
         when(this.lessonGateway.existsById(lessonId)).thenReturn(true);
         when(this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId))
-                .thenReturn(null); // Mocks the data store's return of a not-found entity
+                .thenReturn(Optional.empty()); // Mocks the data store's return of a not-found entity
 
         // Act
-        TaskProgress userTaskProgress = this.getTaskProgress.execute(userId, lessonId, taskId);
+        Optional<TaskProgress> userTaskProgress = this.getTaskProgress.execute(userId, lessonId, taskId);
 
         //Assert
-        assertNull(userTaskProgress);
+        assertTrue(userTaskProgress.isEmpty());
         verify(this.taskAttemptGateway).findByUserIdAndTaskId(userId, taskId);
     }
 
