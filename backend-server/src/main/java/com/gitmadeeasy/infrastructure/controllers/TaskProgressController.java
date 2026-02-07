@@ -1,6 +1,7 @@
 package com.gitmadeeasy.infrastructure.controllers;
 
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
+import com.gitmadeeasy.usecases.taskAttempt.GetTaskProgress;
 import com.gitmadeeasy.usecases.taskAttempt.TaskAttempt;
 import com.gitmadeeasy.usecases.taskAttempt.dto.TaskAttemptRequest;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +14,11 @@ import java.net.URI;
 @RequestMapping("/lessons/{lessonId}/tasks/{taskId}/progress")
 public class TaskProgressController {
     private final TaskAttempt taskAttempt;
+    private final GetTaskProgress getTaskProgress;
 
-    public TaskProgressController(TaskAttempt taskAttempt) {
+    public TaskProgressController(TaskAttempt taskAttempt, GetTaskProgress getTaskProgress) {
         this.taskAttempt = taskAttempt;
+        this.getTaskProgress = getTaskProgress;
     }
 
     @PostMapping("")
@@ -27,6 +30,15 @@ public class TaskProgressController {
         TaskProgress progress = this.taskAttempt.execute(
                 userId, lessonId, taskId, request
         );
+        return ResponseEntity.ok(progress);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<TaskProgress> getTaskAttempt(
+            @PathVariable("lessonId") String lessonId,
+            @PathVariable("taskId") String taskId,
+            @AuthenticationPrincipal String userId) {
+        TaskProgress progress = this.getTaskProgress.execute(userId, lessonId, taskId);
         return ResponseEntity.ok(progress);
     }
 }

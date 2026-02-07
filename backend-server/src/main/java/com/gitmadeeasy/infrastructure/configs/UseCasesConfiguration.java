@@ -11,6 +11,7 @@ import com.gitmadeeasy.usecases.auth.LogoutUser;
 import com.gitmadeeasy.usecases.auth.RefreshToken;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
 import com.gitmadeeasy.usecases.lessons.GetLessonById;
+import com.gitmadeeasy.usecases.taskAttempt.GetTaskProgress;
 import com.gitmadeeasy.usecases.taskAttempt.TaskAttempt;
 import com.gitmadeeasy.usecases.tasks.CreateTask;
 import com.gitmadeeasy.usecases.tasks.GetTaskById;
@@ -89,5 +90,10 @@ public class UseCasesConfiguration {
     public TaskAttempt taskAttempt(TaskAttemptGateway taskAttemptGateway, LessonGateway lessonGateway,
                                    TaskGateway taskGateway) {
         return new TaskAttempt(taskAttemptGateway, lessonGateway, taskGateway);
+    }
+
+    @Bean
+    public GetTaskProgress getTaskProgress(TaskAttemptGateway taskAttemptGateway, LessonGateway lessonGateway) {
+        return new GetTaskProgress(taskAttemptGateway, lessonGateway);
     }
 }

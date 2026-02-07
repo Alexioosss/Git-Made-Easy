@@ -31,6 +31,7 @@ public class SecurityConfiguration {
             .requestMatchers(HttpMethod.POST, "/lessons/{lessonId}/tasks").authenticated()
             .requestMatchers(HttpMethod.GET, "/lessons/{lessonId}/tasks/{taskId}").permitAll()
             .requestMatchers(HttpMethod.POST, "/lessons/{lessonId}/tasks/{taskId}/progress").authenticated()
+            .requestMatchers(HttpMethod.GET, "/lessons/{lessonId}/tasks/{taskId}/progress").authenticated()
             .anyRequest().denyAll()
         )
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

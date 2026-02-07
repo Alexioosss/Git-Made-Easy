@@ -75,6 +75,10 @@ public class TaskAttemptSchema {
         return completedAt;
     }
 
+    public void setTaskProgressId(Long taskProgressId) {
+        this.taskProgressId = taskProgressId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if(o == null || getClass() != o.getClass()) return false;

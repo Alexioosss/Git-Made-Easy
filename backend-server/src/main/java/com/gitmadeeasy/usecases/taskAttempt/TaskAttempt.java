@@ -2,6 +2,7 @@ package com.gitmadeeasy.usecases.taskAttempt;
 
 import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;
+import com.gitmadeeasy.entities.taskAttempts.TaskCompletionStatus;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
@@ -22,15 +23,28 @@ public class TaskAttempt {
     }
 
     public TaskProgress execute(String userId, String lessonId, String taskId, TaskAttemptRequest request) {
-        if(!this.lessonGateway.existsById(lessonId)) { throw new LessonNotFoundWithIdException(lessonId); }
+        if(!this.lessonGateway.existsById(lessonId)) {
+            throw new LessonNotFoundWithIdException(lessonId);
+
+        }
         Task task = this.taskGateway.getTaskByLessonIdAndTaskId(lessonId, taskId)
                 .orElseThrow(() -> new TaskNotFoundWithIdException(lessonId, taskId));
-        if(!task.getLessonId().equals(lessonId)) { throw new TaskNotInLessonException(taskId, lessonId); }
+
+        if(!task.getLessonId().equals(lessonId)) {
+            throw new TaskNotInLessonException(taskId, lessonId);
+        }
 
         TaskProgress taskProgress = this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId);
-        if(taskProgress == null) { taskProgress = new TaskProgress(null, userId, taskId); }
-        taskProgress.recordAttempt(request.input());
+        if(taskProgress == null) {
+            taskProgress = new TaskProgress(null, userId, taskId);
+        }
 
+        if(taskProgress.getStatus() == TaskCompletionStatus.COMPLETED) {
+            taskProgress.recordAttempt(request.input());
+            return this.taskAttemptGateway.save(taskProgress);
+        }
+
+        taskProgress.recordAttempt(request.input());
         if(request.input().equals(task.getExpectedCommand())) { taskProgress.markCompleted(); }
         else { taskProgress.markFailed("Incorrect Answer"); }
 

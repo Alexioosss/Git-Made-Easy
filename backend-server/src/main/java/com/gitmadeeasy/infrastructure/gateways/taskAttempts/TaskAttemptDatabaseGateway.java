@@ -4,6 +4,7 @@ import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.infrastructure.gateways.taskAttempts.repositories.TaskAttemptRepository;
 import com.gitmadeeasy.infrastructure.mappers.taskAttempts.TaskAttemptSchemaMapper;
+import com.gitmadeeasy.usecases.taskAttempt.TaskAttempt;
 import com.gitmadeeasy.usecases.taskAttempt.exceptions.TaskProgressNotFoundException;
 
 public class TaskAttemptDatabaseGateway implements TaskAttemptGateway {
@@ -17,10 +18,13 @@ public class TaskAttemptDatabaseGateway implements TaskAttemptGateway {
 
     @Override
     public TaskProgress save(TaskProgress progress) {
-        TaskAttemptSchema savedTaskAttemptSchema = this.taskAttemptRepository.save(
-                this.taskAttemptSchemaMapper.toSchema(progress)
-        );
-        return this.taskAttemptSchemaMapper.toEntity(savedTaskAttemptSchema);
+        TaskAttemptSchema existingSchema = this.taskAttemptRepository
+                .findByUserIdAndTaskId(progress.getUserId(), progress.getTaskId()).orElse(null);
+        TaskAttemptSchema schema = this.taskAttemptSchemaMapper.toSchema(progress);
+
+        if(existingSchema != null) { schema.setTaskProgressId(Long.valueOf(existingSchema.getTaskProgressId())); }
+
+        return this.taskAttemptSchemaMapper.toEntity(this.taskAttemptRepository.save(schema));
     }
 
     @Override
