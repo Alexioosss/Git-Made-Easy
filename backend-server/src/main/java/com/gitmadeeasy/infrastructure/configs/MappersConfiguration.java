@@ -1,5 +1,6 @@
 package com.gitmadeeasy.infrastructure.configs;
 
+import com.gitmadeeasy.infrastructure.mappers.lessonProgress.LessonProgressSchemaMapper;
 import com.gitmadeeasy.infrastructure.mappers.lessons.LessonSchemaMapper;
 import com.gitmadeeasy.infrastructure.mappers.taskAttempts.TaskAttemptSchemaMapper;
 import com.gitmadeeasy.infrastructure.mappers.tasks.TaskSchemaMapper;
@@ -23,4 +24,7 @@ public class MappersConfiguration {
 
     @Bean
     public TaskAttemptSchemaMapper taskAttemptSchemaMapper() { return new TaskAttemptSchemaMapper(); }
+
+    @Bean
+    public LessonProgressSchemaMapper lessonProgressSchemaMapper() { return new LessonProgressSchemaMapper(); }
 }

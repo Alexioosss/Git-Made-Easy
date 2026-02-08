@@ -13,8 +13,8 @@ public class TaskAttemptSchema {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long taskProgressId;
 
-    private String userId;
-    private String taskId;
+    private Long userId;
+    private Long taskId;
     @Enumerated(EnumType.STRING)
     private TaskCompletionStatus status;
     private int attempts;
@@ -29,8 +29,8 @@ public class TaskAttemptSchema {
     public TaskAttemptSchema(
             String userId, String taskId, TaskCompletionStatus status, int attempts,
             String lastInput, String lastError, LocalDate startedAt, LocalDate completedAt) {
-        this.userId = userId;
-        this.taskId = taskId;
+        this.userId = Long.valueOf(userId);
+        this.taskId = Long.valueOf(taskId);
         this.status = status;
         this.attempts = attempts;
         this.lastInput = lastInput;
@@ -44,11 +44,11 @@ public class TaskAttemptSchema {
     }
 
     public String getUserId() {
-        return userId;
+        return String.valueOf(userId);
     }
 
     public String getTaskId() {
-        return taskId;
+        return String.valueOf(taskId);
     }
 
     public TaskCompletionStatus getStatus() {

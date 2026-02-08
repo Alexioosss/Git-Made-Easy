@@ -10,4 +10,5 @@ public interface TaskRepository {
     Optional<TaskSchema> findByLessonIdAndTaskId(String lessonId, String taskId);
     List<TaskSchema> findAllByLessonId(String lessonId);
     boolean existsById(String taskId);
+    Integer findMaxTaskOrderByLessonId(String lessonId);
 }

@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tasks")
+@Table(name = "tasks", uniqueConstraints = { @UniqueConstraint(columnNames = {"lessonId", "task_order"}) })
 public class TaskSchema {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,15 +17,17 @@ public class TaskSchema {
     private String content;
     private String expectedCommand;
     private String hint;
+    private Integer taskOrder;
 
     protected TaskSchema() {}
 
-    public TaskSchema(String lessonId, String title, String content, String expectedCommand, String hint) {
+    public TaskSchema(String lessonId, String title, String content, String expectedCommand, String hint, Integer taskOrder) {
         this.lessonId = Long.parseLong(lessonId);
         this.title = title;
         this.content = content;
         this.expectedCommand = expectedCommand;
         this.hint = hint;
+        this.taskOrder = taskOrder;
     }
 
     public String getId() {
@@ -50,6 +52,10 @@ public class TaskSchema {
 
     public String getHint() {
         return hint;
+    }
+
+    public Integer getTaskOrder() {
+        return taskOrder;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.gitmadeeasy.usecases.taskAttempt;
 
+import com.gitmadeeasy.entities.lessonProgress.LessonProgressGateway;
 import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskCompletionStatus;
@@ -30,10 +31,11 @@ class TaskAttemptTest {
     @Mock private TaskAttemptGateway taskAttemptGateway;
     @Mock private LessonGateway lessonGateway;
     @Mock private TaskGateway taskGateway;
+    @Mock private LessonProgressGateway lessonProgressGateway;
     private TaskAttempt taskAttempt;
 
     @BeforeEach
-    void setUp() { this.taskAttempt = new TaskAttempt(taskAttemptGateway, lessonGateway, taskGateway); }
+    void setUp() { this.taskAttempt = new TaskAttempt(taskAttemptGateway, lessonGateway, taskGateway, lessonProgressGateway); }
 
     @Test
     @DisplayName("Record A Task Attempt - Task Exist And Correct Answer - Returns Completed TaskProgress")
@@ -194,7 +196,7 @@ class TaskAttemptTest {
                 "first git task",
                 "Let's start this journey, shall we?",
                 "git start",
-                "easier than it may seem..."
+                "easier than it may seem...", 1
         );
     }
 

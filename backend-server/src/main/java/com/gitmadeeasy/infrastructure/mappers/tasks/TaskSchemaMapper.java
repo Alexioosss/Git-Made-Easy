@@ -5,13 +5,14 @@ import com.gitmadeeasy.infrastructure.gateways.tasks.TaskSchema;
 
 public class TaskSchemaMapper {
 
-    public TaskSchema toSchema(Task lesson) {
+    public TaskSchema toSchema(Task task) {
         return new TaskSchema(
-                lesson.getLessonId(),
-                lesson.getTitle(),
-                lesson.getContent(),
-                lesson.getExpectedCommand(),
-                lesson.getHint()
+                task.getLessonId(),
+                task.getTitle(),
+                task.getContent(),
+                task.getExpectedCommand(),
+                task.getHint(),
+                task.getTaskOrder()
         );
     }
 
@@ -22,7 +23,8 @@ public class TaskSchemaMapper {
                 taskSchema.getTitle(),
                 taskSchema.getContent(),
                 taskSchema.getExpectedCommand(),
-                taskSchema.getHint()
+                taskSchema.getHint(),
+                taskSchema.getTaskOrder()
         );
     }
 }

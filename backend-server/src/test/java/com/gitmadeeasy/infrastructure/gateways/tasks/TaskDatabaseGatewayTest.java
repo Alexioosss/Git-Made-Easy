@@ -145,14 +145,14 @@ class TaskDatabaseGatewayTest {
     private static Task provideTask() {
         return new Task(
                 "1", "first git task", "Let's start this journey, shall we?",
-                "git start", "easier than it may seem..."
+                "git start", "easier than it may seem...", 1
         );
     }
 
     private static TaskSchema provideTaskSchema() {
         return new TaskSchema(
                 "1", "first git task", "Let's start this journey, shall we?",
-                "git start", "easier than it may seem..."
+                "git start", "easier than it may seem...", 1
         );
     }
 

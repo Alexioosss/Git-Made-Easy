@@ -32,4 +32,9 @@ public class TaskAttemptDatabaseGateway implements TaskAttemptGateway {
         return this.taskAttemptRepository.findByUserIdAndTaskId(userId, taskId)
                 .map(this.taskAttemptSchemaMapper::toEntity);
     }
+
+    @Override
+    public int countCompletedTasks(String userId, String lessonId) {
+        return this.taskAttemptRepository.countCompletedTasks(userId, lessonId);
+    }
 }

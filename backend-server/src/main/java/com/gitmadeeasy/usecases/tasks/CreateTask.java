@@ -31,12 +31,16 @@ public class CreateTask {
             throw new MissingRequiredFieldException("expected command cannot be left blank");
         }
 
+        Integer taskOrder = request.taskOrder() != null ? request.taskOrder() :
+                this.taskGateway.getNextTaskOrderForLesson(lessonId);
+
         Task newTask = new Task(
                 lessonId,
                 request.title(),
                 request.content(),
                 request.expectedCommand(),
-                request.hint()
+                request.hint(),
+                taskOrder
         );
 
         return this.taskGateway.createTask(newTask);

@@ -9,72 +9,83 @@ public class Task {
     private String content;
     private String expectedCommand;
     private String hint;
+    private Integer taskOrder;
 
     public Task(String taskId, String lessonId, String title, String content,
-                String expectedCommand, String hint) {
+                String expectedCommand, String hint, Integer taskOrder) {
         this.taskId = taskId;
         this.lessonId = lessonId;
         this.title = title;
         this.content = content;
         this.expectedCommand = expectedCommand;
         this.hint = hint;
+        this.taskOrder = taskOrder;
     }
 
     public Task(String lessonId, String title, String content,
-                String expectedCommand, String hint) {
+                String expectedCommand, String hint, Integer taskOrder) {
         this.lessonId = lessonId;
         this.title = title;
         this.content = content;
         this.expectedCommand = expectedCommand;
         this.hint = hint;
+        this.taskOrder = taskOrder;
     }
 
     public String getTaskId() {
         return taskId;
     }
 
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-    }
-
     public String getLessonId() {
         return lessonId;
-    }
-
-    public void setLessonId(String lessonId) {
-        this.lessonId = lessonId;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getContent() {
         return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public String getExpectedCommand() {
         return expectedCommand;
     }
 
-    public void setExpectedCommand(String expectedCommand) {
-        this.expectedCommand = expectedCommand;
-    }
-
     public String getHint() {
         return hint;
     }
 
+    public Integer getTaskOrder() {
+        return taskOrder;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+    public void setLessonId(String lessonId) {
+        this.lessonId = lessonId;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setExpectedCommand(String expectedCommand) {
+        this.expectedCommand = expectedCommand;
+    }
+
     public void setHint(String hint) {
         this.hint = hint;
+    }
+
+    public void setTaskOrder(Integer taskOrder) {
+        this.taskOrder = taskOrder;
     }
 
     @Override

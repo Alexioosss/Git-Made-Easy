@@ -32,4 +32,9 @@ public class ConcreteJpaTaskRepository implements TaskRepository {
     public boolean existsById(String taskId) {
         return this.jpa.existsById(Long.valueOf(taskId));
     }
+
+    @Override
+    public Integer findMaxTaskOrderByLessonId(String lessonId) {
+        return this.jpa.findMaxTaskOrderByLessonId(Long.valueOf(lessonId));
+    }
 }

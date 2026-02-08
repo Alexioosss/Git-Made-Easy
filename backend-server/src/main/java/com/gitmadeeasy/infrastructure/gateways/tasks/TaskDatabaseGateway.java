@@ -39,4 +39,14 @@ public class TaskDatabaseGateway implements TaskGateway {
     public boolean existsById(String taskId) {
         return this.taskRepository.existsById(taskId);
     }
+
+    @Override
+    public int getNextTaskOrderForLesson(String lessonId) {
+        return this.taskRepository.findMaxTaskOrderByLessonId(lessonId) + 1;
+    }
+
+    @Override
+    public int countTasksInLesson(String lessonId) {
+        return this.taskRepository.findAllByLessonId(lessonId).size();
+    }
 }

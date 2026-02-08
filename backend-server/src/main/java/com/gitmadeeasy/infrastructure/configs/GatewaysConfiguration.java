@@ -1,9 +1,12 @@
 package com.gitmadeeasy.infrastructure.configs;
 
+import com.gitmadeeasy.entities.lessonProgress.LessonProgressGateway;
 import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
 import com.gitmadeeasy.entities.users.UserGateway;
+import com.gitmadeeasy.infrastructure.gateways.lessonProgress.LessonProgressDatabaseGateway;
+import com.gitmadeeasy.infrastructure.gateways.lessonProgress.repositories.LessonProgressRepository;
 import com.gitmadeeasy.infrastructure.gateways.lessons.LessonDatabaseGateway;
 import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.LessonRepository;
 import com.gitmadeeasy.infrastructure.gateways.taskAttempts.TaskAttemptDatabaseGateway;
@@ -12,6 +15,7 @@ import com.gitmadeeasy.infrastructure.gateways.tasks.TaskDatabaseGateway;
 import com.gitmadeeasy.infrastructure.gateways.tasks.repositories.TaskRepository;
 import com.gitmadeeasy.infrastructure.gateways.users.UserDatabaseGateway;
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.UserRepository;
+import com.gitmadeeasy.infrastructure.mappers.lessonProgress.LessonProgressSchemaMapper;
 import com.gitmadeeasy.infrastructure.mappers.lessons.LessonSchemaMapper;
 import com.gitmadeeasy.infrastructure.mappers.taskAttempts.TaskAttemptSchemaMapper;
 import com.gitmadeeasy.infrastructure.mappers.tasks.TaskSchemaMapper;
@@ -41,5 +45,11 @@ public class GatewaysConfiguration {
     public TaskAttemptGateway taskAttemptGateway(TaskAttemptRepository taskAttemptRepository,
                                                  TaskAttemptSchemaMapper taskAttemptSchemaMapper) {
         return new TaskAttemptDatabaseGateway(taskAttemptRepository, taskAttemptSchemaMapper);
+    }
+
+    @Bean
+    public LessonProgressGateway lessonProgressGateway(LessonProgressRepository lessonProgressRepository,
+                                                       LessonProgressSchemaMapper lessonProgressSchemaMapper) {
+        return new LessonProgressDatabaseGateway(lessonProgressRepository, lessonProgressSchemaMapper);
     }
 }

@@ -1,14 +1,18 @@
 package com.gitmadeeasy.infrastructure.configs;
 
+import com.gitmadeeasy.entities.lessonProgress.LessonProgress;
+import com.gitmadeeasy.entities.lessonProgress.LessonProgressGateway;
 import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.entities.security.PasswordHasher;
 import com.gitmadeeasy.entities.security.TokenGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
 import com.gitmadeeasy.entities.users.UserGateway;
+import com.gitmadeeasy.infrastructure.controllers.LessonProgressController;
 import com.gitmadeeasy.usecases.auth.LoginUser;
 import com.gitmadeeasy.usecases.auth.LogoutUser;
 import com.gitmadeeasy.usecases.auth.RefreshToken;
+import com.gitmadeeasy.usecases.lessonProgress.GetLessonProgress;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
 import com.gitmadeeasy.usecases.lessons.GetLessonById;
 import com.gitmadeeasy.usecases.taskAttempt.GetTaskProgress;
@@ -88,12 +92,21 @@ public class UseCasesConfiguration {
 
     @Bean
     public TaskAttempt taskAttempt(TaskAttemptGateway taskAttemptGateway, LessonGateway lessonGateway,
-                                   TaskGateway taskGateway) {
-        return new TaskAttempt(taskAttemptGateway, lessonGateway, taskGateway);
+                                   TaskGateway taskGateway, LessonProgressGateway lessonProgressGateway) {
+        return new TaskAttempt(taskAttemptGateway, lessonGateway, taskGateway, lessonProgressGateway);
     }
 
     @Bean
     public GetTaskProgress getTaskProgress(TaskAttemptGateway taskAttemptGateway, LessonGateway lessonGateway) {
         return new GetTaskProgress(taskAttemptGateway, lessonGateway);
+    }
+
+
+
+    // ----- Lesson Progress-Related Use Cases ----- //
+
+    @Bean
+    public GetLessonProgress getLessonProgress(LessonProgressGateway lessonProgressGateway) {
+        return new GetLessonProgress(lessonProgressGateway);
     }
 }

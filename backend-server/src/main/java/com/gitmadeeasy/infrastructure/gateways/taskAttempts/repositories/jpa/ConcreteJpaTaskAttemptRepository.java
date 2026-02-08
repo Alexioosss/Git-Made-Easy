@@ -19,6 +19,11 @@ public class ConcreteJpaTaskAttemptRepository implements TaskAttemptRepository {
 
     @Override
     public Optional<TaskAttemptSchema> findByUserIdAndTaskId(String userId, String taskId) {
-        return this.jpa.findByUserIdAndTaskId(userId, taskId);
+        return this.jpa.findByUserIdAndTaskId(Long.valueOf(userId), Long.valueOf(taskId));
+    }
+
+    @Override
+    public int countCompletedTasks(String userId, String lessonId) {
+        return this.jpa.countCompletedTasks(Long.valueOf(userId), Long.valueOf(lessonId));
     }
 }

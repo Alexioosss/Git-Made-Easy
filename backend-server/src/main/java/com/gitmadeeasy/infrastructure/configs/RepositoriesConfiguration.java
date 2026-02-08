@@ -1,5 +1,8 @@
 package com.gitmadeeasy.infrastructure.configs;
 
+import com.gitmadeeasy.infrastructure.gateways.lessonProgress.repositories.LessonProgressRepository;
+import com.gitmadeeasy.infrastructure.gateways.lessonProgress.repositories.jpa.AbstractJpaLessonProgressRepository;
+import com.gitmadeeasy.infrastructure.gateways.lessonProgress.repositories.jpa.ConcreteJpaLessonProgressRepository;
 import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.LessonRepository;
 import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.jpa.AbstractJpaLessonRepository;
 import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.jpa.ConcreteJpaLessonRepository;
@@ -41,5 +44,10 @@ public class RepositoriesConfiguration {
     @Bean
     public TaskAttemptRepository taskAttemptRepository(AbstractJpaTaskAttemptRepository jpaTaskAttemptRepository) {
         return new ConcreteJpaTaskAttemptRepository(jpaTaskAttemptRepository);
+    }
+
+    @Bean
+    public LessonProgressRepository lessonProgressRepository(AbstractJpaLessonProgressRepository jpaLessonProgressRepository) {
+        return new ConcreteJpaLessonProgressRepository(jpaLessonProgressRepository);
     }
 }
