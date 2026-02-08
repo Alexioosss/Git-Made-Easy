@@ -8,6 +8,8 @@ import com.gitmadeeasy.usecases.tasks.exceptions.TaskNotFoundWithIdException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import java.util.Optional;
 
@@ -23,7 +25,7 @@ class GetTaskByIdTest {
     void setUp() {
         taskGateway = mock(TaskGateway.class);
         lessonGateway = mock(LessonGateway.class);
-        this.getTaskById = new GetTaskById(taskGateway, lessonGateway);
+        getTaskById = new GetTaskById(taskGateway, lessonGateway);
     }
 
     @Test
@@ -89,7 +91,7 @@ class GetTaskByIdTest {
                 "first git task",
                 "Let's start this journey, shall we?",
                 "git start",
-                "easier than it may seem..."
+                "easier than it may seem...", 1
         );
     }
 }

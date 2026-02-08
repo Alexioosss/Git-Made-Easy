@@ -1,7 +1,7 @@
 package com.gitmadeeasy.infrastructure.controllers;
 
 import com.gitmadeeasy.entities.tasks.Task;
-import com.gitmadeeasy.testUtil.JsonConverterUtil;
+import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.tasks.CreateTask;
 import com.gitmadeeasy.usecases.tasks.GetTaskById;
 import com.gitmadeeasy.usecases.tasks.dto.CreateTaskRequest;
@@ -39,34 +39,34 @@ class TaskControllerTest {
         String lessonId = "1";
         CreateTaskRequest validRequest = new CreateTaskRequest(
                 "first git task", "Let's get started, shall we",
-                "git start", "easier than it may seem..."
+                "git start", "easier than it may seem...", 1
         );
         Task createdTask = new Task(
                 "1", lessonId,
                 "first git task", "Let's get started, shall we",
-                "git start", "easier than it may seem..."
+                "git start", "easier than it may seem...", 1
         );
         when(this.createTask.execute(lessonId, validRequest)).thenReturn(createdTask);
 
         // Act & Assert
         this.mockMvc.perform(post("/lessons/" + lessonId + "/tasks")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonConverterUtil.objectToJson(validRequest)))
+                .content(JsonUtil.objectToJson(validRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(JsonConverterUtil.objectToJson(createdTask)));
+                .andExpect(content().json(JsonUtil.objectToJson(createdTask)));
     }
 
     @Test
     @DisplayName("Create Task - Invalid Payload Returns Unsuccessful Response / 400")
     void createTask_WhenInvalidPayload_ReturnsBadRequest() throws Exception {
         // Arrange
-        CreateTaskRequest invalidRequest = new CreateTaskRequest("", "", "", "");
+        CreateTaskRequest invalidRequest = new CreateTaskRequest("", "", "", "", 0);
         when(this.createTask.execute("0", invalidRequest)).thenThrow(new MissingRequiredFieldException("fields cannot be left blank"));
 
         // Act & Assert
         this.mockMvc.perform(post("/lessons/0/tasks")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonConverterUtil.objectToJson(invalidRequest)))
+                .content(JsonUtil.objectToJson(invalidRequest)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -78,14 +78,14 @@ class TaskControllerTest {
         Task foundTask = new Task(
                 "1", "first git task",
                 "Let's get started, shall we",
-                "git start", "easier than it may seem..."
+                "git start", "easier than it may seem...", 1
         );
         when(this.getTaskById.execute(lessonId, taskId)).thenReturn(foundTask);
 
         // Act & Assert
         this.mockMvc.perform(get("/lessons/" + lessonId + "/tasks/" + taskId))
                 .andExpect(status().isOk())
-                .andExpect(content().json(JsonConverterUtil.objectToJson(foundTask)));
+                .andExpect(content().json(JsonUtil.objectToJson(foundTask)));
     }
 
     @Test

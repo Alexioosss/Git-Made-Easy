@@ -3,7 +3,7 @@ package com.gitmadeeasy.infrastructure.controllers;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.infrastructure.dto.users.UserResponse;
 import com.gitmadeeasy.infrastructure.mappers.users.UserResponseMapper;
-import com.gitmadeeasy.testUtil.JsonConverterUtil;
+import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.users.CreateUser;
 import com.gitmadeeasy.usecases.users.GetUserByEmail;
 import com.gitmadeeasy.usecases.users.GetUserById;
@@ -52,9 +52,9 @@ class UserControllerTest {
         when(this.createUser.execute(validRequest)).thenReturn(createdUser);
         this.mockMvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonConverterUtil.objectToJson(validRequest)))
+                .content(JsonUtil.objectToJson(validRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(JsonConverterUtil.objectToJson(expectedResponse)));
+                .andExpect(content().json(JsonUtil.objectToJson(expectedResponse)));
     }
 
     @Test
@@ -66,7 +66,7 @@ class UserControllerTest {
         // Act & Assert
         this.mockMvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonConverterUtil.objectToJson(invalidRequest)))
+                .content(JsonUtil.objectToJson(invalidRequest)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -81,7 +81,7 @@ class UserControllerTest {
         // Act & Assert
         this.mockMvc.perform(get("/users/1"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(JsonConverterUtil.objectToJson(expectedResponse)));
+                .andExpect(content().json(JsonUtil.objectToJson(expectedResponse)));
     }
 
     @Test
@@ -105,7 +105,7 @@ class UserControllerTest {
         // Act & Assert
         mockMvc.perform(get("/users").param("emailAddress", "myemail@gmail.com"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(JsonConverterUtil.objectToJson(expectedResponse)));
+                .andExpect(content().json(JsonUtil.objectToJson(expectedResponse)));
     }
 
     @Test

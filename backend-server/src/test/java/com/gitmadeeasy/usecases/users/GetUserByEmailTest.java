@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -19,14 +20,8 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class GetUserByEmailTest {
-    @Mock
-    private UserGateway userGateway;
-    private GetUserByEmail getUserByEmail;
-
-    @BeforeEach
-    void setUp() {
-        this.getUserByEmail = new GetUserByEmail(userGateway);
-    }
+    @Mock private UserGateway userGateway;
+    @InjectMocks private GetUserByEmail getUserByEmail;
 
     @Test
     @DisplayName("Get A User By Email Address - A User Exists With The Given Email Address")

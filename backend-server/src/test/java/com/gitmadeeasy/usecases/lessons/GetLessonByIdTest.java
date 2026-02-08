@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -28,10 +29,7 @@ import static org.mockito.Mockito.when;
 class GetLessonByIdTest {
     @Mock private LessonGateway lessonGateway;
     @Mock private TaskGateway taskGateway;
-    private GetLessonById getLessonById;
-
-    @BeforeEach
-    void setUp() { this.getLessonById = new GetLessonById(lessonGateway, taskGateway); }
+    @InjectMocks private GetLessonById getLessonById;
 
     @Test
     @DisplayName("Get Lesson By ID - Lesson Exists")
@@ -107,10 +105,10 @@ class GetLessonByIdTest {
                 List.of(
                         new Task("1", "1", "git overview - task 1",
                                 "A simple task to get comfortable with Git",
-                                "git", "as easy as it can be"),
+                                "git", "as easy as it can be", 1),
                         new Task("2", "1", "git overview - task 2",
                                 "A simple task to get even more comfortable with Git",
-                                "git", "as easy as it can be, really")
+                                "git", "as easy as it can be, really", 1)
                 )
         );
     }

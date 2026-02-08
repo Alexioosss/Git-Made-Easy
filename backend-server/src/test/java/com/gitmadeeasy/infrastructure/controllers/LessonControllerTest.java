@@ -2,7 +2,7 @@ package com.gitmadeeasy.infrastructure.controllers;
 
 import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.entities.lessons.LessonDifficulty;
-import com.gitmadeeasy.testUtil.JsonConverterUtil;
+import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
 import com.gitmadeeasy.usecases.lessons.GetLessonById;
 import com.gitmadeeasy.usecases.lessons.dto.CreateLessonRequest;
@@ -48,9 +48,9 @@ class LessonControllerTest {
         // Act & Assert
         this.mockMvc.perform(post("/lessons")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonConverterUtil.objectToJson(validRequest)))
+                .content(JsonUtil.objectToJson(validRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(JsonConverterUtil.objectToJson(createdLesson)));
+                .andExpect(content().json(JsonUtil.objectToJson(createdLesson)));
     }
 
     @Test
@@ -62,7 +62,7 @@ class LessonControllerTest {
         // Act & Assert
         this.mockMvc.perform(post("/lessons")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonConverterUtil.objectToJson(invalidRequest)))
+                .content(JsonUtil.objectToJson(invalidRequest)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -80,7 +80,7 @@ class LessonControllerTest {
         // Act & Assert
         this.mockMvc.perform(get("/lessons/" + lessonId))
                 .andExpect(status().isOk())
-                .andExpect(content().json(JsonConverterUtil.objectToJson(foundLesson)));
+                .andExpect(content().json(JsonUtil.objectToJson(foundLesson)));
     }
 
     @Test

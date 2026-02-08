@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -32,10 +33,7 @@ class TaskAttemptTest {
     @Mock private LessonGateway lessonGateway;
     @Mock private TaskGateway taskGateway;
     @Mock private LessonProgressGateway lessonProgressGateway;
-    private TaskAttempt taskAttempt;
-
-    @BeforeEach
-    void setUp() { this.taskAttempt = new TaskAttempt(taskAttemptGateway, lessonGateway, taskGateway, lessonProgressGateway); }
+    @InjectMocks private TaskAttempt taskAttempt;
 
     @Test
     @DisplayName("Record A Task Attempt - Task Exist And Correct Answer - Returns Completed TaskProgress")

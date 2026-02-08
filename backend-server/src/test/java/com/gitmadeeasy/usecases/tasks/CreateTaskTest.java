@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -26,10 +27,7 @@ import static org.mockito.Mockito.when;
 class CreateTaskTest {
     @Mock private TaskGateway taskGateway;
     @Mock private LessonGateway lessonGateway;
-    private CreateTask createTask;
-
-    @BeforeEach
-    void setUp() { this.createTask = new CreateTask(taskGateway, lessonGateway); }
+    @InjectMocks private CreateTask createTask;
 
     @Test
     @DisplayName("Create A Task - Valid Payload")
@@ -41,7 +39,7 @@ class CreateTaskTest {
                 "first git task",
                 "Let's start this journey, shall we?",
                 "git start",
-                "easier than it may seem...");
+                "easier than it may seem...", 1);
         when(this.lessonGateway.existsById(lessonId)).thenReturn(true);
         when(this.taskGateway.createTask(any(Task.class))).thenReturn(createdTask);
 
@@ -78,7 +76,7 @@ class CreateTaskTest {
             String lessonId, String title, String content,
             String expectedCommand, String hint, String expectedErrorMessage) {
         // Arrange
-        CreateTaskRequest request = new CreateTaskRequest(title, content, expectedCommand, hint);
+        CreateTaskRequest request = new CreateTaskRequest(title, content, expectedCommand, hint, 1);
         when(this.lessonGateway.existsById(any(String.class))).thenReturn(true);
 
         // Act
@@ -98,7 +96,7 @@ class CreateTaskTest {
                 "first git task",
                 "Let's start this journey, shall we?",
                 "git start",
-                "easier than it may seem..."
+                "easier than it may seem...", 1
         );
     }
 

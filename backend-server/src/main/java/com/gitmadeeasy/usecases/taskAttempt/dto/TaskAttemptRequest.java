@@ -1,3 +1,5 @@
 package com.gitmadeeasy.usecases.taskAttempt.dto;
 
-public record TaskAttemptRequest(String input) {}
+import jakarta.validation.constraints.NotBlank;
+
+public record TaskAttemptRequest(@NotBlank String input) {}

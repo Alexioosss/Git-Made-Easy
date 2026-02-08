@@ -4,11 +4,11 @@ import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.usecases.taskAttempt.GetTaskProgress;
 import com.gitmadeeasy.usecases.taskAttempt.TaskAttempt;
 import com.gitmadeeasy.usecases.taskAttempt.dto.TaskAttemptRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.Optional;
 
 @RestController
@@ -27,10 +27,9 @@ public class TaskProgressController {
             @PathVariable("lessonId") String lessonId,
             @PathVariable("taskId") String taskId,
             @AuthenticationPrincipal String userId,
-            @RequestBody TaskAttemptRequest request) {
-        TaskProgress progress = this.taskAttempt.execute(
-                userId, lessonId, taskId, request
-        );
+            @Valid @RequestBody TaskAttemptRequest request) {
+
+        TaskProgress progress = this.taskAttempt.execute(userId, lessonId, taskId, request);
         return ResponseEntity.ok(progress);
     }
 
@@ -39,9 +38,8 @@ public class TaskProgressController {
             @PathVariable("lessonId") String lessonId,
             @PathVariable("taskId") String taskId,
             @AuthenticationPrincipal String userId) {
+
         Optional<TaskProgress> progress = this.getTaskProgress.execute(userId, lessonId, taskId);
-        return progress.map(
-                ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return progress.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 }

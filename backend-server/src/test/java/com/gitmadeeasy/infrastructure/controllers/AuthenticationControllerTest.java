@@ -1,6 +1,6 @@
 package com.gitmadeeasy.infrastructure.controllers;
 
-import com.gitmadeeasy.testUtil.JsonConverterUtil;
+import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.auth.LoginUser;
 import com.gitmadeeasy.usecases.auth.LogoutUser;
 import com.gitmadeeasy.usecases.auth.RefreshToken;
@@ -41,9 +41,9 @@ class AuthenticationControllerTest {
         // Act & Assert
         this.mockMvc.perform(post("/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonConverterUtil.objectToJson(validLoginRequest)))
+                .content(JsonUtil.objectToJson(validLoginRequest)))
                 .andExpect(status().isOk())
-                .andExpect(content().json(JsonConverterUtil.objectToJson(token)));
+                .andExpect(content().json(JsonUtil.objectToJson(token)));
     }
 
     @Test
@@ -55,7 +55,7 @@ class AuthenticationControllerTest {
         // Act & Assert
         this.mockMvc.perform(post("/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonConverterUtil.objectToJson(invalidLoginRequest)))
+                .content(JsonUtil.objectToJson(invalidLoginRequest)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -68,7 +68,7 @@ class AuthenticationControllerTest {
         // Act & Assert
         this.mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonConverterUtil.objectToJson(invalidLoginRequest)))
+                        .content(JsonUtil.objectToJson(invalidLoginRequest)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -105,6 +105,6 @@ class AuthenticationControllerTest {
         this.mockMvc.perform(post("/auth/refresh")
                 .requestAttr("jwt", "my-old-jwt-token"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(JsonConverterUtil.objectToJson(refreshedToken)));
+                .andExpect(content().json(JsonUtil.objectToJson(refreshedToken)));
     }
 }

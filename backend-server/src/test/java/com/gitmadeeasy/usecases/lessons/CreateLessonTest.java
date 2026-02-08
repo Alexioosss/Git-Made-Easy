@@ -14,6 +14,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -26,10 +27,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CreateLessonTest {
     @Mock private LessonGateway lessonGateway;
-    private CreateLesson createLesson;
-
-    @BeforeEach
-    void setUp() { this.createLesson = new CreateLesson(lessonGateway); }
+    @InjectMocks private CreateLesson createLesson;
 
     @Test
     @DisplayName("Create A Lesson - Valid Payload")
