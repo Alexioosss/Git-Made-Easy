@@ -1,6 +1,6 @@
 package com.gitmadeeasy.infrastructure.controllers.advice;
 
-import com.gitmadeeasy.usecases.taskAttempt.exceptions.TaskProgressNotFoundException;
+import com.gitmadeeasy.usecases.attemptTask.exceptions.TaskProgressNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

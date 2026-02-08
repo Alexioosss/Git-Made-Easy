@@ -2,8 +2,8 @@ package com.gitmadeeasy.entities.lessonProgress;
 
 public class LessonProgress {
     private String lessonProgressId;
-    private String userId;
-    private String lessonId;
+    private final String userId;
+    private final String lessonId;
     private String currentTaskProgressId;
     private Integer completedTasksCount;
     private Integer totalTasksCount;
@@ -43,27 +43,23 @@ public class LessonProgress {
         return totalTasksCount;
     }
 
+    public void updateTasksCounts(int completedTasks, int totalTasks) {
+        if(completedTasks < 0 || totalTasks < 0) {
+            throw new IllegalArgumentException("Task counts cannot be negative");
+        }
+        if(completedTasks > totalTasks) {
+            throw new IllegalArgumentException("Completed tasks cannot exceed the total tasks");
+        }
+
+        this.completedTasksCount = completedTasks;
+        this.totalTasksCount = totalTasks;
+    }
+
     public void setLessonProgressId(String lessonProgressId) {
         this.lessonProgressId = lessonProgressId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setLessonId(String lessonId) {
-        this.lessonId = lessonId;
-    }
-
     public void setCurrentTaskProgressId(String currentTaskProgressId) {
         this.currentTaskProgressId = currentTaskProgressId;
-    }
-
-    public void setCompletedTasksCount(Integer completedTasksCount) {
-        this.completedTasksCount = completedTasksCount;
-    }
-
-    public void setTotalTasksCount(Integer totalTasksCount) {
-        this.totalTasksCount = totalTasksCount;
     }
 }

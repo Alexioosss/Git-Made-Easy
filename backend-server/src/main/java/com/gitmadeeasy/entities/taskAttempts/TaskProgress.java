@@ -1,5 +1,7 @@
 package com.gitmadeeasy.entities.taskAttempts;
 
+import com.gitmadeeasy.entities.tasks.Task;
+
 import java.time.LocalDate;
 
 public class TaskProgress {
@@ -58,6 +60,17 @@ public class TaskProgress {
         return completedAt;
     }
 
+    public boolean isCompleted() {
+        return this.status == TaskCompletionStatus.COMPLETED;
+    }
+
+    public void attempt(Task task, String input) {
+        recordAttempt(input);
+        if(isCompleted()) { return; }
+        if(task.isCorrectAnswer(input)) { markCompleted(); }
+        else { markFailed("Incorrect Answer"); }
+    }
+
     public void recordAttempt(String input) {
         this.lastInput = input;
         this.attempts++;
@@ -74,6 +87,7 @@ public class TaskProgress {
 
     public void markFailed(String error) {
         this.lastError = error;
+        this.status = TaskCompletionStatus.IN_PROGRESS;
     }
 
 

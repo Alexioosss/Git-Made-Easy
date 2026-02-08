@@ -60,6 +60,10 @@ public class Task {
         return taskOrder;
     }
 
+    public boolean isCorrectAnswer(String input) {
+        return expectedCommand.equals(input);
+    }
+
     public void setTaskId(String taskId) {
         this.taskId = taskId;
     }

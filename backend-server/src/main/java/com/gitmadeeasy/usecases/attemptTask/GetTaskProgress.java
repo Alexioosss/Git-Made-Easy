@@ -1,4 +1,4 @@
-package com.gitmadeeasy.usecases.taskAttempt;
+package com.gitmadeeasy.usecases.attemptTask;
 
 import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;

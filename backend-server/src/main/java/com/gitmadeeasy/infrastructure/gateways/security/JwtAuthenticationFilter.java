@@ -1,6 +1,7 @@
 package com.gitmadeeasy.infrastructure.gateways.security;
 
 import com.gitmadeeasy.entities.security.TokenGateway;
+import com.gitmadeeasy.infrastructure.security.AuthenticatedUser;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

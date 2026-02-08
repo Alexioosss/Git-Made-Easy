@@ -14,7 +14,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class TaskAttemptDatabaseGatewayTest {
+class AttemptTaskDatabaseGatewayTest {
     private TaskAttemptRepository taskAttemptRepository;
     private TaskAttemptSchemaMapper taskAttemptSchemaMapper;
     private TaskAttemptDatabaseGateway taskAttemptDatabaseGateway;
