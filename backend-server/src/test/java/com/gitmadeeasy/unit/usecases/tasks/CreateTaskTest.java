@@ -4,6 +4,7 @@ import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonNotFoundWithIdException;
+import com.gitmadeeasy.usecases.tasks.CreateTask;
 import com.gitmadeeasy.usecases.tasks.dto.CreateTaskRequest;
 import com.gitmadeeasy.usecases.users.exceptions.MissingRequiredFieldException;
 import org.junit.jupiter.api.DisplayName;

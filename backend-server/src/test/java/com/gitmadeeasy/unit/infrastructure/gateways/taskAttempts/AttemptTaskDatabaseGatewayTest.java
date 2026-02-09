@@ -2,6 +2,8 @@ package com.gitmadeeasy.unit.infrastructure.gateways.taskAttempts;
 
 import com.gitmadeeasy.entities.taskAttempts.TaskCompletionStatus;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
+import com.gitmadeeasy.infrastructure.gateways.taskAttempts.TaskAttemptDatabaseGateway;
+import com.gitmadeeasy.infrastructure.gateways.taskAttempts.TaskAttemptSchema;
 import com.gitmadeeasy.infrastructure.gateways.taskAttempts.repositories.TaskAttemptRepository;
 import com.gitmadeeasy.infrastructure.mappers.taskAttempts.TaskAttemptSchemaMapper;
 import org.junit.jupiter.api.DisplayName;

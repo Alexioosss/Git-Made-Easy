@@ -1,5 +1,6 @@
 package com.gitmadeeasy.unit.infrastructure.controllers.advice;
 
+import com.gitmadeeasy.infrastructure.controllers.advice.ApiError;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

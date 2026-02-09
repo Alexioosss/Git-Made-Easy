@@ -2,6 +2,7 @@ package com.gitmadeeasy.unit.infrastructure.mappers.tasks;
 
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.infrastructure.gateways.tasks.TaskSchema;
+import com.gitmadeeasy.infrastructure.mappers.tasks.TaskSchemaMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

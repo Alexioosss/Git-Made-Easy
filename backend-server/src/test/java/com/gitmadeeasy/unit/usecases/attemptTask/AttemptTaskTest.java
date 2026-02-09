@@ -4,6 +4,7 @@ import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
+import com.gitmadeeasy.usecases.attemptTask.AttemptTask;
 import com.gitmadeeasy.usecases.attemptTask.dto.TaskAttemptRequest;
 import com.gitmadeeasy.usecases.lessonProgress.UpdateLessonProgress;
 import com.gitmadeeasy.usecases.tasks.exceptions.TaskNotFoundWithIdException;

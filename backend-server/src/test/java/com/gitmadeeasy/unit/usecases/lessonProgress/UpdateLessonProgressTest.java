@@ -5,6 +5,7 @@ import com.gitmadeeasy.entities.lessonProgress.LessonProgressGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
+import com.gitmadeeasy.usecases.lessonProgress.UpdateLessonProgress;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

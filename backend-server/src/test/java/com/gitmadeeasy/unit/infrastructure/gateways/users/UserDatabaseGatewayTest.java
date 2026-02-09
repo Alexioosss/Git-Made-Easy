@@ -1,6 +1,8 @@
 package com.gitmadeeasy.unit.infrastructure.gateways.users;
 
 import com.gitmadeeasy.entities.users.User;
+import com.gitmadeeasy.infrastructure.gateways.users.UserDatabaseGateway;
+import com.gitmadeeasy.infrastructure.gateways.users.UserSchema;
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.UserRepository;
 import com.gitmadeeasy.infrastructure.mappers.users.UserSchemaMapper;
 import org.junit.jupiter.api.DisplayName;

@@ -2,6 +2,7 @@ package com.gitmadeeasy.unit.infrastructure.controllers;
 
 import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.entities.lessons.LessonDifficulty;
+import com.gitmadeeasy.infrastructure.controllers.LessonController;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
 import com.gitmadeeasy.usecases.lessons.GetLessonById;

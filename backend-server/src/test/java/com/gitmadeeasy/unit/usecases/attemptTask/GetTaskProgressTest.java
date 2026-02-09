@@ -3,6 +3,7 @@ package com.gitmadeeasy.unit.usecases.attemptTask;
 import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
+import com.gitmadeeasy.usecases.attemptTask.GetTaskProgress;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonNotFoundWithIdException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

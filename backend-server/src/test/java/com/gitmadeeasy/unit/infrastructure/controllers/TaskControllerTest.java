@@ -1,6 +1,7 @@
 package com.gitmadeeasy.unit.infrastructure.controllers;
 
 import com.gitmadeeasy.entities.tasks.Task;
+import com.gitmadeeasy.infrastructure.controllers.TaskController;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.tasks.CreateTask;
 import com.gitmadeeasy.usecases.tasks.GetTaskById;

@@ -2,6 +2,7 @@ package com.gitmadeeasy.unit.infrastructure.mappers.users;
 
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.infrastructure.gateways.users.UserSchema;
+import com.gitmadeeasy.infrastructure.mappers.users.UserSchemaMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

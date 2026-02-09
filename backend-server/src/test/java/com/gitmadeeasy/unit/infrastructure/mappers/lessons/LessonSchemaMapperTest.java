@@ -3,6 +3,7 @@ package com.gitmadeeasy.unit.infrastructure.mappers.lessons;
 import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.entities.lessons.LessonDifficulty;
 import com.gitmadeeasy.infrastructure.gateways.lessons.LessonSchema;
+import com.gitmadeeasy.infrastructure.mappers.lessons.LessonSchemaMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

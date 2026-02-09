@@ -3,6 +3,7 @@ package com.gitmadeeasy.unit.usecases.auth;
 import com.gitmadeeasy.entities.security.TokenGateway;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
+import com.gitmadeeasy.usecases.auth.RefreshToken;
 import com.gitmadeeasy.usecases.auth.dto.AuthToken;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

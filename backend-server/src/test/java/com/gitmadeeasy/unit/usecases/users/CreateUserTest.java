@@ -3,6 +3,7 @@ package com.gitmadeeasy.unit.usecases.users;
 import com.gitmadeeasy.entities.security.PasswordHasher;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
+import com.gitmadeeasy.usecases.users.CreateUser;
 import com.gitmadeeasy.usecases.users.dto.CreateUserRequest;
 import com.gitmadeeasy.usecases.users.exceptions.DuplicatedEmailException;
 import com.gitmadeeasy.usecases.users.exceptions.MissingRequiredFieldException;

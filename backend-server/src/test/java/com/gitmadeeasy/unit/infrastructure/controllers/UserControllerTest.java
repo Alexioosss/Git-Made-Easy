@@ -1,6 +1,7 @@
 package com.gitmadeeasy.unit.infrastructure.controllers;
 
 import com.gitmadeeasy.entities.users.User;
+import com.gitmadeeasy.infrastructure.controllers.UserController;
 import com.gitmadeeasy.infrastructure.dto.users.UserResponse;
 import com.gitmadeeasy.infrastructure.mappers.users.UserResponseMapper;
 import com.gitmadeeasy.testUtil.JsonUtil;

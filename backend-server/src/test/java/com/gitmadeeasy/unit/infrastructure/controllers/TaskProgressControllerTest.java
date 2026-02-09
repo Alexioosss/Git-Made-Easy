@@ -1,6 +1,7 @@
 package com.gitmadeeasy.unit.infrastructure.controllers;
 
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
+import com.gitmadeeasy.infrastructure.controllers.TaskProgressController;
 import com.gitmadeeasy.infrastructure.gateways.security.UserPrincipal;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.attemptTask.AttemptTask;

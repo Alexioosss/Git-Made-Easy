@@ -2,6 +2,8 @@ package com.gitmadeeasy.unit.infrastructure.gateways.lessons;
 
 import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.entities.lessons.LessonDifficulty;
+import com.gitmadeeasy.infrastructure.gateways.lessons.LessonDatabaseGateway;
+import com.gitmadeeasy.infrastructure.gateways.lessons.LessonSchema;
 import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.LessonRepository;
 import com.gitmadeeasy.infrastructure.mappers.lessons.LessonSchemaMapper;
 import org.junit.jupiter.api.DisplayName;

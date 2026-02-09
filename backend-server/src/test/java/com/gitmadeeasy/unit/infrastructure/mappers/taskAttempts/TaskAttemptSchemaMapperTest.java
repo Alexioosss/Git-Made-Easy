@@ -3,6 +3,7 @@ package com.gitmadeeasy.unit.infrastructure.mappers.taskAttempts;
 import com.gitmadeeasy.entities.taskAttempts.TaskCompletionStatus;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.infrastructure.gateways.taskAttempts.TaskAttemptSchema;
+import com.gitmadeeasy.infrastructure.mappers.taskAttempts.TaskAttemptSchemaMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

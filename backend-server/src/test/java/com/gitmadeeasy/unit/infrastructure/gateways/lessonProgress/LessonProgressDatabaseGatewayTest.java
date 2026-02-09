@@ -1,6 +1,8 @@
 package com.gitmadeeasy.unit.infrastructure.gateways.lessonProgress;
 
 import com.gitmadeeasy.entities.lessonProgress.LessonProgress;
+import com.gitmadeeasy.infrastructure.gateways.lessonProgress.LessonProgressDatabaseGateway;
+import com.gitmadeeasy.infrastructure.gateways.lessonProgress.LessonProgressSchema;
 import com.gitmadeeasy.infrastructure.gateways.lessonProgress.repositories.LessonProgressRepository;
 import com.gitmadeeasy.infrastructure.mappers.lessonProgress.LessonProgressSchemaMapper;
 import org.junit.jupiter.api.DisplayName;

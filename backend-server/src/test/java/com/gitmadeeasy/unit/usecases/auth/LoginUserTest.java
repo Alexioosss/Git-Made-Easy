@@ -4,6 +4,7 @@ import com.gitmadeeasy.entities.security.PasswordHasher;
 import com.gitmadeeasy.entities.security.TokenGateway;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
+import com.gitmadeeasy.usecases.auth.LoginUser;
 import com.gitmadeeasy.usecases.auth.dto.AuthToken;
 import com.gitmadeeasy.usecases.auth.dto.LoginRequest;
 import com.gitmadeeasy.usecases.users.exceptions.InvalidCredentialsException;

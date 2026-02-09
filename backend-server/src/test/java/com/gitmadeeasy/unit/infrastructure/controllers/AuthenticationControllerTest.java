@@ -1,5 +1,6 @@
 package com.gitmadeeasy.unit.infrastructure.controllers;
 
+import com.gitmadeeasy.infrastructure.controllers.AuthenticationController;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.auth.LoginUser;
 import com.gitmadeeasy.usecases.auth.LogoutUser;

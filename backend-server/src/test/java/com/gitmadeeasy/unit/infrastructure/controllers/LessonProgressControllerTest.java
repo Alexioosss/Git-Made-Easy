@@ -1,6 +1,7 @@
 package com.gitmadeeasy.unit.infrastructure.controllers;
 
 import com.gitmadeeasy.entities.lessonProgress.LessonProgress;
+import com.gitmadeeasy.infrastructure.controllers.LessonProgressController;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.lessonProgress.GetLessonProgress;
 import org.junit.jupiter.api.DisplayName;

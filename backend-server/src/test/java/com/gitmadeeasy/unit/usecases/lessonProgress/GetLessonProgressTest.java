@@ -2,6 +2,7 @@ package com.gitmadeeasy.unit.usecases.lessonProgress;
 
 import com.gitmadeeasy.entities.lessonProgress.LessonProgress;
 import com.gitmadeeasy.entities.lessonProgress.LessonProgressGateway;
+import com.gitmadeeasy.usecases.lessonProgress.GetLessonProgress;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,5 +1,6 @@
 package com.gitmadeeasy.unit.infrastructure.security;
 
+import com.gitmadeeasy.infrastructure.security.BCryptPasswordHasher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

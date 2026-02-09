@@ -2,6 +2,7 @@ package com.gitmadeeasy.unit.usecases.users;
 
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
+import com.gitmadeeasy.usecases.users.GetUserByEmail;
 import com.gitmadeeasy.usecases.users.exceptions.UserNotFoundWithEmailException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
