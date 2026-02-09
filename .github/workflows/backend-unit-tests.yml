@@ -3,15 +3,15 @@ name: Perform Unit Tests On Backend System
 on:
   pull_request:
     paths:
-      - 'backend-server/src/test/java/com/gitmadeeasy/infrastructure'
-      - 'backend-server/src/test/java/com/gitmadeeasy/usecases'
+      - 'backend-server/src/test/java/com/gitmadeeasy/unit'
+      - 'backend-server/src/test/java/com/gitmadeeasy/unit'
       - '.github/workflows/backend-unit-tests.yml'
   push:
     branches:
       - main
     paths:
-      - 'backend-server/src/test/java/com/gitmadeeasy/infrastructure'
-      - 'backend-server/src/test/java/com/gitmadeeasy/usecases'
+      - 'backend-server/src/test/java/com/gitmadeeasy/unit'
+      - 'backend-server/src/test/java/com/gitmadeeasy/unit'
       - '.github/workflows/backend-unit-tests.yml'
       
 jobs:
@@ -37,7 +37,7 @@ jobs:
       - name: Run Maven Tests
         working-directory: backend-server
         continue-on-error: true
-        run: ./mvnw -B test -Dtest=com.gitmadeeasy.infrastructure.**,com.gitmadeeasy.usecases.**
+        run: ./mvnw -B test -Dtest=com.gitmadeeasy.unit.**
 
       - name: Upload Test Reports
         if: always()
