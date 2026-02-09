@@ -15,7 +15,7 @@ on:
       - '.github/workflows/backend-unit-tests.yml'
       
 jobs:
-  backend-unit-tests:
+  perform-backend-unit-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
