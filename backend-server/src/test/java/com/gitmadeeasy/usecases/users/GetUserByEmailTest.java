@@ -3,7 +3,6 @@ package com.gitmadeeasy.usecases.users;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.users.exceptions.UserNotFoundWithEmailException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +21,7 @@ import static org.mockito.Mockito.when;
 class GetUserByEmailTest {
     @Mock private UserGateway userGateway;
     @InjectMocks private GetUserByEmail getUserByEmail;
+
 
     @Test
     @DisplayName("Get A User By Email Address - A User Exists With The Given Email Address")

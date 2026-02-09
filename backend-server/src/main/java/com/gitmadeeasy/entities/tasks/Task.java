@@ -4,12 +4,12 @@ import java.util.Objects;
 
 public class Task {
     private String taskId;
-    private String lessonId;
-    private String title;
-    private String content;
-    private String expectedCommand;
-    private String hint;
-    private Integer taskOrder;
+    private final String lessonId;
+    private final String title;
+    private final String content;
+    private final String expectedCommand;
+    private final String hint;
+    private final Integer taskOrder;
 
     public Task(String taskId, String lessonId, String title, String content,
                 String expectedCommand, String hint, Integer taskOrder) {
@@ -62,34 +62,6 @@ public class Task {
 
     public boolean isCorrectAnswer(String input) {
         return expectedCommand.equals(input);
-    }
-
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-    }
-
-    public void setLessonId(String lessonId) {
-        this.lessonId = lessonId;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void setExpectedCommand(String expectedCommand) {
-        this.expectedCommand = expectedCommand;
-    }
-
-    public void setHint(String hint) {
-        this.hint = hint;
-    }
-
-    public void setTaskOrder(Integer taskOrder) {
-        this.taskOrder = taskOrder;
     }
 
     @Override

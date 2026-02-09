@@ -4,30 +4,24 @@ import com.gitmadeeasy.entities.security.TokenGateway;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.auth.dto.AuthToken;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class RefreshTokenTest {
-    private TokenGateway tokenGateway;
-    private UserGateway userGateway;
-    private RefreshToken refreshToken;
+    @Mock private TokenGateway tokenGateway;
+    @Mock private UserGateway userGateway;
+    @InjectMocks private RefreshToken refreshToken;
 
-    @BeforeEach
-    void setUp() {
-        tokenGateway = mock(TokenGateway.class);
-        userGateway = mock(UserGateway.class);
-        refreshToken = new RefreshToken(userGateway, tokenGateway);
-    }
 
     @Test
     @DisplayName("Refresh Token - Returns New AuthToken When Old Token Is Invalid")

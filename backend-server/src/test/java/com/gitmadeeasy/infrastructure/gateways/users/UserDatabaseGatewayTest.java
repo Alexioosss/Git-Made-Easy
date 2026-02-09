@@ -3,26 +3,24 @@ package com.gitmadeeasy.infrastructure.gateways.users;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.UserRepository;
 import com.gitmadeeasy.infrastructure.mappers.users.UserSchemaMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class UserDatabaseGatewayTest {
-    private UserRepository userRepository;
-    private UserSchemaMapper userSchemaMapper;
-    private UserDatabaseGateway userDatabaseGateway;
+    @Mock private UserRepository userRepository;
+    @Mock private UserSchemaMapper userSchemaMapper;
+    @InjectMocks private UserDatabaseGateway userDatabaseGateway;
 
-    @BeforeEach
-    void setUp() {
-        userRepository = mock(UserRepository.class);
-        userSchemaMapper = mock(UserSchemaMapper.class);
-        userDatabaseGateway = new UserDatabaseGateway(userRepository, userSchemaMapper);
-    }
 
     @Test
     @DisplayName("Create User - Valid User Is Saved And Returned")

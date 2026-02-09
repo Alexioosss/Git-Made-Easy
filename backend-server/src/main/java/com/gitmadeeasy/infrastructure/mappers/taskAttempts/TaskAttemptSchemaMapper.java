@@ -19,19 +19,16 @@ public class TaskAttemptSchemaMapper {
     }
 
     public TaskProgress toEntity(TaskAttemptSchema schema) {
-        TaskProgress domain = new TaskProgress(
+        return new TaskProgress(
                 schema.getTaskProgressId(),
                 schema.getUserId(),
-                schema.getTaskId()
+                schema.getTaskId(),
+                schema.getStatus(),
+                schema.getAttempts(),
+                schema.getLastInput(),
+                schema.getLastError(),
+                schema.getStartedAt(),
+                schema.getCompletedAt()
         );
-
-        domain.setStatus(schema.getStatus());
-        domain.setAttempts(schema.getAttempts());
-        domain.setLastInput(schema.getLastInput());
-        domain.setLastError(schema.getLastError());
-        domain.setStartedAt(schema.getStartedAt());
-        domain.setCompletedAt(schema.getCompletedAt());
-
-        return domain;
     }
 }

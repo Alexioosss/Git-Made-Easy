@@ -3,28 +3,24 @@ package com.gitmadeeasy.infrastructure.gateways.lessonProgress;
 import com.gitmadeeasy.entities.lessonProgress.LessonProgress;
 import com.gitmadeeasy.infrastructure.gateways.lessonProgress.repositories.LessonProgressRepository;
 import com.gitmadeeasy.infrastructure.mappers.lessonProgress.LessonProgressSchemaMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class LessonProgressDatabaseGatewayTest {
-    private LessonProgressRepository lessonProgressRepository;
-    private LessonProgressSchemaMapper lessonProgressSchemaMapper;
-    private LessonProgressDatabaseGateway lessonProgressDatabaseGateway;
+    @Mock private LessonProgressRepository lessonProgressRepository;
+    @Mock private LessonProgressSchemaMapper lessonProgressSchemaMapper;
+    @InjectMocks private LessonProgressDatabaseGateway lessonProgressDatabaseGateway;
 
-    @BeforeEach
-     void setUp() {
-        lessonProgressRepository = mock(LessonProgressRepository.class);
-        lessonProgressSchemaMapper = mock(LessonProgressSchemaMapper.class);
-        lessonProgressDatabaseGateway = new LessonProgressDatabaseGateway(
-                lessonProgressRepository, lessonProgressSchemaMapper
-        );
-    }
 
     @Test
     @DisplayName("Save Lesson Progress - Valid Lesson Progress")

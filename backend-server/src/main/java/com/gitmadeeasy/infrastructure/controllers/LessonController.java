@@ -21,7 +21,7 @@ public class LessonController {
         this.getLessonById = getLessonById;
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<Lesson> createLesson(@Valid @RequestBody CreateLessonRequest createLessonRequest) {
         Lesson newLesson = createLesson.execute(createLessonRequest);
         return ResponseEntity.created(URI.create("/lessons/" + newLesson.getLessonId())).body(newLesson);

@@ -20,7 +20,7 @@ public class TaskController {
         this.getTaskById = getTaskById;
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<Task> createTask(@PathVariable("lessonId") String lessonId,
                                            @RequestBody CreateTaskRequest request) {
         Task newTask = this.createTask.execute(lessonId, request);

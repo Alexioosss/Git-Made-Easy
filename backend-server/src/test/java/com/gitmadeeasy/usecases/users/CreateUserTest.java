@@ -6,7 +6,6 @@ import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.users.dto.CreateUserRequest;
 import com.gitmadeeasy.usecases.users.exceptions.DuplicatedEmailException;
 import com.gitmadeeasy.usecases.users.exceptions.MissingRequiredFieldException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +28,7 @@ class CreateUserTest {
     @Mock private UserGateway userGateway;
     @Mock private PasswordHasher passwordHasher;
     @InjectMocks private CreateUser createUser;
+
 
     @Test
     @DisplayName("Create A User - Valid Payload")

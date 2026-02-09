@@ -4,9 +4,12 @@ import com.gitmadeeasy.entities.taskAttempts.TaskCompletionStatus;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.infrastructure.gateways.taskAttempts.repositories.TaskAttemptRepository;
 import com.gitmadeeasy.infrastructure.mappers.taskAttempts.TaskAttemptSchemaMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -14,17 +17,12 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class AttemptTaskDatabaseGatewayTest {
-    private TaskAttemptRepository taskAttemptRepository;
-    private TaskAttemptSchemaMapper taskAttemptSchemaMapper;
-    private TaskAttemptDatabaseGateway taskAttemptDatabaseGateway;
+    @Mock private TaskAttemptRepository taskAttemptRepository;
+    @Mock private TaskAttemptSchemaMapper taskAttemptSchemaMapper;
+    @InjectMocks private TaskAttemptDatabaseGateway taskAttemptDatabaseGateway;
 
-    @BeforeEach
-    void setUp() {
-        taskAttemptRepository = mock(TaskAttemptRepository.class);
-        taskAttemptSchemaMapper = mock(TaskAttemptSchemaMapper.class);
-        taskAttemptDatabaseGateway = new TaskAttemptDatabaseGateway(taskAttemptRepository, taskAttemptSchemaMapper);
-    }
 
     @Test
     @DisplayName("Save Task Attempt - New Task Progress - Returns TaskProgress")

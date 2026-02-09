@@ -4,26 +4,24 @@ import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.entities.lessons.LessonDifficulty;
 import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.LessonRepository;
 import com.gitmadeeasy.infrastructure.mappers.lessons.LessonSchemaMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class LessonDatabaseGatewayTest {
-    private LessonRepository lessonRepository;
-    private LessonSchemaMapper lessonSchemaMapper;
-    private LessonDatabaseGateway lessonDatabaseGateway;
+    @Mock private LessonRepository lessonRepository;
+    @Mock private LessonSchemaMapper lessonSchemaMapper;
+    @InjectMocks private LessonDatabaseGateway lessonDatabaseGateway;
 
-    @BeforeEach
-    void setUp() {
-        lessonRepository = mock(LessonRepository.class);
-        lessonSchemaMapper = mock(LessonSchemaMapper.class);
-        lessonDatabaseGateway = new LessonDatabaseGateway(lessonRepository, lessonSchemaMapper);
-    }
 
     @Test
     @DisplayName("Create A Lesson - Valid Lesson Is Saved And Returned")

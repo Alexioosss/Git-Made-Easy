@@ -29,7 +29,7 @@ public class UserController {
         this.userResponseMapper = userResponseMapper;
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
         CreateUserRequest newUserRequest = new CreateUserRequest(
                 request.firstName(), request.lastName(),
@@ -48,7 +48,7 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<UserResponse> getUserByEmailAddress(@RequestParam("emailAddress") String emailAddress) {
         User foundUser = this.getUserByEmail.execute(emailAddress);
         UserResponse userResponse = this.userResponseMapper.toUserResponse(foundUser);

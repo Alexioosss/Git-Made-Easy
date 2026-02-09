@@ -5,28 +5,25 @@ import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonNotFoundWithIdException;
 import com.gitmadeeasy.usecases.tasks.exceptions.TaskNotFoundWithIdException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class GetTaskByIdTest {
-    private TaskGateway taskGateway;
-    private LessonGateway lessonGateway;
-    private GetTaskById getTaskById;
+    @Mock private TaskGateway taskGateway;
+    @Mock private LessonGateway lessonGateway;
+    @InjectMocks private GetTaskById getTaskById;
 
-    @BeforeEach
-    void setUp() {
-        taskGateway = mock(TaskGateway.class);
-        lessonGateway = mock(LessonGateway.class);
-        getTaskById = new GetTaskById(taskGateway, lessonGateway);
-    }
 
     @Test
     @DisplayName("Get Task By ID - Lesson And Task Exist - Returns Task")

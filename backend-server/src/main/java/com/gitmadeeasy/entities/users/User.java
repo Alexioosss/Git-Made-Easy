@@ -1,13 +1,15 @@
 package com.gitmadeeasy.entities.users;
 
+import com.gitmadeeasy.usecases.users.exceptions.EmailAlreadyVerifiedException;
+
 import java.util.Objects;
 
 public class User {
     private String userId;
-    private String firstName;
-    private String lastName;
-    private String emailAddress;
-    private String password;
+    private final String firstName;
+    private final String lastName;
+    private final String emailAddress;
+    private final String password;
     private boolean isEmailVerified;
 
     public User(String userId, String firstName, String lastName, String emailAddress, String password) {
@@ -31,40 +33,20 @@ public class User {
         return userId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String getFirstName() {
         return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getEmailAddress() {
         return emailAddress;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public boolean isEmailVerified() {
@@ -72,9 +54,7 @@ public class User {
     }
 
     public void markEmailAsVerified() {
-        if(this.isEmailVerified) {
-            throw new IllegalArgumentException("The Email Address Has Already Been Verified.");
-        }
+        if(this.isEmailVerified) { throw new EmailAlreadyVerifiedException(); }
         this.isEmailVerified = true;
     }
 

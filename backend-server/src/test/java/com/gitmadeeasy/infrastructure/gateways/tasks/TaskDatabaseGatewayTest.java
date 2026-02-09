@@ -3,12 +3,15 @@ package com.gitmadeeasy.infrastructure.gateways.tasks;
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.infrastructure.gateways.tasks.repositories.TaskRepository;
 import com.gitmadeeasy.infrastructure.mappers.tasks.TaskSchemaMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,17 +20,12 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class TaskDatabaseGatewayTest {
-    private TaskRepository taskRepository;
-    private TaskSchemaMapper taskSchemaMapper;
-    private TaskDatabaseGateway taskDatabaseGateway;
+    @Mock private TaskRepository taskRepository;
+    @Mock private TaskSchemaMapper taskSchemaMapper;
+    @InjectMocks private TaskDatabaseGateway taskDatabaseGateway;
 
-    @BeforeEach
-    void setUp() {
-        taskRepository = mock(TaskRepository.class);
-        taskSchemaMapper = mock(TaskSchemaMapper.class);
-        taskDatabaseGateway = new TaskDatabaseGateway(taskRepository, taskSchemaMapper);
-    }
 
     @Test
     @DisplayName("Create A Task - Valid Task Is Saved And Returned")
@@ -119,8 +117,20 @@ class TaskDatabaseGatewayTest {
         // Arrange
         String lessonId = "1";
         when(this.taskRepository.findAllByLessonId(lessonId)).thenReturn(tasksList);
+        for(TaskSchema schema : tasksList) {
+            Task mappedTask = new Task(
+                    schema.getLessonId(), schema.getTitle(),
+                    schema.getContent(), schema.getExpectedCommand(),
+                    schema.getHint(), schema.getTaskOrder());
+            when(this.taskSchemaMapper.toEntity(schema)).thenReturn(mappedTask);
+        }
+
         // Act
+        List<Task> foundTasks = this.taskDatabaseGateway.getTasksByLessonId(lessonId);
+
         // Assert
+        assertEquals(tasksList.size(), foundTasks.size());
+        verify(this.taskSchemaMapper, times(tasksList.size())).toEntity(any(TaskSchema.class));
     }
 
     @Test

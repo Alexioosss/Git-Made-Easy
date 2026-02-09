@@ -2,7 +2,6 @@ package com.gitmadeeasy.usecases.lessonProgress;
 
 import com.gitmadeeasy.entities.lessonProgress.LessonProgress;
 import com.gitmadeeasy.entities.lessonProgress.LessonProgressGateway;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,13 +11,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class GetLessonProgressTest {
     @Mock private LessonProgressGateway lessonProgressGateway;
     @InjectMocks private GetLessonProgress getLessonProgress;
+
 
     @Test
     @DisplayName("Get Lesson Progress - Lesson Progress Exists")

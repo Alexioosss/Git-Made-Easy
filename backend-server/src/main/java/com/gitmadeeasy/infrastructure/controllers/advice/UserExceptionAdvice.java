@@ -1,9 +1,6 @@
 package com.gitmadeeasy.infrastructure.controllers.advice;
 
-import com.gitmadeeasy.usecases.users.exceptions.DuplicatedEmailException;
-import com.gitmadeeasy.usecases.users.exceptions.MissingRequiredFieldException;
-import com.gitmadeeasy.usecases.users.exceptions.UserNotFoundWithEmailException;
-import com.gitmadeeasy.usecases.users.exceptions.UserNotFoundWithIdException;
+import com.gitmadeeasy.usecases.users.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,5 +27,10 @@ public class UserExceptionAdvice extends BaseErrorAdvice {
     @ExceptionHandler(UserNotFoundWithEmailException.class)
     public ResponseEntity<ApiError> handleUserNotFoundWithEmail(UserNotFoundWithEmailException ex) {
         return this.buildError(HttpStatus.NOT_FOUND, "USER_NOT_FOUND_BY_EMAIL", ex.getMessage());
+    }
+
+    @ExceptionHandler(EmailAlreadyVerifiedException.class)
+    public ResponseEntity<ApiError> handleEmailAlreadyVerified(EmailAlreadyVerifiedException ex) {
+        return this.buildError(HttpStatus.BAD_REQUEST, "EMAIL_ALREADY_VERIFIED", ex.getMessage());
     }
 }

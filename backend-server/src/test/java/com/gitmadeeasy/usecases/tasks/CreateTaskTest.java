@@ -6,7 +6,6 @@ import com.gitmadeeasy.entities.tasks.TaskGateway;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonNotFoundWithIdException;
 import com.gitmadeeasy.usecases.tasks.dto.CreateTaskRequest;
 import com.gitmadeeasy.usecases.users.exceptions.MissingRequiredFieldException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +27,7 @@ class CreateTaskTest {
     @Mock private TaskGateway taskGateway;
     @Mock private LessonGateway lessonGateway;
     @InjectMocks private CreateTask createTask;
+
 
     @Test
     @DisplayName("Create A Task - Valid Payload")

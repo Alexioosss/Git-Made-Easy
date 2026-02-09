@@ -4,26 +4,25 @@ import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonNotFoundWithIdException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class GetTaskProgressTest {
-    private TaskAttemptGateway taskAttemptGateway;
-    private LessonGateway lessonGateway;
-    private GetTaskProgress getTaskProgress;
+    @Mock private TaskAttemptGateway taskAttemptGateway;
+    @Mock private LessonGateway lessonGateway;
+    @InjectMocks private GetTaskProgress getTaskProgress;
 
-    @BeforeEach
-    void setUp() {
-        taskAttemptGateway = mock(TaskAttemptGateway.class);
-        lessonGateway = mock(LessonGateway.class);
-        getTaskProgress = new GetTaskProgress(taskAttemptGateway, lessonGateway);
-    }
 
     @Test
     @DisplayName("Get Task Progress - Lesson, Task And User Task Progress Exist - Returns The User's Task Progress")

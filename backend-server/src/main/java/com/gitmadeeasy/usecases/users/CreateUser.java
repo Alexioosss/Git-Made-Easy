@@ -38,7 +38,7 @@ public class CreateUser {
             throw new DuplicatedEmailException(request.emailAddress());
         }
 
-        // Implement Email Verification Here To Ensure Email Address Is Valid
+        // Email verification can be implemented here
 
         // Hash the password for security
         String hashedPassword = this.passwordHasher.hash(request.password());

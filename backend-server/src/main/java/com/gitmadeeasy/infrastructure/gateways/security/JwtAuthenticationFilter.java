@@ -1,7 +1,6 @@
 package com.gitmadeeasy.infrastructure.gateways.security;
 
 import com.gitmadeeasy.entities.security.TokenGateway;
-import com.gitmadeeasy.infrastructure.security.AuthenticatedUser;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,7 +12,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collections;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final TokenGateway tokenGateway;
@@ -34,9 +32,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 if(this.tokenGateway.isTokenValid(token)) {
                     String userId = this.tokenGateway.getUserIdFromToken(token);
+                    UserPrincipal principal = new UserPrincipal(userId);
 
                     UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(userId, null, Collections.emptyList());
+                            new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
 
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);

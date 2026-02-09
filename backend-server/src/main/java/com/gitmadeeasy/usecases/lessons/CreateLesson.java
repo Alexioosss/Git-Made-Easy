@@ -29,17 +29,12 @@ public class CreateLesson {
 
         LessonDifficulty difficulty;
         try {
-            difficulty = LessonDifficulty.valueOf(
-                    request.difficulty().toUpperCase()
-            );
+            difficulty = LessonDifficulty.valueOf(request.difficulty().toUpperCase());
         } catch(IllegalArgumentException e) {
             throw new LessonDifficultyNotRecognisedException(request.difficulty());
         }
 
-        Lesson newLesson = new Lesson(
-                request.title(), request.description(),
-                difficulty
-        );
+        Lesson newLesson = new Lesson(request.title(), request.description(), difficulty);
         return this.lessonGateway.createLesson(newLesson);
     }
 }

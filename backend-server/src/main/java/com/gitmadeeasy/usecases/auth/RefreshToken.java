@@ -4,6 +4,7 @@ import com.gitmadeeasy.entities.security.TokenGateway;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.auth.dto.AuthToken;
+import com.gitmadeeasy.usecases.auth.exceptions.InvalidTokenException;
 
 public class RefreshToken {
     private final UserGateway userGateway;
@@ -16,7 +17,7 @@ public class RefreshToken {
 
     public AuthToken execute(String token) {
         User user = this.userGateway.getUserById(this.tokenGateway.getUserIdFromToken(token))
-                .orElseThrow(() -> new RuntimeException("Invalid Token."));
+                .orElseThrow(InvalidTokenException::new);
 
         return new AuthToken(this.tokenGateway.refreshToken(user));
     }

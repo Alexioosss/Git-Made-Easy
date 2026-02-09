@@ -6,7 +6,6 @@ import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonNotFoundWithIdException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,6 +29,7 @@ class GetLessonByIdTest {
     @Mock private LessonGateway lessonGateway;
     @Mock private TaskGateway taskGateway;
     @InjectMocks private GetLessonById getLessonById;
+
 
     @Test
     @DisplayName("Get Lesson By ID - Lesson Exists")

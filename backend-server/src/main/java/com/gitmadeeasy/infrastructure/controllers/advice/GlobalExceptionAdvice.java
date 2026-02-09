@@ -1,5 +1,6 @@
 package com.gitmadeeasy.infrastructure.controllers.advice;
 
+import com.gitmadeeasy.usecases.auth.exceptions.InvalidTokenException;
 import com.gitmadeeasy.usecases.users.exceptions.InvalidCredentialsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,5 +30,10 @@ public class GlobalExceptionAdvice extends BaseErrorAdvice {
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<ApiError> handleInvalidCredentials(InvalidCredentialsException ex) {
         return this.buildError(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS", "email or password is incorrect");
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ApiError> handleInvalidToken(InvalidTokenException ex) {
+        return this.buildError(HttpStatus.UNAUTHORIZED, "INVALID_TOKEN", ex.getMessage());
     }
 }

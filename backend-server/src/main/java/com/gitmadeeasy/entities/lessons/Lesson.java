@@ -8,9 +8,9 @@ import java.util.Objects;
 
 public class Lesson {
     private String lessonId;
-    private String title;
-    private String description;
-    private LessonDifficulty difficulty;
+    private final String title;
+    private final String description;
+    private final LessonDifficulty difficulty;
     private List<Task> tasks = new ArrayList<>();
 
     public Lesson(String lessonId, String title, String description, LessonDifficulty difficulty) {
@@ -30,36 +30,24 @@ public class Lesson {
         return lessonId;
     }
 
-    public void setLessonId(String lessonId) {
-        this.lessonId = lessonId;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public LessonDifficulty getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(LessonDifficulty difficulty) {
-        this.difficulty = difficulty;
-    }
-
     public List<Task> getTasks() {
         return tasks;
+    }
+
+    public void setLessonId(String lessonId) {
+        this.lessonId = lessonId;
     }
 
     public void setTasks(List<Task> tasks) {

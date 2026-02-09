@@ -24,6 +24,20 @@ public class TaskProgress {
         this.startedAt = LocalDate.now();
     }
 
+    public TaskProgress(String taskProgressId, String userId, String taskId, TaskCompletionStatus status,
+                        int attempts, String lastInput, String lastError,
+                        LocalDate startedAt, LocalDate completedAt) {
+        this.taskProgressId = taskProgressId;
+        this.userId = userId;
+        this.taskId = taskId;
+        this.status = status;
+        this.attempts = attempts;
+        this.lastInput = lastInput;
+        this.lastError = lastError;
+        this.startedAt = startedAt;
+        this.completedAt = completedAt;
+    }
+
     public String getTaskProgressId() {
         return taskProgressId;
     }
@@ -91,7 +105,7 @@ public class TaskProgress {
     }
 
 
-    // ----- Used when rebuilding this object from stored / database data ----- //
+    // ----- Used for rebuilding this object from stored / database data ----- //
 
     public void setStatus(TaskCompletionStatus status) {
         this.status = status;

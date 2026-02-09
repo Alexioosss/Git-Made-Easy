@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -26,6 +26,7 @@ class UpdateLessonProgressTest {
     @Mock private TaskAttemptGateway taskAttemptGateway;
     @Mock private TaskGateway taskGateway;
     @InjectMocks private UpdateLessonProgress updateLessonProgress;
+
 
     private static final String USER_ID = "1";
     private static final String LESSON_ID = "1";

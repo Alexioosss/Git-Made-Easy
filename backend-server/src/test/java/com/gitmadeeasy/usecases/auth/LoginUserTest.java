@@ -26,6 +26,7 @@ class LoginUserTest {
     @Mock private TokenGateway tokenGateway;
     @InjectMocks private LoginUser loginUser;
 
+
     @Test
     @DisplayName("Login User - Valid Credentials Returns AuthToken")
     void execute_WhenValidCredentials_ReturnsAuthToken() {

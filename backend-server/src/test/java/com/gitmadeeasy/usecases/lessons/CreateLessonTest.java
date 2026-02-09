@@ -6,7 +6,6 @@ import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.usecases.lessons.dto.CreateLessonRequest;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonDifficultyNotRecognisedException;
 import com.gitmadeeasy.usecases.users.exceptions.MissingRequiredFieldException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +27,7 @@ import static org.mockito.Mockito.when;
 class CreateLessonTest {
     @Mock private LessonGateway lessonGateway;
     @InjectMocks private CreateLesson createLesson;
+
 
     @Test
     @DisplayName("Create A Lesson - Valid Payload")
