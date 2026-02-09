@@ -23,21 +23,17 @@ public class TaskProgressController {
     }
 
     @PostMapping
-    public ResponseEntity<TaskProgress> recordTaskAttempt(
-            @PathVariable("lessonId") String lessonId,
-            @PathVariable("taskId") String taskId,
-            Principal principal,
-            @Valid @RequestBody TaskAttemptRequest request) {
+    public ResponseEntity<TaskProgress> recordTaskAttempt(@PathVariable("lessonId") String lessonId,
+                                                          @PathVariable("taskId") String taskId, Principal principal,
+                                                          @Valid @RequestBody TaskAttemptRequest request) {
 
         TaskProgress progress = this.attemptTask.attempt(principal.getName(), lessonId, taskId, request);
         return ResponseEntity.ok(progress);
     }
 
     @GetMapping
-    public ResponseEntity<TaskProgress> getTaskAttempt(
-            @PathVariable("lessonId") String lessonId,
-            @PathVariable("taskId") String taskId,
-            Principal principal) {
+    public ResponseEntity<TaskProgress> getTaskAttempt(@PathVariable("lessonId") String lessonId,
+                                                       @PathVariable("taskId") String taskId, Principal principal) {
 
         Optional<TaskProgress> progress = this.getTaskProgress.execute(principal.getName(), lessonId, taskId);
         return progress.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());

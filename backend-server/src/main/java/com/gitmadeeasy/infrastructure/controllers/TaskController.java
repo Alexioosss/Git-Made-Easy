@@ -4,6 +4,7 @@ import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.usecases.tasks.CreateTask;
 import com.gitmadeeasy.usecases.tasks.GetTaskById;
 import com.gitmadeeasy.usecases.tasks.dto.CreateTaskRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class TaskController {
 
     @PostMapping
     public ResponseEntity<Task> createTask(@PathVariable("lessonId") String lessonId,
-                                           @RequestBody CreateTaskRequest request) {
+                                           @Valid @RequestBody CreateTaskRequest request) {
         Task newTask = this.createTask.execute(lessonId, request);
         return ResponseEntity.created(URI.create("/lessons/" + lessonId + "/tasks/" + newTask.getTaskId())).body(newTask);
     }
