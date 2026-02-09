@@ -1,5 +1,3 @@
-The following repository contains the source to
-
 # Git Made Easy
 
 A full-stack application with the aim of allowing the learning of Git in such a way that is easy to understand and to remember.
