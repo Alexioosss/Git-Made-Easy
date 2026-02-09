@@ -1,0 +1,55 @@
+name: Perform Integration Tests On Backend System
+
+on:
+  pull_request:
+    paths:
+      - 'backend-server/src/test/java/com/gitmadeeasy/integration'
+      - 'backend-server/src/test/java/com/gitmadeeasy/integration'
+      - '.github/workflows/backend-integration-tests.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend-server/src/test/java/com/gitmadeeasy/integration'
+      - 'backend-server/src/test/java/com/gitmadeeasy/integration'
+      - '.github/workflows/backend-integration-tests.yml'
+      
+jobs:
+  backend-integration-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          
+      - name: Set Up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+          
+      - name: Make mvnw Excecutable
+        working-directory: backend-server
+        run: chmod +x ./mvnw
+
+      - name: Run Maven Tests
+        working-directory: backend-server
+        continue-on-error: true
+        run: ./mvnw -B test -Dtest=com.gitmadeeasy.integration.**
+
+      - name: Upload Test Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: |
+            backend-server/target/surefire-reports/
+
+      - name: Test Summary
+        if: always()
+        uses: test-summary/action@v2
+        with:
+          paths: |
+            backend-server/target/surefire-reports/TEST-*.xml
