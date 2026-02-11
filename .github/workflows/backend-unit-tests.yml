@@ -3,15 +3,15 @@ name: Perform Unit Tests On Backend System
 on:
   pull_request:
     paths:
-      - 'backend-server/src/test/java/com/gitmadeeasy/unit'
-      - 'backend-server/src/test/java/com/gitmadeeasy/unit'
+      - 'backend-server/src/test/java/com/gitmadeeasy/unit/**'
+      - 'backend-server/src/test/java/com/gitmadeeasy/unit/**'
       - '.github/workflows/backend-unit-tests.yml'
   push:
     branches:
       - main
     paths:
-      - 'backend-server/src/test/java/com/gitmadeeasy/unit'
-      - 'backend-server/src/test/java/com/gitmadeeasy/unit'
+      - 'backend-server/src/test/java/com/gitmadeeasy/unit/**'
+      - 'backend-server/src/test/java/com/gitmadeeasy/unit/**'
       - '.github/workflows/backend-unit-tests.yml'
       
 jobs:
