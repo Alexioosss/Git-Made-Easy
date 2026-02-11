@@ -9,4 +9,5 @@ public interface UserRepository {
     Optional<UserSchema> findById(String userId);
     Optional<UserSchema> findByEmail(String emailAddress);
     boolean existsByEmail(String emailAddress);
+    void deleteAll();
 }

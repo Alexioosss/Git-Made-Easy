@@ -75,4 +75,8 @@ public class FirebaseUserRepository implements UserRepository {
         }
         return true;
     }
+
+    @Override
+    public void deleteAll() {
+    }
 }

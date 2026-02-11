@@ -31,4 +31,7 @@ public class ConcreteJpaUserRepository implements UserRepository {
     public boolean existsByEmail(String emailAddress) {
         return this.jpa.existsByEmailAddress(emailAddress);
     }
+
+    @Override
+    public void deleteAll() { this.jpa.deleteAll(); }
 }
