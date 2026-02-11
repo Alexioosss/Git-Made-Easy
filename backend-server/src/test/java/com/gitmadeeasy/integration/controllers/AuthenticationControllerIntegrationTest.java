@@ -75,7 +75,7 @@ class AuthenticationControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.objectToJson(request)))
                 .andReturn().getResponse().getContentAsString();
-        String accessToken = readJson(loginResponse, "accessToken");
+        String accessToken = JsonUtil.readJson(loginResponse, "accessToken");
 
         // Act & Assert
         this.mockMvc.perform(post("/auth/logout")
@@ -105,7 +105,7 @@ class AuthenticationControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.objectToJson(request)))
                 .andReturn().getResponse().getContentAsString();
-        String accessToken = readJson(loginResponse, "accessToken");
+        String accessToken = JsonUtil.readJson(loginResponse, "accessToken");
 
         // Act & Assert
         this.mockMvc.perform(post("/auth/refresh")
@@ -136,13 +136,5 @@ class AuthenticationControllerIntegrationTest {
                 )
         );
         System.out.println("Mock User Saved Successfully.");
-    }
-
-    private String readJson(String json, String fieldName) {
-        try {
-            return new ObjectMapper().readTree(json).get(fieldName).asText(); // Find the JSON Node with the given field name
-        } catch(Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }

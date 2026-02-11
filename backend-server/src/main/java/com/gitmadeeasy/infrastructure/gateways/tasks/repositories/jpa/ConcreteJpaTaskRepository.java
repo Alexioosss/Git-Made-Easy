@@ -37,4 +37,7 @@ public class ConcreteJpaTaskRepository implements TaskRepository {
     public Integer findMaxTaskOrderByLessonId(String lessonId) {
         return this.jpa.findMaxTaskOrderByLessonId(Long.valueOf(lessonId));
     }
+
+    @Override
+    public void deleteAll() { this.jpa.deleteAll(); }
 }

@@ -16,4 +16,13 @@ public class JsonUtil {
             throw new RuntimeException("Could not convert the object to JSON.\n", e);
         }
     }
+
+    public static String readJson(String json, String fieldName) {
+        try {
+            // Find the JSON Node with the given field name
+            return new ObjectMapper().readTree(json).get(fieldName).asText();
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

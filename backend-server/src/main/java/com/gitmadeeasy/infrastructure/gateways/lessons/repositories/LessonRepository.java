@@ -8,4 +8,5 @@ public interface LessonRepository {
     LessonSchema save(LessonSchema lessonSchema);
     Optional<LessonSchema> findById(String lessonId);
     boolean existsById(String lessonId);
+    void deleteAll();
 }

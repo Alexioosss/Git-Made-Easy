@@ -26,4 +26,7 @@ public class ConcreteJpaLessonRepository implements LessonRepository {
     public boolean existsById(String lessonId) {
         return this.jpa.existsById(Long.valueOf(lessonId));
     }
+
+    @Override
+    public void deleteAll() { this.jpa.deleteAll(); }
 }

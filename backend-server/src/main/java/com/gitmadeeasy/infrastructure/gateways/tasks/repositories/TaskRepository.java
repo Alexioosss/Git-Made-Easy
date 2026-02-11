@@ -11,4 +11,5 @@ public interface TaskRepository {
     List<TaskSchema> findAllByLessonId(String lessonId);
     boolean existsById(String taskId);
     Integer findMaxTaskOrderByLessonId(String lessonId);
+    void deleteAll();
 }
