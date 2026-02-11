@@ -56,19 +56,19 @@ class TaskControllerIntegrationTest {
                 .andExpect(jsonPath("$.taskId").exists())
                 .andExpect(jsonPath("$.title").value("Intro to Git"))
                 .andExpect(jsonPath("$.content").value("Initialise a repository"))
-                .andExpect(jsonPath("$.expectedCommand").value("git innit"))
-                .andExpect(jsonPath("$.hint").value("Remember to INITialise the new repository"))
+                .andExpect(jsonPath("$.expectedCommand").value("git init"))
+                .andExpect(jsonPath("$.hint").value("Remember to INITialize the new repository"))
                 .andExpect(jsonPath("$.taskOrder").value(1));
     }
 
     @ParameterizedTest(name = "{0}")
-    @MethodSource("provideInvalidTaskRequests")
+    @MethodSource("provideInvalidTaskCreationRequests")
     @DisplayName("Create Task - Missing Required Fields")
-    void createTask_WhenMissingRequiredFields_ReturnsBadRequest(String displayName, CreateTaskRequest request) throws Exception {
+    void createTask_WhenMissingRequiredFields_ReturnsBadRequest(String displayName, CreateTaskRequest invalidRequest) throws Exception {
         // Act & Assert
         this.mockMvc.perform(post("/lessons/{lessonId}/tasks", lessonId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.objectToJson(request)))
+                .content(JsonUtil.objectToJson(invalidRequest)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -81,10 +81,10 @@ class TaskControllerIntegrationTest {
         this.mockMvc.perform(get("/lessons/{lessonId}/tasks/{taskId}", lessonId, taskId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.taskId").value(taskId))
-                .andExpect(jsonPath("$.title").value("Sample Task"))
-                .andExpect(jsonPath("$.content").value("Do something"))
-                .andExpect(jsonPath("$.expectedCommand").value("git status"))
-                .andExpect(jsonPath("$.hint").value("Check your repo"))
+                .andExpect(jsonPath("$.title").value("Initialise a Git repository"))
+                .andExpect(jsonPath("$.content").value("Create a new Git repository"))
+                .andExpect(jsonPath("$.expectedCommand").value("git init"))
+                .andExpect(jsonPath("$.hint").value("Remember to INITialise the new repository"))
                 .andExpect(jsonPath("$.taskOrder").value(1));
     }
 
@@ -126,7 +126,7 @@ class TaskControllerIntegrationTest {
         return this.taskRepository.save(taskSchema).getId();
     }
 
-    private static Stream<Arguments> provideInvalidTaskRequests() {
+    private static Stream<Arguments> provideInvalidTaskCreationRequests() {
         return Stream.of(
                 Arguments.of("Missing Title",
                         new CreateTaskRequest("", "content", "git init", null, 1)),
