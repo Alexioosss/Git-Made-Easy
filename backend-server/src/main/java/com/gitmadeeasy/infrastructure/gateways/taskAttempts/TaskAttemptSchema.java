@@ -79,6 +79,30 @@ public class TaskAttemptSchema {
         this.taskProgressId = taskProgressId;
     }
 
+    public void setStatus(TaskCompletionStatus status) {
+        this.status = status;
+    }
+
+    public void setAttempts(int attempts) {
+        this.attempts = attempts;
+    }
+
+    public void setLastInput(String lastInput) {
+        this.lastInput = lastInput;
+    }
+
+    public void setLastError(String lastError) {
+        this.lastError = lastError;
+    }
+
+    public void setStartedAt(LocalDate startedAt) {
+        this.startedAt = startedAt;
+    }
+
+    public void setCompletedAt(LocalDate completedAt) {
+        this.completedAt = completedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if(o == null || getClass() != o.getClass()) return false;

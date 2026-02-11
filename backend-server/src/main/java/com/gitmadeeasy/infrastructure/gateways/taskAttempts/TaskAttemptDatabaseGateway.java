@@ -18,13 +18,14 @@ public class TaskAttemptDatabaseGateway implements TaskAttemptGateway {
 
     @Override
     public TaskProgress save(TaskProgress progress) {
-        TaskAttemptSchema existingSchema = this.taskAttemptRepository
-                .findByUserIdAndTaskId(progress.getUserId(), progress.getTaskId()).orElse(null);
-        TaskAttemptSchema schema = this.taskAttemptSchemaMapper.toSchema(progress);
+        Optional<TaskAttemptSchema> existingTaskAttempt =
+                this.taskAttemptRepository.findByUserIdAndTaskId(progress.getUserId(), progress.getTaskId());
 
-        if(existingSchema != null) { schema.setTaskProgressId(Long.valueOf(existingSchema.getTaskProgressId())); }
+        TaskAttemptSchema schemaToSave = existingTaskAttempt.map(existing ->
+                        this.taskAttemptSchemaMapper.updateSchema(existing, progress))
+                .orElseGet(() -> this.taskAttemptSchemaMapper.toSchema(progress));
 
-        return this.taskAttemptSchemaMapper.toEntity(this.taskAttemptRepository.save(schema));
+        return this.taskAttemptSchemaMapper.toEntity(this.taskAttemptRepository.save(schemaToSave));
     }
 
     @Override

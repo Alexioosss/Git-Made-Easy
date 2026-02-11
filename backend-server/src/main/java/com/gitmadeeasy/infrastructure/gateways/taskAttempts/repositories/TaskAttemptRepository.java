@@ -8,4 +8,5 @@ public interface TaskAttemptRepository {
     TaskAttemptSchema save(TaskAttemptSchema taskAttemptSchema);
     Optional<TaskAttemptSchema> findByUserIdAndTaskId(String userId, String taskId);
     int countCompletedTasks(String userId, String lessonId);
+    void deleteAll();
 }

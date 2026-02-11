@@ -7,7 +7,7 @@ import com.gitmadeeasy.infrastructure.mappers.lessons.LessonSchemaMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LessonSchemaMapperTest {
     private static final LessonSchemaMapper mapper = new LessonSchemaMapper();

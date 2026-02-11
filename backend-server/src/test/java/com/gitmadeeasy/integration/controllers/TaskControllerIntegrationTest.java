@@ -21,9 +21,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.stream.Stream;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -75,7 +76,7 @@ class TaskControllerIntegrationTest {
     @Test
     @DisplayName("Get Task By ID - Task Exists")
     void getTaskById_WhenTaskExists_ReturnsTask() throws Exception {
-        String taskId = createTaskAndReturnId();
+        String taskId = createTaskAndReturnTaskId();
 
         // Act & Assert
         this.mockMvc.perform(get("/lessons/{lessonId}/tasks/{taskId}", lessonId, taskId))
@@ -117,7 +118,7 @@ class TaskControllerIntegrationTest {
         return this.lessonRepository.save(lessonSchema).getId();
     }
 
-    private String createTaskAndReturnId() {
+    private String createTaskAndReturnTaskId() {
         TaskSchema taskSchema = new TaskSchema(
                 lessonId, "Initialise a Git repository",
                 "Create a new Git repository",

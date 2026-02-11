@@ -18,6 +18,16 @@ public class TaskAttemptSchemaMapper {
         );
     }
 
+    public TaskAttemptSchema updateSchema(TaskAttemptSchema existing, TaskProgress entity) {
+        existing.setStatus(entity.getStatus());
+        existing.setAttempts(entity.getAttempts());
+        existing.setLastInput(entity.getLastInput());
+        existing.setLastError(entity.getLastError());
+        existing.setStartedAt(entity.getStartedAt());
+        existing.setCompletedAt(entity.getCompletedAt());
+        return existing;
+    }
+
     public TaskProgress toEntity(TaskAttemptSchema schema) {
         return new TaskProgress(
                 schema.getTaskProgressId(),

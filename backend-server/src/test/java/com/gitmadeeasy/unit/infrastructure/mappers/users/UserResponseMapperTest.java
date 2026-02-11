@@ -6,7 +6,7 @@ import com.gitmadeeasy.infrastructure.mappers.users.UserResponseMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserResponseMapperTest {
     private static final UserResponseMapper mapper = new UserResponseMapper();

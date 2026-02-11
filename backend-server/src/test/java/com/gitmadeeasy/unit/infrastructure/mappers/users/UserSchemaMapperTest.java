@@ -6,7 +6,7 @@ import com.gitmadeeasy.infrastructure.mappers.users.UserSchemaMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserSchemaMapperTest {
     private static final UserSchemaMapper mapper = new UserSchemaMapper();

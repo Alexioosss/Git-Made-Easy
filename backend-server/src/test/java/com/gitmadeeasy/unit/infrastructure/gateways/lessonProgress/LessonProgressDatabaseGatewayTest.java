@@ -63,7 +63,7 @@ class LessonProgressDatabaseGatewayTest {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Find By User ID - Lesson Progress Exists")
     void findByUserIdAndLessonId_WhenLessonProgressExists_ReturnsLessonProgress() {
         // Arrange
         LessonProgressSchema schema = provideLessonProgressSchemaWithId("1");
@@ -82,7 +82,7 @@ class LessonProgressDatabaseGatewayTest {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Find By User ID - Lesson Progress Does Not Exist")
     void findByUserIdAndLessonId_WhenLessonProgressDoesNotExist_ReturnsEmptyOptional() {
         // Arrange
         when(this.lessonProgressRepository.findByUserIdAndLessonId("1", "1")).thenReturn(Optional.empty());

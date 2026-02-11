@@ -26,4 +26,8 @@ public class ConcreteJpaTaskAttemptRepository implements TaskAttemptRepository {
     public int countCompletedTasks(String userId, String lessonId) {
         return this.jpa.countCompletedTasks(Long.valueOf(userId), Long.valueOf(lessonId));
     }
+
+    @Override
+    public void deleteAll() { this.jpa.deleteAll(); }
+
 }

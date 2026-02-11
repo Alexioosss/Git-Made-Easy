@@ -7,10 +7,10 @@ import com.gitmadeeasy.infrastructure.mappers.taskAttempts.TaskAttemptSchemaMapp
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class TaskAttemptSchemaMapperTest {
     private static final TaskAttemptSchemaMapper mapper = new TaskAttemptSchemaMapper();

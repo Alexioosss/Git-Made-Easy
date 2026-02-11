@@ -66,6 +66,20 @@ class LessonControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("Create Lesson - Invalid Request - Unrecognised Lesson Difficulty")
+    void createLesson_WhenInvalidRequestData_ReturnsBadRequest() throws Exception {
+        // Arrange
+        CreateLessonRequest invalidRequest = new CreateLessonRequest("Intro to Git",
+                "An introduction to an industry-standard technology", "impossible");
+
+        // Act & Assert
+        this.mockMvc.perform(post("/lessons")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.objectToJson(invalidRequest)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     @DisplayName("Get Lesson By ID - Lesson Exists")
     void getLessonById_WhenLessonExists_ReturnsLesson() throws Exception {
         // Arrange

@@ -21,4 +21,7 @@ public class ConcreteJpaLessonProgressRepository implements LessonProgressReposi
     public Optional<LessonProgressSchema> findByUserIdAndLessonId(String userId, String lessonId) {
         return this.jpa.findByUserIdAndLessonId(Long.valueOf(userId), Long.valueOf(lessonId));
     }
+
+    @Override
+    public void deleteAll() { this.jpa.deleteAll(); }
 }
