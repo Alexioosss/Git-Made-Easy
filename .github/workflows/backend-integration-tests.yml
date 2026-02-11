@@ -3,15 +3,15 @@ name: Perform Integration Tests On Backend System
 on:
   pull_request:
     paths:
-      - 'backend-server/src/test/java/com/gitmadeeasy/integration'
-      - 'backend-server/src/test/java/com/gitmadeeasy/integration'
+      - 'backend-server/src/test/java/com/gitmadeeasy/integration/**'
+      - 'backend-server/src/test/java/com/gitmadeeasy/integration/**'
       - '.github/workflows/backend-integration-tests.yml'
   push:
     branches:
       - main
     paths:
-      - 'backend-server/src/test/java/com/gitmadeeasy/integration'
-      - 'backend-server/src/test/java/com/gitmadeeasy/integration'
+      - 'backend-server/src/test/java/com/gitmadeeasy/integration/**'
+      - 'backend-server/src/test/java/com/gitmadeeasy/integration/**'
       - '.github/workflows/backend-integration-tests.yml'
       
 jobs:
