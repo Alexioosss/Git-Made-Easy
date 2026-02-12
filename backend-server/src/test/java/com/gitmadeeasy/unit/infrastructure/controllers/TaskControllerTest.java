@@ -7,7 +7,7 @@ import com.gitmadeeasy.usecases.tasks.CreateTask;
 import com.gitmadeeasy.usecases.tasks.GetTaskById;
 import com.gitmadeeasy.usecases.tasks.dto.CreateTaskRequest;
 import com.gitmadeeasy.usecases.tasks.exceptions.TaskNotFoundWithIdException;
-import com.gitmadeeasy.usecases.users.exceptions.MissingRequiredFieldException;
+import com.gitmadeeasy.usecases.validation.MissingRequiredFieldException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,6 +2,7 @@ package com.gitmadeeasy.infrastructure.controllers.advice;
 
 import com.gitmadeeasy.usecases.auth.exceptions.InvalidTokenException;
 import com.gitmadeeasy.usecases.users.exceptions.InvalidCredentialsException;
+import com.gitmadeeasy.usecases.validation.MissingRequiredFieldException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -35,5 +36,10 @@ public class GlobalExceptionAdvice extends BaseErrorAdvice {
     @ExceptionHandler
     public ResponseEntity<ApiError> handleInvalidToken(InvalidTokenException ex) {
         return this.buildError(HttpStatus.UNAUTHORIZED, "INVALID_TOKEN", ex.getMessage());
+    }
+
+    @ExceptionHandler(MissingRequiredFieldException.class)
+    public ResponseEntity<ApiError> handleInvalidUserData(MissingRequiredFieldException ex) {
+        return this.buildError(HttpStatus.BAD_REQUEST, "MISSING_REQUIRED_FIELD", ex.getMessage());
     }
 }

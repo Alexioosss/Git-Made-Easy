@@ -1,4 +1,4 @@
-package com.gitmadeeasy.usecases.users.exceptions;
+package com.gitmadeeasy.usecases.validation;
 
 public class MissingRequiredFieldException extends RuntimeException {
     public MissingRequiredFieldException(String message) {

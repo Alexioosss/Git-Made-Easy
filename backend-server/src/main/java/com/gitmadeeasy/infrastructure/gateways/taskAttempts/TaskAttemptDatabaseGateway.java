@@ -22,7 +22,7 @@ public class TaskAttemptDatabaseGateway implements TaskAttemptGateway {
                 this.taskAttemptRepository.findByUserIdAndTaskId(progress.getUserId(), progress.getTaskId());
 
         TaskAttemptSchema schemaToSave = existingTaskAttempt.map(existing ->
-                        this.taskAttemptSchemaMapper.updateSchema(existing, progress))
+                        this.taskAttemptSchemaMapper.merge(existing, progress))
                 .orElseGet(() -> this.taskAttemptSchemaMapper.toSchema(progress));
 
         return this.taskAttemptSchemaMapper.toEntity(this.taskAttemptRepository.save(schemaToSave));

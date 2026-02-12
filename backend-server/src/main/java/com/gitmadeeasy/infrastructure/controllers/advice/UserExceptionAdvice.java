@@ -9,11 +9,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class UserExceptionAdvice extends BaseErrorAdvice {
 
-    @ExceptionHandler(MissingRequiredFieldException.class)
-    public ResponseEntity<ApiError> handleInvalidUserData(MissingRequiredFieldException ex) {
-        return this.buildError(HttpStatus.BAD_REQUEST, "INVALID_USER_DATA", ex.getMessage());
-    }
-
     @ExceptionHandler(UserNotFoundWithIdException.class)
     public ResponseEntity<ApiError> handleUserNotFoundWithId(UserNotFoundWithIdException ex) {
         return this.buildError(HttpStatus.NOT_FOUND, "USER_NOT_FOUND_BY_ID", ex.getMessage());

@@ -5,7 +5,7 @@ import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.users.dto.CreateUserRequest;
 import com.gitmadeeasy.usecases.users.exceptions.DuplicatedEmailException;
-import com.gitmadeeasy.usecases.users.exceptions.MissingRequiredFieldException;
+import com.gitmadeeasy.usecases.validation.MissingRequiredFieldException;
 
 public class CreateUser {
     private final UserGateway userGateway;

@@ -18,7 +18,7 @@ public class TaskAttemptSchemaMapper {
         );
     }
 
-    public TaskAttemptSchema updateSchema(TaskAttemptSchema existing, TaskProgress entity) {
+    public TaskAttemptSchema merge(TaskAttemptSchema existing, TaskProgress entity) {
         existing.setStatus(entity.getStatus());
         existing.setAttempts(entity.getAttempts());
         existing.setLastInput(entity.getLastInput());
