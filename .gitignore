@@ -1,0 +1,2 @@
+backend-server/src/main/resources/application.properties
+backend-server/src/main/resources/serviceAccount.json
