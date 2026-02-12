@@ -41,8 +41,8 @@ class AuthenticationControllerTest {
 
         // Act & Assert
         this.mockMvc.perform(post("/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.objectToJson(validLoginRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.objectToJson(validLoginRequest)))
                 .andExpect(status().isOk())
                 .andExpect(content().json(JsonUtil.objectToJson(token)));
     }
@@ -55,8 +55,8 @@ class AuthenticationControllerTest {
 
         // Act & Assert
         this.mockMvc.perform(post("/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.objectToJson(invalidLoginRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.objectToJson(invalidLoginRequest)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -77,12 +77,12 @@ class AuthenticationControllerTest {
     @DisplayName("Login User - Malformed Request Payload - Returns 400")
     void loginUser_WhenMalformedPayload_ReturnsBadRequest() throws Exception {
         // Arrange
-        String malformedRequestPayload = "{ \"mail\":, \"test\":, ";
+        String malformedRequestPayload = "{ \"mail\":, \"pass\":, ";
 
         // Act & Assert
         this.mockMvc.perform(post("/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(malformedRequestPayload))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(malformedRequestPayload))
                 .andExpect(status().isBadRequest());
     }
 
@@ -91,7 +91,7 @@ class AuthenticationControllerTest {
     void logoutUser_WhenTokenIsPresent_ReturnsNoContent() throws Exception {
         // Act & Assert
         this.mockMvc.perform(post("/auth/logout")
-                .requestAttr("jwt", "my-secure-jwt-token"))
+                        .requestAttr("jwt", "my-secure-jwt-token"))
                 .andExpect(status().isNoContent());
     }
 
@@ -104,7 +104,7 @@ class AuthenticationControllerTest {
 
         // Act & Assert
         this.mockMvc.perform(post("/auth/refresh")
-                .requestAttr("jwt", "my-old-jwt-token"))
+                        .requestAttr("jwt", "my-old-jwt-token"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(JsonUtil.objectToJson(refreshedToken)));
     }

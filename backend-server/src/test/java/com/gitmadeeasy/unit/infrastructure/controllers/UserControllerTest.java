@@ -52,8 +52,8 @@ class UserControllerTest {
 
         when(this.createUser.execute(validRequest)).thenReturn(createdUser);
         this.mockMvc.perform(post("/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.objectToJson(validRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.objectToJson(validRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(content().json(JsonUtil.objectToJson(expectedResponse)));
     }
@@ -66,8 +66,8 @@ class UserControllerTest {
 
         // Act & Assert
         this.mockMvc.perform(post("/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.objectToJson(invalidRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.objectToJson(invalidRequest)))
                 .andExpect(status().isBadRequest());
     }
 

@@ -44,8 +44,8 @@ class UserControllerIntegrationTest {
 
         // Act & Assert
         this.mockMvc.perform(post("/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.objectToJson(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.objectToJson(request)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.firstName").value("John"))
@@ -64,8 +64,8 @@ class UserControllerIntegrationTest {
 
         // Act & Assert
         this.mockMvc.perform(post("/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.objectToJson(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.objectToJson(request)))
                 .andExpect(status().isConflict());
     }
 
@@ -111,7 +111,7 @@ class UserControllerIntegrationTest {
 
         // Act & Assert
         this.mockMvc.perform(get("/users")
-                .param("emailAddress", "myemail1@gmail.com"))
+                        .param("emailAddress", "myemail1@gmail.com"))
                 .andExpect(status().isOk());
     }
 

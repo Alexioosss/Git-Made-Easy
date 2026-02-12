@@ -44,8 +44,8 @@ class LessonControllerIntegrationTest {
 
         // Act & Assert
         this.mockMvc.perform(post("/lessons")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.objectToJson(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.objectToJson(request)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.lessonId").exists())
                 .andExpect(jsonPath("title").value("Intro to Git"))
@@ -60,8 +60,8 @@ class LessonControllerIntegrationTest {
     void createLesson_WhenInvalidRequestData_ReturnsBadRequest(String displayName, CreateLessonRequest invalidRequest) throws Exception {
         // Act & Assert
         this.mockMvc.perform(post("/lessons")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.objectToJson(invalidRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.objectToJson(invalidRequest)))
                 .andExpect(status().isBadRequest());
     }
 

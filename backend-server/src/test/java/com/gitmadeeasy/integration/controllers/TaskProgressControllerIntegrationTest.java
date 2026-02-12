@@ -19,13 +19,14 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc(addFilters = false)
+@AutoConfigureMockMvc
 @Import(RepositoriesConfiguration.class)
 class TaskProgressControllerIntegrationTest {
     @Autowired private MockMvc mockMvc;
@@ -56,7 +57,7 @@ class TaskProgressControllerIntegrationTest {
         this.mockMvc.perform(post("/lessons/{lessonId}/tasks/{taskId}/progress", lessonId, taskId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonUtil.objectToJson(request))
-                        .principal(() -> USER_ID))
+                        .with(user(USER_ID)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(USER_ID))
                 .andExpect(jsonPath("$.taskId").value(taskId))
@@ -78,7 +79,7 @@ class TaskProgressControllerIntegrationTest {
         this.mockMvc.perform(post("/lessons/{lessonId}/tasks/{taskId}/progress", lessonId, taskId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonUtil.objectToJson(invalid))
-                        .principal(() -> USER_ID))
+                        .with(user(USER_ID)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -94,12 +95,12 @@ class TaskProgressControllerIntegrationTest {
         this.mockMvc.perform(post("/lessons/{lessonId}/tasks/{taskId}/progress", lessonId, taskId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonUtil.objectToJson(request))
-                        .principal(() -> USER_ID))
+                        .with(user(USER_ID)))
                 .andExpect(status().isOk());
 
         // To then retrieve it
         this.mockMvc.perform(get("/lessons/{lessonId}/tasks/{taskId}/progress", lessonId, taskId)
-                        .principal(() -> USER_ID))
+                        .with(user(USER_ID)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(USER_ID))
                 .andExpect(jsonPath("$.taskId").value(taskId))
@@ -116,7 +117,7 @@ class TaskProgressControllerIntegrationTest {
 
         // Act & Assert
         this.mockMvc.perform(get("/lessons/{lessonId}/tasks/{taskId}/progress", lessonId, taskId)
-                        .principal(() -> USER_ID))
+                        .with(user(USER_ID)))
                 .andExpect(status().isNotFound());
     }
 
@@ -131,11 +132,11 @@ class TaskProgressControllerIntegrationTest {
         this.mockMvc.perform(post("/lessons/{lessonId}/tasks/{taskId}/progress", lessonId, taskId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonUtil.objectToJson(request))
-                        .principal(() -> "2"))
+                        .with(user("2")))
                 .andExpect(status().isOk());
 
         this.mockMvc.perform(get("/lessons/{lessonId}/tasks/{taskId}/progress", lessonId, taskId)
-                        .principal(() -> USER_ID))
+                        .with(user(USER_ID)))
                 .andExpect(status().isNotFound());
     }
 

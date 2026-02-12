@@ -48,8 +48,8 @@ class LessonControllerTest {
 
         // Act & Assert
         this.mockMvc.perform(post("/lessons")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.objectToJson(validRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.objectToJson(validRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(content().json(JsonUtil.objectToJson(createdLesson)));
     }
@@ -62,8 +62,8 @@ class LessonControllerTest {
 
         // Act & Assert
         this.mockMvc.perform(post("/lessons")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.objectToJson(invalidRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.objectToJson(invalidRequest)))
                 .andExpect(status().isBadRequest());
     }
 

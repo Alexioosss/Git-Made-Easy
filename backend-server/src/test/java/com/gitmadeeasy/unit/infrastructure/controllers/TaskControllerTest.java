@@ -51,8 +51,8 @@ class TaskControllerTest {
 
         // Act & Assert
         this.mockMvc.perform(post("/lessons/" + lessonId + "/tasks")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.objectToJson(validRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.objectToJson(validRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(content().json(JsonUtil.objectToJson(createdTask)));
     }
@@ -66,8 +66,8 @@ class TaskControllerTest {
 
         // Act & Assert
         this.mockMvc.perform(post("/lessons/0/tasks")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.objectToJson(invalidRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.objectToJson(invalidRequest)))
                 .andExpect(status().isBadRequest());
     }
 

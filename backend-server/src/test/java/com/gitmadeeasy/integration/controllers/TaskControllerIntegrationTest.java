@@ -51,8 +51,8 @@ class TaskControllerIntegrationTest {
 
         // Act & Assert
         this.mockMvc.perform(post("/lessons/{lessonId}/tasks", lessonId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.objectToJson(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.objectToJson(request)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.taskId").exists())
                 .andExpect(jsonPath("$.title").value("Intro to Git"))
@@ -68,8 +68,8 @@ class TaskControllerIntegrationTest {
     void createTask_WhenMissingRequiredFields_ReturnsBadRequest(String displayName, CreateTaskRequest invalidRequest) throws Exception {
         // Act & Assert
         this.mockMvc.perform(post("/lessons/{lessonId}/tasks", lessonId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.objectToJson(invalidRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.objectToJson(invalidRequest)))
                 .andExpect(status().isBadRequest());
     }
 

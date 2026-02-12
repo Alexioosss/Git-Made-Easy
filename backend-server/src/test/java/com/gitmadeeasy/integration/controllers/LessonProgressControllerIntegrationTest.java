@@ -10,12 +10,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc(addFilters = false)
+@AutoConfigureMockMvc
 class LessonProgressControllerIntegrationTest {
     @Autowired private MockMvc mockMvc;
     @Autowired private LessonProgressRepository lessonProgressRepository;
@@ -36,7 +37,7 @@ class LessonProgressControllerIntegrationTest {
 
         // Act & Assert
         this.mockMvc.perform(get("/lessons/{lessonId}/progress", LESSON_ID)
-                        .principal(() -> USER_ID))
+                        .with(user(USER_ID)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.lessonProgressId").value(savedSchema.getLessonProgressId()))
                 .andExpect(jsonPath("$.userId").value(USER_ID))
@@ -51,7 +52,7 @@ class LessonProgressControllerIntegrationTest {
     void getLessonProgress_WhenLessonProgressDoesNotExist_ReturnsNotFound() throws Exception {
         // Act & Assert
         this.mockMvc.perform(get("/lessons/{lessonId}/progress", LESSON_ID)
-                        .principal(() -> USER_ID))
+                        .with(user(USER_ID)))
                 .andExpect(status().isNotFound());
     }
 
@@ -65,7 +66,7 @@ class LessonProgressControllerIntegrationTest {
 
         // Act & Assert
         this.mockMvc.perform(get("/lessons/{lessonId}/progress", LESSON_ID)
-                        .principal(() -> USER_ID))
+                        .with(user(USER_ID)))
                 .andExpect(status().isNotFound());
     }
 }
