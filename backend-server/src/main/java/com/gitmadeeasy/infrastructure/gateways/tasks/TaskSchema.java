@@ -1,28 +1,19 @@
 package com.gitmadeeasy.infrastructure.gateways.tasks;
 
-import jakarta.persistence.*;
-
-import java.util.Objects;
-
-@Entity
-@Table(name = "tasks", uniqueConstraints = { @UniqueConstraint(columnNames = {"lessonId", "task_order"}) })
 public class TaskSchema {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "lesson_id", nullable = false)
-    private Long lessonId;
+    private String id;
+    private String lessonId;
     private String title;
     private String content;
     private String expectedCommand;
     private String hint;
     private Integer taskOrder;
 
-    protected TaskSchema() {}
+    public TaskSchema() {}
 
     public TaskSchema(String lessonId, String title, String content, String expectedCommand, String hint, Integer taskOrder) {
-        this.lessonId = Long.parseLong(lessonId);
+        this.lessonId = lessonId;
         this.title = title;
         this.content = content;
         this.expectedCommand = expectedCommand;
@@ -31,11 +22,15 @@ public class TaskSchema {
     }
 
     public String getId() {
-        return String.valueOf(id);
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getLessonId() {
-        return String.valueOf(lessonId);
+        return lessonId;
     }
 
     public String getTitle() {
@@ -56,17 +51,5 @@ public class TaskSchema {
 
     public Integer getTaskOrder() {
         return taskOrder;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if(o == null || getClass() != o.getClass()) return false;
-        TaskSchema that = (TaskSchema) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
     }
 }

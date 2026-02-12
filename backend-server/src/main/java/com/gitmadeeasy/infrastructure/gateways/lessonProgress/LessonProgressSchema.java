@@ -1,47 +1,43 @@
 package com.gitmadeeasy.infrastructure.gateways.lessonProgress;
 
-import jakarta.persistence.*;
-
-import java.util.Objects;
-
-@Entity
-@Table(name = "lesson_progress")
 public class LessonProgressSchema {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long lessonProgressId;
 
-    private Long userId;
-    private Long lessonId;
-    private Long currentTaskProgressId;
+    private String id;
+    private String userId;
+    private String lessonId;
+    private String currentTaskProgressId;
     private Integer completedTasksCount;
     private Integer totalTasksCount;
 
-    protected LessonProgressSchema() {}
+    public LessonProgressSchema() {}
 
     public LessonProgressSchema(String userId, String lessonId, String currentTaskProgressId,
                                 Integer completedTasksCount, Integer totalTasksCount) {
-        this.userId = Long.valueOf(userId);
-        this.lessonId = Long.valueOf(lessonId);
-        this.currentTaskProgressId = Long.valueOf(currentTaskProgressId);
+        this.userId = userId;
+        this.lessonId = lessonId;
+        this.currentTaskProgressId = currentTaskProgressId;
         this.completedTasksCount = completedTasksCount;
         this.totalTasksCount = totalTasksCount;
     }
 
-    public String getLessonProgressId() {
-        return String.valueOf(lessonProgressId);
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserId() {
-        return String.valueOf(userId);
+        return userId;
     }
 
     public String getLessonId() {
-        return String.valueOf(lessonId);
+        return lessonId;
     }
 
     public String getCurrentTaskProgressId() {
-        return String.valueOf(currentTaskProgressId);
+        return currentTaskProgressId;
     }
 
     public Integer getCompletedTasksCount() {
@@ -52,19 +48,15 @@ public class LessonProgressSchema {
         return totalTasksCount;
     }
 
-    public void setLessonProgressId(Long lessonProgressId) {
-        this.lessonProgressId = lessonProgressId;
-    }
-
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public void setLessonId(Long lessonId) {
+    public void setLessonId(String lessonId) {
         this.lessonId = lessonId;
     }
 
-    public void setCurrentTaskProgressId(Long currentTaskProgressId) {
+    public void setCurrentTaskProgressId(String currentTaskProgressId) {
         this.currentTaskProgressId = currentTaskProgressId;
     }
 
@@ -74,17 +66,5 @@ public class LessonProgressSchema {
 
     public void setTotalTasksCount(Integer totalTasksCount) {
         this.totalTasksCount = totalTasksCount;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if(o == null || getClass() != o.getClass()) return false;
-        LessonProgressSchema that = (LessonProgressSchema) o;
-        return Objects.equals(lessonProgressId, that.lessonProgressId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(lessonProgressId);
     }
 }

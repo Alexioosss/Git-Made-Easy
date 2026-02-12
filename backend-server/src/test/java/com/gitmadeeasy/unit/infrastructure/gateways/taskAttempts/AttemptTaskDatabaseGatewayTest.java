@@ -159,7 +159,7 @@ class AttemptTaskDatabaseGatewayTest {
 
     private TaskAttemptSchema provideTaskAttemptSchemaWithId(String id) {
         TaskAttemptSchema schema = provideTaskAttemptSchema();
-        schema.setTaskProgressId(Long.valueOf(id));
+        schema.setId(id);
         return schema;
     }
 }

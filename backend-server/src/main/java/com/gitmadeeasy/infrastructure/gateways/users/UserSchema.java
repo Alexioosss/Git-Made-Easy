@@ -1,24 +1,16 @@
 package com.gitmadeeasy.infrastructure.gateways.users;
 
-import jakarta.persistence.*;
-
-import java.util.Objects;
-
-@Entity
-@Table(name = "users")
 public class UserSchema {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-//    private String id;
+    private String id;
     private String firstName;
     private String lastName;
     private String emailAddress;
     private String password;
 
 
-    // Empty constructor required by JPA
-    protected UserSchema() {}
+    // Empty constructor required for Firestore
+    public UserSchema() {}
 
     public UserSchema(String firstName, String lastName, String emailAddress, String password) {
         this.firstName = firstName;
@@ -27,20 +19,12 @@ public class UserSchema {
         this.password = password;
     }
 
-//    public String getId() {
-//        return id;
-//    }
-//
-//    public void setId(String id) {
-//        this.id = id;
-//    }
-
     public String getId() {
-        return String.valueOf(id);
+        return id;
     }
 
     public void setId(String id) {
-        this.id = Long.parseLong(id);
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -65,17 +49,5 @@ public class UserSchema {
                 ", lastName='" + lastName + '\'' +
                 ", emailAddress='" + emailAddress + '\'' +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        UserSchema that = (UserSchema) o;
-        return id == that.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }
