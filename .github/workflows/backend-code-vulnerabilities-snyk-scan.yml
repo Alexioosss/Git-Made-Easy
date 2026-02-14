@@ -5,6 +5,7 @@ on:
     paths:
       - 'backend-server/src/**'
       - '.github/workflows/backend-code-vulnerabilities-snyk-scan.yml'
+      - 'backend-server/pom.xml'
   push:
     branches:
       - main
@@ -12,6 +13,7 @@ on:
     paths:
       - 'backend-server/src/**'
       - '.github/workflows/backend-code-vulnerabilities-snyk-scan.yml'
+      - 'backend-server/pom.xml'
 
 jobs:
   backend-code-snyk-scan:
