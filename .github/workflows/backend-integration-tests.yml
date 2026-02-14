@@ -6,6 +6,7 @@ on:
       - 'backend-server/src/test/java/com/gitmadeeasy/integration/**'
       - 'backend-server/src/test/java/com/gitmadeeasy/integration/**'
       - '.github/workflows/backend-integration-tests.yml'
+      - 'backend-server/pom.xml'
   push:
     branches:
       - main
@@ -13,6 +14,7 @@ on:
       - 'backend-server/src/test/java/com/gitmadeeasy/integration/**'
       - 'backend-server/src/test/java/com/gitmadeeasy/integration/**'
       - '.github/workflows/backend-integration-tests.yml'
+      - 'backend-server/pom.xml'
       
 jobs:
   backend-integration-tests:
