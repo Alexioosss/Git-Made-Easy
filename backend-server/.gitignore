@@ -34,4 +34,4 @@ build/
 
 # Ignore sensitive configuration files
 /src/main/resources/serviceAccount.json
-/src/main/resources/application.properties
+/src/main/resources/application-dev.properties
