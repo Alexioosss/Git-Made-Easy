@@ -2,9 +2,9 @@ package com.gitmadeeasy.unit.infrastructure.gateways.taskAttempts;
 
 import com.gitmadeeasy.entities.taskAttempts.TaskCompletionStatus;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
-import com.gitmadeeasy.infrastructure.gateways.taskAttempts.TaskAttemptDatabaseGateway;
-import com.gitmadeeasy.infrastructure.gateways.taskAttempts.TaskAttemptSchema;
-import com.gitmadeeasy.infrastructure.gateways.taskAttempts.repositories.TaskAttemptRepository;
+import com.gitmadeeasy.infrastructure.gateways.taskAttempts.JpaTaskAttemptDatabaseGateway;
+import com.gitmadeeasy.infrastructure.gateways.taskAttempts.JpaTaskAttemptSchema;
+import com.gitmadeeasy.infrastructure.gateways.taskAttempts.repositories.jpa.JpaTaskAttemptRepository;
 import com.gitmadeeasy.infrastructure.mappers.taskAttempts.TaskAttemptSchemaMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,9 +21,9 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AttemptTaskDatabaseGatewayTest {
-    @Mock private TaskAttemptRepository taskAttemptRepository;
+    @Mock private JpaTaskAttemptRepository taskAttemptRepository;
     @Mock private TaskAttemptSchemaMapper taskAttemptSchemaMapper;
-    @InjectMocks private TaskAttemptDatabaseGateway taskAttemptDatabaseGateway;
+    @InjectMocks private JpaTaskAttemptDatabaseGateway jpaTaskAttemptDatabaseGateway;
 
 
     @Test
@@ -31,8 +31,8 @@ class AttemptTaskDatabaseGatewayTest {
     void save_WhenNewTaskProgress_ReturnsSavedTaskProgress() {
         // Arrange
         TaskProgress progress = provideTaskProgress();
-        TaskAttemptSchema schema = provideTaskAttemptSchema();
-        TaskAttemptSchema savedSchema = provideTaskAttemptSchemaWithId("1");
+        JpaTaskAttemptSchema schema = provideTaskAttemptSchema();
+        JpaTaskAttemptSchema savedSchema = provideTaskAttemptSchemaWithId("1");
         TaskProgress savedProgress = provideTaskProgressWithId("1");
 
         when(this.taskAttemptRepository.findByUserIdAndTaskId(progress.getUserId(), progress.getTaskId()))
@@ -42,7 +42,7 @@ class AttemptTaskDatabaseGatewayTest {
         when(this.taskAttemptSchemaMapper.toEntity(savedSchema)).thenReturn(savedProgress);
 
         // Act
-        TaskProgress result = this.taskAttemptDatabaseGateway.save(progress);
+        TaskProgress result = this.jpaTaskAttemptDatabaseGateway.save(progress);
 
         // Assert
         assertNotNull(result);
@@ -57,9 +57,9 @@ class AttemptTaskDatabaseGatewayTest {
     void save_WhenExistingTaskProgress_ReturnsUpdatedTaskProgress() {
         // Arrange
         TaskProgress progress = provideTaskProgress();
-        TaskAttemptSchema existingSchema = provideTaskAttemptSchemaWithId("1");
-        TaskAttemptSchema schemaToSave = provideTaskAttemptSchema();
-        TaskAttemptSchema savedSchema = provideTaskAttemptSchemaWithId("1");
+        JpaTaskAttemptSchema existingSchema = provideTaskAttemptSchemaWithId("1");
+        JpaTaskAttemptSchema schemaToSave = provideTaskAttemptSchema();
+        JpaTaskAttemptSchema savedSchema = provideTaskAttemptSchemaWithId("1");
         TaskProgress updatedProgress = provideTaskProgressWithId("1");
 
         when(this.taskAttemptRepository.findByUserIdAndTaskId(progress.getUserId(), progress.getTaskId()))
@@ -69,7 +69,7 @@ class AttemptTaskDatabaseGatewayTest {
         when(this.taskAttemptSchemaMapper.toEntity(savedSchema)).thenReturn(updatedProgress);
 
         // Act
-        TaskProgress result = this.taskAttemptDatabaseGateway.save(progress);
+        TaskProgress result = this.jpaTaskAttemptDatabaseGateway.save(progress);
 
 
         // Assert
@@ -85,27 +85,27 @@ class AttemptTaskDatabaseGatewayTest {
     void save_WhenRepositoryFails_ThrowsException() {
         // Arrange
         TaskProgress progress = provideTaskProgress();
-        TaskAttemptSchema schema = provideTaskAttemptSchema();
+        JpaTaskAttemptSchema schema = provideTaskAttemptSchema();
         when(this.taskAttemptRepository.findByUserIdAndTaskId(progress.getUserId(), progress.getTaskId()))
                 .thenReturn(Optional.empty());
         when(this.taskAttemptSchemaMapper.toSchema(progress)).thenReturn(schema);
         when(this.taskAttemptRepository.save(schema)).thenThrow(new RuntimeException("Database error"));
 
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> this.taskAttemptDatabaseGateway.save(progress));
+        assertThrows(RuntimeException.class, () -> this.jpaTaskAttemptDatabaseGateway.save(progress));
     }
 
     @Test
     @DisplayName("Find Task Attempt - Record Exists")
     void findByUserIdAndTaskId_WhenTaskAttemptExists_ReturnsTaskProgress() {
         // Arrange
-        TaskAttemptSchema schema = provideTaskAttemptSchemaWithId("1");
+        JpaTaskAttemptSchema schema = provideTaskAttemptSchemaWithId("1");
         TaskProgress mapped = provideTaskProgressWithId("1");
         when(taskAttemptRepository.findByUserIdAndTaskId("1", "1")).thenReturn(Optional.of(schema));
         when(taskAttemptSchemaMapper.toEntity(schema)).thenReturn(mapped);
 
         // Act
-        Optional<TaskProgress> result = this.taskAttemptDatabaseGateway.findByUserIdAndTaskId("1", "1");
+        Optional<TaskProgress> result = this.jpaTaskAttemptDatabaseGateway.findByUserIdAndTaskId("1", "1");
 
         // Assert
         assertTrue(result.isPresent());
@@ -120,7 +120,7 @@ class AttemptTaskDatabaseGatewayTest {
         when(taskAttemptRepository.findByUserIdAndTaskId("1", "1")).thenReturn(Optional.empty());
 
         // Act
-        Optional<TaskProgress> result = this.taskAttemptDatabaseGateway.findByUserIdAndTaskId("1", "1");
+        Optional<TaskProgress> result = this.jpaTaskAttemptDatabaseGateway.findByUserIdAndTaskId("1", "1");
 
         // Assert
         assertTrue(result.isEmpty());
@@ -150,15 +150,15 @@ class AttemptTaskDatabaseGatewayTest {
         return new TaskProgress(id, progress.getUserId(), progress.getTaskId());
     }
 
-    private TaskAttemptSchema provideTaskAttemptSchema() {
-        return new TaskAttemptSchema(
+    private JpaTaskAttemptSchema provideTaskAttemptSchema() {
+        return new JpaTaskAttemptSchema(
                 "1", "1", TaskCompletionStatus.IN_PROGRESS, 1,
                 "input", null, LocalDate.now(), null
         );
     }
 
-    private TaskAttemptSchema provideTaskAttemptSchemaWithId(String id) {
-        TaskAttemptSchema schema = provideTaskAttemptSchema();
+    private JpaTaskAttemptSchema provideTaskAttemptSchemaWithId(String id) {
+        JpaTaskAttemptSchema schema = provideTaskAttemptSchema();
         schema.setId(id);
         return schema;
     }

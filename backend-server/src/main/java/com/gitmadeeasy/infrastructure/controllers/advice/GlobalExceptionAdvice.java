@@ -2,7 +2,7 @@ package com.gitmadeeasy.infrastructure.controllers.advice;
 
 import com.gitmadeeasy.usecases.auth.exceptions.InvalidTokenException;
 import com.gitmadeeasy.usecases.users.exceptions.InvalidCredentialsException;
-import com.gitmadeeasy.usecases.validation.MissingRequiredFieldException;
+import com.gitmadeeasy.usecases.validation.exceptions.MissingRequiredFieldException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

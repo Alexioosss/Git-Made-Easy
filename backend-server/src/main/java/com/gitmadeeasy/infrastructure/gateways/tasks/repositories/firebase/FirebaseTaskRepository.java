@@ -1,7 +1,7 @@
 package com.gitmadeeasy.infrastructure.gateways.tasks.repositories.firebase;
 
-import com.gitmadeeasy.infrastructure.gateways.tasks.TaskSchema;
-import com.gitmadeeasy.infrastructure.gateways.tasks.repositories.TaskRepository;
+import com.gitmadeeasy.entities.tasks.Task;
+import com.gitmadeeasy.infrastructure.gateways.tasks.FirebaseTaskSchema;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 
@@ -10,32 +10,29 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-public class FirebaseTaskRepository implements TaskRepository {
-
+public class FirebaseTaskRepository {
     private final Firestore firestore;
 
     public FirebaseTaskRepository(Firestore firestore) {
         this.firestore = firestore;
     }
 
-    @Override
-    public TaskSchema save(TaskSchema taskSchema) {
-        if (taskSchema.getId() == null) {
+    public FirebaseTaskSchema save(FirebaseTaskSchema schema) {
+        if (schema.getId() == null) {
             DocumentReference docRef = firestore.collection("tasks").document();
-            taskSchema.setId(docRef.getId());
+            schema.setId(docRef.getId());
         }
-        firestore.collection("tasks").document(taskSchema.getId()).set(taskSchema);
-        return taskSchema;
+        firestore.collection("tasks").document(schema.getId()).set(schema);
+        return schema;
     }
 
-    @Override
-    public Optional<TaskSchema> findByLessonIdAndTaskId(String lessonId, String taskId) {
+    public Optional<FirebaseTaskSchema> findByLessonIdAndTaskId(String lessonId, String taskId) {
         DocumentReference docRef = firestore.collection("tasks").document(taskId);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         try {
             DocumentSnapshot document = future.get();
             if (document.exists()) {
-                TaskSchema task = document.toObject(TaskSchema.class);
+                FirebaseTaskSchema task = document.toObject(FirebaseTaskSchema.class);
                 if (task != null && lessonId.equals(task.getLessonId())) {
                     task.setId(document.getId());
                     return Optional.of(task);
@@ -43,32 +40,28 @@ public class FirebaseTaskRepository implements TaskRepository {
             }
             return Optional.empty();
         } catch (InterruptedException | ExecutionException e) {
-            // Handle exception
             return Optional.empty();
         }
     }
 
-    @Override
-    public List<TaskSchema> findAllByLessonId(String lessonId) {
+    public List<FirebaseTaskSchema> findAllByLessonId(String lessonId) {
         CollectionReference tasks = firestore.collection("tasks");
         Query query = tasks.whereEqualTo("lessonId", lessonId);
         ApiFuture<QuerySnapshot> querySnapshot = query.get();
-        List<TaskSchema> result = new ArrayList<>();
+        List<FirebaseTaskSchema> result = new ArrayList<>();
         try {
             for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-                TaskSchema task = document.toObject(TaskSchema.class);
+                FirebaseTaskSchema task = document.toObject(FirebaseTaskSchema.class);
                 if (task != null) {
                     task.setId(document.getId());
                     result.add(task);
                 }
             }
-        } catch (InterruptedException | ExecutionException e) {
-            // Handle exception
+        } catch (InterruptedException | ExecutionException ignored) {
         }
         return result;
     }
 
-    @Override
     public boolean existsById(String taskId) {
         DocumentReference docRef = firestore.collection("tasks").document(taskId);
         ApiFuture<DocumentSnapshot> future = docRef.get();
@@ -79,7 +72,6 @@ public class FirebaseTaskRepository implements TaskRepository {
         }
     }
 
-    @Override
     public Integer findMaxTaskOrderByLessonId(String lessonId) {
         CollectionReference tasks = firestore.collection("tasks");
         Query query = tasks.whereEqualTo("lessonId", lessonId)
@@ -88,26 +80,29 @@ public class FirebaseTaskRepository implements TaskRepository {
         ApiFuture<QuerySnapshot> querySnapshot = query.get();
         try {
             for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-                TaskSchema task = document.toObject(TaskSchema.class);
-                if (task != null) {
-                    return task.getTaskOrder();
-                }
+                FirebaseTaskSchema task = document.toObject(FirebaseTaskSchema.class);
+                if (task != null) { return task.getTaskOrder(); }
             }
-        } catch (InterruptedException | ExecutionException e) {
-            // Handle exception
+        } catch (InterruptedException | ExecutionException ignored) {
         }
         return 0;
     }
 
-    @Override
+    public Integer countTasksByLessonId(String lessonId) {
+        try {
+            Query query = firestore.collection("tasks").whereEqualTo("lessonId", lessonId);
+            return query.get().get().size();
+        } catch(InterruptedException | ExecutionException e) {
+            return 0;
+        }
+    }
+
     public void deleteAll() {
         try {
             ApiFuture<QuerySnapshot> future = firestore.collection("tasks").get();
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 
-            if (documents.isEmpty()) {
-                return;
-            }
+            if (documents.isEmpty()) { return; }
 
             WriteBatch batch = firestore.batch();
             int count = 0;
@@ -120,11 +115,8 @@ public class FirebaseTaskRepository implements TaskRepository {
                     count = 0;
                 }
             }
-            if (count > 0) {
-                batch.commit().get();
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            // Handle exception
+            if (count > 0) { batch.commit().get(); }
+        } catch (InterruptedException | ExecutionException ignored) {
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.gitmadeeasy.infrastructure.gateways.lessons.repositories.firebase;
 
-import com.gitmadeeasy.infrastructure.gateways.lessons.LessonSchema;
-import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.LessonRepository;
+import com.gitmadeeasy.entities.lessons.Lesson;
+import com.gitmadeeasy.infrastructure.gateways.lessons.FirebaseLessonSchema;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 
@@ -9,64 +9,54 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-public class FirebaseLessonRepository implements LessonRepository {
-
+public class FirebaseLessonRepository {
     private final Firestore firestore;
 
     public FirebaseLessonRepository(Firestore firestore) {
         this.firestore = firestore;
     }
 
-    @Override
-    public LessonSchema save(LessonSchema lessonSchema) {
-        if (lessonSchema.getId() == null) {
+    public FirebaseLessonSchema save(FirebaseLessonSchema schema) {
+        if (schema.getId() == null) {
             DocumentReference docRef = firestore.collection("lessons").document();
-            lessonSchema.setId(docRef.getId());
+            schema.setId(docRef.getId());
         }
-        firestore.collection("lessons").document(lessonSchema.getId()).set(lessonSchema);
-        return lessonSchema;
+        firestore.collection("lessons").document(schema.getId()).set(schema);
+        return schema;
     }
 
-    @Override
-    public Optional<LessonSchema> findById(String lessonId) {
+    public Optional<FirebaseLessonSchema> findById(String lessonId) {
         DocumentReference docRef = firestore.collection("lessons").document(lessonId);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         try {
             DocumentSnapshot document = future.get();
             if (document.exists()) {
-                LessonSchema lesson = document.toObject(LessonSchema.class);
-                if (lesson != null) {
-                    lesson.setId(document.getId());
-                    return Optional.of(lesson);
+                FirebaseLessonSchema schema = document.toObject(FirebaseLessonSchema.class);
+                if (schema != null) {
+                    schema.setId(document.getId());
+                    return Optional.of(schema);
                 }
             }
             return Optional.empty();
         } catch (InterruptedException | ExecutionException e) {
-            // Handle exception
             return Optional.empty();
         }
     }
 
-    @Override
     public boolean existsById(String lessonId) {
-        DocumentReference docRef = firestore.collection("lessons").document(lessonId);
-        ApiFuture<DocumentSnapshot> future = docRef.get();
         try {
-            return future.get().exists();
+            return firestore.collection("lessons").document(lessonId).get().get().exists();
         } catch (InterruptedException | ExecutionException e) {
             return false;
         }
     }
 
-    @Override
     public void deleteAll() {
         try {
             ApiFuture<QuerySnapshot> future = firestore.collection("lessons").get();
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 
-            if (documents.isEmpty()) {
-                return;
-            }
+            if (documents.isEmpty()) { return; }
 
             WriteBatch batch = firestore.batch();
             int count = 0;
@@ -79,11 +69,8 @@ public class FirebaseLessonRepository implements LessonRepository {
                     count = 0;
                 }
             }
-            if (count > 0) {
-                batch.commit().get();
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            // Handle exception
+            if (count > 0) { batch.commit().get(); }
+        } catch (InterruptedException | ExecutionException ignored) {
         }
     }
 }

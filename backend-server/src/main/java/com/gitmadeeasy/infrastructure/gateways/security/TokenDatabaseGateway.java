@@ -5,7 +5,6 @@ import com.gitmadeeasy.entities.users.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
@@ -16,9 +15,11 @@ import java.util.Set;
 import java.util.UUID;
 
 public class TokenDatabaseGateway implements TokenGateway {
-    @Value("${jwt.secret}") private String secret;
+    private final String secret;
     private Key key;
     private static final Set<String> tokensBlacklist = new HashSet<>();
+
+    public TokenDatabaseGateway(String secret) { this.secret = secret; }
 
     @PostConstruct
     public void init() {

@@ -5,7 +5,7 @@ import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonNotFoundWithIdException;
 import com.gitmadeeasy.usecases.tasks.dto.CreateTaskRequest;
-import com.gitmadeeasy.usecases.validation.MissingRequiredFieldException;
+import com.gitmadeeasy.usecases.validation.exceptions.MissingRequiredFieldException;
 
 public class CreateTask {
     private final TaskGateway taskGateway;

@@ -6,7 +6,7 @@ import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.users.CreateUser;
 import com.gitmadeeasy.usecases.users.dto.CreateUserRequest;
 import com.gitmadeeasy.usecases.users.exceptions.DuplicatedEmailException;
-import com.gitmadeeasy.usecases.validation.MissingRequiredFieldException;
+import com.gitmadeeasy.usecases.validation.exceptions.MissingRequiredFieldException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -85,7 +85,7 @@ class CreateUserTest {
     void execute_WhenUserExistsByEmail_ThrowsDuplicatedEmailException() {
         // Arrange
         CreateUserRequest request = provideValidUserRequest();
-        when(this.userGateway.existsByEmail(request.emailAddress())).thenReturn(true);
+        when(this.userGateway.existsByEmailAddress(request.emailAddress())).thenReturn(true);
 
         // Act & Assert
         assertThrows(DuplicatedEmailException.class, () -> this.createUser.execute(request));

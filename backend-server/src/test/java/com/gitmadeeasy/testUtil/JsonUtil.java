@@ -17,10 +17,12 @@ public class JsonUtil {
         }
     }
 
-    public static String readJson(String json, String fieldName) {
+    /*
+    Helper method to extract a given field value from a JSON string
+     */
+    public static String readJson(String jsonString, String fieldName) {
         try {
-            // Find the JSON Node with the given field name
-            return new ObjectMapper().readTree(json).get(fieldName).asText();
+            return new ObjectMapper().readTree(jsonString).get(fieldName).asText();
         } catch(Exception e) {
             throw new RuntimeException(e);
         }

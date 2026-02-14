@@ -1,8 +1,8 @@
 package com.gitmadeeasy.integration.controllers;
 
 import com.gitmadeeasy.entities.security.PasswordHasher;
-import com.gitmadeeasy.infrastructure.gateways.users.UserSchema;
-import com.gitmadeeasy.infrastructure.gateways.users.repositories.UserRepository;
+import com.gitmadeeasy.infrastructure.gateways.users.JpaUserSchema;
+import com.gitmadeeasy.infrastructure.gateways.users.repositories.jpa.JpaUserRepository;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.auth.dto.LoginRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class AuthenticationControllerIntegrationTest {
     @Autowired MockMvc mockMvc;
-    @Autowired UserRepository userRepository;
+    @Autowired JpaUserRepository userRepository;
     @Autowired PasswordHasher passwordHasher;
 
     @BeforeEach
@@ -121,13 +121,12 @@ class AuthenticationControllerIntegrationTest {
 
 
     private void saveMockUserInDataStore() {
-        this.userRepository.save(
-                new UserSchema(
+        this.userRepository.save(new JpaUserSchema(
                         "John", "Doe",
                         "myemail1@gmail.com",
-                        passwordHasher.hash("MyPassword123'")
-                )
-        );
+                        passwordHasher.hash("MyPassword123'"),
+                false
+        ));
         System.out.println("Mock User Saved Successfully.");
     }
 }

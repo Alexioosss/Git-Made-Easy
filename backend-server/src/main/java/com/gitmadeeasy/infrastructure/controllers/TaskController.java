@@ -1,6 +1,8 @@
 package com.gitmadeeasy.infrastructure.controllers;
 
 import com.gitmadeeasy.entities.tasks.Task;
+import com.gitmadeeasy.infrastructure.dto.tasks.TaskResponse;
+import com.gitmadeeasy.infrastructure.mappers.tasks.TaskResponseMapper;
 import com.gitmadeeasy.usecases.tasks.CreateTask;
 import com.gitmadeeasy.usecases.tasks.GetTaskById;
 import com.gitmadeeasy.usecases.tasks.dto.CreateTaskRequest;
@@ -15,23 +17,26 @@ import java.net.URI;
 public class TaskController {
     private final CreateTask createTask;
     private final GetTaskById getTaskById;
+    private final TaskResponseMapper mapper;
 
-    public TaskController(CreateTask createTask, GetTaskById getTaskById) {
+    public TaskController(CreateTask createTask, GetTaskById getTaskById, TaskResponseMapper mapper) {
         this.createTask = createTask;
         this.getTaskById = getTaskById;
+        this.mapper = mapper;
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@PathVariable("lessonId") String lessonId,
-                                           @Valid @RequestBody CreateTaskRequest request) {
+    public ResponseEntity<TaskResponse> createTask(@PathVariable("lessonId") String lessonId,
+                                                   @Valid @RequestBody CreateTaskRequest request) {
         Task newTask = this.createTask.execute(lessonId, request);
-        return ResponseEntity.created(URI.create("/lessons/" + lessonId + "/tasks/" + newTask.getTaskId())).body(newTask);
+        return ResponseEntity.created(URI.create("/lessons/" + lessonId + "/tasks/" + newTask.getTaskId()))
+                .body(this.mapper.toResponse(newTask));
     }
 
     @GetMapping("/{taskId}")
-    public ResponseEntity<Task> getTaskById(@PathVariable("lessonId") String lessonId,
+    public ResponseEntity<TaskResponse> getTaskById(@PathVariable("lessonId") String lessonId,
                                             @PathVariable("taskId") String taskId) {
-        Task task = this.getTaskById.execute(lessonId, taskId);
-        return ResponseEntity.ok(task);
+        Task foundTask = this.getTaskById.execute(lessonId, taskId);
+        return ResponseEntity.ok(this.mapper.toResponse(foundTask));
     }
 }

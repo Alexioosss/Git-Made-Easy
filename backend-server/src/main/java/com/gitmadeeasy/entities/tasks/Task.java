@@ -11,8 +11,9 @@ public class Task {
     private final String hint;
     private final Integer taskOrder;
 
-    public Task(String taskId, String lessonId, String title, String content,
-                String expectedCommand, String hint, Integer taskOrder) {
+    public Task(
+            String taskId, String lessonId, String title, String content,
+            String expectedCommand, String hint, Integer taskOrder) {
         this.taskId = taskId;
         this.lessonId = lessonId;
         this.title = title;
@@ -22,8 +23,9 @@ public class Task {
         this.taskOrder = taskOrder;
     }
 
-    public Task(String lessonId, String title, String content,
-                String expectedCommand, String hint, Integer taskOrder) {
+    public Task(
+            String lessonId, String title, String content,
+            String expectedCommand, String hint, Integer taskOrder) {
         this.lessonId = lessonId;
         this.title = title;
         this.content = content;
@@ -63,6 +65,8 @@ public class Task {
     public boolean isCorrectAnswer(String input) {
         return expectedCommand.equals(input);
     }
+
+    public void setTaskId(String id) { this.taskId = id; }
 
     @Override
     public String toString() {

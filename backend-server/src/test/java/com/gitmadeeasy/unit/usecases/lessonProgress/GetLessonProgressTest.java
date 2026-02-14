@@ -26,7 +26,8 @@ class GetLessonProgressTest {
     @DisplayName("Get Lesson Progress - Lesson Progress Exists")
     void execute_WhenLessonProgressExists_ReturnsLessonProgress() {
         // Arrange
-        String userId = "1", lessonId = "1";
+        String userId = "1";
+        String lessonId = "1";
         LessonProgress lessonProgress = new LessonProgress(
                 "1", userId, lessonId,
                 "1", 0, 1);
@@ -45,7 +46,8 @@ class GetLessonProgressTest {
     @DisplayName("Get Lesson Progress - Lesson Progress Does Not Exist")
     void execute_WhenLessonProgressDoesNotExist_ReturnsEmptyOptional() {
         // Arrange
-        String userId = "1", lessonId = "1";
+        String userId = "1";
+        String lessonId = "1";
         when(this.lessonProgressGateway.findByUserIdAndLessonId(userId, lessonId)).thenReturn(Optional.empty());
 
         // Act

@@ -5,7 +5,7 @@ import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.users.dto.CreateUserRequest;
 import com.gitmadeeasy.usecases.users.exceptions.DuplicatedEmailException;
-import com.gitmadeeasy.usecases.validation.MissingRequiredFieldException;
+import com.gitmadeeasy.usecases.validation.exceptions.MissingRequiredFieldException;
 
 public class CreateUser {
     private final UserGateway userGateway;
@@ -34,7 +34,7 @@ public class CreateUser {
         }
 
         // Ensure the email does not already exist in the database, meaning this email is already registered
-        if(this.userGateway.existsByEmail(request.emailAddress())) {
+        if(this.userGateway.existsByEmailAddress(request.emailAddress())) {
             throw new DuplicatedEmailException(request.emailAddress());
         }
 

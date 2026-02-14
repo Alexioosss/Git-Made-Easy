@@ -1,7 +1,7 @@
 package com.gitmadeeasy.integration.controllers;
 
-import com.gitmadeeasy.infrastructure.gateways.lessonProgress.LessonProgressSchema;
-import com.gitmadeeasy.infrastructure.gateways.lessonProgress.repositories.LessonProgressRepository;
+import com.gitmadeeasy.infrastructure.gateways.lessonProgress.JpaLessonProgressSchema;
+import com.gitmadeeasy.infrastructure.gateways.lessonProgress.repositories.jpa.JpaLessonProgressRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class LessonProgressControllerIntegrationTest {
     @Autowired private MockMvc mockMvc;
-    @Autowired private LessonProgressRepository lessonProgressRepository;
+    @Autowired private JpaLessonProgressRepository lessonProgressRepository;
     private static final String LESSON_ID = "1";
     private static final String USER_ID = "1";
 
@@ -31,15 +31,15 @@ class LessonProgressControllerIntegrationTest {
     @DisplayName("Get Lesson Progress - Lesson Progress Exists")
     void getLessonProgress_WhenLessonProgressExists_ReturnsLessonProgress() throws Exception {
         // Arrange
-        LessonProgressSchema schema = new LessonProgressSchema(
+        JpaLessonProgressSchema schema = new JpaLessonProgressSchema(
                 USER_ID, LESSON_ID, "1", 1, 3);
-        LessonProgressSchema savedSchema = this.lessonProgressRepository.save(schema);
+        JpaLessonProgressSchema savedSchema = this.lessonProgressRepository.save(schema);
 
         // Act & Assert
         this.mockMvc.perform(get("/lessons/{lessonId}/progress", LESSON_ID)
                         .with(user(USER_ID)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.lessonProgressId").value(savedSchema.getLessonProgressId()))
+                .andExpect(jsonPath("$.lessonProgressId").value(savedSchema.getId()))
                 .andExpect(jsonPath("$.userId").value(USER_ID))
                 .andExpect(jsonPath("$.lessonId").value(LESSON_ID))
                 .andExpect(jsonPath("$.currentTaskProgressId").value(1))
@@ -60,7 +60,7 @@ class LessonProgressControllerIntegrationTest {
     @DisplayName("Get Lesson Progress - Lesson Progress Exist But Belongs To Another User")
     void getLessonProgress_WhenLessonProgressBelongsToAnotherUser_ReturnsNotFound() throws Exception {
         // Arrange
-        LessonProgressSchema schema = new LessonProgressSchema(
+        JpaLessonProgressSchema schema = new JpaLessonProgressSchema(
                 "2", LESSON_ID, "1", 1, 3);
         this.lessonProgressRepository.save(schema);
 

@@ -1,7 +1,6 @@
 package com.gitmadeeasy.infrastructure.gateways.users.repositories.firebase;
 
-import com.gitmadeeasy.infrastructure.gateways.users.UserSchema;
-import com.gitmadeeasy.infrastructure.gateways.users.repositories.UserRepository;
+import com.gitmadeeasy.infrastructure.gateways.users.FirebaseUserSchema;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 
@@ -9,84 +8,73 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-public class FirebaseUserRepository implements UserRepository {
+public class FirebaseUserRepository {
     private final Firestore firestore;
 
     public FirebaseUserRepository(Firestore firestore) {
         this.firestore = firestore;
     }
 
-    @Override
-    public UserSchema save(UserSchema userSchema) {
-        if (userSchema.getId() == null) {
+    public FirebaseUserSchema save(FirebaseUserSchema schema) {
+        if (schema.getId() == null) {
             DocumentReference docRef = firestore.collection("users").document();
-            userSchema.setId(docRef.getId());
+            schema.setId(docRef.getId());
         }
-        firestore.collection("users").document(userSchema.getId()).set(userSchema);
-        return userSchema;
+        firestore.collection("users").document(schema.getId()).set(schema);
+        return schema;
     }
 
-    @Override
-    public Optional<UserSchema> findById(String userId) {
+    public Optional<FirebaseUserSchema> findById(String userId) {
         DocumentReference docRef = firestore.collection("users").document(userId);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         try {
             DocumentSnapshot document = future.get();
             if (document.exists()) {
-                UserSchema user = document.toObject(UserSchema.class);
-                if (user != null) {
-                    user.setId(document.getId());
-                    return Optional.of(user);
+                FirebaseUserSchema schema = document.toObject(FirebaseUserSchema.class);
+                if (schema != null) {
+                    schema.setId(document.getId());
+                    return Optional.of(schema);
                 }
             }
             return Optional.empty();
         } catch (InterruptedException | ExecutionException e) {
-            // Handle exception
             return Optional.empty();
         }
     }
 
-    @Override
-    public Optional<UserSchema> findByEmail(String emailAddress) {
+    public Optional<FirebaseUserSchema> findByEmailAddress(String emailAddress) {
         CollectionReference users = firestore.collection("users");
         Query query = users.whereEqualTo("emailAddress", emailAddress).limit(1);
         ApiFuture<QuerySnapshot> querySnapshot = query.get();
         try {
             for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-                UserSchema user = document.toObject(UserSchema.class);
-                if(user != null) {
-                    user.setId(document.getId());
-                    return Optional.of(user);
+                FirebaseUserSchema schema = document.toObject(FirebaseUserSchema.class);
+                if(schema != null) {
+                    schema.setId(document.getId());
+                    return Optional.of(schema);
                 }
             }
-        } catch (InterruptedException | ExecutionException e) {
-            // Handle exception
-        }
+        } catch (InterruptedException | ExecutionException ignored) {}
         return Optional.empty();
     }
 
-    @Override
-    public boolean existsByEmail(String emailAddress) {
+    public boolean existsByEmailAddress(String emailAddress) {
         CollectionReference users = firestore.collection("users");
         Query query = users.whereEqualTo("emailAddress", emailAddress).limit(1);
         ApiFuture<QuerySnapshot> querySnapshot = query.get();
         try {
             return !querySnapshot.get().isEmpty();
         } catch (InterruptedException | ExecutionException e) {
-            // Handle exception
             return false;
         }
     }
 
-    @Override
     public void deleteAll() {
         try {
             ApiFuture<QuerySnapshot> future = firestore.collection("users").get();
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 
-            if (documents.isEmpty()) {
-                return;
-            }
+            if (documents.isEmpty()) { return; }
 
             WriteBatch batch = firestore.batch();
             int count = 0;
@@ -99,11 +87,7 @@ public class FirebaseUserRepository implements UserRepository {
                     count = 0;
                 }
             }
-            if (count > 0) {
-                batch.commit().get();
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            // Handle exception
-        }
+            if (count > 0) { batch.commit().get(); }
+        } catch (InterruptedException | ExecutionException ignored) {}
     }
 }

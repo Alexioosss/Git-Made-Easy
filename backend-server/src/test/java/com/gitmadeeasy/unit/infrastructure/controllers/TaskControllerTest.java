@@ -2,17 +2,19 @@ package com.gitmadeeasy.unit.infrastructure.controllers;
 
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.infrastructure.controllers.TaskController;
+import com.gitmadeeasy.infrastructure.mappers.tasks.TaskResponseMapper;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.tasks.CreateTask;
 import com.gitmadeeasy.usecases.tasks.GetTaskById;
 import com.gitmadeeasy.usecases.tasks.dto.CreateTaskRequest;
 import com.gitmadeeasy.usecases.tasks.exceptions.TaskNotFoundWithIdException;
-import com.gitmadeeasy.usecases.validation.MissingRequiredFieldException;
+import com.gitmadeeasy.usecases.validation.exceptions.MissingRequiredFieldException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(TaskController.class)
 @AutoConfigureMockMvc(addFilters = false)
+@Import(TaskResponseMapper.class)
 class TaskControllerTest {
     @Autowired private MockMvc mockMvc;
 
@@ -75,7 +78,8 @@ class TaskControllerTest {
     @DisplayName("Get Task By ID - Task Exists - Returns Successful Response / 200")
     void getTaskById_WhenTaskExists_ReturnsTask() throws Exception {
         // Arrange
-        String lessonId = "1", taskId = "1";
+        String lessonId = "1";
+        String taskId = "1";
         Task foundTask = new Task(
                 "1", "first git task",
                 "Let's get started, shall we",
@@ -92,7 +96,8 @@ class TaskControllerTest {
     @Test
     @DisplayName("Get Task By ID - Task Does Not Exist - Returns Unsuccessful Response / 404")
     void getTaskById_WhenTaskDoesNotExist_ReturnsNotFound() throws Exception {
-        String lessonId = "1", taskId = "1";
+        String lessonId = "1";
+        String taskId = "1";
         when(this.getTaskById.execute(lessonId, taskId)).thenThrow(new TaskNotFoundWithIdException(lessonId, taskId));
 
         // Act & Assert

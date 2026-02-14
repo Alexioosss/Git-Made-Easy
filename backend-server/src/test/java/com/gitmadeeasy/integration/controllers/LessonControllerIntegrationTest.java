@@ -1,8 +1,8 @@
 package com.gitmadeeasy.integration.controllers;
 
 import com.gitmadeeasy.entities.lessons.LessonDifficulty;
-import com.gitmadeeasy.infrastructure.gateways.lessons.LessonSchema;
-import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.LessonRepository;
+import com.gitmadeeasy.infrastructure.gateways.lessons.JpaLessonSchema;
+import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.jpa.JpaLessonRepository;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.lessons.dto.CreateLessonRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 class LessonControllerIntegrationTest {
     @Autowired private MockMvc mockMvc;
-    @Autowired private LessonRepository lessonRepository;
+    @Autowired private JpaLessonRepository lessonRepository;
 
     @BeforeEach
     void setUp() { this.lessonRepository.deleteAll(); }
@@ -109,7 +109,7 @@ class LessonControllerIntegrationTest {
 
 
     private String createLessonAndReturnLessonId() {
-        LessonSchema lessonSchema = new LessonSchema(
+        JpaLessonSchema lessonSchema = new JpaLessonSchema(
                 "Intro to Git",
                 "An introduction to an industry-standard technology",
                 LessonDifficulty.EASY);

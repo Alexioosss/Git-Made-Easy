@@ -1,8 +1,8 @@
 package com.gitmadeeasy.integration.controllers;
 
 import com.gitmadeeasy.entities.security.PasswordHasher;
-import com.gitmadeeasy.infrastructure.gateways.users.UserSchema;
-import com.gitmadeeasy.infrastructure.gateways.users.repositories.UserRepository;
+import com.gitmadeeasy.infrastructure.gateways.users.JpaUserSchema;
+import com.gitmadeeasy.infrastructure.gateways.users.repositories.jpa.JpaUserRepository;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.users.dto.CreateUserRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 class UserControllerIntegrationTest {
     @Autowired private MockMvc mockMvc;
-    @Autowired private UserRepository userRepository;
+    @Autowired private JpaUserRepository userRepository;
     @Autowired private PasswordHasher passwordHasher;
 
     @BeforeEach
@@ -130,10 +130,10 @@ class UserControllerIntegrationTest {
 
 
     private String createUserAndReturnUserId() {
-        UserSchema userSchema = new UserSchema(
+        JpaUserSchema userSchema = new JpaUserSchema(
                 "John", "Doe",
-                "myemail1@gmail.com", passwordHasher.hash("MyPassword123'")
-        );
+                "myemail1@gmail.com", passwordHasher.hash("MyPassword123'"),
+                false);
         return this.userRepository.save(userSchema).getId();
     }
 

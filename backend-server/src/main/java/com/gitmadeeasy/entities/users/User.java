@@ -58,6 +58,10 @@ public class User {
         this.isEmailVerified = true;
     }
 
+    public void setUserId(String id) {
+        this.userId = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if(o == null || getClass() != o.getClass()) return false;

@@ -1,40 +1,54 @@
 package com.gitmadeeasy.infrastructure.gateways.lessonProgress.repositories.firebase;
 
-import com.gitmadeeasy.infrastructure.gateways.lessonProgress.LessonProgressSchema;
-import com.gitmadeeasy.infrastructure.gateways.lessonProgress.repositories.LessonProgressRepository;
+import com.gitmadeeasy.infrastructure.gateways.lessonProgress.FirebaseLessonProgressSchema;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-public class FirebaseLessonProgressRepository implements LessonProgressRepository {
-
+public class FirebaseLessonProgressRepository {
     private final Firestore firestore;
 
     public FirebaseLessonProgressRepository(Firestore firestore) {
         this.firestore = firestore;
     }
 
-    @Override
-    public LessonProgressSchema save(LessonProgressSchema lessonProgressSchema) {
-        if (lessonProgressSchema.getId() == null) {
+    public FirebaseLessonProgressSchema save(FirebaseLessonProgressSchema schema) {
+        if (schema.getId() == null) {
             DocumentReference docRef = firestore.collection("lesson_progress").document();
-            lessonProgressSchema.setId(docRef.getId());
+            schema.setId(docRef.getId());
         }
-        firestore.collection("lesson_progress").document(lessonProgressSchema.getId()).set(lessonProgressSchema);
-        return lessonProgressSchema;
+        firestore.collection("lesson_progress").document(schema.getId()).set(schema);
+        return schema;
     }
 
-    @Override
+    public Optional<FirebaseLessonProgressSchema> findByUserIdAndLessonId(String userId, String lessonId) {
+        CollectionReference collection = firestore.collection("lesson_progress");
+        Query query = collection.whereEqualTo("userId", userId).whereEqualTo("lessonId", lessonId).limit(1);
+
+        try {
+            QuerySnapshot snapshot = query.get().get();
+            for(DocumentSnapshot document : snapshot.getDocuments()) {
+                FirebaseLessonProgressSchema schema = document.toObject(FirebaseLessonProgressSchema.class);
+                if(schema != null) {
+                    schema.setId(document.getId());
+                    return Optional.of(schema);
+                }
+            }
+            return Optional.empty();
+        } catch(InterruptedException | ExecutionException e) {
+            return Optional.empty();
+        }
+    }
+
     public void deleteAll() {
         try {
             ApiFuture<QuerySnapshot> future = firestore.collection("lesson_progress").get();
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 
-            if (documents.isEmpty()) {
-                return;
-            }
+            if (documents.isEmpty()) { return; }
 
             WriteBatch batch = firestore.batch();
             int count = 0;
@@ -47,11 +61,8 @@ public class FirebaseLessonProgressRepository implements LessonProgressRepositor
                     count = 0;
                 }
             }
-            if (count > 0) {
-                batch.commit().get();
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            // Handle exception
+            if (count > 0) { batch.commit().get(); }
+        } catch (InterruptedException | ExecutionException ignored) {
         }
     }
 }

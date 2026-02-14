@@ -29,11 +29,12 @@ class GetTaskProgressTest {
     @DisplayName("Get Task Progress - Lesson, Task And User Task Progress Exist - Returns The User's Task Progress")
     void execute_WhenLessonAndTaskAndUserTaskProgressExist_ReturnsTaskProgress() {
         // Arrange
-        String lessonId = "1", taskId = "1", userId = "1";
+        String lessonId = "1";
+        String taskId = "1";
+        String userId = "1";
         TaskProgress taskProgress = provideTaskProgress(userId, taskId);
         when(this.lessonGateway.existsById(lessonId)).thenReturn(true);
-        when(this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId))
-                .thenReturn(Optional.of(taskProgress));
+        when(this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId)).thenReturn(Optional.of(taskProgress));
 
         // Act
         Optional<TaskProgress> userTaskProgress = this.getTaskProgress.execute(userId, lessonId, taskId);
@@ -48,10 +49,12 @@ class GetTaskProgressTest {
     @DisplayName("Get Task Progress - User Task Progress Does Not Exist - Returns Null")
     void execute_WhenUserTaskProgressDoesNotExist_ReturnsNull() {
         // Arrange
-        String lessonId = "1", taskId = "1", userId = "1";
+        String lessonId = "1";
+        String taskId = "1";
+        String userId = "1";
         when(this.lessonGateway.existsById(lessonId)).thenReturn(true);
-        when(this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId))
-                .thenReturn(Optional.empty()); // Mocks the data store's return of a not-found entity
+        // Mock the data store's return of a not-found entity
+        when(this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId)).thenReturn(Optional.empty());
 
         // Act
         Optional<TaskProgress> userTaskProgress = this.getTaskProgress.execute(userId, lessonId, taskId);
@@ -65,7 +68,9 @@ class GetTaskProgressTest {
     @DisplayName("Get Task Progress - Lesson Does Not Exist - Throws Exception")
     void execute_WhenLessonDoesNotExist_ThrowsLessonNotFoundWithIdException() {
         // Arrange
-        String lessonId = "1", taskId = "1", userId = "1";
+        String lessonId = "1";
+        String taskId = "1";
+        String userId = "1";
         when(this.lessonGateway.existsById(lessonId)).thenReturn(false);
 
         // Act

@@ -5,7 +5,7 @@ import com.gitmadeeasy.entities.tasks.Task;
 import java.time.LocalDate;
 
 public class TaskProgress {
-    private final String taskProgressId;
+    private String taskProgressId;
     private final String userId;
     private final String taskId;
     private TaskCompletionStatus status;
@@ -78,6 +78,8 @@ public class TaskProgress {
         return this.status == TaskCompletionStatus.COMPLETED;
     }
 
+    public void setId(String id) { this.taskProgressId = id; }
+
     public void attempt(Task task, String input) {
         recordAttempt(input);
         if(isCompleted()) { return; }
@@ -103,9 +105,6 @@ public class TaskProgress {
         this.lastError = error;
         this.status = TaskCompletionStatus.IN_PROGRESS;
     }
-
-
-    // ----- Used for rebuilding this object from stored / database data ----- //
 
     public void setStatus(TaskCompletionStatus status) {
         this.status = status;

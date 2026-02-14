@@ -1,7 +1,6 @@
 package com.gitmadeeasy.infrastructure.gateways.taskAttempts.repositories.firebase;
 
-import com.gitmadeeasy.infrastructure.gateways.taskAttempts.TaskAttemptSchema;
-import com.gitmadeeasy.infrastructure.gateways.taskAttempts.repositories.TaskAttemptRepository;
+import com.gitmadeeasy.infrastructure.gateways.taskAttempts.FirebaseTaskAttemptSchema;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 
@@ -9,52 +8,59 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-public class FirebaseTaskAttemptRepository implements TaskAttemptRepository {
-
+public class FirebaseTaskAttemptRepository {
     private final Firestore firestore;
 
     public FirebaseTaskAttemptRepository(Firestore firestore) {
         this.firestore = firestore;
     }
-
-    @Override
-    public Optional<TaskAttemptSchema> findByUserIdAndTaskId(String userId, String taskId) {
+    
+    public Optional<FirebaseTaskAttemptSchema> findByUserIdAndTaskId(String userId, String taskId) {
         CollectionReference attempts = firestore.collection("task_attempts");
         Query query = attempts.whereEqualTo("userId", userId).whereEqualTo("taskId", taskId);
         ApiFuture<QuerySnapshot> querySnapshot = query.get();
         try {
             for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-                TaskAttemptSchema attempt = document.toObject(TaskAttemptSchema.class);
-                if (attempt != null) {
-                    attempt.setId(document.getId());
-                    return Optional.of(attempt);
+                FirebaseTaskAttemptSchema schema = document.toObject(FirebaseTaskAttemptSchema.class);
+                if (schema != null) {
+                    schema.setId(document.getId());
+                    return Optional.of(schema);
                 }
             }
         } catch (InterruptedException | ExecutionException e) {
-            // Handle exception
+            return Optional.empty();
         }
         return Optional.empty();
     }
 
-    @Override
-    public TaskAttemptSchema save(TaskAttemptSchema taskAttemptSchema) {
-        if (taskAttemptSchema.getId() == null) {
+    public FirebaseTaskAttemptSchema save(FirebaseTaskAttemptSchema schema) {
+        if (schema.getId() == null) {
             DocumentReference docRef = firestore.collection("task_attempts").document();
-            taskAttemptSchema.setId(docRef.getId());
+            schema.setId(docRef.getId());
         }
-        firestore.collection("task_attempts").document(taskAttemptSchema.getId()).set(taskAttemptSchema);
-        return taskAttemptSchema;
+        firestore.collection("task_attempts").document(schema.getId()).set(schema);
+        return schema;
     }
 
-    @Override
+    public Integer countCompletedTasks(String userId, String lessonId) {
+        CollectionReference attempts = firestore.collection("task_attempts");
+        Query query = attempts.
+                whereEqualTo("userId", userId).
+                whereEqualTo("lessonId", lessonId).
+                whereEqualTo("status", "COMPLETED");
+        try {
+            return query.get().get().size();
+        } catch(InterruptedException | ExecutionException e) {
+            return 0;
+        }
+    }
+
     public void deleteAll() {
         try {
             ApiFuture<QuerySnapshot> future = firestore.collection("task_attempts").get();
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 
-            if (documents.isEmpty()) {
-                return;
-            }
+            if (documents.isEmpty()) { return; }
 
             WriteBatch batch = firestore.batch();
             int count = 0;
@@ -67,11 +73,8 @@ public class FirebaseTaskAttemptRepository implements TaskAttemptRepository {
                     count = 0;
                 }
             }
-            if (count > 0) {
-                batch.commit().get();
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            // Handle exception
+            if (count > 0) { batch.commit().get(); }
+        } catch (InterruptedException | ExecutionException ignored) {
         }
     }
 }

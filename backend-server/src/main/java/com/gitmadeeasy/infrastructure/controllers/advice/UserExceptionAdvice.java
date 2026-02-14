@@ -1,6 +1,9 @@
 package com.gitmadeeasy.infrastructure.controllers.advice;
 
-import com.gitmadeeasy.usecases.users.exceptions.*;
+import com.gitmadeeasy.usecases.users.exceptions.DuplicatedEmailException;
+import com.gitmadeeasy.usecases.users.exceptions.EmailAlreadyVerifiedException;
+import com.gitmadeeasy.usecases.users.exceptions.UserNotFoundWithEmailException;
+import com.gitmadeeasy.usecases.users.exceptions.UserNotFoundWithIdException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

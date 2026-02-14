@@ -30,7 +30,8 @@ class GetTaskByIdTest {
     @DisplayName("Get Task By ID - Lesson And Task Exist - Returns Task")
     void execute_WhenLessonAndTaskExist_ReturnsTask() {
         // Arrange
-        String lessonId = "1", taskId = "1";
+        String lessonId = "1";
+        String taskId = "1";
         Task task = provideTask();
         when(this.lessonGateway.existsById(lessonId)).thenReturn(true);
         when(this.taskGateway.getTaskByLessonIdAndTaskId(lessonId, taskId))
@@ -50,7 +51,8 @@ class GetTaskByIdTest {
     @DisplayName("Get Task By ID - Lesson Does Not Exist - Throws Exception")
     void execute_WhenLessonDoesNotExist_ThrowsLessonNotFoundWithIdException() {
         // Arrange
-        String lessonId = "1", taskId = "1";
+        String lessonId = "1";
+        String taskId = "1";
         when(this.lessonGateway.existsById(lessonId)).thenReturn(false);
 
         // Act
@@ -65,7 +67,8 @@ class GetTaskByIdTest {
     @DisplayName("Get Task By ID - Task Does Not Exist - Throws Exception")
     void execute_WhenTaskDoesNotExist_ThrowsTaskNotFoundWithIdException() {
         // Arrange
-        String lessonId = "1", taskId = "1";
+        String lessonId = "1";
+        String taskId = "1";
         when(this.lessonGateway.existsById(lessonId)).thenReturn(true);
         when(this.taskGateway.getTaskByLessonIdAndTaskId(lessonId, taskId))
                 .thenReturn(Optional.empty());

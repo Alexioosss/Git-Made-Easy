@@ -1,10 +1,10 @@
 package com.gitmadeeasy.integration.controllers;
 
 import com.gitmadeeasy.entities.lessons.LessonDifficulty;
-import com.gitmadeeasy.infrastructure.gateways.lessons.LessonSchema;
-import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.LessonRepository;
-import com.gitmadeeasy.infrastructure.gateways.tasks.TaskSchema;
-import com.gitmadeeasy.infrastructure.gateways.tasks.repositories.TaskRepository;
+import com.gitmadeeasy.infrastructure.gateways.lessons.JpaLessonSchema;
+import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.jpa.JpaLessonRepository;
+import com.gitmadeeasy.infrastructure.gateways.tasks.JpaTaskSchema;
+import com.gitmadeeasy.infrastructure.gateways.tasks.repositories.jpa.JpaTaskRepository;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.tasks.dto.CreateTaskRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,8 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 class TaskControllerIntegrationTest {
     @Autowired private MockMvc mockMvc;
-    @Autowired private LessonRepository lessonRepository;
-    @Autowired private TaskRepository taskRepository;
+    @Autowired private JpaLessonRepository lessonRepository;
+    @Autowired private JpaTaskRepository taskRepository;
     private String lessonId;
 
     @BeforeEach
@@ -65,7 +65,8 @@ class TaskControllerIntegrationTest {
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideInvalidTaskCreationRequests")
     @DisplayName("Create Task - Missing Required Fields")
-    void createTask_WhenMissingRequiredFields_ReturnsBadRequest(String displayName, CreateTaskRequest invalidRequest) throws Exception {
+    void createTask_WhenMissingRequiredFields_ReturnsBadRequest(String displayName,
+                                                                CreateTaskRequest invalidRequest) throws Exception {
         // Act & Assert
         this.mockMvc.perform(post("/lessons/{lessonId}/tasks", lessonId)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -111,7 +112,7 @@ class TaskControllerIntegrationTest {
 
 
     private String createLessonAndReturnLessonId() {
-        LessonSchema lessonSchema = new LessonSchema(
+        JpaLessonSchema lessonSchema = new JpaLessonSchema(
                 "Into to Git",
                 "Learn the basics of an industry-standard technology",
                 LessonDifficulty.EASY);
@@ -119,7 +120,7 @@ class TaskControllerIntegrationTest {
     }
 
     private String createTaskAndReturnTaskId() {
-        TaskSchema taskSchema = new TaskSchema(
+        JpaTaskSchema taskSchema = new JpaTaskSchema(
                 lessonId, "Initialise a Git repository",
                 "Create a new Git repository",
                 "git init",

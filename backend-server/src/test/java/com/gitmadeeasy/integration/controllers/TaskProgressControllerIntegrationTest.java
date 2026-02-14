@@ -1,12 +1,11 @@
 package com.gitmadeeasy.integration.controllers;
 
 import com.gitmadeeasy.entities.lessons.LessonDifficulty;
-import com.gitmadeeasy.infrastructure.configs.RepositoriesConfiguration;
-import com.gitmadeeasy.infrastructure.gateways.lessons.LessonSchema;
-import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.LessonRepository;
-import com.gitmadeeasy.infrastructure.gateways.taskAttempts.repositories.TaskAttemptRepository;
-import com.gitmadeeasy.infrastructure.gateways.tasks.TaskSchema;
-import com.gitmadeeasy.infrastructure.gateways.tasks.repositories.TaskRepository;
+import com.gitmadeeasy.infrastructure.gateways.lessons.JpaLessonSchema;
+import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.jpa.JpaLessonRepository;
+import com.gitmadeeasy.infrastructure.gateways.taskAttempts.repositories.jpa.JpaTaskAttemptRepository;
+import com.gitmadeeasy.infrastructure.gateways.tasks.JpaTaskSchema;
+import com.gitmadeeasy.infrastructure.gateways.tasks.repositories.jpa.JpaTaskRepository;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.attemptTask.dto.TaskAttemptRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -27,12 +25,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Import(RepositoriesConfiguration.class)
 class TaskProgressControllerIntegrationTest {
     @Autowired private MockMvc mockMvc;
-    @Autowired private TaskAttemptRepository taskAttemptRepository;
-    @Autowired private TaskRepository taskRepository;
-    @Autowired private LessonRepository lessonRepository;
+    @Autowired private JpaTaskAttemptRepository taskAttemptRepository;
+    @Autowired private JpaTaskRepository taskRepository;
+    @Autowired private JpaLessonRepository lessonRepository;
 
     private static final String USER_ID = "1";
     private String lessonId;
@@ -42,7 +39,7 @@ class TaskProgressControllerIntegrationTest {
         this.taskAttemptRepository.deleteAll();
         this.taskRepository.deleteAll();
         this.lessonRepository.deleteAll();
-        lessonId = createLesson();
+        lessonId = createLessonAndReturnLessonId();
     }
 
 
@@ -146,14 +143,14 @@ class TaskProgressControllerIntegrationTest {
 
 
     private String createTaskAndReturnTaskId() {
-        TaskSchema taskSchema = new TaskSchema(
+        JpaTaskSchema taskSchema = new JpaTaskSchema(
                 lessonId, "Intro to Git", "Creating a new Git repository",
-                "git init", "Remember to INITialise the new repository", 1);
+                "git init", "Remember to initialise the new repository", 1);
         return this.taskRepository.save(taskSchema).getId();
     }
 
-    private String createLesson() {
-        LessonSchema schema = new LessonSchema("Intro to Git", "Learn Git basics", LessonDifficulty.EASY);
+    private String createLessonAndReturnLessonId() {
+        JpaLessonSchema schema = new JpaLessonSchema("Intro to Git", "Learn Git basics", LessonDifficulty.EASY);
         return this.lessonRepository.save(schema).getId();
     }
 }

@@ -5,7 +5,7 @@ import com.gitmadeeasy.entities.lessons.LessonDifficulty;
 import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.usecases.lessons.dto.CreateLessonRequest;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonDifficultyNotRecognisedException;
-import com.gitmadeeasy.usecases.validation.MissingRequiredFieldException;
+import com.gitmadeeasy.usecases.validation.exceptions.MissingRequiredFieldException;
 
 public class CreateLesson {
     private final LessonGateway lessonGateway;

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/backend-server/git-made-easy.iml" filepath="$PROJECT_DIR$/backend-server/git-made-easy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Git-Made-Easy.iml" filepath="$PROJECT_DIR$/.idea/Git-Made-Easy.iml" />
     </modules>
   </component>
 </project>

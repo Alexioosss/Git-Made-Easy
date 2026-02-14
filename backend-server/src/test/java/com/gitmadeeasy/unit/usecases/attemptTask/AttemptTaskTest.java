@@ -130,12 +130,12 @@ class AttemptTaskTest {
 
 
     private static Task provideTask() {
-        return new Task(TASK_ID, LESSON_ID,
+        return new Task(
+                TASK_ID, LESSON_ID,
                 "first git task",
                 "Let's start this journey, shall we?",
                 "git start",
-                "easier than it may seem...", 1
-        );
+                "easier than it may seem...", 1);
     }
 
     private static TaskProgress provideTaskProgress() {
