@@ -38,6 +38,12 @@ jobs:
         working-directory: backend-server
         run: chmod +x ./mvnw
 
+      - name: Debug test resources
+        working-directory: backend-server
+        run: |
+          echo "Listing test resources:"
+          ls -R src/test/resources
+
       - name: Run Maven Verify With JaCoCo
         working-directory: backend-server
         run: ./mvnw verify
