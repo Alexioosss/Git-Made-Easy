@@ -114,9 +114,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <systemPropertyVariable>
-                        <spring.profiles.active>test</spring.profiles.active>
-                    </systemPropertyVariable>
+                    <argLine>-Dspring.profiles.active=test</argLine>
                 </configuration>
             </plugin>
 
