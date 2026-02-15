@@ -29,7 +29,7 @@ class GetUserByIdTest {
     void execute_WhenUserWithIdExists_ReturnsUser() {
         // Arrange
         User existingUser = new User("1", "Alessio", "Cocuzza",
-                "myemail1@gmail.com", "MyPassword123'");
+                "myemail1@gmail.com", false);
         when(this.userGateway.getUserById(any(String.class))).thenReturn(Optional.of(existingUser));
 
         // Act

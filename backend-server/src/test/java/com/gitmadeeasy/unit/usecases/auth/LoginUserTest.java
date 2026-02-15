@@ -1,5 +1,6 @@
 package com.gitmadeeasy.unit.usecases.auth;
 
+import com.gitmadeeasy.entities.security.PasswordHasher;
 import com.gitmadeeasy.entities.security.TokenGateway;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
@@ -32,7 +33,7 @@ class LoginUserTest {
     void execute_WhenValidCredentials_ReturnsAuthToken() {
         // Arrange
         LoginRequest loginRequest = new LoginRequest("myemail1@gmail.com", "MyPassword123'");
-        User user = new User("John", "Doe", "myemail1@gmail.com", "HashedMyPassword123'");
+        User user = new User("1", "John", "Doe", "myemail1@gmail.com", false);
 
         when(this.userGateway.getUserByEmailAddress("myemail1@gmail.com")).thenReturn(Optional.of(user));
         when(this.passwordHasher.matches("MyPassword123'", "HashedMyPassword123'")).thenReturn(true);
@@ -62,7 +63,7 @@ class LoginUserTest {
     void execute_WhenPasswordDoesNotMatch_ThrowsInvalidCredentialsException() {
         // Arrange
         LoginRequest loginRequest = new LoginRequest("myemail1@gmail.com", "MyPassword123'");
-        User user = new User("John", "Doe", "myemail1@gmail.com", "HashedMyPassword123'");
+        User user = new User("1", "John", "Doe", "myemail1@gmail.com", false);
         when(this.userGateway.getUserByEmailAddress("myemail1@gmail.com")).thenReturn(Optional.of(user));
         when(this.passwordHasher.matches("MyPassword123'", "HashedMyPassword123'")).thenReturn(false);
 

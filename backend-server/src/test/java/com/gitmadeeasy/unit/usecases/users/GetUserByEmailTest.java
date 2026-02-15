@@ -29,7 +29,7 @@ class GetUserByEmailTest {
     void execute_WhenUserWithEmailExists_ReturnsUser() {
         // Arrange
         User existingUser = new User("1", "Alessio", "Cocuzza",
-                "myemail1@gmail.com", "MyPassword123'");
+                "myemail1@gmail.com", false);
         when(this.userGateway.getUserByEmailAddress(any(String.class))).thenReturn(Optional.of(existingUser));
 
         // Act
