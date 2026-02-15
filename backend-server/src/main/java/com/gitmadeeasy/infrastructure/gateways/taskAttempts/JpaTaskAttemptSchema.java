@@ -3,6 +3,8 @@ package com.gitmadeeasy.infrastructure.gateways.taskAttempts;
 import com.gitmadeeasy.entities.taskAttempts.TaskCompletionStatus;
 import com.gitmadeeasy.infrastructure.gateways.tasks.JpaTaskSchema;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 
@@ -11,7 +13,7 @@ public class JpaTaskAttemptSchema {
     @Id @GeneratedValue(strategy = GenerationType.UUID)  private String id;
     private String userId;
     private String taskId;
-    @ManyToOne @JoinColumn(name = "taskId", insertable = false, updatable = false)
+    @ManyToOne @JoinColumn(name = "taskId") @OnDelete(action = OnDeleteAction.CASCADE)
     private JpaTaskSchema task;
     @Enumerated(EnumType.STRING)
     private TaskCompletionStatus status;

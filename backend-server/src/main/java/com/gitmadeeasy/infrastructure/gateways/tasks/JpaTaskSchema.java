@@ -1,6 +1,10 @@
 package com.gitmadeeasy.infrastructure.gateways.tasks;
 
+import com.gitmadeeasy.infrastructure.gateways.taskAttempts.JpaTaskAttemptSchema;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity @Table(name = "tasks")
 public class JpaTaskSchema {
@@ -11,6 +15,8 @@ public class JpaTaskSchema {
     private String expectedCommand;
     private String hint;
     private Integer taskOrder;
+    @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<JpaTaskAttemptSchema> attempts = new ArrayList<>();
 
     protected JpaTaskSchema() {}
 
@@ -61,7 +67,5 @@ public class JpaTaskSchema {
         return taskOrder;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public void setId(String id) { this.id = id; }
 }
