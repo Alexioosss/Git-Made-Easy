@@ -4,6 +4,7 @@ import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.infrastructure.controllers.TaskProgressController;
 import com.gitmadeeasy.infrastructure.gateways.security.UserPrincipal;
 import com.gitmadeeasy.testUtil.JsonUtil;
+import com.gitmadeeasy.testUtil.TaskTestDataFactory;
 import com.gitmadeeasy.usecases.attemptTask.AttemptTask;
 import com.gitmadeeasy.usecases.attemptTask.GetTaskProgress;
 import com.gitmadeeasy.usecases.attemptTask.dto.TaskAttemptRequest;
@@ -46,9 +47,7 @@ class TaskProgressControllerTest {
     void recordTaskAttempt_WhenValidPayload_ReturnsTaskProgress() throws Exception {
         // Arrange
         TaskAttemptRequest request = new TaskAttemptRequest("input");
-        TaskProgress progress = new TaskProgress(null, USER_ID, TASK_ID);
-        progress.recordAttempt("input");
-        progress.markCompleted();
+        TaskProgress progress = TaskTestDataFactory.completedTaskProgress();
         when(this.attemptTask.attempt(USER_ID, LESSON_ID, TASK_ID, request)).thenReturn(progress);
 
         // Act & Assert
@@ -133,8 +132,7 @@ class TaskProgressControllerTest {
     @DisplayName("Get Task Attempt - Task Progress Exists - Returns 200")
     void getTaskAttempt_WhenExists_ReturnsOk() throws Exception {
         // Arrange
-        TaskProgress progress = new TaskProgress(null, USER_ID, TASK_ID);
-        progress.markCompleted();
+        TaskProgress progress = TaskTestDataFactory.completedTaskProgress();
         when(this.getTaskProgress.execute(USER_ID, LESSON_ID, TASK_ID)).thenReturn(Optional.of(progress));
 
         // Act & Assert

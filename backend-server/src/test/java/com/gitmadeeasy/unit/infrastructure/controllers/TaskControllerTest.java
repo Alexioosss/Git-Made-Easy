@@ -4,6 +4,7 @@ import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.infrastructure.controllers.TaskController;
 import com.gitmadeeasy.infrastructure.mappers.tasks.TaskResponseMapper;
 import com.gitmadeeasy.testUtil.JsonUtil;
+import com.gitmadeeasy.testUtil.TaskTestDataFactory;
 import com.gitmadeeasy.usecases.tasks.CreateTask;
 import com.gitmadeeasy.usecases.tasks.GetTaskById;
 import com.gitmadeeasy.usecases.tasks.dto.CreateTaskRequest;
@@ -45,11 +46,7 @@ class TaskControllerTest {
                 "first git task", "Let's get started, shall we",
                 "git start", "easier than it may seem...", 1
         );
-        Task createdTask = new Task(
-                "1", lessonId,
-                "first git task", "Let's get started, shall we",
-                "git start", "easier than it may seem...", 1
-        );
+        Task createdTask = TaskTestDataFactory.task();
         when(this.createTask.execute(lessonId, validRequest)).thenReturn(createdTask);
 
         // Act & Assert
@@ -80,11 +77,7 @@ class TaskControllerTest {
         // Arrange
         String lessonId = "1";
         String taskId = "1";
-        Task foundTask = new Task(
-                "1", "first git task",
-                "Let's get started, shall we",
-                "git start", "easier than it may seem...", 1
-        );
+        Task foundTask = TaskTestDataFactory.task();
         when(this.getTaskById.execute(lessonId, taskId)).thenReturn(foundTask);
 
         // Act & Assert

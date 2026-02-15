@@ -3,30 +3,32 @@ package com.gitmadeeasy.infrastructure.mappers.taskAttempts;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.infrastructure.gateways.taskAttempts.FirebaseTaskAttemptSchema;
 import com.gitmadeeasy.infrastructure.gateways.taskAttempts.JpaTaskAttemptSchema;
+import com.gitmadeeasy.infrastructure.gateways.tasks.JpaTaskSchema;
 
 public class TaskAttemptSchemaMapper {
 
-    public JpaTaskAttemptSchema toSchema(TaskProgress entity) {
+    public JpaTaskAttemptSchema toSchema(TaskProgress entity, JpaTaskSchema task) {
         return new JpaTaskAttemptSchema(
-                entity.getUserId(), entity.getTaskId(), entity.getStatus(),
+                entity.getUserId(), entity.getStatus(),
                 entity.getAttempts(), entity.getLastInput(), entity.getLastError(),
-                entity.getStartedAt(), entity.getCompletedAt());
+                entity.getStartedAt(), entity.getCompletedAt(), task);
     }
 
-    public JpaTaskAttemptSchema merge(JpaTaskAttemptSchema existing, TaskProgress entity) {
+    public JpaTaskAttemptSchema updateSchemaFromEntity(JpaTaskAttemptSchema existing, TaskProgress entity,
+                                                       JpaTaskSchema task) {
+        existing.setTask(task);
         existing.setStatus(entity.getStatus());
         existing.setAttempts(entity.getAttempts());
         existing.setLastInput(entity.getLastInput());
         existing.setLastError(entity.getLastError());
         existing.setStartedAt(entity.getStartedAt());
         existing.setCompletedAt(entity.getCompletedAt());
-
         return existing;
     }
 
     public TaskProgress toEntity(JpaTaskAttemptSchema schema) {
         return new TaskProgress(
-                schema.getId(), schema.getUserId(), schema.getTaskId(),
+                schema.getId(), schema.getUserId(), schema.getTask().getId(),
                 schema.getStatus(), schema.getAttempts(), schema.getLastInput(),
                 schema.getLastError(), schema.getStartedAt(), schema.getCompletedAt());
     }

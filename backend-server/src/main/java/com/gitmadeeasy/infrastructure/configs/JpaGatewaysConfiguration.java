@@ -45,8 +45,9 @@ public class JpaGatewaysConfiguration {
 
     @Bean
     public TaskAttemptGateway taskAttemptGateway(JpaTaskAttemptRepository taskAttemptRepository,
+                                                 JpaTaskRepository taskRepository,
                                                  TaskAttemptSchemaMapper taskAttemptSchemaMapper) {
-        return new JpaTaskAttemptDatabaseGateway(taskAttemptRepository, taskAttemptSchemaMapper);
+        return new JpaTaskAttemptDatabaseGateway(taskAttemptRepository, taskRepository, taskAttemptSchemaMapper);
     }
 
     @Bean

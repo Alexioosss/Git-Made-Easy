@@ -38,8 +38,6 @@ public class CreateUser {
             throw new DuplicatedEmailException(request.emailAddress());
         }
 
-        // Email verification can be implemented here
-
         // Hash the password for security
         String hashedPassword = this.passwordHasher.hash(request.password());
 

@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface JpaTaskAttemptRepository extends JpaRepository<JpaTaskAttemptSchema, String> {
     Optional<JpaTaskAttemptSchema> findByUserIdAndTaskId(String userId, String taskId);
     @Query("""
-            SELECT COUNT(tp) FROM JpaTaskAttemptSchema tp JOIN JpaTaskSchema t ON t.id = tp.taskId
+            SELECT COUNT(tp) FROM JpaTaskAttemptSchema tp JOIN tp.task t
             WHERE tp.userId = :userId AND t.lessonId = :lessonId AND tp.status = 'COMPLETED'
             """)
     int countCompletedTasks(String userId, String lessonId);

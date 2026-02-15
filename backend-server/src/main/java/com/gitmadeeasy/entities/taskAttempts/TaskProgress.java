@@ -129,4 +129,19 @@ public class TaskProgress {
     public void setCompletedAt(LocalDate completedAt) {
         this.completedAt = completedAt;
     }
+
+    @Override
+    public String toString() {
+        return "TaskProgress{" +
+                "taskProgressId='" + taskProgressId + '\'' +
+                ", userId='" + userId + '\'' +
+                ", taskId='" + taskId + '\'' +
+                ", status=" + status +
+                ", attempts=" + attempts +
+                ", lastInput='" + lastInput + '\'' +
+                ", lastError='" + lastError + '\'' +
+                ", startedAt=" + startedAt +
+                ", completedAt=" + completedAt +
+                '}';
+    }
 }

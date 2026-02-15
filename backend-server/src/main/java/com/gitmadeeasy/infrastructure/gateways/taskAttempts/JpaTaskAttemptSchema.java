@@ -3,20 +3,24 @@ package com.gitmadeeasy.infrastructure.gateways.taskAttempts;
 import com.gitmadeeasy.entities.taskAttempts.TaskCompletionStatus;
 import com.gitmadeeasy.infrastructure.gateways.tasks.JpaTaskSchema;
 import jakarta.persistence.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 
-@Entity @Table(name = "task_attempts")
+@Entity
+@Table(name = "task_attempts")
 public class JpaTaskAttemptSchema {
-    @Id @GeneratedValue(strategy = GenerationType.UUID)  private String id;
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
     private String userId;
-    private String taskId;
-    @ManyToOne @JoinColumn(name = "taskId") @OnDelete(action = OnDeleteAction.CASCADE)
+
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "taskId", referencedColumnName = "id")
     private JpaTaskSchema task;
+
     @Enumerated(EnumType.STRING)
     private TaskCompletionStatus status;
+
     private int attempts;
     private String lastInput;
     private String lastError;
@@ -26,32 +30,28 @@ public class JpaTaskAttemptSchema {
     protected JpaTaskAttemptSchema() {}
 
     public JpaTaskAttemptSchema(
-            String userId, String taskId, TaskCompletionStatus status, int attempts,
-            String lastInput, String lastError, LocalDate startedAt, LocalDate completedAt) {
+            String userId, TaskCompletionStatus status, int attempts,
+            String lastInput, String lastError, LocalDate startedAt, LocalDate completedAt, JpaTaskSchema task) {
         this.userId = userId;
-        this.taskId = taskId;
         this.status = status;
         this.attempts = attempts;
         this.lastInput = lastInput;
         this.lastError = lastError;
         this.startedAt = startedAt;
         this.completedAt = completedAt;
+        this.task = task;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getUserId() {
         return userId;
     }
 
-    public String getTaskId() {
-        return taskId;
+    public JpaTaskSchema getTask() {
+        return task;
     }
 
     public TaskCompletionStatus getStatus() {
@@ -76,6 +76,18 @@ public class JpaTaskAttemptSchema {
 
     public LocalDate getCompletedAt() {
         return completedAt;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setTask(JpaTaskSchema task) {
+        this.task = task;
     }
 
     public void setStatus(TaskCompletionStatus status) {
