@@ -1,10 +1,12 @@
 package com.gitmadeeasy.infrastructure.controllers;
 
 import com.google.cloud.firestore.Firestore;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Profile("!test")
 public class FirestoreTestController {
     private final Firestore firestore;
 
