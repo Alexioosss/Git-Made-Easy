@@ -4,7 +4,8 @@ import com.gitmadeeasy.infrastructure.security.BCryptPasswordHasher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class BCryptPasswordHasherTest {
     private static final String RAW_PASSWORD = "MySecurePassword123'";

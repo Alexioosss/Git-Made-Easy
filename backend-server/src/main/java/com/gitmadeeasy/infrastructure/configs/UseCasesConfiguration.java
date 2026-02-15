@@ -9,9 +9,7 @@ import com.gitmadeeasy.entities.tasks.TaskGateway;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.attemptTask.AttemptTask;
 import com.gitmadeeasy.usecases.attemptTask.GetTaskProgress;
-import com.gitmadeeasy.usecases.auth.LoginUser;
-import com.gitmadeeasy.usecases.auth.LogoutUser;
-import com.gitmadeeasy.usecases.auth.RefreshToken;
+import com.gitmadeeasy.usecases.auth.*;
 import com.gitmadeeasy.usecases.lessonProgress.GetLessonProgress;
 import com.gitmadeeasy.usecases.lessonProgress.UpdateLessonProgress;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
@@ -30,24 +28,27 @@ public class UseCasesConfiguration {
     // ----- User-Related Use Cases ----- //
 
     @Bean
-    public CreateUser createUserUseCase(UserGateway userGateway, PasswordHasher passwordHasher) {
-        return new CreateUser(userGateway, passwordHasher);
+    public CreateUser createUserUseCase(UserGateway userGateway, UserIdentityProvider identityProvider,
+                                        PasswordHasher passwordHasher, EmailSender emailSender) {
+        return new CreateUser(userGateway, identityProvider, passwordHasher, emailSender);
     }
 
     @Bean
-    public GetUserById getUserById(UserGateway userGateway) {
-        return new GetUserById(userGateway);
+    public GetUserById getUserById(UserGateway userGateway, UserIdentityProvider identityProvider) {
+        return new GetUserById(userGateway, identityProvider);
     }
 
     @Bean
-    public GetUserByEmail getUserByEmail(UserGateway userGateway) { return new GetUserByEmail(userGateway); }
+    public GetUserByEmail getUserByEmail(UserGateway userGateway, UserIdentityProvider identityProvider) {
+        return new GetUserByEmail(userGateway, identityProvider);
+    }
 
 
     // ----- Auth-Related Use Cases ----- //
 
     @Bean
-    public LoginUser loginUser(UserGateway userGateway, PasswordHasher passwordHasher, TokenGateway tokenGateway) {
-        return new LoginUser(userGateway, passwordHasher, tokenGateway);
+    public LoginUser loginUser(UserGateway userGateway, TokenGateway tokenGateway) {
+        return new LoginUser(userGateway, tokenGateway);
     }
 
     @Bean

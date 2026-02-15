@@ -1,6 +1,5 @@
 package com.gitmadeeasy.unit.usecases.auth;
 
-import com.gitmadeeasy.entities.security.PasswordHasher;
 import com.gitmadeeasy.entities.security.TokenGateway;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;

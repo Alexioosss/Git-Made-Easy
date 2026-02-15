@@ -4,15 +4,10 @@ import com.gitmadeeasy.entities.security.PasswordHasher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class BCryptPasswordHasher implements PasswordHasher {
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Override
-    public String hash(String rawPassword) {
-        return passwordEncoder.encode(rawPassword);
-    }
-
-    @Override
-    public boolean matches(String newPassword, String storedPassword) {
-        return passwordEncoder.matches(newPassword, storedPassword);
+    public String hash(String raw) {
+        return encoder.encode(raw);
     }
 }

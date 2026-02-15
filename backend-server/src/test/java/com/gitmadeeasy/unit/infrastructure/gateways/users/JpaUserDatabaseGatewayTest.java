@@ -23,6 +23,8 @@ class JpaUserDatabaseGatewayTest {
     @Mock private UserSchemaMapper userSchemaMapper;
     @InjectMocks private JpaUserDatabaseGateway jpaUserDatabaseGateway;
 
+    private static final String HASHED_PASSWORD = "HashedMyPassword123'";
+
 
     @Test
     @DisplayName("Create User - Valid User Is Saved And Returned")
@@ -30,18 +32,18 @@ class JpaUserDatabaseGatewayTest {
         // Arrange
         User user = provideUser();
         JpaUserSchema userSchema = provideUserSchema();
-        when(this.userSchemaMapper.toJpaSchema(user)).thenReturn(userSchema);
+        when(this.userSchemaMapper.toJpaSchema(user, HASHED_PASSWORD)).thenReturn(userSchema);
         when(this.jpaUserRepository.save(userSchema)).thenReturn(userSchema);
         when(this.userSchemaMapper.fromJpaSchema(userSchema)).thenReturn(user);
 
         // Act
-        User createdUser = this.jpaUserDatabaseGateway.createUser(user);
+        User createdUser = this.jpaUserDatabaseGateway.createUser(user, HASHED_PASSWORD);
 
         // Assert
         assertNotNull(createdUser);
         assertEquals(user.getUserId(), createdUser.getUserId());
         verify(this.jpaUserRepository).save(userSchema);
-        verify(this.userSchemaMapper).toJpaSchema(user);
+        verify(this.userSchemaMapper).toJpaSchema(user, HASHED_PASSWORD);
         verify(this.userSchemaMapper).fromJpaSchema(userSchema);
     }
 
@@ -51,11 +53,11 @@ class JpaUserDatabaseGatewayTest {
         // Arrange
         User user = provideUser();
         JpaUserSchema userSchema = provideUserSchema();
-        when(this.userSchemaMapper.toJpaSchema(user)).thenReturn(userSchema);
+        when(this.userSchemaMapper.toJpaSchema(user, HASHED_PASSWORD)).thenReturn(userSchema);
         when(this.jpaUserRepository.save(userSchema)).thenThrow(new RuntimeException("Database error"));
 
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> this.jpaUserDatabaseGateway.createUser(user));
+        assertThrows(RuntimeException.class, () -> this.jpaUserDatabaseGateway.createUser(user, HASHED_PASSWORD));
     }
 
     @Test
@@ -69,7 +71,7 @@ class JpaUserDatabaseGatewayTest {
         when(this.userSchemaMapper.fromJpaSchema(userSchema)).thenReturn(user);
 
         // Act
-        Optional<User> foundUser = this.jpaUserDatabaseGateway.getUserById(String.valueOf(userId));
+        Optional<User> foundUser = this.jpaUserDatabaseGateway.getUserById(userId);
 
         // Assert
         assertTrue(foundUser.isPresent());
@@ -85,7 +87,7 @@ class JpaUserDatabaseGatewayTest {
         when(this.jpaUserRepository.findById(userId)).thenReturn(Optional.empty());
 
         // Act
-        Optional<User> foundUser = this.jpaUserDatabaseGateway.getUserById(String.valueOf(userId));
+        Optional<User> foundUser = this.jpaUserDatabaseGateway.getUserById(userId);
 
         // Assert
         assertTrue(foundUser.isEmpty());
@@ -98,7 +100,7 @@ class JpaUserDatabaseGatewayTest {
         // Arrange
         final String email = "test@test.com";
         JpaUserSchema schema = new JpaUserSchema("1", "Alessio", "Cocuzza", email, "HashedMyPassword123'", false);
-        User user = new User("Alessio", "Cocuzza", email, "MyPassword123'");
+        User user = new User("Alessio", "Cocuzza", email);
         when(jpaUserRepository.findByEmailAddress(email)).thenReturn(Optional.of(schema));
         when(userSchemaMapper.fromJpaSchema(schema)).thenReturn(user);
 
@@ -160,7 +162,7 @@ class JpaUserDatabaseGatewayTest {
 
 
     private static User provideUser() {
-        return new User("Alessio", "Cocuzza", "myemail1@gmail.com", "MyPassword123'");
+        return new User("1", "Alessio", "Cocuzza", "myemail1@gmail.com", false);
     }
 
     private static JpaUserSchema provideUserSchema() {

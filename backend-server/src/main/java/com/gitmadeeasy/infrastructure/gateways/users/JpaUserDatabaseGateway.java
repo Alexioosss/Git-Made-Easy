@@ -17,8 +17,8 @@ public class JpaUserDatabaseGateway implements UserGateway {
     }
 
     @Override
-    public User createUser(User newUser) {
-        return this.userSchemaMapper.fromJpaSchema(this.jpa.save(this.userSchemaMapper.toJpaSchema(newUser)));
+    public User createUser(User newUser, String hashedPassword) {
+        return this.userSchemaMapper.fromJpaSchema(this.jpa.save(this.userSchemaMapper.toJpaSchema(newUser, hashedPassword)));
     }
 
     @Override

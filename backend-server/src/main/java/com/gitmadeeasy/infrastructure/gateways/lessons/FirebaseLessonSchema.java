@@ -49,5 +49,7 @@ public class FirebaseLessonSchema {
         return taskIds;
     }
 
+    public void setTaskIds(List<String> taskIds) { this.taskIds = taskIds; }
+
     public void setId(String id) { this.id = id; }
 }

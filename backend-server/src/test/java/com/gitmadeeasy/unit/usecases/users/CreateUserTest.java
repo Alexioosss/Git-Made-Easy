@@ -3,6 +3,7 @@ package com.gitmadeeasy.unit.usecases.users;
 import com.gitmadeeasy.entities.security.PasswordHasher;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
+import com.gitmadeeasy.usecases.auth.UserIdentityProvider;
 import com.gitmadeeasy.usecases.users.CreateUser;
 import com.gitmadeeasy.usecases.users.dto.CreateUserRequest;
 import com.gitmadeeasy.usecases.users.exceptions.DuplicatedEmailException;
@@ -22,13 +23,20 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CreateUserTest {
     @Mock private UserGateway userGateway;
+    @Mock private UserIdentityProvider identityProvider;
     @Mock private PasswordHasher passwordHasher;
     @InjectMocks private CreateUser createUser;
+
+    private static final String RAW_PASSWORD = "MyPassword123'";
+    private static final String HASHED_PASSWORD = "HashedMyPassword123'";
+    private static final String FIREBASE_ID = "firebase-123";
 
 
     @Test
@@ -38,17 +46,21 @@ class CreateUserTest {
         CreateUserRequest request = provideValidUserRequest();
         when(passwordHasher.hash("MyPassword123'")).thenReturn("HashedMyPassword123'");
 
-        User createdUser = new User("1", "Alessio", "Cocuzza", "myemail1@gmail.com", "HashedMyPassword123'");
-        when(this.userGateway.createUser(any(User.class))).thenReturn(createdUser);
+        when(userGateway.existsByEmailAddress(request.emailAddress())).thenReturn(false);
+        when(identityProvider.createUser(
+                request.firstName(), request.lastName(),
+                request.emailAddress(), request.password())).thenReturn(FIREBASE_ID);
+        when(passwordHasher.hash(RAW_PASSWORD)).thenReturn(HASHED_PASSWORD);
 
         // Act
         User result = createUser.execute(request);
 
         // Assert
-        assertEquals("1", result.getUserId());
+        assertEquals(FIREBASE_ID, result.getUserId());
         assertEquals("Alessio", result.getFirstName());
         assertEquals("Cocuzza", result.getLastName());
         assertEquals("myemail1@gmail.com", result.getEmailAddress());
+        verify(userGateway).createUser(any(User.class), eq(HASHED_PASSWORD));
     }
 
     @Test

@@ -20,6 +20,7 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
         .authorizeHttpRequests(auth -> auth
+            .requestMatchers(HttpMethod.GET, "/email-test").permitAll()
             .requestMatchers(HttpMethod.GET, "/firestore-test").permitAll()
             .requestMatchers(HttpMethod.POST, "/users").permitAll()
             .requestMatchers(HttpMethod.GET, "/users/{userId}").authenticated()

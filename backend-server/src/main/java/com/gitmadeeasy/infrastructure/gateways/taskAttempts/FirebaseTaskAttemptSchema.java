@@ -2,8 +2,6 @@ package com.gitmadeeasy.infrastructure.gateways.taskAttempts;
 
 import com.gitmadeeasy.entities.taskAttempts.TaskCompletionStatus;
 
-import java.time.LocalDate;
-
 public class FirebaseTaskAttemptSchema {
     private String id;
     private String userId;

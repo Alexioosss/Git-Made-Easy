@@ -1,7 +1,5 @@
 package com.gitmadeeasy.entities.users;
 
-import com.gitmadeeasy.usecases.users.exceptions.EmailAlreadyVerifiedException;
-
 import java.util.Objects;
 
 public class User {
@@ -9,23 +7,20 @@ public class User {
     private final String firstName;
     private final String lastName;
     private final String emailAddress;
-    private final String password;
     private boolean isEmailVerified;
 
-    public User(String userId, String firstName, String lastName, String emailAddress, String password) {
+    public User(String userId, String firstName, String lastName, String emailAddress, boolean isEmailVerified) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
-        this.password = password;
-        this.isEmailVerified = false;
+        this.isEmailVerified = isEmailVerified;
     }
 
-    public User(String firstName, String lastName, String emailAddress, String password) {
+    public User(String firstName, String lastName, String emailAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
-        this.password = password;
         this.isEmailVerified = false;
     }
 
@@ -45,22 +40,15 @@ public class User {
         return emailAddress;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public boolean isEmailVerified() {
         return this.isEmailVerified;
-    }
-
-    public void markEmailAsVerified() {
-        if(this.isEmailVerified) { throw new EmailAlreadyVerifiedException(); }
-        this.isEmailVerified = true;
     }
 
     public void setUserId(String id) {
         this.userId = id;
     }
+
+    public void setEmailVerified(boolean emailVerified) { isEmailVerified = emailVerified; }
 
     @Override
     public boolean equals(Object o) {
@@ -68,13 +56,12 @@ public class User {
         User user = (User) o;
         return Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
-                Objects.equals(emailAddress, user.emailAddress) &&
-                Objects.equals(password, user.password);
+                Objects.equals(emailAddress, user.emailAddress);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, emailAddress, password);
+        return Objects.hash(firstName, lastName, emailAddress);
     }
 
     @Override
