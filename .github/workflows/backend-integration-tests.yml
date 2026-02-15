@@ -39,7 +39,7 @@ jobs:
       - name: Run Maven Tests
         working-directory: backend-server
         continue-on-error: true
-        run: ./mvnw -B test -Dtest=com.gitmadeeasy.integration.**
+        run: ./mvnw -B test -Dspring.profiles.active=test -Dtest=com.gitmadeeasy.integration.**
 
       - name: Upload Test Reports
         if: always()
