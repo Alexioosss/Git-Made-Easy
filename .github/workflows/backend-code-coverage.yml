@@ -38,7 +38,7 @@ jobs:
         working-directory: backend-server
         run: chmod +x ./mvnw
 
-      - name: Run Maven Verify With JaCoCo
+      - name: Run Maven Verify With JaCoCo With 'Test' As Active Spring Profile
         working-directory: backend-server
         run: ./mvnw verify -Dspring.profiles.active=test
 
