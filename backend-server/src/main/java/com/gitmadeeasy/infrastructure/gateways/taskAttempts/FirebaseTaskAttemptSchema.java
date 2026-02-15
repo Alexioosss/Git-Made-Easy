@@ -12,14 +12,14 @@ public class FirebaseTaskAttemptSchema {
     private int attempts;
     private String lastInput;
     private String lastError;
-    private LocalDate startedAt;
-    private LocalDate completedAt;
+    private String startedAt;
+    private String completedAt;
 
     protected FirebaseTaskAttemptSchema() {}
 
     public FirebaseTaskAttemptSchema(
             String userId, String taskId, TaskCompletionStatus status, int attempts,
-            String lastInput, String lastError, LocalDate startedAt, LocalDate completedAt) {
+            String lastInput, String lastError, String startedAt, String completedAt) {
         this.userId = userId;
         this.taskId = taskId;
         this.status = status;
@@ -62,11 +62,11 @@ public class FirebaseTaskAttemptSchema {
         return lastError;
     }
 
-    public LocalDate getStartedAt() {
+    public String getStartedAt() {
         return startedAt;
     }
 
-    public LocalDate getCompletedAt() {
+    public String getCompletedAt() {
         return completedAt;
     }
 }

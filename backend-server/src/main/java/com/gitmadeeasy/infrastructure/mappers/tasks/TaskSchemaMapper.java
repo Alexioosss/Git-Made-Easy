@@ -51,6 +51,7 @@ public class TaskSchemaMapper {
                 schema.getTitle(),
                 schema.getContent(),
                 schema.getExpectedCommand(),
+                schema.getHint(),
                 schema.getTaskOrder()
         );
     }

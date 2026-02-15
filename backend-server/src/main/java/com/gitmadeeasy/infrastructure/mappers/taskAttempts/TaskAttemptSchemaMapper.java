@@ -5,6 +5,8 @@ import com.gitmadeeasy.infrastructure.gateways.taskAttempts.FirebaseTaskAttemptS
 import com.gitmadeeasy.infrastructure.gateways.taskAttempts.JpaTaskAttemptSchema;
 import com.gitmadeeasy.infrastructure.gateways.tasks.JpaTaskSchema;
 
+import java.time.LocalDate;
+
 public class TaskAttemptSchemaMapper {
 
     public JpaTaskAttemptSchema toSchema(TaskProgress entity, JpaTaskSchema task) {
@@ -34,20 +36,25 @@ public class TaskAttemptSchemaMapper {
     }
 
     public FirebaseTaskAttemptSchema toFirebaseSchema(TaskProgress entity) {
+        String startedAt = entity.getStartedAt() != null ? entity.getStartedAt().toString() : null;
+        String completedAt = entity.getCompletedAt() != null ? entity.getCompletedAt().toString() : null;
+
         FirebaseTaskAttemptSchema schema = new FirebaseTaskAttemptSchema(
                 entity.getUserId(), entity.getTaskId(),
                 entity.getStatus(), entity.getAttempts(),
                 entity.getLastInput(), entity.getLastError(),
-                entity.getStartedAt(), entity.getCompletedAt());
+                startedAt, completedAt);
 
         if(entity.getTaskProgressId() != null) { schema.setId(entity.getTaskProgressId()); }
         return schema;
     }
 
     public TaskProgress fromFirebaseSchema(FirebaseTaskAttemptSchema schema) {
+        LocalDate startedAt = schema.getStartedAt() != null ? LocalDate.parse(schema.getStartedAt()) : null;
+        LocalDate completedAt = schema.getCompletedAt() != null ? LocalDate.parse(schema.getCompletedAt()) : null;
         return new TaskProgress(
                 schema.getId(), schema.getUserId(), schema.getTaskId(),
                 schema.getStatus(), schema.getAttempts(), schema.getLastInput(),
-                schema.getLastError(), schema.getStartedAt(), schema.getCompletedAt());
+                schema.getLastError(), startedAt, completedAt);
     }
 }

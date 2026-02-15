@@ -41,7 +41,7 @@ public class FirebaseTaskDatabaseGateway implements TaskGateway {
 
     @Override
     public int getNextTaskOrderForLesson(String lessonId) {
-        return this.firebase.findMaxTaskOrderByLessonId(lessonId);
+        return this.firebase.findMaxTaskOrderByLessonId(lessonId) + 1;
     }
 
     @Override
