@@ -40,7 +40,7 @@ jobs:
 
       - name: Run Maven Verify With JaCoCo
         working-directory: backend-server
-        run: ./mvnw verify
+        run: ./mvnw verify -Dspring.profiles.active=test
 
       - name: Generate JaCoCo Code Coverage Report
         id: jacoco_reporter
