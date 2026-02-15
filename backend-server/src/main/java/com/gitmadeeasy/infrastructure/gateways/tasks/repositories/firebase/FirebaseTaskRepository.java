@@ -1,6 +1,5 @@
 package com.gitmadeeasy.infrastructure.gateways.tasks.repositories.firebase;
 
-import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.infrastructure.gateways.tasks.FirebaseTaskSchema;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;

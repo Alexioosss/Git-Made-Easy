@@ -1,6 +1,5 @@
 package com.gitmadeeasy.infrastructure.gateways.lessons.repositories.firebase;
 
-import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.infrastructure.gateways.lessons.FirebaseLessonSchema;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
