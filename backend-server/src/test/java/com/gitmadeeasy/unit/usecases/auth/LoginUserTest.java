@@ -1,6 +1,5 @@
 package com.gitmadeeasy.unit.usecases.auth;
 
-import com.gitmadeeasy.entities.security.PasswordHasher;
 import com.gitmadeeasy.entities.security.TokenGateway;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
@@ -24,7 +23,6 @@ import static org.mockito.Mockito.when;
 class LoginUserTest {
     @Mock private UserGateway userGateway;
     @Mock private TokenGateway tokenGateway;
-    @Mock private PasswordHasher passwordHasher;
     @InjectMocks private LoginUser loginUser;
 
 
@@ -33,11 +31,9 @@ class LoginUserTest {
     void execute_WhenValidCredentials_ReturnsAuthToken() {
         // Arrange
         LoginRequest loginRequest = new LoginRequest("myemail1@gmail.com", "MyPassword123'");
-        User user = new User("1", "John", "Doe", "myemail1@gmail.com",
-                "HashedMyPassword123'", false);
+        User user = new User("1", "John", "Doe", "myemail1@gmail.com", false);
 
         when(this.userGateway.getUserByEmailAddress("myemail1@gmail.com")).thenReturn(Optional.of(user));
-        when(this.passwordHasher.matches("MyPassword123'", user.getPassword())).thenReturn(true);
         when(this.tokenGateway.generateToken(user)).thenReturn("token");
 
         // Act
