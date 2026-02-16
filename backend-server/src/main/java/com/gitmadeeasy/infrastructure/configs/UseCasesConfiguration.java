@@ -2,7 +2,6 @@ package com.gitmadeeasy.infrastructure.configs;
 
 import com.gitmadeeasy.entities.lessonProgress.LessonProgressGateway;
 import com.gitmadeeasy.entities.lessons.LessonGateway;
-import com.gitmadeeasy.entities.security.PasswordHasher;
 import com.gitmadeeasy.entities.security.TokenGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
@@ -47,8 +46,8 @@ public class UseCasesConfiguration {
     // ----- Auth-Related Use Cases ----- //
 
     @Bean
-    public LoginUser loginUser(UserGateway userGateway, TokenGateway tokenGateway, PasswordHasher passwordHasher) {
-        return new LoginUser(userGateway, tokenGateway, passwordHasher);
+    public LoginUser loginUser(UserGateway userGateway, TokenGateway tokenGateway) {
+        return new LoginUser(userGateway, tokenGateway);
     }
 
     @Bean

@@ -1,6 +1,5 @@
 package com.gitmadeeasy.integration.controllers;
 
-import com.gitmadeeasy.entities.security.PasswordHasher;
 import com.gitmadeeasy.infrastructure.gateways.users.JpaUserSchema;
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.jpa.JpaUserRepository;
 import com.gitmadeeasy.testUtil.JsonUtil;
@@ -25,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AuthenticationControllerIntegrationTest {
     @Autowired MockMvc mockMvc;
     @Autowired JpaUserRepository userRepository;
-    @Autowired PasswordHasher passwordHasher;
 
     @BeforeEach
     public void setUp() { this.userRepository.deleteAll(); }
@@ -51,7 +49,7 @@ class AuthenticationControllerIntegrationTest {
     void loginUser_WhenInvalidCredentials_ThrowsException() throws Exception {
         // Arrange
         saveMockUserInDataStore();
-        LoginRequest request = new LoginRequest("myemail1@gmail.com", "WrongPassword");
+        LoginRequest request = new LoginRequest("emailnotfound@gmail.com", "WrongPassword");
 
         // Act & Assert
         this.mockMvc.perform(post("/auth/login")
@@ -126,7 +124,6 @@ class AuthenticationControllerIntegrationTest {
         this.userRepository.save(new JpaUserSchema(
                         "John", "Doe",
                         "myemail1@gmail.com",
-                        passwordHasher.hash("MyPassword123'"),
                 false
         ));
         System.out.println("Mock User Saved Successfully.");

@@ -1,6 +1,5 @@
 package com.gitmadeeasy.integration.controllers;
 
-import com.gitmadeeasy.entities.security.PasswordHasher;
 import com.gitmadeeasy.infrastructure.gateways.users.JpaUserSchema;
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.jpa.JpaUserRepository;
 import com.gitmadeeasy.testConfig.FirebaseTestConfig;
@@ -34,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerIntegrationTest {
     @Autowired private MockMvc mockMvc;
     @Autowired private JpaUserRepository userRepository;
-    @Autowired private PasswordHasher passwordHasher;
 
     @BeforeEach
     public void setUp() { this.userRepository.deleteAll(); }

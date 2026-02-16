@@ -1,6 +1,5 @@
 package com.gitmadeeasy.unit.usecases.users;
 
-import com.gitmadeeasy.entities.security.PasswordHasher;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.auth.EmailSender;
@@ -31,13 +30,10 @@ import static org.mockito.Mockito.when;
 class CreateUserTest {
     @Mock private UserGateway userGateway;
     @Mock private UserIdentityProvider identityProvider;
-    @Mock private PasswordHasher passwordHasher;
     @Mock private EmailSender emailSender;
     @InjectMocks private CreateUser createUser;
 
-    private static final String RAW_PASSWORD = "MyPassword123'";
-    private static final String HASHED_PASSWORD = "HashedMyPassword123'";
-    private static final String FIREBASE_ID = "firebase-123";
+    private static final String USER_ID = "user-123";
 
 
     @Test
@@ -45,13 +41,11 @@ class CreateUserTest {
     void execute_WhenValidPayload_ReturnsCreatedUser() {
         // Arrange
         CreateUserRequest request = provideValidUserRequest();
-        when(this.passwordHasher.hash("MyPassword123'")).thenReturn("HashedMyPassword123'");
 
         when(this.userGateway.existsByEmailAddress(request.emailAddress())).thenReturn(false);
         when(this.identityProvider.createUser(
                 request.firstName(), request.lastName(),
-                request.emailAddress(), request.password())).thenReturn(FIREBASE_ID);
-        when(this.passwordHasher.hash(RAW_PASSWORD)).thenReturn(HASHED_PASSWORD);
+                request.emailAddress(), request.password())).thenReturn(USER_ID);
 
         // Act
         User result = this.createUser.execute(request);
@@ -60,7 +54,7 @@ class CreateUserTest {
         assertEquals("Alessio", result.getFirstName());
         assertEquals("Cocuzza", result.getLastName());
         assertEquals("myemail1@gmail.com", result.getEmailAddress());
-        verify(this.userGateway).createUser(any(User.class), eq(HASHED_PASSWORD));
+        verify(this.userGateway).createUser(any(User.class));
         verify(this.emailSender).send(
                 eq("myemail1@gmail.com"),
                 eq("Verify your email address"),
