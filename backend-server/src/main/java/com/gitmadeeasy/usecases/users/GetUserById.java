@@ -22,7 +22,7 @@ public class GetUserById {
                 .orElseThrow(() -> new UserNotFoundWithIdException(userId));
         log.info("User found successfully by its id");
         boolean verified = this.identityProvider.isEmailVerified(userId);
-        log.info("User's email address verified= {}", verified);
+        log.info("User's email address verified={}", verified);
         user.setEmailVerified(verified);
         return user;
     }

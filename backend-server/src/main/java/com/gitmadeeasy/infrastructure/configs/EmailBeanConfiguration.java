@@ -1,7 +1,5 @@
 package com.gitmadeeasy.infrastructure.configs;
 
-import com.gitmadeeasy.infrastructure.email.smtp.SmtpEmailSender;
-import com.gitmadeeasy.usecases.auth.EmailSender;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

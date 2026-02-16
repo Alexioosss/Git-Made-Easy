@@ -27,7 +27,7 @@ public class AttemptTask {
         // Validate task exists
         Task task = this.taskGateway.getTaskByLessonIdAndTaskId(lessonId, taskId)
                 .orElseThrow(() -> new TaskNotFoundWithIdException(lessonId, taskId));
-        log.info("Task found successfully for lessonID= {}", lessonId);
+        log.info("Task found successfully for lessonID={}", lessonId);
 
         // Find an existing task progress for the user, or create a new one
         TaskProgress taskProgress = this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId)
@@ -40,7 +40,7 @@ public class AttemptTask {
         TaskProgress savedTaskProgress = this.taskAttemptGateway.save(taskProgress);
         log.info("Saved user's task attempt");
         updateLessonProgress.update(userId, lessonId, savedTaskProgress);
-        log.info("Updating user progress on lessonID= {}", lessonId);
+        log.info("Updating user progress on lessonID={}", lessonId);
         return savedTaskProgress;
     }
 }

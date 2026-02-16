@@ -2,7 +2,6 @@ package com.gitmadeeasy.usecases.users;
 
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
-import com.gitmadeeasy.usecases.auth.EmailSender;
 import com.gitmadeeasy.usecases.auth.UserIdentityProvider;
 import com.gitmadeeasy.usecases.users.dto.CreateUserRequest;
 import com.gitmadeeasy.usecases.users.exceptions.DuplicatedEmailException;
@@ -13,13 +12,11 @@ import org.slf4j.LoggerFactory;
 public class CreateUser {
     private final UserGateway userGateway;
     private final UserIdentityProvider identityProvider;
-    private final EmailSender emailSender;
     private static final Logger log = LoggerFactory.getLogger(CreateUser.class);
 
-    public CreateUser(UserGateway userGateway, UserIdentityProvider identityProvider, EmailSender emailSender) {
+    public CreateUser(UserGateway userGateway, UserIdentityProvider identityProvider) {
         this.userGateway = userGateway;
         this.identityProvider = identityProvider;
-        this.emailSender = emailSender;
     }
 
     public User execute(CreateUserRequest request) {
@@ -47,22 +44,18 @@ public class CreateUser {
         }
 
         // Let firebase create the user and hash the password
-        this.identityProvider.createUser(
+        String firebaseUid = this.identityProvider.createUser(
                 request.firstName(), request.lastName(),
                 request.emailAddress(), request.password());
 
-        String verificationLink = this.identityProvider.generateEmailVerificationLink(request.emailAddress());
-        log.info("Verification link created successfully.");
+        User userToSave = new User(firebaseUid, request.firstName(), request.lastName(), request.emailAddress());
 
-        this.emailSender.send(request.emailAddress(),
-                "Verify your email address",
-                "Click the link below to verify your email address: " + verificationLink);
+        User createdUser = this.userGateway.createUser(userToSave);
+        log.info("User persisted successfully. userID={}, emailAddress={}", createdUser.getUserId(), createdUser.getEmailAddress());
+
+        this.identityProvider.sendVerificationEmail(request.emailAddress());
         log.info("Verification email sent to {}", request.emailAddress());
 
-        User newUser = new User(request.firstName(), request.lastName(), request.emailAddress());
-
-        this.userGateway.createUser(newUser);
-        log.info("User persisted successfully. UserID= {}, Email= {}", newUser.getUserId(), newUser.getEmailAddress());
-        return newUser;
+        return createdUser;
     }
 }

@@ -15,6 +15,6 @@ public class FirestoreTestController {
 
     @GetMapping("/firestore-test")
     public String test() {
-        return firestore != null ? "Firestore is connected" : "Firestore is NOT connected";
+        return firestore != null ? "Firestore is connected successfully." : "Firestore is NOT connected.";
     }
 }

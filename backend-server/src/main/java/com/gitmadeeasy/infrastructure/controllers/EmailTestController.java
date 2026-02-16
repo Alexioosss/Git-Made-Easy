@@ -1,6 +1,5 @@
 package com.gitmadeeasy.infrastructure.controllers;
 
-import com.gitmadeeasy.usecases.auth.EmailSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +22,7 @@ public class EmailTestController {
                 "Test Email From GitMadeEasy",
                 "Hello, World!"
         );
-        log.info("GET /email-test - Test verification email sent to= {}", "gitmadeeasy.noreply@gmail.com");
-        return "Email Sent!";
+        log.info("GET /email-test - Test verification email sent to={}", "gitmadeeasy.noreply@gmail.com");
+        return "An Email Has Been Sent!";
     }
 }

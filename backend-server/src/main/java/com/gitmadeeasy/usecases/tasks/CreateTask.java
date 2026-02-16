@@ -21,7 +21,7 @@ public class CreateTask {
 
     public Task execute(String lessonId, CreateTaskRequest request) {
         if(!this.lessonGateway.existsById(lessonId)) {
-            log.warn("CreateTask failed: lesson does not exist by id= {}", lessonId);
+            log.warn("CreateTask failed: lesson does not exist by id={}", lessonId);
             throw new LessonNotFoundWithIdException(lessonId);
         }
 

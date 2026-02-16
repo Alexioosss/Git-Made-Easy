@@ -16,7 +16,7 @@ public class GetLessonProgress {
     }
 
     public Optional<LessonProgress> execute(String userId, String lessonId) {
-        log.info("Fetching lesson progress by userID= {} and lessonID= {}", userId, lessonId);
+        log.info("Fetching lesson progress by userID={} and lessonID={}", userId, lessonId);
         return this.lessonProgressGateway.findByUserIdAndLessonId(userId, lessonId);
     }
 }

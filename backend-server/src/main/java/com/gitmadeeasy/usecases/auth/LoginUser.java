@@ -12,17 +12,27 @@ import org.slf4j.LoggerFactory;
 public class LoginUser {
     private final UserGateway userGateway;
     private final TokenGateway tokenGateway;
+    private final UserIdentityProvider identityProvider;
     private static final Logger log = LoggerFactory.getLogger(LoginUser.class);
 
-    public LoginUser(UserGateway userGateway, TokenGateway tokenGateway) {
+    public LoginUser(UserGateway userGateway, TokenGateway tokenGateway, UserIdentityProvider identityProvider) {
         this.userGateway = userGateway;
         this.tokenGateway = tokenGateway;
+        this.identityProvider = identityProvider;
     }
 
     public AuthToken execute(LoginRequest request) {
+        String firebaseUid = this.identityProvider.login(request.email(), request.password());
+        log.info("Firebase login successful for emailAddress={}", request.email());
+
         User user = this.userGateway.getUserByEmailAddress(request.email())
                 .orElseThrow(InvalidCredentialsException::new);
-        log.info("user found with emailAddress= {}", request.email());
+        log.info("user found with emailAddress={}", request.email());
+
+        // Potentially require users to be verified before login
+//        if(!this.identityProvider.isEmailVerified(firebaseUid)) {
+//            throw new EmailNotVerifiedException();
+//        }
 
         String accessToken = this.tokenGateway.generateToken(user);
         log.info("JWT Token generated successfully");

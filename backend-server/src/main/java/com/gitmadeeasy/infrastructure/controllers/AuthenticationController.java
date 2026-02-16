@@ -30,7 +30,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthToken> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
-        log.info("POST /login - Logging a user in with email address= {}", loginRequest.email());
+        log.info("POST /login - Logging a user in with email address={}", loginRequest.email());
         AuthToken authToken = loginUser.execute(loginRequest);
         log.info("User logged in successfully.");
         return ResponseEntity.ok(authToken);

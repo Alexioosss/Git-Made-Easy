@@ -20,7 +20,7 @@ public class GetTaskById {
 
     public Task execute(String lessonId, String taskId) {
         if(!this.lessonGateway.existsById(lessonId)) {
-            log.warn("GetTaskById failed: lesson does not exist by id= {}", lessonId);
+            log.warn("GetTaskById failed: lesson does not exist by id={}", lessonId);
             throw new LessonNotFoundWithIdException(lessonId);
         }
 

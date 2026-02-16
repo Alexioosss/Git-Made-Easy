@@ -30,7 +30,7 @@ public class TaskProgressController {
                                                           @Valid @RequestBody TaskAttemptRequest request) {
         log.info("POST /lessons/{}/tasks/{}/progress - Saving task attempt", lessonId, taskId);
         TaskProgress progress = this.attemptTask.attempt(principal.getName(), lessonId, taskId, request);
-        log.info("Task attempt recorded successfully. UserID= {}, taskID= {}", progress.getUserId(), progress.getTaskId());
+        log.info("Task attempt recorded successfully. UserID={}, taskID={}", progress.getUserId(), progress.getTaskId());
         return ResponseEntity.ok(progress);
     }
 

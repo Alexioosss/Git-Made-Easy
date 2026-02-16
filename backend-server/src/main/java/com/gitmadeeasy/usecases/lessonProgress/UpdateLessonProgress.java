@@ -25,7 +25,7 @@ public class UpdateLessonProgress {
     public void update(String userId, String lessonId, TaskProgress taskProgress) {
         this.lessonProgressGateway.findByUserIdAndLessonId(userId, lessonId).ifPresentOrElse(
                 existing -> { // A lesson progress already existed for the user, so update its fields
-            log.info("Lesson progress already exists. Updating existing lesson progress for userID= {}", userId);
+            log.info("Lesson progress already exists. Updating existing lesson progress for userID={}", userId);
 
             existing.setCurrentTaskProgressId(taskProgress.getTaskProgressId());
             int completed = this.taskAttemptGateway.countCompletedTasks(userId, lessonId);
@@ -34,7 +34,7 @@ public class UpdateLessonProgress {
             this.lessonProgressGateway.save(existing);
             log.info("Lesson progress updated successfully.");
         }, () -> { // If no lesson progress was found for the user for this lesson, create a new lesson progress
-            log.info("Lesson progress did not already exist. Creating new lesson progress for userID= {}", userId);
+            log.info("Lesson progress did not already exist. Creating new lesson progress for userID={}", userId);
 
             int total = this.taskGateway.countTasksInLesson(lessonId);
             LessonProgress newProgress = new LessonProgress(

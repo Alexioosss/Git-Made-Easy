@@ -32,7 +32,7 @@ public class TaskController {
                                                    @Valid @RequestBody CreateTaskRequest request) {
         log.info("POST /lessons/{}/tasks - Creating a new task", lessonId);
         Task createdTask = this.createTask.execute(lessonId, request);
-        log.info("Task created successfully. TaskID= {}", createdTask.getTaskId());
+        log.info("Task created successfully. TaskID={}", createdTask.getTaskId());
         return ResponseEntity.created(URI.create("/lessons/" + lessonId + "/tasks/" + createdTask.getTaskId()))
                 .body(this.mapper.toResponse(createdTask));
     }
@@ -40,9 +40,9 @@ public class TaskController {
     @GetMapping("/{taskId}")
     public ResponseEntity<TaskResponse> getTaskById(@PathVariable("lessonId") String lessonId,
                                             @PathVariable("taskId") String taskId) {
-        log.info("GET /lessons/{}/tasks/{} - Fetching task with taskID= {} for lessonID= {}", lessonId, taskId, taskId, lessonId);
+        log.info("GET /lessons/{}/tasks/{} - Fetching task with taskID={} for lessonID={}", lessonId, taskId, taskId, lessonId);
         Task foundTask = this.getTaskById.execute(lessonId, taskId);
-        log.info("Task found successfully. TaskID= {}", foundTask.getTaskId());
+        log.info("Task found successfully. TaskID={}", foundTask.getTaskId());
         return ResponseEntity.ok(this.mapper.toResponse(foundTask));
     }
 }

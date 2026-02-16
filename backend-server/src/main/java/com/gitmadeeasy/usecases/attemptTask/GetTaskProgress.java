@@ -21,7 +21,7 @@ public class GetTaskProgress {
 
     public Optional<TaskProgress> execute(String userId, String lessonId, String taskId) {
         if(!this.lessonGateway.existsById(lessonId)) {
-            log.warn("Lesson not found with id= {}", lessonId);
+            log.warn("Lesson not found with id={}", lessonId);
             throw new LessonNotFoundWithIdException(lessonId);
         }
         log.info("Lesson found successfully");

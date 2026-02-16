@@ -25,5 +25,7 @@ public class SecurityBeansConfiguration {
 
     // Avoid this bean from loading during test profile because it requires loading a sensitive file which is not for testing
     @Bean @Profile("!test")
-    public UserIdentityProvider userIdentityProvider() { return new FirebaseUserIdentityProvider(); }
+    public UserIdentityProvider userIdentityProvider(@Value("${firebase.api-key}") String apiKey) {
+        return new FirebaseUserIdentityProvider(apiKey);
+    }
 }

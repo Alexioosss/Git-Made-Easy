@@ -29,9 +29,8 @@ public class UseCasesConfiguration {
     // ----- User-Related Use Cases ----- //
 
     @Bean
-    public CreateUser createUserUseCase(UserGateway userGateway, UserIdentityProvider identityProvider,
-                                        EmailSender emailSender) {
-        return new CreateUser(userGateway, identityProvider, emailSender);
+    public CreateUser createUserUseCase(UserGateway userGateway, UserIdentityProvider identityProvider) {
+        return new CreateUser(userGateway, identityProvider);
     }
 
     @Bean
@@ -49,8 +48,8 @@ public class UseCasesConfiguration {
     // ----- Auth-Related Use Cases ----- //
 
     @Bean
-    public LoginUser loginUser(UserGateway userGateway, TokenGateway tokenGateway) {
-        return new LoginUser(userGateway, tokenGateway);
+    public LoginUser loginUser(UserGateway userGateway, TokenGateway tokenGateway, UserIdentityProvider identityProvider) {
+        return new LoginUser(userGateway, tokenGateway, identityProvider);
     }
 
     @Bean
