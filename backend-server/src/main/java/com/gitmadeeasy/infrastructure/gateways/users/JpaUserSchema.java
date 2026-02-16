@@ -7,6 +7,7 @@ public class JpaUserSchema {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    private String firebaseUid;
     private String firstName;
     private String lastName;
 
@@ -17,17 +18,9 @@ public class JpaUserSchema {
 
     protected JpaUserSchema() {}
 
-    public JpaUserSchema(String firstName, String lastName,
+    public JpaUserSchema(String firebaseUid, String firstName, String lastName,
                          String emailAddress, boolean isEmailVerified) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.emailAddress = emailAddress;
-        this.isEmailVerified = isEmailVerified;
-    }
-
-    public JpaUserSchema(String id, String firstName, String lastName,
-                         String emailAddress,  boolean isEmailVerified) {
-        this.id = id;
+        this.firebaseUid = firebaseUid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
@@ -37,6 +30,8 @@ public class JpaUserSchema {
     public String getId() {
         return id;
     }
+
+    public String getFirebaseUid() { return firebaseUid; }
 
     public String getFirstName() {
         return firstName;

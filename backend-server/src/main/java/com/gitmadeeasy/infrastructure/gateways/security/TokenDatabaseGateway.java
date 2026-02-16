@@ -30,7 +30,7 @@ public class TokenDatabaseGateway implements TokenGateway {
     public String generateToken(User user) {
         return Jwts.builder()
                 .setId(UUID.randomUUID().toString())
-                .setSubject(user.getUserId())
+                .setSubject(user.getEmailAddress())
                 .claim("email", user.getEmailAddress())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // Token is valid for 1 Hour

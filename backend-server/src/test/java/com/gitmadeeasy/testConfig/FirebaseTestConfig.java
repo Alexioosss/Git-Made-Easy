@@ -5,8 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-@Configuration
-@Profile("test")
+import java.util.UUID;
+
+@Configuration @Profile("test")
 public class FirebaseTestConfig {
 
     @Bean
@@ -14,17 +15,22 @@ public class FirebaseTestConfig {
         return new UserIdentityProvider() {
             @Override
             public String createUser(String firstName, String lastName, String email, String password) {
-                return "test-firebase-id";
+                return UUID.randomUUID().toString();
             }
 
             @Override
-            public String generateEmailVerificationLink(String email) {
-                return "http://email-test-link";
+            public String sendVerificationEmail(String emailAddress) {
+                return "verification-email@gmail.com";
             }
 
             @Override
             public boolean isEmailVerified(String userId) {
                 return true;
+            }
+
+            @Override
+            public String login(String emailAddress, String password) {
+                return "firebase-" + emailAddress;
             }
         };
     }

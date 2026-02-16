@@ -31,7 +31,7 @@ class RefreshTokenTest {
         String oldToken = "token", userId = "1";
         User user = new User("1", "John", "Doe", "myemail1@gmail.com", false);
         when(this.tokenGateway.getUserIdFromToken(oldToken)).thenReturn(userId);
-        when(this.userGateway.getUserById(userId)).thenReturn(Optional.of(user));
+        when(this.userGateway.getUserByEmailAddress(userId)).thenReturn(Optional.of(user));
         when(this.tokenGateway.refreshToken(user)).thenReturn("refreshed-token");
 
         // Act
@@ -48,7 +48,7 @@ class RefreshTokenTest {
         // Arrange
         String oldToken = "token", userId = "1";
         when(this.tokenGateway.getUserIdFromToken(oldToken)).thenReturn(userId);
-        when(this.userGateway.getUserById(userId)).thenReturn(Optional.empty());
+        when(this.userGateway.getUserByEmailAddress(userId)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(RuntimeException.class, () -> this.refreshToken.execute(oldToken));

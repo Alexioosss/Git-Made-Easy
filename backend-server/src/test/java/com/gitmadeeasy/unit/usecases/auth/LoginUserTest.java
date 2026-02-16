@@ -4,6 +4,7 @@ import com.gitmadeeasy.entities.security.TokenGateway;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.auth.LoginUser;
+import com.gitmadeeasy.usecases.auth.UserIdentityProvider;
 import com.gitmadeeasy.usecases.auth.dto.AuthToken;
 import com.gitmadeeasy.usecases.auth.dto.LoginRequest;
 import com.gitmadeeasy.usecases.users.exceptions.InvalidCredentialsException;
@@ -23,6 +24,7 @@ import static org.mockito.Mockito.when;
 class LoginUserTest {
     @Mock private UserGateway userGateway;
     @Mock private TokenGateway tokenGateway;
+    @Mock private UserIdentityProvider userIdentityProvider;
     @InjectMocks private LoginUser loginUser;
 
 
@@ -35,6 +37,7 @@ class LoginUserTest {
 
         when(this.userGateway.getUserByEmailAddress("myemail1@gmail.com")).thenReturn(Optional.of(user));
         when(this.tokenGateway.generateToken(user)).thenReturn("token");
+        when(this.userIdentityProvider.login("myemail1@gmail.com", "MyPassword123'")).thenReturn("firebase-myemail1@gmail.com");
 
         // Act
         AuthToken result = this.loginUser.execute(loginRequest);

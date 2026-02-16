@@ -14,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.UUID;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -121,9 +123,11 @@ class AuthenticationControllerIntegrationTest {
 
 
     private void saveMockUserInDataStore() {
+        String emailAddress = "myemail1@gmail.com";
         this.userRepository.save(new JpaUserSchema(
+               "firebase-" + emailAddress,
                         "John", "Doe",
-                        "myemail1@gmail.com",
+                        emailAddress,
                 false
         ));
         System.out.println("Mock User Saved Successfully.");

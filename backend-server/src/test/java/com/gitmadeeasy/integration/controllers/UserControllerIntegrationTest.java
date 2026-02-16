@@ -1,6 +1,5 @@
 package com.gitmadeeasy.integration.controllers;
 
-import com.gitmadeeasy.infrastructure.gateways.users.JpaUserSchema;
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.jpa.JpaUserRepository;
 import com.gitmadeeasy.testConfig.FirebaseTestConfig;
 import com.gitmadeeasy.testUtil.JsonUtil;
@@ -50,7 +49,7 @@ class UserControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonUtil.objectToJson(request)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isEmpty())
+                .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.firstName").value("John"))
                 .andExpect(jsonPath("$.lastName").value("Doe"))
                 .andExpect(jsonPath("$.emailAddress").value("myemail1@gmail.com"));
@@ -131,12 +130,15 @@ class UserControllerIntegrationTest {
     // ----- HELPER METHODS ----- //
 
 
-    private String createUserAndReturnUserId() {
-        JpaUserSchema userSchema = new JpaUserSchema(
-                "John", "Doe",
-                "myemail1@gmail.com",
-                false);
-        return this.userRepository.save(userSchema).getId();
+    private String createUserAndReturnUserId() throws Exception {
+        CreateUserRequest request = new CreateUserRequest(
+                "John", "Doe", "myemail1@gmail.com", "MyPassword123'");
+
+        String response = this.mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.objectToJson(request)))
+                .andReturn().getResponse().getContentAsString();
+        return JsonUtil.readJson(response, "id");
     }
 
     private static Stream<Arguments> provideInvalidUserRequest() {

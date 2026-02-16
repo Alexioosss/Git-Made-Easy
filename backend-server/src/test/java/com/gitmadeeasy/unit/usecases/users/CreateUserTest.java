@@ -22,14 +22,12 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CreateUserTest {
     @Mock private UserGateway userGateway;
     @Mock private UserIdentityProvider identityProvider;
-    @Mock private EmailSender emailSender;
     @InjectMocks private CreateUser createUser;
 
     private static final String USER_ID = "user-123";
@@ -40,24 +38,23 @@ class CreateUserTest {
     void execute_WhenValidPayload_ReturnsCreatedUser() {
         // Arrange
         CreateUserRequest request = provideValidUserRequest();
+        User user = new User(USER_ID, "John", "Doe", "myemail1@gmail.com");
 
         when(this.userGateway.existsByEmailAddress(request.emailAddress())).thenReturn(false);
         when(this.identityProvider.createUser(
                 request.firstName(), request.lastName(),
                 request.emailAddress(), request.password())).thenReturn(USER_ID);
+        when(this.userGateway.createUser(any(User.class))).thenReturn(user);
+        when(this.identityProvider.sendVerificationEmail(anyString())).thenReturn("test-verification-email@gmail.com");
 
         // Act
         User result = this.createUser.execute(request);
 
         // Assert
-        assertEquals("Alessio", result.getFirstName());
-        assertEquals("Cocuzza", result.getLastName());
+        assertEquals("John", result.getFirstName());
+        assertEquals("Doe", result.getLastName());
         assertEquals("myemail1@gmail.com", result.getEmailAddress());
         verify(this.userGateway).createUser(any(User.class));
-        verify(this.emailSender).send(
-                eq("myemail1@gmail.com"),
-                eq("Verify your email address"),
-                anyString());
     }
 
     @Test
