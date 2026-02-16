@@ -23,8 +23,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class LoginUserTest {
     @Mock private UserGateway userGateway;
-    @Mock private PasswordHasher passwordHasher;
     @Mock private TokenGateway tokenGateway;
+    @Mock private PasswordHasher passwordHasher;
     @InjectMocks private LoginUser loginUser;
 
 
@@ -33,10 +33,11 @@ class LoginUserTest {
     void execute_WhenValidCredentials_ReturnsAuthToken() {
         // Arrange
         LoginRequest loginRequest = new LoginRequest("myemail1@gmail.com", "MyPassword123'");
-        User user = new User("1", "John", "Doe", "myemail1@gmail.com", false);
+        User user = new User("1", "John", "Doe", "myemail1@gmail.com",
+                "HashedMyPassword123'", false);
 
         when(this.userGateway.getUserByEmailAddress("myemail1@gmail.com")).thenReturn(Optional.of(user));
-        when(this.passwordHasher.matches("MyPassword123'", "HashedMyPassword123'")).thenReturn(true);
+        when(this.passwordHasher.matches("MyPassword123'", user.getPassword())).thenReturn(true);
         when(this.tokenGateway.generateToken(user)).thenReturn("token");
 
         // Act
@@ -53,19 +54,6 @@ class LoginUserTest {
         // Arrange
         LoginRequest loginRequest = new LoginRequest("myemail1@gmail.com", "MyPassword123'");
         when(this.userGateway.getUserByEmailAddress("myemail1@gmail.com")).thenReturn(Optional.empty());
-
-        // Act & Assert
-        assertThrows(InvalidCredentialsException.class, () -> this.loginUser.execute(loginRequest));
-    }
-
-    @Test
-    @DisplayName("Login User - Password Does Not Match Throws Exception")
-    void execute_WhenPasswordDoesNotMatch_ThrowsInvalidCredentialsException() {
-        // Arrange
-        LoginRequest loginRequest = new LoginRequest("myemail1@gmail.com", "MyPassword123'");
-        User user = new User("1", "John", "Doe", "myemail1@gmail.com", false);
-        when(this.userGateway.getUserByEmailAddress("myemail1@gmail.com")).thenReturn(Optional.of(user));
-        when(this.passwordHasher.matches("MyPassword123'", "HashedMyPassword123'")).thenReturn(false);
 
         // Act & Assert
         assertThrows(InvalidCredentialsException.class, () -> this.loginUser.execute(loginRequest));

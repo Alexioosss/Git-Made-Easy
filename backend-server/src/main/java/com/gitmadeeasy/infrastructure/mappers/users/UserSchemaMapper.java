@@ -23,6 +23,7 @@ public class UserSchemaMapper {
                 schema.getFirstName(),
                 schema.getLastName(),
                 schema.getEmailAddress(),
+                schema.getPassword(),
                 schema.isEmailVerified()
         );
     }

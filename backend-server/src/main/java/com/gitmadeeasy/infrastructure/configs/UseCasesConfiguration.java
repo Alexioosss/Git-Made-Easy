@@ -47,8 +47,8 @@ public class UseCasesConfiguration {
     // ----- Auth-Related Use Cases ----- //
 
     @Bean
-    public LoginUser loginUser(UserGateway userGateway, TokenGateway tokenGateway) {
-        return new LoginUser(userGateway, tokenGateway);
+    public LoginUser loginUser(UserGateway userGateway, TokenGateway tokenGateway, PasswordHasher passwordHasher) {
+        return new LoginUser(userGateway, tokenGateway, passwordHasher);
     }
 
     @Bean

@@ -21,8 +21,4 @@ public class GetUserByEmail {
         user.setEmailVerified(verified);
         return user;
     }
-
-    public UserIdentityProvider getIdentityProvider() {
-        return identityProvider;
-    }
 }

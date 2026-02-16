@@ -43,7 +43,7 @@ public class CreateUser {
         }
 
         // Let firebase create the user, hashing the password and verifying the email via email verification link
-        String firebaseId = this.identityProvider.createUser(
+        this.identityProvider.createUser(
                 request.firstName(), request.lastName(),
                 request.emailAddress(), request.password());
         String hashedPassword = passwordHasher.hash(request.password());
@@ -52,8 +52,8 @@ public class CreateUser {
                 "Click the link to verify your email: " + verificationLink);
 
         User newUser = new User(
-                firebaseId, request.firstName(),
-                request.lastName(), request.emailAddress(), false);
+                request.firstName(), request.lastName(),
+                request.emailAddress(), false);
 
         this.userGateway.createUser(newUser, hashedPassword);
         return newUser;
