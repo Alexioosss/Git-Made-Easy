@@ -6,34 +6,23 @@ import com.gitmadeeasy.infrastructure.gateways.users.JpaUserSchema;
 
 public class UserSchemaMapper {
 
-    public JpaUserSchema toJpaSchema(User user, String hashedPassword) {
+    public JpaUserSchema toJpaSchema(User user) {
         return new JpaUserSchema(
-                user.getUserId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmailAddress(),
-                hashedPassword,
-                user.isEmailVerified()
-        );
+                user.getUserId(), user.getFirstName(),
+                user.getLastName(), user.getEmailAddress(),
+                user.isEmailVerified());
     }
 
     public User fromJpaSchema(JpaUserSchema schema) {
         return new User(
-                schema.getId(),
-                schema.getFirstName(),
-                schema.getLastName(),
-                schema.getEmailAddress(),
-                schema.getPassword(),
-                schema.isEmailVerified()
-        );
+                schema.getId(), schema.getFirstName(), schema.getLastName(),
+                schema.getEmailAddress(), schema.isEmailVerified());
     }
 
-    public FirebaseUserSchema toFirebaseSchema(User user, String hashedPassword) {
+    public FirebaseUserSchema toFirebaseSchema(User user) {
         FirebaseUserSchema schema = new FirebaseUserSchema(
                 user.getFirstName(), user.getLastName(),
-                user.getEmailAddress(), hashedPassword,
-                user.isEmailVerified()
-        );
+                user.getEmailAddress(), user.isEmailVerified());
         schema.setId(user.getUserId());
         return schema;
     }

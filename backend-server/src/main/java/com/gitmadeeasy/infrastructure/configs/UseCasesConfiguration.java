@@ -29,8 +29,8 @@ public class UseCasesConfiguration {
 
     @Bean
     public CreateUser createUserUseCase(UserGateway userGateway, UserIdentityProvider identityProvider,
-                                        PasswordHasher passwordHasher, EmailSender emailSender) {
-        return new CreateUser(userGateway, identityProvider, passwordHasher, emailSender);
+                                        EmailSender emailSender) {
+        return new CreateUser(userGateway, identityProvider, emailSender);
     }
 
     @Bean

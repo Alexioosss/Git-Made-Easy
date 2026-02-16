@@ -23,27 +23,25 @@ class JpaUserDatabaseGatewayTest {
     @Mock private UserSchemaMapper userSchemaMapper;
     @InjectMocks private JpaUserDatabaseGateway jpaUserDatabaseGateway;
 
-    private static final String HASHED_PASSWORD = "HashedMyPassword123'";
-
 
     @Test
     @DisplayName("Create User - Valid User Is Saved And Returned")
     void createUser_WhenUserDoesNotExistAlready_ReturnsUser() {
         // Arrange
-        User user = provideUser();
-        JpaUserSchema userSchema = provideUserSchema();
-        when(this.userSchemaMapper.toJpaSchema(user, HASHED_PASSWORD)).thenReturn(userSchema);
+        User user = provideUserWithId();
+        JpaUserSchema userSchema = provideUserSchemaWithId();
+        when(this.userSchemaMapper.toJpaSchema(user)).thenReturn(userSchema);
         when(this.jpaUserRepository.save(userSchema)).thenReturn(userSchema);
         when(this.userSchemaMapper.fromJpaSchema(userSchema)).thenReturn(user);
 
         // Act
-        User createdUser = this.jpaUserDatabaseGateway.createUser(user, HASHED_PASSWORD);
+        User createdUser = this.jpaUserDatabaseGateway.createUser(user);
 
         // Assert
         assertNotNull(createdUser);
         assertEquals(user.getUserId(), createdUser.getUserId());
         verify(this.jpaUserRepository).save(userSchema);
-        verify(this.userSchemaMapper).toJpaSchema(user, HASHED_PASSWORD);
+        verify(this.userSchemaMapper).toJpaSchema(user);
         verify(this.userSchemaMapper).fromJpaSchema(userSchema);
     }
 
@@ -51,21 +49,21 @@ class JpaUserDatabaseGatewayTest {
     @DisplayName("Create User - Repository Throws An Exception / Fails")
     void createUser_WhenRepositoryFails_ThrowsException() {
         // Arrange
-        User user = provideUser();
-        JpaUserSchema userSchema = provideUserSchema();
-        when(this.userSchemaMapper.toJpaSchema(user, HASHED_PASSWORD)).thenReturn(userSchema);
+        User user = provideUserWithId();
+        JpaUserSchema userSchema = provideUserSchemaWithId();
+        when(this.userSchemaMapper.toJpaSchema(user)).thenReturn(userSchema);
         when(this.jpaUserRepository.save(userSchema)).thenThrow(new RuntimeException("Database error"));
 
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> this.jpaUserDatabaseGateway.createUser(user, HASHED_PASSWORD));
+        assertThrows(RuntimeException.class, () -> this.jpaUserDatabaseGateway.createUser(user));
     }
 
     @Test
     @DisplayName("Get User By ID - User Exists / Found")
     void getUserById_WhenUserExists_ReturnsUser() {
         // Arrange
-        JpaUserSchema userSchema = provideUserSchema();
-        User user = provideUser();
+        JpaUserSchema userSchema = provideUserSchemaWithId();
+        User user = provideUserWithId();
         final String userId = "1";
         when(this.jpaUserRepository.findById(userId)).thenReturn(Optional.of(userSchema));
         when(this.userSchemaMapper.fromJpaSchema(userSchema)).thenReturn(user);
@@ -99,7 +97,7 @@ class JpaUserDatabaseGatewayTest {
     void getUserByEmail_WhenUserExists_ReturnsUser() {
         // Arrange
         final String email = "test@test.com";
-        JpaUserSchema schema = new JpaUserSchema("1", "Alessio", "Cocuzza", email, "HashedMyPassword123'", false);
+        JpaUserSchema schema = new JpaUserSchema("1", "Alessio", "Cocuzza", email, false);
         User user = new User("Alessio", "Cocuzza", email);
         when(jpaUserRepository.findByEmailAddress(email)).thenReturn(Optional.of(schema));
         when(userSchemaMapper.fromJpaSchema(schema)).thenReturn(user);
@@ -161,11 +159,11 @@ class JpaUserDatabaseGatewayTest {
     // ----------  HELPER METHODS FOR PARAMETERISED TESTS ---------- //
 
 
-    private static User provideUser() {
+    private static User provideUserWithId() {
         return new User("1", "Alessio", "Cocuzza", "myemail1@gmail.com", false);
     }
 
-    private static JpaUserSchema provideUserSchema() {
-        return new JpaUserSchema("1", "Alessio", "Cocuzza", "myemail1@gmail.com", "HashedMyPassword123'", false);
+    private static JpaUserSchema provideUserSchemaWithId() {
+        return new JpaUserSchema("1", "Alessio", "Cocuzza", "myemail1@gmail.com", false);
     }
 }

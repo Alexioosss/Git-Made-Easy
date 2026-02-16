@@ -17,9 +17,9 @@ public class FirebaseUserDatabaseGateway implements UserGateway {
     }
 
     @Override
-    public User createUser(User newUser, String hashedPassword) {
+    public User createUser(User newUser) {
         return this.mapper.fromFirebaseSchema(
-                this.firebase.save(this.mapper.toFirebaseSchema(newUser, hashedPassword))
+                this.firebase.save(this.mapper.toFirebaseSchema(newUser))
         );
     }
 

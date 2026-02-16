@@ -64,8 +64,7 @@ class UserControllerIntegrationTest {
         // Arrange
         createUserAndReturnUserId();
         CreateUserRequest request = new CreateUserRequest(
-                "John", "Doe", "myemail1@gmail.com", "MyPassword123'"
-        );
+                "John", "Doe", "myemail1@gmail.com", "MyPassword123'");
 
         // Act & Assert
         this.mockMvc.perform(post("/users")
@@ -137,7 +136,7 @@ class UserControllerIntegrationTest {
     private String createUserAndReturnUserId() {
         JpaUserSchema userSchema = new JpaUserSchema(
                 "John", "Doe",
-                "myemail1@gmail.com", passwordHasher.hash("MyPassword123'"),
+                "myemail1@gmail.com",
                 false);
         return this.userRepository.save(userSchema).getId();
     }
