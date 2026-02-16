@@ -1,5 +1,6 @@
 import Link from "next/link";
-import type { Lesson, LessonProgress } from "@/lib/types";
+import { Lesson } from "@/types/lesson";
+import { LessonProgress } from "@/types/progress";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ArrowRight, CheckCircle2 } from "lucide-react";

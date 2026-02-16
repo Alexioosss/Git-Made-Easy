@@ -1,45 +1,43 @@
 "use client"
 
-import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AppConfig } from "@/config/AppConfig";
+import { Gateways } from "@/config/Gateways";
 import { GitBranch, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function RegisterForm() {
-    const router = useRouter();
+  const router = useRouter();
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [emailAddress, setEmailAddress] = useState("");
-    const [password, setPassword] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [emailAddress, setEmailAddress] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-    const userGateway = AppConfig.instance.userGateway;
+  const userGateway = Gateways.instance.userGateway;
 
-    async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
-        e.preventDefault();
-        setError("");
-        setIsLoading(true);
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+      e.preventDefault();
+      setError("");
+      setIsLoading(true);
 
-        try {
-            await userGateway.register(firstName, lastName, emailAddress, password);
-            setTimeout(() => router.push("/dashboard"), 5000);
-        } catch(error: any) { setError(error.message || "Something went wrong"); }
-        finally { setIsLoading(false); }
-    }
+      try {
+          await userGateway.register(firstName, lastName, emailAddress, password);
+          setTimeout(() => router.push("/dashboard"), 5000);
+      } catch(error: any) { setError(error.message || "Something went wrong"); }
+      finally { setIsLoading(false); }
+  }
 
-    return (
-        <div className="min-h-screen bg-background flex flex-col">
-      <SiteHeader />
-      <main className="flex-1 flex items-center justify-center px-4">
-        <div className="w-full max-w-2xl bg-card p-14 rounded-xl shadow text-xl space-y-10">
-          <div className="mb-8 text-center">
+  return (
+    <div className="min-h-screen bg-background flex flex-col">
+      <div className="flex justify-center px-4 py-6">
+        <div className="w-full max-w-xl bg-card px-6 pt-6 pb-4 rounded-xl shadow text-lg space-y-3">
+          <div className="mb-6 text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-primary">
               <GitBranch className="h-8 w-8 text-primary-foreground" />
             </div>
@@ -58,14 +56,14 @@ export default function RegisterForm() {
                   First Name
                 </Label>
                 <Input id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)}
-                  placeholder="John" required className="bg-secondary text-foreground h-14 text-xl px-4 placeholder:text-xl" />
+                  placeholder="John" required className="bg-secondary text-foreground h-11 text-lg px-3 placeholder:text-lg" />
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="lastName" className="text-foreground text-xl">
                   Last Name
                 </Label>
                 <Input id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)}
-                  placeholder="Doe" required className="bg-secondary text-foreground h-14 text-xl px-4 placeholder:text-xl" />
+                  placeholder="Doe" required className="bg-secondary text-foreground h-11 text-lg px-3 placeholder:text-lg" />
               </div>
             </div>
 
@@ -74,7 +72,7 @@ export default function RegisterForm() {
                 Email Address
               </Label>
               <Input id="email" type="email" value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)}
-                placeholder="you@example.com" required className="bg-secondary text-foreground h-14 text-xl px-4 placeholder:text-xl" />
+                placeholder="you@example.com" required className="bg-secondary text-foreground h-11 text-lg px-3 placeholder:text-lg" />
             </div>
 
             <div className="flex flex-col gap-2">
@@ -82,7 +80,7 @@ export default function RegisterForm() {
                 Password
               </Label>
               <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}
-              placeholder="Create a password" required minLength={8} className="bg-secondary text-foreground h-14 text-xl px-4 placeholder:text-xl" />
+              placeholder="Create a password" required minLength={8} className="bg-secondary text-foreground h-11 text-lg px-3 placeholder:text-lg" />
             </div>
 
             {error && <p className="text-xl text-destructive">{error}</p>}
@@ -106,7 +104,7 @@ export default function RegisterForm() {
             </Link>
           </p>
         </div>
-      </main>
+      </div>
     </div>
-    );
+  );
 }

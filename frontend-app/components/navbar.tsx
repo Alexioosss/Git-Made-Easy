@@ -2,21 +2,22 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { GitBranch, User, LogOut, LayoutDashboard, Menu, X } from "lucide-react";
 
-export function SiteHeader() {
-  const { user, isAuthenticated, logout } = useAuth();
+export function Navbar() {
+  const isAuthenticated = false;
+  const user = { firstName: "John" };
+  const logout = () => { console.log("Logging out..."); };
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:h-16">
         <Link href="/" title="Go to home page" className="flex items-center gap-2">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary">
-            <GitBranch className="h-6 w-6 text-primary-foreground" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
+            <GitBranch className="h-7 w-7 text-primary-foreground" />
           </div>
           <span className="text-base font-semibold text-foreground sm:text-2xl">
             GitMadeEasy
@@ -25,7 +26,7 @@ export function SiteHeader() {
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-6 md:flex">
-          <Link href="/lessons" className="text-2xl text-muted-foreground transition-colors hover:text-foreground hover:scale-125 transition-transform duration-300">
+          <Link href="/lessons" title="View all lessons" className="text-2xl text-foreground transition-colors hover:text-foreground hover:scale-125 transition-transform duration-300">
             Lessons
           </Link>
           {isAuthenticated && (
@@ -64,10 +65,10 @@ export function SiteHeader() {
             </DropdownMenu>
           ) : (
             <div className="hidden items-center gap-2 sm:flex">
-              <Button asChild className="text-xl px-5 py-2 hover:text-white transition-colors duration-400">
+              <Button asChild className="text-xl px-5 py-2 hover:text-white transition-colors duration-400" title="Sign in to your account">
                 <Link href="/login">Sign In</Link>
               </Button>
-              <Button asChild className="text-xl px-5 py-2 hover:text-white transition-colors duration-400">
+              <Button asChild className="text-xl px-5 py-2 hover:text-white transition-colors duration-400" title="Create a new account">
                 <Link href="/register">Get Started</Link>
               </Button>
             </div>

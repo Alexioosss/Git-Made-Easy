@@ -2,8 +2,7 @@
 
 import { useState, useCallback, useMemo } from "react";
 import Link from "next/link";
-import type { Lesson } from "@/lib/types";
-import { useAuth } from "@/lib/auth-context";
+import { Lesson } from "@/types/lesson";
 import { mockTaskProgress } from "@/lib/mock-data";
 import { TaskItem } from "@/components/lessons/task-item";
 import { Progress } from "@/components/ui/progress";
@@ -16,7 +15,7 @@ interface TaskListProps {
 }
 
 export function TaskList({ lesson, nextLesson }: TaskListProps) {
-  const { isAuthenticated } = useAuth();
+  const isAuthenticated = false;
   const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
 
   // Track which tasks were completed during this session

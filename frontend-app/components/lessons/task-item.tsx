@@ -3,8 +3,7 @@
 import React from "react";
 
 import { useState, useCallback } from "react";
-import type { Task } from "@/lib/types";
-import { useAuth } from "@/lib/auth-context";
+import { Task } from "@/types/task";
 import { mockTaskProgress } from "@/lib/mock-data";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,7 +32,7 @@ export function TaskItem({
   onToggle,
   onComplete,
 }: TaskItemProps) {
-  const { isAuthenticated } = useAuth();
+  const isAuthenticated = false;
   const [answer, setAnswer] = useState("");
   const [feedback, setFeedback] = useState<{
     type: "success" | "error";

@@ -6,12 +6,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  devIndicators: {
-    icon: false,
-  },
-  env: {
-    NEXT_PUBLIC_API_URL: "http://localhost:8080/"
-  }
+  devIndicators: false
 }
 
 export default nextConfig
