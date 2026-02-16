@@ -16,8 +16,8 @@ public class TaskAttemptSchemaMapper {
                 entity.getStartedAt(), entity.getCompletedAt(), task);
     }
 
-    public JpaTaskAttemptSchema updateSchemaFromEntity(JpaTaskAttemptSchema existing, TaskProgress entity,
-                                                       JpaTaskSchema task) {
+    public JpaTaskAttemptSchema updateSchemaFromEntity(JpaTaskAttemptSchema existing,
+                                                       TaskProgress entity, JpaTaskSchema task) {
         existing.setTask(task);
         existing.setStatus(entity.getStatus());
         existing.setAttempts(entity.getAttempts());
@@ -27,6 +27,10 @@ public class TaskAttemptSchemaMapper {
         existing.setCompletedAt(entity.getCompletedAt());
         return existing;
     }
+
+
+
+    // ----- Firebase-Related Mapping ----- //
 
     public TaskProgress toEntity(JpaTaskAttemptSchema schema) {
         return new TaskProgress(

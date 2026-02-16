@@ -6,10 +6,13 @@ import com.gitmadeeasy.entities.tasks.TaskGateway;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonNotFoundWithIdException;
 import com.gitmadeeasy.usecases.tasks.dto.CreateTaskRequest;
 import com.gitmadeeasy.usecases.validation.exceptions.MissingRequiredFieldException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CreateTask {
     private final TaskGateway taskGateway;
     private final LessonGateway lessonGateway;
+    private static final Logger log = LoggerFactory.getLogger(CreateTask.class);
 
     public CreateTask(TaskGateway taskGateway, LessonGateway lessonGateway) {
         this.taskGateway = taskGateway;
@@ -17,31 +20,33 @@ public class CreateTask {
     }
 
     public Task execute(String lessonId, CreateTaskRequest request) {
-        if(!this.lessonGateway.existsById(lessonId)) { throw new LessonNotFoundWithIdException(lessonId); }
+        if(!this.lessonGateway.existsById(lessonId)) {
+            log.warn("CreateTask failed: lesson does not exist by id= {}", lessonId);
+            throw new LessonNotFoundWithIdException(lessonId);
+        }
 
         if(request.title() == null || request.title().isBlank()) {
+            log.warn("CreateTask failed: missing title field from request");
             throw new MissingRequiredFieldException("task title cannot be left blank");
         }
 
         if(request.content() == null || request.content().isBlank()) {
+            log.warn("CreateTask failed: missing content field from request");
             throw new MissingRequiredFieldException("task content cannot be left blank");
         }
 
         if(request.expectedCommand() == null || request.expectedCommand().isBlank()) {
+            log.warn("CreateTask failed: missing expectedCommand field from request");
             throw new MissingRequiredFieldException("expected command cannot be left blank");
         }
 
         Integer taskOrder = request.taskOrder() != null ? request.taskOrder() :
                 this.taskGateway.getNextTaskOrderForLesson(lessonId);
+        log.info("Task order has been produced for current task");
 
         Task newTask = new Task(
-                lessonId,
-                request.title(),
-                request.content(),
-                request.expectedCommand(),
-                request.hint(),
-                taskOrder
-        );
+                lessonId, request.title(), request.content(),
+                request.expectedCommand(), request.hint(), taskOrder);
 
         return this.taskGateway.createTask(newTask);
     }

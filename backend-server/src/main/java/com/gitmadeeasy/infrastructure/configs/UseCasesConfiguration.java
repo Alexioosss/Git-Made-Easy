@@ -24,6 +24,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UseCasesConfiguration {
 
+
+
     // ----- User-Related Use Cases ----- //
 
     @Bean
@@ -43,6 +45,7 @@ public class UseCasesConfiguration {
     }
 
 
+
     // ----- Auth-Related Use Cases ----- //
 
     @Bean
@@ -57,6 +60,7 @@ public class UseCasesConfiguration {
     public RefreshToken refreshToken(UserGateway userGateway, TokenGateway tokenGateway) {
         return new RefreshToken(userGateway, tokenGateway);
     }
+
 
 
     // ----- Lesson-Related Use Cases ----- //

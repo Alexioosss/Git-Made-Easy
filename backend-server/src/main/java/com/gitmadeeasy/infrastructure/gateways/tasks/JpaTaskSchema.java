@@ -19,7 +19,7 @@ public class JpaTaskSchema {
     private Integer taskOrder;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<JpaTaskAttemptSchema> attempts = new ArrayList<>();
+    private final List<JpaTaskAttemptSchema> attempts = new ArrayList<>();
 
     protected JpaTaskSchema() {}
 

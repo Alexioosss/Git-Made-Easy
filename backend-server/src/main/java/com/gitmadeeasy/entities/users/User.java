@@ -51,6 +51,17 @@ public class User {
     public void setEmailVerified(boolean emailVerified) { isEmailVerified = emailVerified; }
 
     @Override
+    public String toString() {
+        return "User{" +
+                "id='" + userId + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", isEmailVerified=" + isEmailVerified +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if(o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
@@ -62,16 +73,5 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(firstName, lastName, emailAddress);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + userId + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", emailAddress='" + emailAddress + '\'' +
-                ", isEmailVerified=" + isEmailVerified +
-                '}';
     }
 }

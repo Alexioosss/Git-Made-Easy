@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Configuration;
 public class EmailBeanConfiguration {
 
     @Bean
-    public EmailSender emailSender(@Value("${smtp.host}") String host, @Value("${smtp.port}") int port,
-                                   @Value("${smtp.username}") String username,
-                                   @Value("${smtp.password}") String password,
-                                   @Value("${smtp.from}") String fromAddress) {
+    public EmailSender emailSender(
+            @Value("${smtp.host}") String host, @Value("${smtp.port}") int port,
+            @Value("${smtp.username}") String username, @Value("${smtp.password}") String password,
+            @Value("${smtp.from}") String fromAddress) {
         return new SmtpEmailSender(host, port, username, password, fromAddress);
     }
 }

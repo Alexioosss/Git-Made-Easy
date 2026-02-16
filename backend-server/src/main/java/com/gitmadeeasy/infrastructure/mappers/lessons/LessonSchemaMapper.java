@@ -24,6 +24,10 @@ public class LessonSchemaMapper {
         );
     }
 
+
+
+    // ----- Firebase-Related Mapping ----- //
+
     public FirebaseLessonSchema toFirebaseSchema(Lesson lesson) {
         FirebaseLessonSchema schema = new FirebaseLessonSchema(
                 lesson.getTitle(), lesson.getDescription(),

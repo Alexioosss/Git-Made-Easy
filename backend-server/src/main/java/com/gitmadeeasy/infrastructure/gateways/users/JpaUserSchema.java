@@ -4,11 +4,15 @@ import jakarta.persistence.*;
 
 @Entity @Table(name = "users")
 public class JpaUserSchema {
-    @Id @GeneratedValue(strategy = GenerationType.UUID) private String id;
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
     private String firstName;
     private String lastName;
+
     @Column(name = "email_address", unique = true)
     private String emailAddress;
+
     private boolean isEmailVerified;
 
     protected JpaUserSchema() {}

@@ -3,6 +3,7 @@ package com.gitmadeeasy.entities.taskAttempts;
 import com.gitmadeeasy.entities.tasks.Task;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class TaskProgress {
     private String taskProgressId;
@@ -143,5 +144,25 @@ public class TaskProgress {
                 ", startedAt=" + startedAt +
                 ", completedAt=" + completedAt +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || getClass() != o.getClass()) return false;
+        TaskProgress that = (TaskProgress) o;
+        return attempts == that.attempts &&
+                Objects.equals(taskProgressId, that.taskProgressId) &&
+                Objects.equals(userId, that.userId) &&
+                Objects.equals(taskId, that.taskId) &&
+                status == that.status &&
+                Objects.equals(lastInput, that.lastInput) &&
+                Objects.equals(lastError, that.lastError) &&
+                Objects.equals(startedAt, that.startedAt) &&
+                Objects.equals(completedAt, that.completedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(taskProgressId, userId, taskId, status, attempts, lastInput, lastError, startedAt, completedAt);
     }
 }

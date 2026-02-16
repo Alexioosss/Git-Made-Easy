@@ -23,6 +23,10 @@ public class LessonProgressSchemaMapper {
                 schema.getCurrentTaskProgressId(), schema.getCompletedTasksCount(), schema.getTotalTasksCount());
     }
 
+
+
+    // ----- Firebase-Related Mapping ----- //
+
     public FirebaseLessonProgressSchema toFirebaseSchema(LessonProgress lessonProgress) {
         FirebaseLessonProgressSchema schema = new FirebaseLessonProgressSchema(
                 lessonProgress.getUserId(), lessonProgress.getLessonId(),

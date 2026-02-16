@@ -1,5 +1,7 @@
 package com.gitmadeeasy.entities.lessonProgress;
 
+import java.util.Objects;
+
 public class LessonProgress {
     private String lessonProgressId;
     private final String userId;
@@ -61,5 +63,34 @@ public class LessonProgress {
 
     public void setCurrentTaskProgressId(String currentTaskProgressId) {
         this.currentTaskProgressId = currentTaskProgressId;
+    }
+
+    @Override
+    public String toString() {
+        return "LessonProgress{" +
+                "lessonProgressId='" + lessonProgressId + '\'' +
+                ", userId='" + userId + '\'' +
+                ", lessonId='" + lessonId + '\'' +
+                ", currentTaskProgressId='" + currentTaskProgressId + '\'' +
+                ", completedTasksCount=" + completedTasksCount +
+                ", totalTasksCount=" + totalTasksCount +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || getClass() != o.getClass()) return false;
+        LessonProgress that = (LessonProgress) o;
+        return Objects.equals(lessonProgressId, that.lessonProgressId) &&
+                Objects.equals(userId, that.userId) &&
+                Objects.equals(lessonId, that.lessonId) &&
+                Objects.equals(currentTaskProgressId, that.currentTaskProgressId) &&
+                Objects.equals(completedTasksCount, that.completedTasksCount) &&
+                Objects.equals(totalTasksCount, that.totalTasksCount);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lessonProgressId, userId, lessonId, currentTaskProgressId, completedTasksCount, totalTasksCount);
     }
 }

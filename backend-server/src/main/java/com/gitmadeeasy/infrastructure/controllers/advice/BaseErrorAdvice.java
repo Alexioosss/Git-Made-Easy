@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
  */
 public abstract class BaseErrorAdvice {
     protected ResponseEntity<ApiError> buildError(HttpStatus httpStatus, String code, String message) {
-        return ResponseEntity.status(httpStatus)
-                .body(ApiError.buildError(code, message, httpStatus.value()));
+        return ResponseEntity.status(httpStatus).body(ApiError.buildError(code, message, httpStatus.value()));
     }
 }

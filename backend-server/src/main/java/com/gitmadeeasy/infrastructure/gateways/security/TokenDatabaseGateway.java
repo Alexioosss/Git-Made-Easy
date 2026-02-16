@@ -16,14 +16,14 @@ import java.util.UUID;
 
 public class TokenDatabaseGateway implements TokenGateway {
     private final String secret;
-    private Key key;
+    private static Key key;
     private static final Set<String> tokensBlacklist = new HashSet<>();
 
     public TokenDatabaseGateway(String secret) { this.secret = secret; }
 
     @PostConstruct
     public void init() {
-        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
     @Override

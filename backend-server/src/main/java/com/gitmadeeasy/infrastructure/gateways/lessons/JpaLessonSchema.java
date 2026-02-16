@@ -9,11 +9,13 @@ import java.util.List;
 
 @Entity @Table(name = "lessons")
 public class JpaLessonSchema {
-    @Id @GeneratedValue(strategy = GenerationType.UUID) private String id;
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
     private String title;
     private String description;
-    @Enumerated(EnumType.STRING)
-    private LessonDifficulty difficulty;
+
+    @Enumerated(EnumType.STRING) private LessonDifficulty difficulty;
     @Transient private List<JpaTaskSchema> tasks = new ArrayList<>();
 
     protected JpaLessonSchema() {}

@@ -18,32 +18,27 @@ import org.springframework.context.annotation.Profile;
 public class RepositoriesConfiguration {
 
     // Firebase Repositories (dev profile)
-    @Bean
-    @Profile("dev")
+    @Bean @Profile("dev")
     public FirebaseUserRepository firebaseUserRepository(Firestore firestore) {
         return new FirebaseUserRepository(firestore);
     }
 
-    @Bean
-    @Profile("dev")
+    @Bean @Profile("dev")
     public FirebaseLessonRepository firebaseLessonRepository(Firestore firestore, LessonSchemaMapper mapper) {
         return new FirebaseLessonRepository(firestore);
     }
 
-    @Bean
-    @Profile("dev")
+    @Bean @Profile("dev")
     public FirebaseTaskRepository firebaseTaskRepository(Firestore firestore, TaskSchemaMapper taskSchemaMapper) {
         return new FirebaseTaskRepository(firestore);
     }
 
-    @Bean
-    @Profile("dev")
+    @Bean @Profile("dev")
     public FirebaseTaskAttemptRepository firebaseTaskAttemptRepository(Firestore firestore, TaskAttemptSchemaMapper mapper) {
         return new FirebaseTaskAttemptRepository(firestore);
     }
 
-    @Bean
-    @Profile("dev")
+    @Bean @Profile("dev")
     public FirebaseLessonProgressRepository firebaseLessonProgressRepository(Firestore firestore, LessonProgressSchemaMapper mapper) {
         return new FirebaseLessonProgressRepository(firestore);
     }

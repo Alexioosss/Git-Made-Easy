@@ -14,8 +14,7 @@ public class FirebaseUserIdentityProvider implements UserIdentityProvider {
                 .setDisplayName(firstName + " " + lastName)
                 .setEmailVerified(false);
         try {
-            UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
-            return userRecord.getUid();
+            return FirebaseAuth.getInstance().createUser(request).getUid();
         } catch(Exception e) {
             throw new RuntimeException("Failed to create Firebase user: " + e.getMessage(), e);
         }
@@ -33,8 +32,7 @@ public class FirebaseUserIdentityProvider implements UserIdentityProvider {
     @Override
     public boolean isEmailVerified(String userId) {
         try {
-            UserRecord userRecord = FirebaseAuth.getInstance().getUser(userId);
-            return userRecord.isEmailVerified();
+            return FirebaseAuth.getInstance().getUser(userId).isEmailVerified();
         } catch(Exception e) {
             throw new RuntimeException("Failed to identify email verification status: " + e.getMessage(), e);
         }

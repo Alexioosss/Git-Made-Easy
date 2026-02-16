@@ -52,6 +52,7 @@ public class CreateUser {
                 request.emailAddress(), request.password());
 
         String verificationLink = this.identityProvider.generateEmailVerificationLink(request.emailAddress());
+        log.info("Verification link created successfully.");
 
         this.emailSender.send(request.emailAddress(),
                 "Verify your email address",

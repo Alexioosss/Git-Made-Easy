@@ -31,6 +31,10 @@ public class TaskSchemaMapper {
         );
     }
 
+
+
+    // ----- Firebase-Related Mapping ----- //
+
     public FirebaseTaskSchema toFirebaseSchema(Task task) {
         FirebaseTaskSchema schema = new FirebaseTaskSchema(
                 task.getLessonId(),

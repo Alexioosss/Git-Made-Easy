@@ -23,7 +23,7 @@ public class SecurityBeansConfiguration {
         return new JwtAuthenticationFilter(tokenGateway);
     }
 
-    @Bean
-    @Profile("!test")
+    // Avoid this bean from loading during test profile because it requires loading a sensitive file which is not for testing
+    @Bean @Profile("!test")
     public UserIdentityProvider userIdentityProvider() { return new FirebaseUserIdentityProvider(); }
 }

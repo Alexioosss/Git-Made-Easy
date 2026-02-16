@@ -6,8 +6,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "task_attempts")
+@Entity @Table(name = "task_attempts")
 public class JpaTaskAttemptSchema {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -18,8 +17,7 @@ public class JpaTaskAttemptSchema {
     @JoinColumn(name = "taskId", referencedColumnName = "id")
     private JpaTaskSchema task;
 
-    @Enumerated(EnumType.STRING)
-    private TaskCompletionStatus status;
+    @Enumerated(EnumType.STRING) private TaskCompletionStatus status;
 
     private int attempts;
     private String lastInput;

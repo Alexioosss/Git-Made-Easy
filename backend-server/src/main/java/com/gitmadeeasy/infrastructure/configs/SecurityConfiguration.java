@@ -18,6 +18,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter,
                                            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+                // Apply the custom filter, using JWT Tokens, to authenticate users
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(HttpMethod.GET, "/email-test").permitAll()
@@ -39,7 +40,6 @@ public class SecurityConfiguration {
         )
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .httpBasic(Customizer.withDefaults());
-
         return http.build();
     }
 }

@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
-@RestController
-@RequestMapping("/users")
+@RestController @RequestMapping("/users")
 public class UserController {
     private final CreateUser createUserUseCase;
     private final GetUserById getUserById;
@@ -34,13 +33,13 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
-        log.info("POST /users - Creating a new user with email address: {}", request.emailAddress());
+        log.info("POST /users - Creating a new user with email address= {}", request.emailAddress());
         CreateUserRequest newUserRequest = new CreateUserRequest(
                 request.firstName(), request.lastName(),
                 request.emailAddress(), request.password()
         );
         User createdUser = this.createUserUseCase.execute(newUserRequest);
-        log.info("User created successfully. ID= {}", createdUser.getUserId());
+        log.info("User created successfully. UserID= {}", createdUser.getUserId());
 
         UserResponse userResponse = this.userResponseMapper.toUserResponse(createdUser);
         return ResponseEntity.created(URI.create("/users/" + userResponse.id())).body(userResponse);
@@ -50,7 +49,7 @@ public class UserController {
     public ResponseEntity<UserResponse> getUserById(@PathVariable("userId") String userId) {
         log.info("GET /users/{} - Fetching user by their ID", userId);
         User foundUser = this.getUserById.execute(userId);
-        log.info("User found. ID= {}", foundUser.getUserId());
+        log.info("User found successfully. UserID= {}", foundUser.getUserId());
         UserResponse userResponse = this.userResponseMapper.toUserResponse(foundUser);
         return ResponseEntity.ok(userResponse);
     }
@@ -59,7 +58,7 @@ public class UserController {
     public ResponseEntity<UserResponse> getUserByEmailAddress(@RequestParam("emailAddress") String emailAddress) {
         log.info("GET /users/{} - Fetching user by their email address", emailAddress);
         User foundUser = this.getUserByEmail.execute(emailAddress);
-        log.info("User found. ID= {} for email address= {}", foundUser.getUserId(), foundUser.getEmailAddress());
+        log.info("User found successfully. UserID= {}, email address= {}", foundUser.getUserId(), foundUser.getEmailAddress());
         UserResponse userResponse = this.userResponseMapper.toUserResponse(foundUser);
         return ResponseEntity.ok(userResponse);
     }

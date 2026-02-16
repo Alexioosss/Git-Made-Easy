@@ -10,8 +10,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
 
-@Configuration
-@Profile("!test")
+@Configuration @Profile("!test")
 public class FirebaseConfig {
 
     @Bean
@@ -19,13 +18,9 @@ public class FirebaseConfig {
         ClassPathResource resource = new ClassPathResource("serviceAccount.json");
 
         FirebaseOptions options = FirebaseOptions.builder()
-                .setCredentials(GoogleCredentials.fromStream(resource.getInputStream()))
-                .build();
+                .setCredentials(GoogleCredentials.fromStream(resource.getInputStream())).build();
 
-        if (FirebaseApp.getApps().isEmpty()) {
-            return FirebaseApp.initializeApp(options);
-        } else {
-            return FirebaseApp.getInstance();
-        }
+        if (FirebaseApp.getApps().isEmpty()) { return FirebaseApp.initializeApp(options); }
+        else { return FirebaseApp.getInstance(); }
     }
 }

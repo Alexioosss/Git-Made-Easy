@@ -19,6 +19,10 @@ public class UserSchemaMapper {
                 schema.getEmailAddress(), schema.isEmailVerified());
     }
 
+
+
+    // ----- Firebase-Related Mapping ----- //
+
     public FirebaseUserSchema toFirebaseSchema(User user) {
         FirebaseUserSchema schema = new FirebaseUserSchema(
                 user.getFirstName(), user.getLastName(),
