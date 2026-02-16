@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next";
 
 import "./styles/globals.css";
 import { Navbar } from "@/components/navbar";
+import { ScrollToTop } from "./scroll-to-top";
 
 export const metadata: Metadata = {
   title: {
@@ -18,6 +19,7 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
   return (
     <html lang="en">
       <body className="font-sans antialiased">
+        <ScrollToTop />
         <Navbar />
         {children}
       </body>

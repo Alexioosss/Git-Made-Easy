@@ -25,22 +25,19 @@ interface TaskItemProps {
   onComplete?: (taskId: string) => void;
 }
 
-export function TaskItem({
-  task,
-  lessonId,
-  isExpanded,
-  onToggle,
-  onComplete,
-}: TaskItemProps) {
+export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete }: TaskItemProps) {
   const isAuthenticated = false;
   const [answer, setAnswer] = useState("");
-  const [feedback, setFeedback] = useState<{
-    type: "success" | "error";
-    message: string;
-  } | null>(null);
+  const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string; } | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [localAttempts, setLocalAttempts] = useState(0);
   const [localCompleted, setLocalCompleted] = useState(false);
+
+  const difficultyVariant: Record<Task["difficulty"], "easy" | "medium" | "hard"> = {
+    EASY: "easy",
+    MEDIUM: "medium",
+    HARD: "hard",
+  };
 
   // Check if user has existing progress (for logged-in users)
   const existingProgress = isAuthenticated
@@ -48,13 +45,6 @@ export function TaskItem({
     : undefined;
   const isCompleted = existingProgress?.completed || localCompleted;
   const totalAttempts = (existingProgress?.attempts || 0) + localAttempts;
-
-  const difficultyColor =
-    task.difficulty === "EASY"
-      ? "border-primary/30 text-primary"
-      : task.difficulty === "MEDIUM"
-        ? "border-warning/30 text-warning"
-        : "border-destructive/30 text-destructive";
 
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -120,12 +110,10 @@ export function TaskItem({
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3
-              className={`text-sm font-medium sm:text-base ${isCompleted ? "text-primary" : "text-card-foreground"}`}
-            >
+            <h3 className={`text-sm font-medium sm:text-base ${isCompleted ? "text-primary" : "text-card-foreground"}`}>
               {task.title}
             </h3>
-            <Badge variant="outline" className={`text-xs ${difficultyColor}`}>
+            <Badge variant={difficultyVariant[task.difficulty]}>
               {task.difficulty.toLowerCase()}
             </Badge>
           </div>
@@ -160,8 +148,7 @@ export function TaskItem({
             <button
               type="button"
               onClick={() => setShowHint(true)}
-              className="mb-4 flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
-            >
+              className="mb-4 flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground">
               <Lightbulb className="h-3.5 w-3.5" />
               Show hint
             </button>
@@ -191,8 +178,7 @@ export function TaskItem({
                 type="submit"
                 size="default"
                 disabled={!answer.trim()}
-                className="flex-1 sm:flex-none"
-              >
+                className="flex-1 sm:flex-none">
                 <Send className="mr-2 h-4 w-4 sm:mr-0" />
                 <span className="sm:hidden">Submit</span>
                 <span className="sr-only sm:not-sr-only">
@@ -204,8 +190,7 @@ export function TaskItem({
                 variant="outline"
                 size="icon"
                 onClick={handleReset}
-                className="shrink-0 bg-transparent"
-              >
+                className="shrink-0 bg-transparent">
                 <RotateCcw className="h-4 w-4" />
                 <span className="sr-only">Reset</span>
               </Button>
@@ -214,13 +199,7 @@ export function TaskItem({
 
           {/* Feedback */}
           {feedback && (
-            <div
-              className={`mt-3 rounded-lg px-3 py-2 text-sm ${
-                feedback.type === "success"
-                  ? "bg-primary/10 text-primary"
-                  : "bg-destructive/10 text-destructive"
-              }`}
-            >
+            <div className={`mt-3 rounded-lg px-3 py-2 text-sm ${feedback.type === "success" ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive"}`}>
               {feedback.message}
             </div>
           )}

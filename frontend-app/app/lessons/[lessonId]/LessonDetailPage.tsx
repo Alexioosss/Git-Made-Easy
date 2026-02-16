@@ -18,10 +18,10 @@ export default function LessonDetailClient({ lessonId }: { lessonId: string }) {
 
     return (
         <div className="min-h-screen bg-background">
-            <main className="mx-auto max-w-4xl px-4 py-8 sm:py-12">
-            <LessonHeader lesson={lesson} progress={progress} />
-            <TaskList lesson={lesson} nextLesson={nextLesson} />
-            </main>
+            <div className="mx-auto max-w-4xl px-4 py-8 sm:py-12">
+                <LessonHeader lesson={lesson} progress={progress} />
+                <TaskList lesson={lesson} nextLesson={nextLesson} />
+            </div>
         </div>
     );
 }

@@ -70,18 +70,8 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
       </div>
 
       {lesson.tasks.map((task) => (
-        <TaskItem
-          key={task.taskId}
-          task={task}
-          lessonId={lesson.lessonId}
-          isExpanded={expandedTaskId === task.taskId}
-          onToggle={() =>
-            setExpandedTaskId(
-              expandedTaskId === task.taskId ? null : task.taskId
-            )
-          }
-          onComplete={handleTaskComplete}
-        />
+        <TaskItem key={task.taskId} task={task} lessonId={lesson.lessonId} isExpanded={expandedTaskId === task.taskId}
+        onToggle={() => setExpandedTaskId(expandedTaskId === task.taskId ? null : task.taskId)} onComplete={handleTaskComplete} />
       ))}
 
       {/* Next lesson banner */}

@@ -37,11 +37,8 @@ export function LessonsPreview() {
             );
 
             return (
-              <Link
-                key={lesson.lessonId}
-                href={`/lessons/${lesson.lessonId}`}
-                className="group flex flex-col rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 sm:p-6"
-              >
+              <Link key={lesson.lessonId} href={`/lessons/${lesson.lessonId}`}
+                className="group flex flex-col rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 sm:p-6">
                 <div className="mb-3 flex items-center gap-3">
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary text-sm font-semibold text-secondary-foreground">
                     {lesson.orderIndex}
@@ -60,17 +57,7 @@ export function LessonsPreview() {
                   <span className="text-muted-foreground/30">|</span>
                   {Object.entries(difficultyDistribution).map(
                     ([difficulty, count]) => (
-                      <Badge
-                        key={difficulty}
-                        variant="outline"
-                        className={`text-xs ${
-                          difficulty === "EASY"
-                            ? "border-primary/30 text-primary"
-                            : difficulty === "MEDIUM"
-                              ? "border-warning/30 text-warning"
-                              : "border-destructive/30 text-destructive"
-                        }`}
-                      >
+                      <Badge key={difficulty} variant={difficulty.toLowerCase() as "easy" | "medium" | "hard"} className="`text-xs`">
                         {count} {difficulty.toLowerCase()}
                       </Badge>
                     )

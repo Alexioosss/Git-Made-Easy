@@ -11,21 +11,16 @@ interface LessonCardProps {
 }
 
 export function LessonCard({ lesson, progress }: LessonCardProps) {
-  const difficultyDistribution = lesson.tasks.reduce(
-    (acc, task) => {
-      acc[task.difficulty] = (acc[task.difficulty] || 0) + 1;
-      return acc;
-    },
-    {} as Record<string, number>
-  );
+  const difficultyDistribution = lesson.tasks.reduce((acc, task) => {
+    acc[task.difficulty] = (acc[task.difficulty] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
 
   const isComplete = progress && progress.progressPercentage === 100;
 
   return (
-    <Link
-      href={`/lessons/${lesson.lessonId}`}
-      className="group flex flex-col rounded-xl border border-border bg-card transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 md:flex-row md:items-center"
-    >
+    <Link href={`/lessons/${lesson.lessonId}`}
+      className="group flex flex-col rounded-xl border border-border bg-card transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 md:flex-row md:items-center">
       {/* Order number */}
       <div className="flex items-center gap-4 border-b border-border px-5 py-4 md:justify-center md:gap-0 md:border-b-0 md:border-r md:px-8 md:py-10">
         <span className="text-2xl font-bold text-muted-foreground/40 group-hover:text-primary/60 transition-colors md:text-3xl">
@@ -60,17 +55,7 @@ export function LessonCard({ lesson, progress }: LessonCardProps) {
           <span className="text-muted-foreground/30">|</span>
           {Object.entries(difficultyDistribution).map(
             ([difficulty, count]) => (
-              <Badge
-                key={difficulty}
-                variant="outline"
-                className={`text-xs ${
-                  difficulty === "EASY"
-                    ? "border-primary/30 text-primary"
-                    : difficulty === "MEDIUM"
-                      ? "border-warning/30 text-warning"
-                      : "border-destructive/30 text-destructive"
-                }`}
-              >
+              <Badge key={difficulty} variant={difficulty.toLowerCase() as "easy" | "medium" | "hard"} className={`text-xs`}>
                 {count} {difficulty.toLowerCase()}
               </Badge>
             )
@@ -80,10 +65,7 @@ export function LessonCard({ lesson, progress }: LessonCardProps) {
         {/* Progress bar if logged in */}
         {progress && (
           <div className="mt-1 flex items-center gap-2 sm:gap-3">
-            <Progress
-              value={progress.progressPercentage}
-              className="h-1.5 flex-1"
-            />
+            <Progress value={progress.progressPercentage} className="h-1.5 flex-1"/>
             <span className="shrink-0 text-xs font-medium text-muted-foreground">
               {progress.progressPercentage}%
             </span>
