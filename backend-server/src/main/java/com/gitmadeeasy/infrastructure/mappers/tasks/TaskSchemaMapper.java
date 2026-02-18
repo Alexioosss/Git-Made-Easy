@@ -1,5 +1,6 @@
 package com.gitmadeeasy.infrastructure.mappers.tasks;
 
+import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.infrastructure.gateways.tasks.FirebaseTaskSchema;
 import com.gitmadeeasy.infrastructure.gateways.tasks.JpaTaskSchema;
@@ -13,8 +14,8 @@ public class TaskSchemaMapper {
                 task.getContent(),
                 task.getExpectedCommand(),
                 task.getHint(),
-                task.getTaskOrder()
-        );
+                task.getTaskOrder(),
+                task.getDifficulty());
         if(task.getTaskId() != null) { schema.setId(task.getTaskId()); }
         return schema;
     }
@@ -27,8 +28,8 @@ public class TaskSchemaMapper {
                 taskSchema.getContent(),
                 taskSchema.getExpectedCommand(),
                 taskSchema.getHint(),
-                taskSchema.getTaskOrder()
-        );
+                taskSchema.getTaskOrder(),
+                taskSchema.getTaskDifficulty());
     }
 
 
@@ -42,8 +43,8 @@ public class TaskSchemaMapper {
                 task.getContent(),
                 task.getExpectedCommand(),
                 task.getHint(),
-                task.getTaskOrder()
-        );
+                task.getTaskOrder(),
+                task.getDifficulty().name());
         if(task.getTaskId() != null) { schema.setId(task.getTaskId()); }
         return schema;
     }
@@ -56,7 +57,7 @@ public class TaskSchemaMapper {
                 schema.getContent(),
                 schema.getExpectedCommand(),
                 schema.getHint(),
-                schema.getTaskOrder()
-        );
+                schema.getTaskOrder(),
+                DifficultyLevels.valueOf(schema.getTaskDifficulty()));
     }
 }

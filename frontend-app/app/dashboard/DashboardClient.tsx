@@ -10,17 +10,15 @@ export default function DashboardClient() {
     const router = useRouter();
     const isLoading = false;
     const isAuthenticated = true;
-    const user = {
-        firstName: "John",
-    };
+    const user = { firstName: "John" };
 
     useEffect(() => {
-        if (!isLoading && !isAuthenticated) {
+        if(!isLoading && !isAuthenticated) {
         router.push("/login");
         }
     }, [isLoading, isAuthenticated, router]);
 
-    if (isLoading || !isAuthenticated) {
+    if(isLoading || !isAuthenticated) {
         return (
         <div className="flex min-h-screen items-center justify-center bg-background">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
@@ -52,5 +50,5 @@ export default function DashboardClient() {
                 </div>
             </div>
         </div>
-  );
+    );
 }

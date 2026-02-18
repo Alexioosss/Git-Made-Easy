@@ -1,18 +1,10 @@
 export interface Task {
   taskId: string;
+  lessonId: string;
   title: string;
-  description: string;
-  difficulty: "EASY" | "MEDIUM" | "HARD";
-  orderIndex: number;
+  content: string;
+  expectedCommand: string;
   hint: string;
-  expectedAnswer: string;
-}
-
-export interface CreateTaskRequest {
-  title: string;
-  description: string;
-  difficulty: "EASY" | "MEDIUM" | "HARD";
-  orderIndex: number;
-  hint: string;
-  expectedAnswer: string;
+  taskOrder: number;
+  difficulty: string;
 }

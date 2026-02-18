@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Lesson } from "@/types/lesson";
-import { LessonProgress } from "@/types/progress";
+import { LessonProgress } from "@/types/taskProgress";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft } from "lucide-react";
 
@@ -10,6 +10,9 @@ interface LessonHeaderProps {
 }
 
 export function LessonHeader({ lesson, progress }: LessonHeaderProps) {
+  let progressPercentage: number | null = null;
+  if(progress) { progressPercentage = progress?.totalTasksCount / progress?.totalTasksCount; }
+
   return (
     <div className="mb-8 sm:mb-10">
       <Link
@@ -35,14 +38,14 @@ export function LessonHeader({ lesson, progress }: LessonHeaderProps) {
           {progress && (
             <div className="mt-4 flex items-center gap-2 sm:gap-3">
               <Progress
-                value={progress.progressPercentage}
+                value={progressPercentage}
                 className="h-2 flex-1 sm:max-w-xs"
               />
               <span className="shrink-0 text-sm font-medium text-foreground">
-                {progress.progressPercentage}%
+                {progressPercentage}%
               </span>
               <span className="hidden shrink-0 text-sm text-muted-foreground sm:inline">
-                ({progress.completedTasks}/{progress.totalTasks} tasks)
+                ({progress.completedTasksCount}/{progress.totalTasksCount} tasks)
               </span>
             </div>
           )}

@@ -12,6 +12,7 @@ import com.gitmadeeasy.usecases.auth.*;
 import com.gitmadeeasy.usecases.lessonProgress.GetLessonProgress;
 import com.gitmadeeasy.usecases.lessonProgress.UpdateLessonProgress;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
+import com.gitmadeeasy.usecases.lessons.GetAllLessons;
 import com.gitmadeeasy.usecases.lessons.GetLessonById;
 import com.gitmadeeasy.usecases.tasks.CreateTask;
 import com.gitmadeeasy.usecases.tasks.GetTaskById;
@@ -72,6 +73,11 @@ public class UseCasesConfiguration {
     @Bean
     public GetLessonById getLessonById(LessonGateway lessonGateway, TaskGateway taskGateway) {
         return new GetLessonById(lessonGateway, taskGateway);
+    }
+
+    @Bean
+    public GetAllLessons getAllLessons(LessonGateway lessonGateway) {
+        return new GetAllLessons(lessonGateway);
     }
 
 

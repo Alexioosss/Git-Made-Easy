@@ -1,11 +1,10 @@
 package com.gitmadeeasy.usecases.lessons;
 
 import com.gitmadeeasy.entities.lessons.Lesson;
-import com.gitmadeeasy.entities.lessons.LessonDifficulty;
+import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.entities.lessons.LessonGateway;
-import com.gitmadeeasy.infrastructure.controllers.LessonController;
 import com.gitmadeeasy.usecases.lessons.dto.CreateLessonRequest;
-import com.gitmadeeasy.usecases.lessons.exceptions.LessonDifficultyNotRecognisedException;
+import com.gitmadeeasy.usecases.lessons.exceptions.DifficultyLevelNotRecognisedException;
 import com.gitmadeeasy.usecases.validation.exceptions.MissingRequiredFieldException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +33,12 @@ public class CreateLesson {
             throw new MissingRequiredFieldException("task difficulty cannot be left blank");
         }
 
-        LessonDifficulty difficulty;
+        DifficultyLevels difficulty;
         try {
-            difficulty = LessonDifficulty.valueOf(request.difficulty().toUpperCase());
+            difficulty = DifficultyLevels.valueOf(request.difficulty().toUpperCase());
         } catch(IllegalArgumentException e) {
             log.warn("CreateLesson failed: difficulty entered did not match recognised difficulties.");
-            throw new LessonDifficultyNotRecognisedException(request.difficulty());
+            throw new DifficultyLevelNotRecognisedException(request.difficulty());
         }
 
         Lesson newLesson = new Lesson(request.title(), request.description(), difficulty);

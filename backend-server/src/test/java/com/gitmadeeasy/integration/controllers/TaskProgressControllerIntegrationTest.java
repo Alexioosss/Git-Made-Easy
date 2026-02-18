@@ -1,6 +1,6 @@
 package com.gitmadeeasy.integration.controllers;
 
-import com.gitmadeeasy.entities.lessons.LessonDifficulty;
+import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.infrastructure.gateways.lessons.JpaLessonSchema;
 import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.jpa.JpaLessonRepository;
 import com.gitmadeeasy.infrastructure.gateways.taskAttempts.repositories.jpa.JpaTaskAttemptRepository;
@@ -152,7 +152,7 @@ class TaskProgressControllerIntegrationTest {
     }
 
     private String createLessonAndReturnLessonId() {
-        JpaLessonSchema schema = new JpaLessonSchema("Intro to Git", "Learn Git basics", LessonDifficulty.EASY);
+        JpaLessonSchema schema = new JpaLessonSchema("Intro to Git", "Learn Git basics", DifficultyLevels.EASY);
         return this.lessonRepository.save(schema).getId();
     }
 }

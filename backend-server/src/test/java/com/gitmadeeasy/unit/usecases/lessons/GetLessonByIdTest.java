@@ -1,7 +1,7 @@
 package com.gitmadeeasy.unit.usecases.lessons;
 
 import com.gitmadeeasy.entities.lessons.Lesson;
-import com.gitmadeeasy.entities.lessons.LessonDifficulty;
+import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
@@ -36,7 +36,7 @@ class GetLessonByIdTest {
     @DisplayName("Get Lesson By ID - Lesson Exists")
     void execute_WhenLessonExists_ReturnsLesson() {
         // Arrange
-        Lesson lesson = new Lesson("Intro", "Description", LessonDifficulty.EASY);
+        Lesson lesson = new Lesson("Intro", "Description", DifficultyLevels.EASY);
         when(this.lessonGateway.getLessonById("1")).thenReturn(Optional.of(lesson));
         when(this.taskGateway.getTasksByLessonId("1")).thenReturn(List.of());
 
@@ -46,7 +46,7 @@ class GetLessonByIdTest {
         // Assert
         assertEquals("Intro", result.getTitle());
         assertEquals("Description", result.getDescription());
-        assertEquals(LessonDifficulty.EASY, result.getDifficulty());
+        assertEquals(DifficultyLevels.EASY, result.getDifficulty());
         verify(this.taskGateway).getTasksByLessonId("1");
     }
 
@@ -61,7 +61,7 @@ class GetLessonByIdTest {
     @DisplayName("Get Lesson By ID - Lesson Exists With No Tasks")
     void execute_WhenLessonExistsWithNoTasks_ReturnsLessonWithEmptyTasksList() {
         // Arrange
-        Lesson lesson = new Lesson("Intro", "Description", LessonDifficulty.EASY);
+        Lesson lesson = new Lesson("Intro", "Description", DifficultyLevels.EASY);
         when(this.lessonGateway.getLessonById("1")).thenReturn(Optional.of(lesson));
         when(this.taskGateway.getTasksByLessonId("1")).thenReturn(List.of());
 
@@ -71,7 +71,7 @@ class GetLessonByIdTest {
         // Assert
         assertEquals("Intro", result.getTitle());
         assertEquals("Description", result.getDescription());
-        assertEquals(LessonDifficulty.EASY, result.getDifficulty());
+        assertEquals(DifficultyLevels.EASY, result.getDifficulty());
         assertEquals(List.of(), result.getTasks());
         verify(this.taskGateway).getTasksByLessonId("1");
     }
@@ -80,7 +80,7 @@ class GetLessonByIdTest {
     @MethodSource("provideValidTasksList")
     @DisplayName("Get Lesson By ID - Lesson Exists With Tasks")
     void execute_WhenLessonExistsWithTasks_ReturnsLessonWithTasks(List<Task> tasks) {
-        Lesson lesson = new Lesson("Intro", "Description", LessonDifficulty.EASY);
+        Lesson lesson = new Lesson("Intro", "Description", DifficultyLevels.EASY);
         lesson.setTasks(tasks);
         when(this.lessonGateway.getLessonById("1")).thenReturn(Optional.of(lesson));
         when(this.taskGateway.getTasksByLessonId("1")).thenReturn(List.of());
@@ -91,7 +91,7 @@ class GetLessonByIdTest {
         // Assert
         assertEquals("Intro", result.getTitle());
         assertEquals("Description", result.getDescription());
-        assertEquals(LessonDifficulty.EASY, result.getDifficulty());
+        assertEquals(DifficultyLevels.EASY, result.getDifficulty());
         assertEquals(List.of(), result.getTasks());
         verify(this.taskGateway).getTasksByLessonId("1");
     }

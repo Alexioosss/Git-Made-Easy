@@ -36,7 +36,7 @@ export function FeaturesSection() {
             Everything you need to master Git
           </h2>
           <p className="mt-3 text-sm text-muted-foreground sm:text-base">
-            A practical, no-nonsense approach to learning version control.
+            A practical, interactive approach to learning version control.
           </p>
         </div>
 

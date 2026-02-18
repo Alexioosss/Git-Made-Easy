@@ -4,6 +4,6 @@ export interface Lesson {
   lessonId: string;
   title: string;
   description: string;
-  orderIndex: number;
+  difficulty: string;
   tasks: Task[];
 }

@@ -1,20 +1,31 @@
 "use client"
 
 import { LessonCard } from "@/components/lessons/lesson-card";
-import { Gateways } from "@/config/Gateways";
+import { GatewayFactory } from "@/config/GatewayFactory";
 import { mockLessonProgress, mockLessons } from "@/lib/mock-data";
+import { Lesson } from "@/types/lesson";
+import { LessonProgress } from "@/types/taskProgress";
 import { useEffect, useState } from "react";
 
 export default function LessonPageClient() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [lessons, setLessons] = useState<Lesson[]>([]);
+    const [lessonProgress, setLessonProgress] = useState<LessonProgress>();
+
+    const lessonGateway = GatewayFactory.instance.lessonGateway;
+    const lessonProgressGateway = GatewayFactory.instance.lessonProgressGateway;
 
     useEffect(() => {
-        const auth = Gateways.instance.authGateway;
+        const fetchLessonsAndProgresses = async () => {
+            // setLessons(await lessonGateway.getAll());
+            // setLessonProgress(await lessonProgressGateway.getLessonProgress());
+        }
+        fetchLessonsAndProgresses();
         setIsAuthenticated(true);
     }, []);
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen bg-background py-12">
             <div className="mx-auto max-w-6xl px-4 py-8 sm:py-12">
                 <div className="mb-8 sm:mb-10">
                     <h1 className="text-balance text-2xl font-bold text-foreground sm:text-3xl md:text-4xl">

@@ -7,5 +7,7 @@ export abstract class ApiClient {
         this.BACKEND_URL = BACKEND_URL.replace(/\/+$/, '') + '/'; // Remove trailing slashes from the given URL and add a single slash at the end
     }
 
-    abstract ApiRequest<T>(path: string, method: HttpMethods, body?: any): Promise<T>;
+    // An api request will require a path and an HTTP Method, a body is not required for a request
+    // This sets the contract of what an api request will require when creating api client implementations
+    abstract apiRequest<T>(path: string, method: HttpMethods, body?: any): Promise<T>;
 }

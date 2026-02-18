@@ -1,6 +1,6 @@
 package com.gitmadeeasy.infrastructure.gateways.lessons;
 
-import com.gitmadeeasy.entities.lessons.LessonDifficulty;
+import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.infrastructure.gateways.tasks.JpaTaskSchema;
 import jakarta.persistence.*;
 
@@ -15,20 +15,20 @@ public class JpaLessonSchema {
     private String title;
     private String description;
 
-    @Enumerated(EnumType.STRING) private LessonDifficulty difficulty;
+    @Enumerated(EnumType.STRING) private DifficultyLevels difficulty;
     @Transient private List<JpaTaskSchema> tasks = new ArrayList<>();
 
     protected JpaLessonSchema() {}
 
     public JpaLessonSchema(String title,
-                           String description, LessonDifficulty difficulty) {
+                           String description, DifficultyLevels difficulty) {
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
     }
 
     public JpaLessonSchema(String id, String title,
-                           String description, LessonDifficulty difficulty) {
+                           String description, DifficultyLevels difficulty) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -47,7 +47,7 @@ public class JpaLessonSchema {
         return description;
     }
 
-    public LessonDifficulty getDifficulty() {
+    public DifficultyLevels getDifficulty() {
         return difficulty;
     }
 
@@ -67,7 +67,7 @@ public class JpaLessonSchema {
         this.description = description;
     }
 
-    public void setDifficulty(LessonDifficulty difficulty) {
+    public void setDifficulty(DifficultyLevels difficulty) {
         this.difficulty = difficulty;
     }
 

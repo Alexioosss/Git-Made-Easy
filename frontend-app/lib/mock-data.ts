@@ -1,5 +1,5 @@
 import { Lesson } from "@/types/lesson";
-import { LessonProgress, TaskProgress } from "@/types/progress";
+import { LessonProgress, TaskProgress } from "@/types/taskProgress";
 
 export const mockLessons: Lesson[] = [
   {

@@ -1,6 +1,6 @@
 package com.gitmadeeasy.integration.controllers;
 
-import com.gitmadeeasy.entities.lessons.LessonDifficulty;
+import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.infrastructure.gateways.lessons.JpaLessonSchema;
 import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.jpa.JpaLessonRepository;
 import com.gitmadeeasy.testUtil.JsonUtil;
@@ -52,7 +52,7 @@ class LessonControllerIntegrationTest {
                 .andExpect(jsonPath("$.lessonId").exists())
                 .andExpect(jsonPath("title").value("Intro to Git"))
                 .andExpect(jsonPath("description").value("An introduction to an industry-standard technology"))
-                .andExpect(jsonPath("difficulty").value(LessonDifficulty.EASY.name()))
+                .andExpect(jsonPath("difficulty").value(DifficultyLevels.EASY.name()))
                 .andExpect(jsonPath("tasks").isEmpty());
     }
 
@@ -93,7 +93,7 @@ class LessonControllerIntegrationTest {
                 .andExpect(jsonPath("$.lessonId").value(lessonId))
                 .andExpect(jsonPath("$.title").value("Intro to Git"))
                 .andExpect(jsonPath("$.description").value("An introduction to an industry-standard technology"))
-                .andExpect(jsonPath("$.difficulty").value(LessonDifficulty.EASY.name()))
+                .andExpect(jsonPath("$.difficulty").value(DifficultyLevels.EASY.name()))
                 .andExpect(jsonPath("$.tasks").isEmpty());
     }
 
@@ -114,7 +114,7 @@ class LessonControllerIntegrationTest {
         JpaLessonSchema lessonSchema = new JpaLessonSchema(
                 "Intro to Git",
                 "An introduction to an industry-standard technology",
-                LessonDifficulty.EASY);
+                DifficultyLevels.EASY);
         return this.lessonRepository.save(lessonSchema).getId();
     }
 

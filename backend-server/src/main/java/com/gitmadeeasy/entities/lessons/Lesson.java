@@ -1,5 +1,6 @@
 package com.gitmadeeasy.entities.lessons;
 
+import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.entities.tasks.Task;
 
 import java.util.ArrayList;
@@ -10,17 +11,17 @@ public class Lesson {
     private String lessonId;
     private final String title;
     private final String description;
-    private final LessonDifficulty difficulty;
+    private final DifficultyLevels difficulty;
     private List<Task> tasks = new ArrayList<>();
 
-    public Lesson(String lessonId, String title, String description, LessonDifficulty difficulty) {
+    public Lesson(String lessonId, String title, String description, DifficultyLevels difficulty) {
         this.lessonId = lessonId;
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
     }
 
-    public Lesson(String title, String description, LessonDifficulty difficulty) {
+    public Lesson(String title, String description, DifficultyLevels difficulty) {
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
@@ -38,7 +39,7 @@ public class Lesson {
         return description;
     }
 
-    public LessonDifficulty getDifficulty() {
+    public DifficultyLevels getDifficulty() {
         return difficulty;
     }
 

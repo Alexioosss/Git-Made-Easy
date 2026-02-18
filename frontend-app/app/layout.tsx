@@ -5,10 +5,12 @@ import "./styles/globals.css";
 import { Navbar } from "@/components/navbar";
 import { ScrollToTop } from "./scroll-to-top";
 
+const DEFAULT_TITLE: string = "Git Made Easy" as const;
+
 export const metadata: Metadata = {
   title: {
-    default: "Git Made Easy",
-    template: "%s | Git Made Easy"
+    default: DEFAULT_TITLE,
+    template: `%s | ${DEFAULT_TITLE}`
   },
   description: "Master Git version control through interactive lessons and hands-on tasks. From basic commands to advanced techniques."
 };
@@ -19,8 +21,8 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
   return (
     <html lang="en">
       <body className="font-sans antialiased">
-        <ScrollToTop />
-        <Navbar />
+        <ScrollToTop /> {/* Script to automatically scroll the page to the top on page change, since the pages remain to the last scrolled position  */}
+        <Navbar /> {/* Show the navbar on every single page */}
         {children}
       </body>
     </html>

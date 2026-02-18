@@ -50,6 +50,22 @@ public class FirebaseLessonRepository {
         }
     }
 
+    public List<FirebaseLessonSchema> findAll() {
+        CollectionReference collectionReference = firestore.collection("lessons");
+        ApiFuture<QuerySnapshot> future = collectionReference.get();
+        try {
+            QuerySnapshot snapshot = future.get();
+            return snapshot.getDocuments()
+                    .stream().map(doc -> {
+                        FirebaseLessonSchema schema = doc.toObject(FirebaseLessonSchema.class);
+                        schema.setId(doc.getId());
+                        return schema;
+                    }).toList();
+        } catch(InterruptedException | ExecutionException e) {
+            return List.of();
+        }
+    }
+
     public void deleteAll() {
         try {
             ApiFuture<QuerySnapshot> future = firestore.collection("lessons").get();

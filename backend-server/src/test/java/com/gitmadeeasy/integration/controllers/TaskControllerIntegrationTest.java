@@ -1,6 +1,6 @@
 package com.gitmadeeasy.integration.controllers;
 
-import com.gitmadeeasy.entities.lessons.LessonDifficulty;
+import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.infrastructure.gateways.lessons.JpaLessonSchema;
 import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.jpa.JpaLessonRepository;
 import com.gitmadeeasy.infrastructure.gateways.tasks.JpaTaskSchema;
@@ -117,7 +117,7 @@ class TaskControllerIntegrationTest {
         JpaLessonSchema lessonSchema = new JpaLessonSchema(
                 "Into to Git",
                 "Learn the basics of an industry-standard technology",
-                LessonDifficulty.EASY);
+                DifficultyLevels.EASY);
         return this.lessonRepository.save(lessonSchema).getId();
     }
 

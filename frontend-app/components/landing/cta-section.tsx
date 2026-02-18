@@ -13,7 +13,7 @@ export function CTASection() {
           No sign-up required. Start practicing Git commands right now.
         </p>
         <div className="mt-6 sm:mt-8">
-          <Button size="lg" asChild className="w-full sm:w-auto">
+          <Button size="lg" asChild className="w-full sm:w-auto" title="View lessons catalog">
             <Link href="/lessons" className="gap-2">
               Browse Lessons
               <ArrowRight className="h-4 w-4" />

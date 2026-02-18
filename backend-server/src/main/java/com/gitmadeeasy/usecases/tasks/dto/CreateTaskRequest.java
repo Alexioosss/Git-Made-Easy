@@ -8,4 +8,5 @@ public record CreateTaskRequest(
         @NotBlank String content,
         @NotBlank String expectedCommand,
         String hint,
-        @Nullable Integer taskOrder) {}
+        @Nullable Integer taskOrder,
+        @NotBlank String taskDifficulty) {}

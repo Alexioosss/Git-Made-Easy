@@ -17,10 +17,7 @@ export function LessonsPreview() {
               Start from the basics or jump to what you need.
             </p>
           </div>
-          <Link
-            href="/lessons"
-            className="hidden items-center gap-1 text-sm text-primary transition-colors hover:text-primary/80 sm:flex"
-          >
+          <Link href="/lessons" title="View lessons catalog" className="hidden items-center gap-1 text-sm text-primary transition-colors hover:text-primary/80 sm:flex">
             View all lessons
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
@@ -70,7 +67,7 @@ export function LessonsPreview() {
 
         {/* Mobile "View all" button */}
         <div className="mt-6 flex justify-center sm:hidden">
-          <Button variant="outline" asChild className="w-full bg-transparent">
+          <Button variant="outline" asChild className="w-full bg-transparent" title="View lessons catalog">
             <Link href="/lessons" className="gap-2">
               View all lessons
               <ArrowRight className="h-4 w-4" />

@@ -5,6 +5,7 @@ import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.jpa.JpaLessonRepository;
 import com.gitmadeeasy.infrastructure.mappers.lessons.LessonSchemaMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 public class JpaLessonDatabaseGateway implements LessonGateway {
@@ -28,4 +29,9 @@ public class JpaLessonDatabaseGateway implements LessonGateway {
 
     @Override
     public boolean existsById(String lessonId) { return this.jpa.existsById(lessonId); }
+
+    @Override
+    public List<Lesson> findAllLessons() {
+        return this.jpa.findAll().stream().map(this.lessonSchemaMapper::fromJpaSchema).toList();
+    }
 }

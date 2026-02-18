@@ -1,11 +1,11 @@
 package com.gitmadeeasy.unit.usecases.lessons;
 
 import com.gitmadeeasy.entities.lessons.Lesson;
-import com.gitmadeeasy.entities.lessons.LessonDifficulty;
+import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
 import com.gitmadeeasy.usecases.lessons.dto.CreateLessonRequest;
-import com.gitmadeeasy.usecases.lessons.exceptions.LessonDifficultyNotRecognisedException;
+import com.gitmadeeasy.usecases.lessons.exceptions.DifficultyLevelNotRecognisedException;
 import com.gitmadeeasy.usecases.validation.exceptions.MissingRequiredFieldException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ class CreateLessonTest {
         Lesson createdLesson = new Lesson(
                 "1", "Intro to Git",
                 "A simple overview of an industry-famous version control system.",
-                LessonDifficulty.EASY);
+                DifficultyLevels.EASY);
         when(this.lessonGateway.createLesson(any(Lesson.class))).thenReturn(createdLesson);
 
         // Act
@@ -52,7 +52,7 @@ class CreateLessonTest {
         assertEquals("1", result.getLessonId());
         assertEquals("Intro to Git", result.getTitle());
         assertEquals("A simple overview of an industry-famous version control system.", result.getDescription());
-        assertEquals(LessonDifficulty.EASY, result.getDifficulty());
+        assertEquals(DifficultyLevels.EASY, result.getDifficulty());
     }
 
     @ParameterizedTest
@@ -83,7 +83,7 @@ class CreateLessonTest {
         CreateLessonRequest request = new CreateLessonRequest("Title", "Description", invalidDifficulty);
 
         // Act
-        LessonDifficultyNotRecognisedException ex = assertThrows(LessonDifficultyNotRecognisedException.class,
+        DifficultyLevelNotRecognisedException ex = assertThrows(DifficultyLevelNotRecognisedException.class,
                 () -> this.createLesson.execute(request));
 
         // Assert

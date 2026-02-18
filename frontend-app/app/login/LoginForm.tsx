@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Gateways } from "@/config/Gateways";
+import { GatewayFactory } from "@/config/GatewayFactory";
 import { GitBranch, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -17,7 +17,7 @@ export default function LoginForm() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
 
-    const authGateway = Gateways.instance.authGateway;
+    const authGateway = GatewayFactory.instance.authGateway;
 
     async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -26,7 +26,7 @@ export default function LoginForm() {
 
         try {
             await authGateway.login(emailAddress, password);
-            router.push("/dashboard");
+            setTimeout(() => { router.push("/dashboard"); }, 3000);
         } catch(error: any) {
             setError(error.message || "Something went wrong");
         } finally {
@@ -35,8 +35,8 @@ export default function LoginForm() {
     }
 
     return (
-        <div className="min-h-screen bg-background flex flex-col">
-            <div className="flex justify-center px-4 py-6">
+        <div className="min-h-[calc(100dvh-56px)] sm:min-h-[calc(100dvh-64px)] bg-background flex flex-col justify-center">
+            <div className="flex justify-center px-4">
                 <div className="w-full max-w-xl bg-card px-6 pt-6 pb-4 rounded-xl shadow text-lg space-y-3">
                     <div className="mb-6 text-center">
                         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-primary">
@@ -83,7 +83,7 @@ export default function LoginForm() {
         
                     <p className="mt-6 text-center text-xl text-muted-foreground">
                         {"Don't have an account? "}
-                        <Link href="/register" className="text-primary transition-colors hover:text-primary/80 hover:underline">
+                        <Link href="/register" title="Create an account" className="text-primary transition-colors hover:text-primary/80 hover:underline">
                             Create one
                         </Link>
                     </p>

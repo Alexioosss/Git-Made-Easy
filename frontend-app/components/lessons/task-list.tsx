@@ -11,27 +11,22 @@ import { ArrowRight, PartyPopper } from "lucide-react";
 
 interface TaskListProps {
   lesson: Lesson;
-  nextLesson: Lesson | null;
 }
 
-export function TaskList({ lesson, nextLesson }: TaskListProps) {
+export function TaskList({ lesson }: TaskListProps) {
   const isAuthenticated = false;
   const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
 
   // Track which tasks were completed during this session
-  const [sessionCompletedIds, setSessionCompletedIds] = useState<Set<string>>(
-    new Set()
-  );
+  const [sessionCompletedIds, setSessionCompletedIds] = useState<Set<string>>(new Set());
 
   // Build set of already-completed task ids (from saved progress)
   const savedCompletedIds = useMemo(() => {
-    if (!isAuthenticated) return new Set<string>();
+    if(!isAuthenticated) return new Set<string>();
     const ids = new Set<string>();
-    for (const task of lesson.tasks) {
+    for(const task of lesson.tasks) {
       const progress = mockTaskProgress[task.taskId];
-      if (progress?.completed) {
-        ids.add(task.taskId);
-      }
+      if(progress?.status == "COMPLETED") { ids.add(task.taskId); }
     }
     return ids;
   }, [isAuthenticated, lesson.tasks]);
@@ -40,13 +35,9 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
     (t) => savedCompletedIds.has(t.taskId) || sessionCompletedIds.has(t.taskId)
   );
 
-  const completedCount =
-    new Set([...savedCompletedIds, ...sessionCompletedIds]).size;
+  const completedCount = new Set([...savedCompletedIds, ...sessionCompletedIds]).size;
 
-  const completionPercent =
-    lesson.tasks.length > 0
-      ? Math.round((completedCount / lesson.tasks.length) * 100)
-      : 0;
+  const completionPercent = lesson.tasks.length > 0 ? Math.round((completedCount / lesson.tasks.length) * 100) : 0;
 
   const handleTaskComplete = useCallback((taskId: string) => {
     setSessionCompletedIds((prev) => new Set(prev).add(taskId));
@@ -81,7 +72,7 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
             <PartyPopper className="h-5 w-5" />
             <span className="font-semibold">All tasks completed!</span>
           </div>
-          {nextLesson ? (
+          {/* {nextLesson ? (
             <>
               <p className="text-sm text-muted-foreground">
                 Ready to move on? Continue to{" "}
@@ -98,7 +89,7 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
             <p className="text-sm text-muted-foreground">
               You have finished all available lessons. Great work!
             </p>
-          )}
+          )} */}
         </div>
       )}
     </div>

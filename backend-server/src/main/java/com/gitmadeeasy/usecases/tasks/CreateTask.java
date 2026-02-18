@@ -1,8 +1,10 @@
 package com.gitmadeeasy.usecases.tasks;
 
+import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
+import com.gitmadeeasy.usecases.lessons.exceptions.DifficultyLevelNotRecognisedException;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonNotFoundWithIdException;
 import com.gitmadeeasy.usecases.tasks.dto.CreateTaskRequest;
 import com.gitmadeeasy.usecases.validation.exceptions.MissingRequiredFieldException;
@@ -44,9 +46,16 @@ public class CreateTask {
                 this.taskGateway.getNextTaskOrderForLesson(lessonId);
         log.info("Task order has been produced for current task");
 
+        DifficultyLevels taskDifficulty;
+        try {
+            taskDifficulty = DifficultyLevels.valueOf(request.taskDifficulty());
+        } catch(IllegalArgumentException e) {
+            throw new DifficultyLevelNotRecognisedException(request.taskDifficulty());
+        }
+
         Task newTask = new Task(
-                lessonId, request.title(), request.content(),
-                request.expectedCommand(), request.hint(), taskOrder);
+                lessonId, request.title(), request.content(), request.expectedCommand(),
+                request.hint(), taskOrder, taskDifficulty);
 
         return this.taskGateway.createTask(newTask);
     }

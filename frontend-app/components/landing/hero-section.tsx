@@ -36,7 +36,7 @@ export function HeroSection() {
 
           <div className="mt-8 flex w-full max-w-xs flex-col gap-4 sm:mt-10 sm:max-w-none sm:flex-row sm:items-center sm:justify-center sm:gap-4">
             <Button size="lg" asChild className="w-full py-6 text-base sm:w-auto sm:py-3 sm:text-sm">
-              <Link href="/lessons" className="gap-2">
+              <Link href="/lessons" title="Visit lessons catalog" className="gap-2">
                 Start Learning
                 <ArrowRight className="h-4 w-4" />
               </Link>
@@ -47,7 +47,7 @@ export function HeroSection() {
               asChild
               className="w-full bg-transparent py-6 text-base sm:w-auto sm:py-3 sm:text-sm"
             >
-              <Link href="/register">Create Account</Link>
+              <Link href="/register" title="Create an account">Create Account</Link>
             </Button>
           </div>
 

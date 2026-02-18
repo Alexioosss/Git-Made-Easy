@@ -1,7 +1,7 @@
 package com.gitmadeeasy.unit.infrastructure.controllers;
 
 import com.gitmadeeasy.entities.lessons.Lesson;
-import com.gitmadeeasy.entities.lessons.LessonDifficulty;
+import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.infrastructure.controllers.LessonController;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
@@ -43,7 +43,7 @@ class LessonControllerTest {
         );
         Lesson createdLesson = new Lesson("1", "Intro to Git",
                 "A simple introduction to an industry-standard version control system.",
-                LessonDifficulty.EASY);
+                DifficultyLevels.EASY);
         when(this.createLesson.execute(validRequest)).thenReturn(createdLesson);
 
         // Act & Assert
@@ -75,7 +75,7 @@ class LessonControllerTest {
         Lesson foundLesson = new Lesson(lessonId,
                 "Intro to Git",
                 "A simple introduction to an industry-standard version control system.",
-                LessonDifficulty.EASY);
+                DifficultyLevels.EASY);
         when(this.getLessonById.execute("1")).thenReturn(foundLesson);
 
         // Act & Assert

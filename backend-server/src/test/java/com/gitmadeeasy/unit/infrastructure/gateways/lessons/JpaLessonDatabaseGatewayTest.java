@@ -1,7 +1,7 @@
 package com.gitmadeeasy.unit.infrastructure.gateways.lessons;
 
 import com.gitmadeeasy.entities.lessons.Lesson;
-import com.gitmadeeasy.entities.lessons.LessonDifficulty;
+import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.infrastructure.gateways.lessons.JpaLessonDatabaseGateway;
 import com.gitmadeeasy.infrastructure.gateways.lessons.JpaLessonSchema;
 import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.jpa.JpaLessonRepository;
@@ -126,14 +126,14 @@ class JpaLessonDatabaseGatewayTest {
     private static Lesson provideLesson() {
         return new Lesson("Intro to Git",
                 "A simple introduction to a popular industry-relevant tool, Git.",
-                LessonDifficulty.EASY);
+                DifficultyLevels.EASY);
     }
 
     private static JpaLessonSchema provideLessonSchema() {
         return new JpaLessonSchema(
                 "Intro to Git",
                 "A simple introduction to a popular industry-relevant tool, Git.",
-                LessonDifficulty.EASY
+                DifficultyLevels.EASY
         );
     }
 }

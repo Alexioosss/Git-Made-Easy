@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Lesson } from "@/types/lesson";
-import { LessonProgress } from "@/types/progress";
+import { LessonProgress } from "@/types/taskProgress";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
@@ -16,14 +16,16 @@ export function LessonCard({ lesson, progress }: LessonCardProps) {
     return acc;
   }, {} as Record<string, number>);
 
-  const isComplete = progress && progress.progressPercentage === 100;
+  let progressPercentage = null;
+  if(progress) { progressPercentage = progress.totalTasksCount / progress.completedTasksCount; }
+  const isComplete = progress && progressPercentage === 100;
 
   return (
     <Link href={`/lessons/${lesson.lessonId}`}
       className="group flex flex-col rounded-xl border border-border bg-card transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 md:flex-row md:items-center">
       {/* Order number */}
       <div className="flex items-center gap-4 border-b border-border px-5 py-4 md:justify-center md:gap-0 md:border-b-0 md:border-r md:px-8 md:py-10">
-        <span className="text-2xl font-bold text-muted-foreground/40 group-hover:text-primary/60 transition-colors md:text-3xl">
+        <span className="text-2xl font-bold text-muted-foreground/40 group-hover:text-primary/100 transition-colors md:text-3xl">
           {String(lesson.orderIndex).padStart(2, "0")}
         </span>
         {/* Title shown inline on mobile only */}
@@ -65,12 +67,12 @@ export function LessonCard({ lesson, progress }: LessonCardProps) {
         {/* Progress bar if logged in */}
         {progress && (
           <div className="mt-1 flex items-center gap-2 sm:gap-3">
-            <Progress value={progress.progressPercentage} className="h-1.5 flex-1"/>
+            <Progress value={progressPercentage} className="h-1.5 flex-1"/>
             <span className="shrink-0 text-xs font-medium text-muted-foreground">
-              {progress.progressPercentage}%
+              {progressPercentage}%
             </span>
             <span className="hidden shrink-0 text-xs text-muted-foreground/60 sm:inline">
-              ({progress.completedTasks}/{progress.totalTasks} tasks)
+              ({progress.completedTasksCount}/{progress.totalTasksCount} tasks)
             </span>
           </div>
         )}

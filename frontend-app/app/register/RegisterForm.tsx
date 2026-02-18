@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Gateways } from "@/config/Gateways";
+import { GatewayFactory } from "@/config/GatewayFactory";
 import { GitBranch, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,7 @@ export default function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const userGateway = Gateways.instance.userGateway;
+  const userGateway = GatewayFactory.instance.userGateway;
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
       e.preventDefault();
@@ -27,14 +27,17 @@ export default function RegisterForm() {
       setIsLoading(true);
 
       try {
-          await userGateway.register(firstName, lastName, emailAddress, password);
-          setTimeout(() => router.push("/dashboard"), 5000);
-      } catch(error: any) { setError(error.message || "Something went wrong"); }
-      finally { setIsLoading(false); }
+        await userGateway.register(firstName, lastName, emailAddress, password);
+        setTimeout(() => router.push("/dashboard"), 5000);
+      } catch(error: any) {
+        setError(error.message || "Something went wrong");
+      } finally {
+        setIsLoading(false);
+      }
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-[calc(100dvh-56px)] sm:min-h-[calc(100dvh-64px)] bg-background flex flex-col justify-center">
       <div className="flex justify-center px-4 py-6">
         <div className="w-full max-w-xl bg-card px-6 pt-6 pb-4 rounded-xl shadow text-lg space-y-3">
           <div className="mb-6 text-center">
@@ -91,15 +94,13 @@ export default function RegisterForm() {
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Creating account...
                 </>
-              ) : (
-                "Create Account"
-              )}
+              ) : ( "Create Account" )}
             </Button>
           </form>
 
           <p className="mt-6 text-center text-xl text-muted-foreground">
             Already have an account?{" "}
-            <Link href="/login" className="text-primary transition-colors hover:text-primary/80 hover:underline">
+            <Link href="/login" title="Sign in" className="text-primary transition-colors hover:text-primary/80 hover:underline">
               Sign in
             </Link>
           </p>

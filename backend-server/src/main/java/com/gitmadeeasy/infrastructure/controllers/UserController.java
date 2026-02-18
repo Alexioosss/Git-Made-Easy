@@ -8,6 +8,7 @@ import com.gitmadeeasy.usecases.users.GetUserByEmail;
 import com.gitmadeeasy.usecases.users.GetUserById;
 import com.gitmadeeasy.usecases.users.dto.CreateUserRequest;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +56,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserResponse> getUserByEmailAddress(@RequestParam("emailAddress") String emailAddress) {
+    public ResponseEntity<UserResponse> getUserByEmailAddress(@NotBlank @RequestBody String emailAddress) {
         log.info("GET /users/{} - Fetching user by their email address", emailAddress);
         User foundUser = this.getUserByEmail.execute(emailAddress);
         log.info("User found successfully. UserID={}, email address={}", foundUser.getUserId(), foundUser.getEmailAddress());

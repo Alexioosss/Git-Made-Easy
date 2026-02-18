@@ -1,6 +1,6 @@
 package com.gitmadeeasy.infrastructure.controllers.advice;
 
-import com.gitmadeeasy.usecases.lessons.exceptions.LessonDifficultyNotRecognisedException;
+import com.gitmadeeasy.usecases.lessons.exceptions.DifficultyLevelNotRecognisedException;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonNotFoundWithIdException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +15,8 @@ public class LessonExceptionAdvice extends BaseErrorAdvice {
         return this.buildError(HttpStatus.NOT_FOUND, "LESSON_NOT_FOUND", ex.getMessage());
     }
 
-    @ExceptionHandler(LessonDifficultyNotRecognisedException.class)
-    public ResponseEntity<ApiError> handleLessonDifficultyNotRecognised(LessonDifficultyNotRecognisedException ex) {
+    @ExceptionHandler(DifficultyLevelNotRecognisedException.class)
+    public ResponseEntity<ApiError> handleLessonDifficultyNotRecognised(DifficultyLevelNotRecognisedException ex) {
         return this.buildError(HttpStatus.NOT_FOUND, "LESSON_NOT_FOUND", ex.getMessage());
     }
 }

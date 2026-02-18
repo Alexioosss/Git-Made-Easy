@@ -1,5 +1,6 @@
 package com.gitmadeeasy.infrastructure.gateways.tasks;
 
+import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.infrastructure.gateways.taskAttempts.JpaTaskAttemptSchema;
 import jakarta.persistence.*;
 
@@ -18,19 +19,23 @@ public class JpaTaskSchema {
     private String hint;
     private Integer taskOrder;
 
+    @Enumerated(EnumType.STRING)
+    private DifficultyLevels taskDifficulty;
+
     @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private final List<JpaTaskAttemptSchema> attempts = new ArrayList<>();
 
     protected JpaTaskSchema() {}
 
-    public JpaTaskSchema(String lessonId, String title, String content,
-                         String expectedCommand, String hint, Integer taskOrder) {
+    public JpaTaskSchema(String lessonId, String title, String content, String expectedCommand,
+                         String hint, Integer taskOrder, DifficultyLevels taskDifficulty) {
         this.lessonId = lessonId;
         this.title = title;
         this.content = content;
         this.expectedCommand = expectedCommand;
         this.hint = hint;
         this.taskOrder = taskOrder;
+        this.taskDifficulty = taskDifficulty;
     }
 
     public String getId() {
@@ -60,6 +65,8 @@ public class JpaTaskSchema {
     public Integer getTaskOrder() {
         return taskOrder;
     }
+
+    public DifficultyLevels getTaskDifficulty() { return taskDifficulty; }
 
     public void setId(String id) { this.id = id; }
 }

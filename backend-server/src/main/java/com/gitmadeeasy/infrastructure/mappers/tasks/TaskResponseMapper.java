@@ -14,7 +14,7 @@ public class TaskResponseMapper {
                 task.getContent(),
                 task.getExpectedCommand(),
                 task.getHint(),
-                task.getTaskOrder()
-        );
+                task.getTaskOrder(),
+                task.getDifficulty().name());
     }
 }

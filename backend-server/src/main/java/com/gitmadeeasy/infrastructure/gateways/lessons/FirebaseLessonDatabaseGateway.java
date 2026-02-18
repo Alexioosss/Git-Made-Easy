@@ -5,6 +5,7 @@ import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.firebase.FirebaseLessonRepository;
 import com.gitmadeeasy.infrastructure.mappers.lessons.LessonSchemaMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 public class FirebaseLessonDatabaseGateway implements LessonGateway {
@@ -31,5 +32,10 @@ public class FirebaseLessonDatabaseGateway implements LessonGateway {
     @Override
     public boolean existsById(String lessonId) {
         return this.firebase.existsById(lessonId);
+    }
+
+    @Override
+    public List<Lesson> findAllLessons() {
+        return this.firebase.findAll().stream().map(this.mapper::fromFirebaseSchema).toList();
     }
 }
