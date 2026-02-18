@@ -66,6 +66,19 @@ public class FirebaseLessonRepository {
         }
     }
 
+    public Integer findMaxLessonOrder() {
+        CollectionReference lessons = firestore.collection("lessons");
+        Query query = lessons.orderBy("lessonOrder", Query.Direction.DESCENDING).limit(1);
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+        try {
+            for(DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+                FirebaseLessonSchema lesson = document.toObject(FirebaseLessonSchema.class);
+                if(lesson != null) { return lesson.getLessonOrder(); }
+            }
+        } catch(InterruptedException | ExecutionException ignored) {}
+        return 0;
+    }
+
     public void deleteAll() {
         try {
             ApiFuture<QuerySnapshot> future = firestore.collection("lessons").get();

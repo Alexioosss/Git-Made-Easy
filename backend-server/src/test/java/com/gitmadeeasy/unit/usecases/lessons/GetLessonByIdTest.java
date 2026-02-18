@@ -36,7 +36,7 @@ class GetLessonByIdTest {
     @DisplayName("Get Lesson By ID - Lesson Exists")
     void execute_WhenLessonExists_ReturnsLesson() {
         // Arrange
-        Lesson lesson = new Lesson("Intro", "Description", DifficultyLevels.EASY);
+        Lesson lesson = new Lesson("Intro", "Description", DifficultyLevels.EASY, 1);
         when(this.lessonGateway.getLessonById("1")).thenReturn(Optional.of(lesson));
         when(this.taskGateway.getTasksByLessonId("1")).thenReturn(List.of());
 
@@ -61,7 +61,7 @@ class GetLessonByIdTest {
     @DisplayName("Get Lesson By ID - Lesson Exists With No Tasks")
     void execute_WhenLessonExistsWithNoTasks_ReturnsLessonWithEmptyTasksList() {
         // Arrange
-        Lesson lesson = new Lesson("Intro", "Description", DifficultyLevels.EASY);
+        Lesson lesson = new Lesson("Intro", "Description", DifficultyLevels.EASY, 1);
         when(this.lessonGateway.getLessonById("1")).thenReturn(Optional.of(lesson));
         when(this.taskGateway.getTasksByLessonId("1")).thenReturn(List.of());
 
@@ -80,7 +80,7 @@ class GetLessonByIdTest {
     @MethodSource("provideValidTasksList")
     @DisplayName("Get Lesson By ID - Lesson Exists With Tasks")
     void execute_WhenLessonExistsWithTasks_ReturnsLessonWithTasks(List<Task> tasks) {
-        Lesson lesson = new Lesson("Intro", "Description", DifficultyLevels.EASY);
+        Lesson lesson = new Lesson("Intro", "Description", DifficultyLevels.EASY, 1);
         lesson.setTasks(tasks);
         when(this.lessonGateway.getLessonById("1")).thenReturn(Optional.of(lesson));
         when(this.taskGateway.getTasksByLessonId("1")).thenReturn(List.of());
@@ -106,10 +106,10 @@ class GetLessonByIdTest {
                 List.of(
                         new Task("1", "1", "git overview - task 1",
                                 "A simple task to get comfortable with Git",
-                                "git", "as easy as it can be", 1),
+                                "git", "as easy as it can be", 1, DifficultyLevels.EASY),
                         new Task("2", "1", "git overview - task 2",
                                 "A simple task to get even more comfortable with Git",
-                                "git", "as easy as it can be, really", 1)
+                                "git", "as easy as it can be, really", 1, DifficultyLevels.EASY)
                 )
         );
     }

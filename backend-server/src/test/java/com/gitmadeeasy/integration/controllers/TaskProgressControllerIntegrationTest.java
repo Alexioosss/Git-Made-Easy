@@ -147,12 +147,13 @@ class TaskProgressControllerIntegrationTest {
     private String createTaskAndReturnTaskId() {
         JpaTaskSchema taskSchema = new JpaTaskSchema(
                 lessonId, "Intro to Git", "Creating a new Git repository",
-                "git init", "Remember to initialise the new repository", 1);
+                "git init", "Remember to initialise the new repository",
+                1, DifficultyLevels.EASY);
         return this.taskRepository.save(taskSchema).getId();
     }
 
     private String createLessonAndReturnLessonId() {
-        JpaLessonSchema schema = new JpaLessonSchema("Intro to Git", "Learn Git basics", DifficultyLevels.EASY);
+        JpaLessonSchema schema = new JpaLessonSchema("Intro to Git", "Learn Git basics", DifficultyLevels.EASY, 1);
         return this.lessonRepository.save(schema).getId();
     }
 }

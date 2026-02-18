@@ -4,15 +4,8 @@ import { CheckCircle2, XCircle } from "lucide-react";
 export function RecentActivity() {
   // Build activity list from task progress
   const activities = Object.values(mockTaskProgress)
-    .sort(
-      (a, b) =>
-        new Date(b.lastAttemptDate).getTime() -
-        new Date(a.lastAttemptDate).getTime()
-    )
-    .map((progress) => {
-      const lesson = mockLessons.find(
-        (l) => l.lessonId === progress.lessonId
-      );
+    .sort((a, b) => new Date(b.).getTime() - new Date(a.lastAttemptDate).getTime())
+    .map((progress) => {const lesson = mockLessons.find((l) => l.lessonId === progress.lessonId);
       const task = lesson?.tasks.find((t) => t.taskId === progress.taskId);
 
       return {

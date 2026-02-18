@@ -49,7 +49,8 @@ class TaskControllerIntegrationTest {
         // Arrange
         CreateTaskRequest request = new CreateTaskRequest(
                 "Intro to Git", "Initialise a repository",
-                "git init", "Remember to INITialize the new repository", 1);
+                "git init", "Remember to INITialize the new repository",
+                1, DifficultyLevels.EASY.name());
 
         // Act & Assert
         this.mockMvc.perform(post("/lessons/{lessonId}/tasks", lessonId)
@@ -117,7 +118,7 @@ class TaskControllerIntegrationTest {
         JpaLessonSchema lessonSchema = new JpaLessonSchema(
                 "Into to Git",
                 "Learn the basics of an industry-standard technology",
-                DifficultyLevels.EASY);
+                DifficultyLevels.EASY, 1);
         return this.lessonRepository.save(lessonSchema).getId();
     }
 
@@ -126,18 +127,21 @@ class TaskControllerIntegrationTest {
                 lessonId, "Initialise a Git repository",
                 "Create a new Git repository",
                 "git init",
-                "Remember to INITialise the new repository", 1);
+                "Remember to INITialise the new repository", 1, DifficultyLevels.EASY);
         return this.taskRepository.save(taskSchema).getId();
     }
 
     private static Stream<Arguments> provideInvalidTaskCreationRequests() {
         return Stream.of(
                 Arguments.of("Missing Title",
-                        new CreateTaskRequest("", "content", "git init", null, 1)),
+                        new CreateTaskRequest("", "content", "git init",
+                                null, 1, DifficultyLevels.EASY.name())),
                 Arguments.of("Missing Content",
-                        new CreateTaskRequest("Title", "", "git init", null, 1)),
+                        new CreateTaskRequest("Title", "", "git init",
+                                null, 1, DifficultyLevels.EASY.name())),
                 Arguments.of("Missing Expected Command",
-                        new CreateTaskRequest("Title", "content", "", null, 1))
+                        new CreateTaskRequest("Title", "content", "",
+                                null, 1, DifficultyLevels.EASY.name()))
         );
     }
 }

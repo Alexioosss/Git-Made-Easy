@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,6 +58,43 @@ class JpaLessonDatabaseGatewayTest {
 
         // Act & Assert
         assertThrows(RuntimeException.class, () -> this.jpaLessonDatabaseGateway.createLesson(lesson));
+    }
+
+    @Test
+    @DisplayName("Find All Lessons - Lessons Exist - Returns Mapped Lessons")
+    void findAllLessons_WhenLessonsExist_ReturnsMappedLessons() {
+        // Arrange
+        JpaLessonSchema schema1 = provideLessonSchema();
+        JpaLessonSchema schema2 = provideLessonSchema();
+        Lesson lesson1 = provideLesson();
+        Lesson lesson2 = provideLesson();
+        when(this.lessonRepository.findAll()).thenReturn(List.of(schema1, schema2));
+        when(this.lessonSchemaMapper.fromJpaSchema(schema1)).thenReturn(lesson1);
+        when(this.lessonSchemaMapper.fromJpaSchema(schema2)).thenReturn(lesson2);
+
+        // Act
+        List<Lesson> result = this.jpaLessonDatabaseGateway.findAllLessons();
+
+        // Assert
+        assertEquals(List.of(lesson1, lesson2), result);
+        verify(this.lessonRepository).findAll();
+        verify(this.lessonSchemaMapper).fromJpaSchema(schema1);
+        verify(this.lessonSchemaMapper).fromJpaSchema(schema2);
+    }
+
+    @Test
+    @DisplayName("Find All Lessons - No Lessons Exist - Returns Empty List")
+    void findAllLessons_WhenNoLessonsExist_ReturnsEmptyList() {
+        // Arrange
+        when(this.lessonRepository.findAll()).thenReturn(List.of());
+
+        // Act
+        List<Lesson> result = this.jpaLessonDatabaseGateway.findAllLessons();
+
+        // Assert
+        assertTrue(result.isEmpty());
+        verify(this.lessonRepository).findAll();
+        verify(this.lessonSchemaMapper, never()).fromJpaSchema(any());
     }
 
     @Test
@@ -126,14 +164,13 @@ class JpaLessonDatabaseGatewayTest {
     private static Lesson provideLesson() {
         return new Lesson("Intro to Git",
                 "A simple introduction to a popular industry-relevant tool, Git.",
-                DifficultyLevels.EASY);
+                DifficultyLevels.EASY, 1);
     }
 
     private static JpaLessonSchema provideLessonSchema() {
         return new JpaLessonSchema(
                 "Intro to Git",
                 "A simple introduction to a popular industry-relevant tool, Git.",
-                DifficultyLevels.EASY
-        );
+                DifficultyLevels.EASY, 1);
     }
 }

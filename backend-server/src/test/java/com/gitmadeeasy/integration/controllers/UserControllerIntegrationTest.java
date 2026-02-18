@@ -112,7 +112,12 @@ class UserControllerIntegrationTest {
 
         // Act & Assert
         this.mockMvc.perform(get("/users")
-                        .param("emailAddress", "myemail1@gmail.com"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "emailAddress": "myemail1@gmail.com"
+                                }
+                                """))
                 .andExpect(status().isOk());
     }
 
@@ -121,7 +126,12 @@ class UserControllerIntegrationTest {
     void getUserByEmailAddress_WhenUserDoesNotExist_ReturnsNotFound() throws Exception {
         // Act & Assert
         this.mockMvc.perform(get("/users")
-                        .param("emailAddress", "myemail1@gmail.com"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "emailAddress": "myemail1@gmail.com"
+                                }
+                                """))
                 .andExpect(status().isNotFound());
     }
 

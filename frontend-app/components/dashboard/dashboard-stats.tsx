@@ -1,33 +1,17 @@
-import {
-  mockLessons,
-  mockLessonProgress,
-  mockTaskProgress,
-} from "@/lib/mock-data";
+import { mockLessons, mockLessonProgress, mockTaskProgress } from "@/lib/mock-data";
 import { Progress } from "@/components/ui/progress";
 import { BookOpen, CheckCircle2, Target, Flame } from "lucide-react";
 
 export function DashboardStats() {
   const totalLessons = mockLessons.length;
-  const completedLessons = Object.values(mockLessonProgress).filter(
-    (p) => p.progressPercentage === 100
-  ).length;
-  const lessonPercent =
-    totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
+  const completedLessons = Object.values(mockLessonProgress).filter((p) => p.completedTasksCount / p.totalTasksCount === 1).length;
+  const lessonPercent = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
 
-  const totalTasks = mockLessons.reduce(
-    (sum, lesson) => sum + lesson.tasks.length,
-    0
-  );
-  const totalTasksCompleted = Object.values(mockTaskProgress).filter(
-    (p) => p.completed
-  ).length;
-  const taskPercent =
-    totalTasks > 0 ? Math.round((totalTasksCompleted / totalTasks) * 100) : 0;
+  const totalTasks = mockLessons.reduce((sum, lesson) => sum + lesson.tasks.length, 0);
+  const totalTasksCompleted = Object.values(mockTaskProgress).filter((p) => p.completed).length;
+  const taskPercent = totalTasks > 0 ? Math.round((totalTasksCompleted / totalTasks) * 100) : 0;
 
-  const totalAttempts = Object.values(mockTaskProgress).reduce(
-    (sum, p) => sum + p.attempts,
-    0
-  );
+  const totalAttempts = Object.values(mockTaskProgress).reduce((sum, p) => sum + p.attempts, 0);
 
   const stats = [
     {
@@ -67,14 +51,9 @@ export function DashboardStats() {
   return (
     <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
       {stats.map((stat) => (
-        <div
-          key={stat.label}
-          className="rounded-xl border border-border bg-card p-4 sm:p-5"
-        >
+        <div key={stat.label} className="rounded-xl border border-border bg-card p-4 sm:p-5">
           <div className="flex items-center gap-2 sm:gap-3">
-            <div
-              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg sm:h-10 sm:w-10 ${stat.bgColor}`}
-            >
+            <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg sm:h-10 sm:w-10 ${stat.bgColor}`}>
               <stat.icon className={`h-4 w-4 sm:h-5 sm:w-5 ${stat.color}`} />
             </div>
             <div className="min-w-0 flex-1">

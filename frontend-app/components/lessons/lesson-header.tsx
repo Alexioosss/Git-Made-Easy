@@ -15,10 +15,7 @@ export function LessonHeader({ lesson, progress }: LessonHeaderProps) {
 
   return (
     <div className="mb-8 sm:mb-10">
-      <Link
-        href="/lessons"
-        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground sm:mb-6"
-      >
+      <Link href="/lessons" className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground sm:mb-6">
         <ArrowLeft className="h-3.5 w-3.5" />
         Back to Lessons
       </Link>
@@ -37,10 +34,7 @@ export function LessonHeader({ lesson, progress }: LessonHeaderProps) {
 
           {progress && (
             <div className="mt-4 flex items-center gap-2 sm:gap-3">
-              <Progress
-                value={progressPercentage}
-                className="h-2 flex-1 sm:max-w-xs"
-              />
+              <Progress value={progressPercentage} className="h-2 flex-1 sm:max-w-xs"/>
               <span className="shrink-0 text-sm font-medium text-foreground">
                 {progressPercentage}%
               </span>

@@ -11,13 +11,10 @@ interface LessonCardProps {
 }
 
 export function LessonCard({ lesson, progress }: LessonCardProps) {
-  const difficultyDistribution = lesson.tasks.reduce((acc, task) => {
-    acc[task.difficulty] = (acc[task.difficulty] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+  const difficultyDistribution = lesson.tasks.reduce((acc, task) => { acc[task.difficulty] = (acc[task.difficulty] || 0) + 1; return acc; }, {} as Record<string, number>);
 
   let progressPercentage = null;
-  if(progress) { progressPercentage = progress.totalTasksCount / progress.completedTasksCount; }
+  if(progress) { progressPercentage = (progress.completedTasksCount / progress.totalTasksCount) * 100; }
   const isComplete = progress && progressPercentage === 100;
 
   return (

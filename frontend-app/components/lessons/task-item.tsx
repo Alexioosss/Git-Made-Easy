@@ -33,9 +33,7 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete }: T
   };
 
   // Check if user has existing progress (for logged-in users)
-  const existingProgress = isAuthenticated
-    ? mockTaskProgress[task.taskId]
-    : undefined;
+  const existingProgress = isAuthenticated ? mockTaskProgress[task.taskId] : undefined;
   const isCompleted = existingProgress?.completedAt || localCompleted;
   const totalAttempts = (existingProgress?.attempts || 0) + localAttempts;
 

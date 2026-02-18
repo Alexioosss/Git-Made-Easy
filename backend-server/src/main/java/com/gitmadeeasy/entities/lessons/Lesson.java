@@ -12,19 +12,23 @@ public class Lesson {
     private final String title;
     private final String description;
     private final DifficultyLevels difficulty;
+    private final Integer lessonOrder;
     private List<Task> tasks = new ArrayList<>();
 
-    public Lesson(String lessonId, String title, String description, DifficultyLevels difficulty) {
+    public Lesson(String lessonId, String title, String description,
+                  DifficultyLevels difficulty, Integer lessonOrder) {
         this.lessonId = lessonId;
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
+        this.lessonOrder = lessonOrder;
     }
 
-    public Lesson(String title, String description, DifficultyLevels difficulty) {
+    public Lesson(String title, String description, DifficultyLevels difficulty, Integer lessonOrder) {
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
+        this.lessonOrder = lessonOrder;
     }
 
     public String getLessonId() {
@@ -42,6 +46,8 @@ public class Lesson {
     public DifficultyLevels getDifficulty() {
         return difficulty;
     }
+
+    public Integer getLessonOrder() { return lessonOrder; }
 
     public List<Task> getTasks() {
         return tasks;
@@ -62,6 +68,7 @@ public class Lesson {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", difficulty='" + difficulty + '\'' +
+                ", lessonOrder='" + lessonOrder + '\'' +
                 '}';
     }
 
@@ -71,11 +78,12 @@ public class Lesson {
         Lesson lesson = (Lesson) o;
         return Objects.equals(title, lesson.title) &&
                 Objects.equals(description, lesson.description) &&
-                Objects.equals(difficulty, lesson.difficulty);
+                Objects.equals(difficulty, lesson.difficulty) &&
+                Objects.equals(lessonOrder, lesson.lessonOrder);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, description, difficulty);
+        return Objects.hash(title, description, difficulty, lessonOrder);
     }
 }

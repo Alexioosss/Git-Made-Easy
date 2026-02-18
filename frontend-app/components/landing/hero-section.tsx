@@ -8,14 +8,8 @@ export function HeroSection() {
   return (
     <section className="relative overflow-hidden px-4 py-16 sm:py-24 md:py-32">
       {/* Subtle grid background */}
-      <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
-      />
+      <div className="absolute inset-0 opacity-[0.03]"
+        style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)", backgroundSize: "60px 60px"}}/>
 
       <div className="relative mx-auto max-w-6xl">
         <div className="flex flex-col items-center text-center">
@@ -41,12 +35,7 @@ export function HeroSection() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              asChild
-              className="w-full bg-transparent py-6 text-base sm:w-auto sm:py-3 sm:text-sm"
-            >
+            <Button variant="outline" size="lg" asChild className="w-full bg-transparent py-6 text-base sm:w-auto sm:py-3 sm:text-sm">
               <Link href="/register" title="Create an account">Create Account</Link>
             </Button>
           </div>

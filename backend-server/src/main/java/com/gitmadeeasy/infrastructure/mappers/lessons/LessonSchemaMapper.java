@@ -10,7 +10,8 @@ public class LessonSchemaMapper {
         JpaLessonSchema schema =  new JpaLessonSchema(
                 lesson.getTitle(),
                 lesson.getDescription(),
-                lesson.getDifficulty());
+                lesson.getDifficulty(),
+                lesson.getLessonOrder());
         if(lesson.getLessonId() != null) { schema.setId(lesson.getLessonId()); }
         return schema;
     }
@@ -20,8 +21,8 @@ public class LessonSchemaMapper {
                 schema.getId(),
                 schema.getTitle(),
                 schema.getDescription(),
-                schema.getDifficulty()
-        );
+                schema.getDifficulty(),
+                schema.getLessonOrder());
     }
 
 
@@ -31,7 +32,7 @@ public class LessonSchemaMapper {
     public FirebaseLessonSchema toFirebaseSchema(Lesson lesson) {
         FirebaseLessonSchema schema = new FirebaseLessonSchema(
                 lesson.getTitle(), lesson.getDescription(),
-                lesson.getDifficulty());
+                lesson.getDifficulty(), lesson.getLessonOrder());
         if (lesson.getLessonId() != null) { schema.setId(lesson.getLessonId()); }
         return schema;
     }
@@ -39,6 +40,7 @@ public class LessonSchemaMapper {
     public Lesson fromFirebaseSchema(FirebaseLessonSchema schema) {
         return new Lesson(
                 schema.getId(), schema.getTitle(),
-                schema.getDescription(), schema.getDifficulty());
+                schema.getDescription(), schema.getDifficulty(),
+                schema.getLessonOrder());
     }
 }

@@ -42,7 +42,7 @@ class LessonControllerIntegrationTest {
         // Arrange
         CreateLessonRequest request = new CreateLessonRequest(
                 "Intro to Git", "An introduction to an industry-standard technology",
-                "easy");
+                "easy", 1);
 
         // Act & Assert
         this.mockMvc.perform(post("/lessons")
@@ -72,13 +72,43 @@ class LessonControllerIntegrationTest {
     void createLesson_WhenInvalidRequestData_ReturnsBadRequest() throws Exception {
         // Arrange
         CreateLessonRequest invalidRequest = new CreateLessonRequest("Intro to Git",
-                "An introduction to an industry-standard technology", "impossible");
+                "An introduction to an industry-standard technology", "impossible", 1);
 
         // Act & Assert
         this.mockMvc.perform(post("/lessons")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonUtil.objectToJson(invalidRequest)))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("Get All Lessons - No Lessons Exist - Returns Empty List")
+    void getAllLessons_WhenNoLessonsExist_ReturnsEmptyList() throws Exception {
+        // Act & Assert
+        this.mockMvc.perform(get("/lessons"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
+    @DisplayName("Get All Lessons - Lessons Exist - Returns Lessons List")
+    void getAllLessons_WhenLessonsExist_ReturnsLessonsList() throws Exception {
+        // Arrange
+        JpaLessonSchema lesson1 = new JpaLessonSchema( "Intro to Git",
+                "An introduction to an industry-standard technology", DifficultyLevels.EASY, 1);
+        JpaLessonSchema lesson2 = new JpaLessonSchema( "Branching", "Learn how to branch in Git",
+                DifficultyLevels.MEDIUM, 2);
+        this.lessonRepository.save(lesson1);
+        this.lessonRepository.save(lesson2);
+
+        // Act & Assert
+        this.mockMvc.perform(get("/lessons"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].title").value("Intro to Git"))
+                .andExpect(jsonPath("$[1].title").value("Branching"));
     }
 
     @Test
@@ -114,18 +144,18 @@ class LessonControllerIntegrationTest {
         JpaLessonSchema lessonSchema = new JpaLessonSchema(
                 "Intro to Git",
                 "An introduction to an industry-standard technology",
-                DifficultyLevels.EASY);
+                DifficultyLevels.EASY, 1);
         return this.lessonRepository.save(lessonSchema).getId();
     }
 
     private static Stream<Arguments> provideInvalidLessonCreationRequest() {
         return Stream.of(
                 Arguments.of("Missing Title",
-                        new CreateLessonRequest("", "An introduction to an industry-standard technology", "easy")),
+                        new CreateLessonRequest("", "An introduction to an industry-standard technology", "easy", 1)),
                 Arguments.of("Missing Description",
-                        new CreateLessonRequest("Intro to Git", "", "easy")),
+                        new CreateLessonRequest("Intro to Git", "", "easy", 1)),
                 Arguments.of("Missing Difficulty",
-                        new CreateLessonRequest("Intro to Git", "An introduction to an industry-standard technology", ""))
+                        new CreateLessonRequest("Intro to Git", "An introduction to an industry-standard technology", "", 1))
         );
     }
 }

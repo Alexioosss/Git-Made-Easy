@@ -1,5 +1,6 @@
 package com.gitmadeeasy.unit.usecases.attemptTask;
 
+import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.entities.tasks.Task;
@@ -135,7 +136,7 @@ class AttemptTaskTest {
                 "first git task",
                 "Let's start this journey, shall we?",
                 "git start",
-                "easier than it may seem...", 1);
+                "easier than it may seem...", 1, DifficultyLevels.EASY);
     }
 
     private static TaskProgress provideTaskProgress() {

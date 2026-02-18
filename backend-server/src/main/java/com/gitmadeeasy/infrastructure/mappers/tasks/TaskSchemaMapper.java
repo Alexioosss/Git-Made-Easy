@@ -15,7 +15,7 @@ public class TaskSchemaMapper {
                 task.getExpectedCommand(),
                 task.getHint(),
                 task.getTaskOrder(),
-                task.getDifficulty());
+                task.getTaskDifficulty());
         if(task.getTaskId() != null) { schema.setId(task.getTaskId()); }
         return schema;
     }
@@ -44,7 +44,7 @@ public class TaskSchemaMapper {
                 task.getExpectedCommand(),
                 task.getHint(),
                 task.getTaskOrder(),
-                task.getDifficulty().name());
+                task.getTaskDifficulty().name());
         if(task.getTaskId() != null) { schema.setId(task.getTaskId()); }
         return schema;
     }

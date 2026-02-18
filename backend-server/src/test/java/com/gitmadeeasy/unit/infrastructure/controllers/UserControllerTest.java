@@ -22,8 +22,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -99,12 +98,18 @@ class UserControllerTest {
     @Test @DisplayName("Get User By Email - User Exists - Returns Successful Response / 200")
     void getUserByEmail_WhenUserExists_ReturnsUserResponse() throws Exception {
         // Arrange
-        User foundUser = new User("1", "Alessio", "Cocuzza", "myemail@gmail.com", false);
+        User foundUser = new User("1", "Alessio", "Cocuzza", "myemail1@gmail.com", false);
         UserResponse expectedResponse = userResponseMapper.toUserResponse(foundUser);
-        when(getUserByEmail.execute("myemail@gmail.com")).thenReturn(foundUser);
+        when(getUserByEmail.execute("myemail1@gmail.com")).thenReturn(foundUser);
 
         // Act & Assert
-        mockMvc.perform(get("/users").param("emailAddress", "myemail@gmail.com"))
+        mockMvc.perform(get("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "emailAddress": "myemail1@gmail.com"
+                                }
+                                """))
                 .andExpect(status().isOk())
                 .andExpect(content().json(JsonUtil.objectToJson(expectedResponse)));
     }
@@ -116,7 +121,13 @@ class UserControllerTest {
         when(getUserByEmail.execute("missing@gmail.com")).thenThrow(new UserNotFoundWithEmailException("missing@gmail.com"));
 
         // Act & Assert
-        mockMvc.perform(get("/users").param("emailAddress", "missing@gmail.com"))
+        mockMvc.perform(get("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "emailAddress": "missing@gmail.com"
+                                }
+                                """))
                 .andExpect(status().isNotFound());
     }
 }

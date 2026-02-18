@@ -37,12 +37,11 @@ class CreateLessonTest {
         CreateLessonRequest request = new CreateLessonRequest(
                 "Intro to Git",
                 "A simple overview of an industry-famous version control system.",
-                "easy"
-        );
+                "easy", 1);
         Lesson createdLesson = new Lesson(
                 "1", "Intro to Git",
                 "A simple overview of an industry-famous version control system.",
-                DifficultyLevels.EASY);
+                DifficultyLevels.EASY, 1);
         when(this.lessonGateway.createLesson(any(Lesson.class))).thenReturn(createdLesson);
 
         // Act
@@ -59,9 +58,9 @@ class CreateLessonTest {
     @MethodSource("invalidFieldsProvider")
     @DisplayName("Create A Lesson - Invalid Payload")
     void execute_WhenInvalidPayload_ThrowsMissingRequiredFieldException(
-            String title, String description, String difficulty, String expectedErrorMessage) {
+            String title, String description, String difficulty, Integer lessonOrder, String expectedErrorMessage) {
         // Arrange
-        CreateLessonRequest request = new CreateLessonRequest(title, description, difficulty);
+        CreateLessonRequest request = new CreateLessonRequest(title, description, difficulty, lessonOrder);
 
         // Act
         MissingRequiredFieldException ex = assertThrows(MissingRequiredFieldException.class, () -> this.createLesson.execute(request));
@@ -80,7 +79,7 @@ class CreateLessonTest {
     @DisplayName("Create A Lesson - Lesson Difficulty Is Invalid/Not Recognised")
     void execute_WhenInvalidDifficulty_ThrowsLessonDifficultyNotRecognisedException(String invalidDifficulty) {
         // Arrange
-        CreateLessonRequest request = new CreateLessonRequest("Title", "Description", invalidDifficulty);
+        CreateLessonRequest request = new CreateLessonRequest("Title", "Description", invalidDifficulty, 1);
 
         // Act
         DifficultyLevelNotRecognisedException ex = assertThrows(DifficultyLevelNotRecognisedException.class,
@@ -97,17 +96,17 @@ class CreateLessonTest {
 
     private static Stream<Arguments> invalidFieldsProvider() {
         return Stream.of(
-                Arguments.of(null, "Description", "easy", "title cannot be left blank"),
-                Arguments.of("", "Description", "medium", "title cannot be left blank"),
-                Arguments.of(" ", "Description", "hard", "title cannot be left blank"),
+                Arguments.of(null, "Description", "easy", 1, "title cannot be left blank"),
+                Arguments.of("", "Description", "medium", 1, "title cannot be left blank"),
+                Arguments.of(" ", "Description", "hard", 1, "title cannot be left blank"),
 
-                Arguments.of("Title", null, "hard", "task description cannot be left blank"),
-                Arguments.of("Title", "", "medium", "task description cannot be left blank"),
-                Arguments.of("Title", " ", "easy", "task description cannot be left blank"),
+                Arguments.of("Title", null, "hard", 1, "task description cannot be left blank"),
+                Arguments.of("Title", "", "medium", 1, "task description cannot be left blank"),
+                Arguments.of("Title", " ", "easy", 1, "task description cannot be left blank"),
 
-                Arguments.of("Title", "Description", null, "task difficulty cannot be left blank"),
-                Arguments.of("Title", "Description", "", "task difficulty cannot be left blank"),
-                Arguments.of("Title", "Description", " ", "task difficulty cannot be left blank")
+                Arguments.of("Title", "Description", null, 1, "task difficulty cannot be left blank"),
+                Arguments.of("Title", "Description", "", 1, "task difficulty cannot be left blank"),
+                Arguments.of("Title", "Description", " ", 1, "task difficulty cannot be left blank")
         );
     }
 }

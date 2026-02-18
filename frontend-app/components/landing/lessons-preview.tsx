@@ -25,13 +25,7 @@ export function LessonsPreview() {
 
         <div className="grid gap-4 sm:grid-cols-2">
           {mockLessons.map((lesson) => {
-            const difficultyDistribution = lesson.tasks.reduce(
-              (acc, task) => {
-                acc[task.difficulty] = (acc[task.difficulty] || 0) + 1;
-                return acc;
-              },
-              {} as Record<string, number>
-            );
+            const difficultyDistribution = lesson.tasks.reduce((acc, task) => {acc[task.difficulty] = (acc[task.difficulty] || 0) + 1; return acc; }, {} as Record<string, number>);
 
             return (
               <Link key={lesson.lessonId} href={`/lessons/${lesson.lessonId}`}

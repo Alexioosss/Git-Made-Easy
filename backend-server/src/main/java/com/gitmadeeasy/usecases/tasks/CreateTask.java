@@ -42,8 +42,8 @@ public class CreateTask {
             throw new MissingRequiredFieldException("expected command cannot be left blank");
         }
 
-        Integer taskOrder = request.taskOrder() != null ? request.taskOrder() :
-                this.taskGateway.getNextTaskOrderForLesson(lessonId);
+        Integer taskOrder = request.taskOrder() != null && request.taskOrder() >= 0
+                ? request.taskOrder() : this.taskGateway.getNextTaskOrderForLesson(lessonId);
         log.info("Task order has been produced for current task");
 
         DifficultyLevels taskDifficulty;

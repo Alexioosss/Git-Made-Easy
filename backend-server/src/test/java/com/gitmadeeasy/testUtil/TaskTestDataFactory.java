@@ -1,5 +1,6 @@
 package com.gitmadeeasy.testUtil;
 
+import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.entities.taskAttempts.TaskCompletionStatus;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.entities.tasks.Task;
@@ -19,23 +20,20 @@ public final class TaskTestDataFactory {
     public static Task task() {
         return new Task(
                 "1", "first git task", "Let's start this journey, shall we?",
-                "git start", "easier than it may seem...", 1
-        );
+                "git start", "easier than it may seem...", 1, DifficultyLevels.EASY);
     }
 
     public static JpaTaskSchema jpaTaskSchema() {
         return new JpaTaskSchema(
                 "1", "first git task", "Let's start this journey, shall we?",
-                "git start", "easier than it may seem...", 1
-        );
+                "git start", "easier than it may seem...", 1, DifficultyLevels.EASY);
     }
 
     public static Task map(JpaTaskSchema schema) {
         return new Task(
                 schema.getLessonId(), schema.getTitle(),
                 schema.getContent(), schema.getExpectedCommand(),
-                schema.getHint(), schema.getTaskOrder()
-        );
+                schema.getHint(), schema.getTaskOrder(), schema.getTaskDifficulty());
     }
 
     public static Stream<Arguments> validTasksList() {

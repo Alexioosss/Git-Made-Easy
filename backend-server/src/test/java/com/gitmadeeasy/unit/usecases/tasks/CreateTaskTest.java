@@ -1,5 +1,6 @@
 package com.gitmadeeasy.unit.usecases.tasks;
 
+import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
@@ -40,7 +41,7 @@ class CreateTaskTest {
                 "first git task",
                 "Let's start this journey, shall we?",
                 "git start",
-                "easier than it may seem...", 1);
+                "easier than it may seem...", 1, DifficultyLevels.EASY);
         when(this.lessonGateway.existsById(lessonId)).thenReturn(true);
         when(this.taskGateway.createTask(any(Task.class))).thenReturn(createdTask);
 
@@ -75,9 +76,9 @@ class CreateTaskTest {
     @DisplayName("Create A Task - Invalid Payload")
     void execute_WhenInvalidPayload_ThrowsMissingRequiredFieldException(
             String lessonId, String title, String content,
-            String expectedCommand, String hint, String expectedErrorMessage) {
+            String expectedCommand, String hint, Integer taskOrder, String expectedErrorMessage) {
         // Arrange
-        CreateTaskRequest request = new CreateTaskRequest(title, content, expectedCommand, hint, 1);
+        CreateTaskRequest request = new CreateTaskRequest(title, content, expectedCommand, hint, taskOrder, DifficultyLevels.EASY.name());
         when(this.lessonGateway.existsById(any(String.class))).thenReturn(true);
 
         // Act
@@ -97,8 +98,7 @@ class CreateTaskTest {
                 "first git task",
                 "Let's start this journey, shall we?",
                 "git start",
-                "easier than it may seem...", 1
-        );
+                "easier than it may seem...", 1, DifficultyLevels.EASY.name());
     }
 
     private static Stream<Arguments> provideInvalidTaskCreationPayload() {
@@ -106,49 +106,49 @@ class CreateTaskTest {
                 Arguments.of(
                         "1", null,
                         "Let's start this journey, shall we?",
-                        "git start", "easier than it may seem...", "task title cannot be left blank"
+                        "git start", "easier than it may seem...", 1, "task title cannot be left blank"
                 ),
                 Arguments.of(
                         "1", "",
                         "Let's start this journey, shall we?",
-                        "git start", "easier than it may seem...", "task title cannot be left blank"
+                        "git start", "easier than it may seem...", 1, "task title cannot be left blank"
                 ),
                 Arguments.of(
                         "1", " ",
                         "Let's start this journey, shall we?",
-                        "git start", "easier than it may seem...", "task title cannot be left blank"
+                        "git start", "easier than it may seem...", 1, "task title cannot be left blank"
                 ),
 
                 Arguments.of(
                         "1", "first git task",
                         null,
-                        "git start", "easier than it may seem...", "task content cannot be left blank"
+                        "git start", "easier than it may seem...", 1, "task content cannot be left blank"
                 ),
                 Arguments.of(
                         "1", "first git task",
                         "",
-                        "git start", "easier than it may seem...", "task content cannot be left blank"
+                        "git start", "easier than it may seem...", 1, "task content cannot be left blank"
                 ),
                 Arguments.of(
                         "1", "first git task",
                         " ",
-                        "git start", "easier than it may seem...", "task content cannot be left blank"
+                        "git start", "easier than it may seem...", 1, "task content cannot be left blank"
                 ),
 
                 Arguments.of(
                         "1", "first git task",
                         "Let's start this journey, shall we?",
-                        null, "easier than it may seem...", "expected command cannot be left blank"
+                        null, "easier than it may seem...", 1, "expected command cannot be left blank"
                 ),
                 Arguments.of(
                         "1", "first git task",
                         "Let's start this journey, shall we?",
-                        "", "easier than it may seem...", "expected command cannot be left blank"
+                        "", "easier than it may seem...", 1, "expected command cannot be left blank"
                 ),
                 Arguments.of(
                         "1", "first git task",
                         "Let's start this journey, shall we?",
-                        " ", "easier than it may seem...", "expected command cannot be left blank"
+                        " ", "easier than it may seem...", 1, "expected command cannot be left blank"
                 )
         );
     }

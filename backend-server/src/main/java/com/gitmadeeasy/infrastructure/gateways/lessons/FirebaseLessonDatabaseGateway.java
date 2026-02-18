@@ -38,4 +38,9 @@ public class FirebaseLessonDatabaseGateway implements LessonGateway {
     public List<Lesson> findAllLessons() {
         return this.firebase.findAll().stream().map(this.mapper::fromFirebaseSchema).toList();
     }
+
+    @Override
+    public Integer getNextLessonOrder() {
+        return this.firebase.findMaxLessonOrder() + 1;
+    }
 }

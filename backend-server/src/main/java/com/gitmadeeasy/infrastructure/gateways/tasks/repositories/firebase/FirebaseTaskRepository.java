@@ -17,7 +17,7 @@ public class FirebaseTaskRepository {
     }
 
     public FirebaseTaskSchema save(FirebaseTaskSchema schema) {
-        if (schema.getId() == null) {
+        if(schema.getId() == null) {
             DocumentReference docRef = firestore.collection("tasks").document();
             schema.setId(docRef.getId());
         }
@@ -30,7 +30,7 @@ public class FirebaseTaskRepository {
         ApiFuture<DocumentSnapshot> future = docRef.get();
         try {
             DocumentSnapshot document = future.get();
-            if (document.exists()) {
+            if(document.exists()) {
                 FirebaseTaskSchema task = document.toObject(FirebaseTaskSchema.class);
                 if (task != null && lessonId.equals(task.getLessonId())) {
                     task.setId(document.getId());
@@ -38,7 +38,7 @@ public class FirebaseTaskRepository {
                 }
             }
             return Optional.empty();
-        } catch (InterruptedException | ExecutionException e) {
+        } catch(InterruptedException | ExecutionException e) {
             return Optional.empty();
         }
     }
@@ -51,12 +51,12 @@ public class FirebaseTaskRepository {
         try {
             for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
                 FirebaseTaskSchema task = document.toObject(FirebaseTaskSchema.class);
-                if (task != null) {
+                if(task != null) {
                     task.setId(document.getId());
                     result.add(task);
                 }
             }
-        } catch (InterruptedException | ExecutionException ignored) {
+        } catch(InterruptedException | ExecutionException ignored) {
         }
         return result;
     }
@@ -78,12 +78,11 @@ public class FirebaseTaskRepository {
                 .limit(1);
         ApiFuture<QuerySnapshot> querySnapshot = query.get();
         try {
-            for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+            for(DocumentSnapshot document : querySnapshot.get().getDocuments()) {
                 FirebaseTaskSchema task = document.toObject(FirebaseTaskSchema.class);
-                if (task != null) { return task.getTaskOrder(); }
+                if(task != null) { return task.getTaskOrder(); }
             }
-        } catch (InterruptedException | ExecutionException ignored) {
-        }
+        } catch (InterruptedException | ExecutionException ignored) {}
         return 0;
     }
 
@@ -101,20 +100,20 @@ public class FirebaseTaskRepository {
             ApiFuture<QuerySnapshot> future = firestore.collection("tasks").get();
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 
-            if (documents.isEmpty()) { return; }
+            if(documents.isEmpty()) { return; }
 
             WriteBatch batch = firestore.batch();
             int count = 0;
             for (QueryDocumentSnapshot document : documents) {
                 batch.delete(document.getReference());
                 count++;
-                if (count == 500) {
+                if(count == 500) {
                     batch.commit().get();
                     batch = firestore.batch();
                     count = 0;
                 }
             }
-            if (count > 0) { batch.commit().get(); }
+            if(count > 0) { batch.commit().get(); }
         } catch (InterruptedException | ExecutionException ignored) {
         }
     }

@@ -1,5 +1,6 @@
 package com.gitmadeeasy.unit.infrastructure.controllers;
 
+import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.infrastructure.controllers.TaskController;
 import com.gitmadeeasy.infrastructure.mappers.tasks.TaskResponseMapper;
@@ -43,9 +44,8 @@ class TaskControllerTest {
         // Arrange
         String lessonId = "1";
         CreateTaskRequest validRequest = new CreateTaskRequest(
-                "first git task", "Let's get started, shall we",
-                "git start", "easier than it may seem...", 1
-        );
+                "first git task", "Let's get started, shall we", "git start",
+                "easier than it may seem...", 1, "easy");
         Task createdTask = TaskTestDataFactory.task();
         when(this.createTask.execute(lessonId, validRequest)).thenReturn(createdTask);
 
@@ -61,7 +61,8 @@ class TaskControllerTest {
     @DisplayName("Create Task - Invalid Payload Returns Unsuccessful Response / 400")
     void createTask_WhenInvalidPayload_ReturnsBadRequest() throws Exception {
         // Arrange
-        CreateTaskRequest invalidRequest = new CreateTaskRequest("", "", "", "", 0);
+        CreateTaskRequest invalidRequest = new CreateTaskRequest("", "", "",
+                "", 0, "easy");
         when(this.createTask.execute("0", invalidRequest)).thenThrow(new MissingRequiredFieldException("fields cannot be left blank"));
 
         // Act & Assert

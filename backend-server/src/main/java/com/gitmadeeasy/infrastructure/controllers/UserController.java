@@ -7,6 +7,7 @@ import com.gitmadeeasy.usecases.users.CreateUser;
 import com.gitmadeeasy.usecases.users.GetUserByEmail;
 import com.gitmadeeasy.usecases.users.GetUserById;
 import com.gitmadeeasy.usecases.users.dto.CreateUserRequest;
+import com.gitmadeeasy.usecases.users.dto.EmailUserLookupRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.slf4j.Logger;
@@ -56,9 +57,9 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserResponse> getUserByEmailAddress(@NotBlank @RequestBody String emailAddress) {
-        log.info("GET /users/{} - Fetching user by their email address", emailAddress);
-        User foundUser = this.getUserByEmail.execute(emailAddress);
+    public ResponseEntity<UserResponse> getUserByEmailAddress(@Valid @RequestBody EmailUserLookupRequest request) {
+        log.info("GET /users/{} - Fetching user by their email address", request.emailAddress());
+        User foundUser = this.getUserByEmail.execute(request.emailAddress());
         log.info("User found successfully. UserID={}, email address={}", foundUser.getUserId(), foundUser.getEmailAddress());
         UserResponse userResponse = this.userResponseMapper.toUserResponse(foundUser);
         return ResponseEntity.ok(userResponse);

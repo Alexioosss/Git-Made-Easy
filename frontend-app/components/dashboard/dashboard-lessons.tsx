@@ -12,31 +12,19 @@ export function DashboardLessons() {
       <div className="flex flex-col gap-3">
         {mockLessons.map((lesson) => {
           const progress = mockLessonProgress[lesson.lessonId];
-          const isComplete = progress && progress.progressPercentage === 100;
+          const progressPercentage = progress ? (progress.completedTasksCount / progress.totalTasksCount * 100) : 0;
+          const isComplete = progress && progressPercentage === 100;
           const hasStarted = !!progress;
 
           return (
-            <Link
-              key={lesson.lessonId}
-              href={`/lessons/${lesson.lessonId}`}
-              className="group flex items-center gap-3 rounded-xl border border-border bg-card p-3.5 transition-all hover:border-primary/30 sm:gap-4 sm:p-4"
-            >
-              <div
-                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg sm:h-10 sm:w-10 ${
-                  isComplete
-                    ? "bg-primary/20"
-                    : hasStarted
-                      ? "bg-secondary"
-                      : "bg-secondary"
-                }`}
-              >
-                {isComplete ? (
-                  <CheckCircle2 className="h-4 w-4 text-primary sm:h-5 sm:w-5" />
-                ) : (
+            <Link key={lesson.lessonId} href={`/lessons/${lesson.lessonId}`}
+            className="group flex items-center gap-3 rounded-xl border border-border bg-card p-3.5 transition-all hover:border-primary/30 sm:gap-4 sm:p-4">
+              <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg sm:h-10 sm:w-10 ${isComplete ? "bg-primary/20" : hasStarted ? "bg-secondary" : "bg-secondary"}`}>
+                {/* {isComplete ? ( <CheckCircle2 className="h-4 w-4 text-primary sm:h-5 sm:w-5" /> ) : (
                   <span className="text-xs font-semibold text-secondary-foreground sm:text-sm">
                     {String(lesson.orderIndex).padStart(2, "0")}
                   </span>
-                )}
+                )} */}
               </div>
 
               <div className="min-w-0 flex-1">
@@ -46,18 +34,18 @@ export function DashboardLessons() {
                   </h3>
                   {progress && (
                     <span className="shrink-0 text-sm font-semibold text-foreground">
-                      {progress.progressPercentage}%
+                      {progressPercentage}%
                     </span>
                   )}
                 </div>
                 {progress ? (
                   <div className="mt-2 flex items-center gap-2 sm:gap-3">
                     <Progress
-                      value={progress.progressPercentage}
+                      value={progressPercentage}
                       className="h-1.5 flex-1"
                     />
                     <span className="shrink-0 text-xs text-muted-foreground">
-                      {progress.completedTasks}/{progress.totalTasks}
+                      {progress.completedTasksCount}/{progress.totalTasksCount}
                     </span>
                   </div>
                 ) : (

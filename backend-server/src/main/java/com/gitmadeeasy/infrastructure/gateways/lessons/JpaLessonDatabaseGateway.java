@@ -34,4 +34,9 @@ public class JpaLessonDatabaseGateway implements LessonGateway {
     public List<Lesson> findAllLessons() {
         return this.jpa.findAll().stream().map(this.lessonSchemaMapper::fromJpaSchema).toList();
     }
+
+    @Override
+    public Integer getNextLessonOrder() {
+        return this.jpa.findMaxLessonOrder() + 1;
+    }
 }

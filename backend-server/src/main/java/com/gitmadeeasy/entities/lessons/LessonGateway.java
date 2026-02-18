@@ -8,4 +8,5 @@ public interface LessonGateway {
     Optional<Lesson> getLessonById(String lessonId);
     boolean existsById(String lessonId);
     List<Lesson> findAllLessons();
+    Integer getNextLessonOrder();
 }

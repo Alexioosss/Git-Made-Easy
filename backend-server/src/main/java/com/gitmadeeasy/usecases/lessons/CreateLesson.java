@@ -41,7 +41,11 @@ public class CreateLesson {
             throw new DifficultyLevelNotRecognisedException(request.difficulty());
         }
 
-        Lesson newLesson = new Lesson(request.title(), request.description(), difficulty);
+        Integer lessonOrder = (request.lessonOrder() != null && request.lessonOrder() >= 0)
+                ? request.lessonOrder() : this.lessonGateway.getNextLessonOrder();
+        log.info("Lesson order has been produced for current lesson");
+
+        Lesson newLesson = new Lesson(request.title(), request.description(), difficulty, lessonOrder);
         return this.lessonGateway.createLesson(newLesson);
     }
 }
