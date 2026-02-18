@@ -16,11 +16,8 @@ interface TaskListProps {
 export function TaskList({ lesson }: TaskListProps) {
   const isAuthenticated = false;
   const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
-
-  // Track which tasks were completed during this session
   const [sessionCompletedIds, setSessionCompletedIds] = useState<Set<string>>(new Set());
 
-  // Build set of already-completed task ids (from saved progress)
   const savedCompletedIds = useMemo(() => {
     if(!isAuthenticated) return new Set<string>();
     const ids = new Set<string>();
@@ -31,12 +28,8 @@ export function TaskList({ lesson }: TaskListProps) {
     return ids;
   }, [isAuthenticated, lesson.tasks]);
 
-  const allCompleted = lesson.tasks.every(
-    (t) => savedCompletedIds.has(t.taskId) || sessionCompletedIds.has(t.taskId)
-  );
-
+  const allCompleted = lesson.tasks.every((t) => savedCompletedIds.has(t.taskId) || sessionCompletedIds.has(t.taskId));
   const completedCount = new Set([...savedCompletedIds, ...sessionCompletedIds]).size;
-
   const completionPercent = lesson.tasks.length > 0 ? Math.round((completedCount / lesson.tasks.length) * 100) : 0;
 
   const handleTaskComplete = useCallback((taskId: string) => {
@@ -68,10 +61,16 @@ export function TaskList({ lesson }: TaskListProps) {
       {/* Next lesson banner */}
       {allCompleted && (
         <div className="mt-4 flex flex-col items-center gap-4 rounded-xl border border-primary/20 bg-primary/5 p-6 text-center">
-          <div className="flex items-center gap-2 text-primary">
-            <PartyPopper className="h-5 w-5" />
-            <span className="font-semibold">All tasks completed!</span>
-          </div>
+          {lesson.tasks.length === 0 ? (
+            <div className="flex items-center gap-2 text-primary">
+              <span className="font-semibold">The current lesson has no tasks</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 text-primary">
+              <PartyPopper className="h-5 w-5" />
+              <span className="font-semibold">All tasks completed!</span>
+            </div>
+          )}
           {/* {nextLesson ? (
             <>
               <p className="text-sm text-muted-foreground">

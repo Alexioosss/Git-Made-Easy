@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GatewayFactory } from "@/config/GatewayFactory";
-import { GitBranch, Loader2 } from "lucide-react";
+import { Eye, EyeOff, GitBranch, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -16,6 +16,7 @@ export default function RegisterForm() {
   const [lastName, setLastName] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -42,7 +43,7 @@ export default function RegisterForm() {
         <div className="w-full max-w-xl bg-card px-6 pt-6 pb-4 rounded-xl shadow text-lg space-y-3">
           <div className="mb-6 text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-primary">
-              <GitBranch className="h-8 w-8 text-primary-foreground" />
+              <GitBranch className="h-10 w-10 text-primary-foreground" />
             </div>
             <h1 className="text-3xl font-bold text-foreground">
               Create a new account
@@ -59,14 +60,14 @@ export default function RegisterForm() {
                   First Name
                 </Label>
                 <Input id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)}
-                  placeholder="John" required className="bg-secondary text-foreground h-11 text-lg px-3 placeholder:text-lg" />
+                  placeholder="John" required className="bg-secondary text-foreground h-11 px-3 placeholder:text-xl !text-xl" />
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="lastName" className="text-foreground text-xl">
                   Last Name
                 </Label>
                 <Input id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)}
-                  placeholder="Doe" required className="bg-secondary text-foreground h-11 text-lg px-3 placeholder:text-lg" />
+                  placeholder="Doe" required className="bg-secondary text-foreground h-11 px-3 placeholder:text-xl !text-xl" />
               </div>
             </div>
 
@@ -75,15 +76,21 @@ export default function RegisterForm() {
                 Email Address
               </Label>
               <Input id="email" type="email" value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)}
-                placeholder="you@example.com" required className="bg-secondary text-foreground h-11 text-lg px-3 placeholder:text-lg" />
+                placeholder="you@example.com" required className="bg-secondary text-foreground h-11 px-3 placeholder:text-xl !text-xl" />
             </div>
 
             <div className="flex flex-col gap-2">
               <Label htmlFor="password" className="text-foreground text-xl">
                 Password
               </Label>
-              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}
-              placeholder="Create a password" required minLength={8} className="bg-secondary text-foreground h-11 text-lg px-3 placeholder:text-lg" />
+              <div className="relative">
+                <Input id="password" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
+                placeholder="Create a password" required minLength={8} className="bg-secondary text-foreground h-11 px-3 placeholder:text-xl !text-xl" />
+                <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                onMouseDown={() => setShowPassword(true)} onMouseUp={() => setShowPassword(false)} onMouseLeave={() => setShowPassword(false)}>
+                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
+              </div>
             </div>
 
             {error && <p className="text-xl text-destructive">{error}</p>}

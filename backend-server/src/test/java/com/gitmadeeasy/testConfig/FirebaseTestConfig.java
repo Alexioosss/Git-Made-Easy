@@ -25,7 +25,7 @@ public class FirebaseTestConfig {
             }
 
             @Override
-            public String sendVerificationEmail(String emailAddress) {
+            public String generateVerificationEmail(String emailAddress) {
                 return "verification-email@gmail.com";
             }
 

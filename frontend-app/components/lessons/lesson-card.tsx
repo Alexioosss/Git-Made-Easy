@@ -23,7 +23,7 @@ export function LessonCard({ lesson, progress }: LessonCardProps) {
       {/* Order number */}
       <div className="flex items-center gap-4 border-b border-border px-5 py-4 md:justify-center md:gap-0 md:border-b-0 md:border-r md:px-8 md:py-10">
         <span className="text-2xl font-bold text-muted-foreground/40 group-hover:text-primary/100 transition-colors md:text-3xl">
-          {String(lesson.orderIndex).padStart(2, "0")}
+          {String(lesson.lessonOrder).padStart(2, "0")}
         </span>
         {/* Title shown inline on mobile only */}
         <h3 className="text-base font-semibold text-card-foreground group-hover:text-primary transition-colors md:hidden">

@@ -1,13 +1,13 @@
-"use client"
-
 import { notFound } from "next/navigation";
 import { TaskList } from "@/components/lessons/task-list";
 import { LessonHeader } from "@/components/lessons/lesson-header";
 import { mockLessons, mockLessonProgress } from "@/lib/mock-data";
+import { GatewayFactory } from "@/config/GatewayFactory";
 
-export default function LessonDetailClient({ lessonId }: { lessonId: string }) {
-    const lesson = mockLessons.find((l) => l.lessonId === lessonId);
-    const isAuthenticated = true; // Replace with actual authentication logic
+export default async function LessonDetailClient({ lessonId }: { lessonId: string }) {
+    const lessonGateway = GatewayFactory.instance.lessonGateway;
+    const lesson = await lessonGateway.getById(lessonId);
+    const isAuthenticated = false;
 
     if (!lesson) { notFound(); }
 

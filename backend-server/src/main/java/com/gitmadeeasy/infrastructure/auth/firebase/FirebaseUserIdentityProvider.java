@@ -34,25 +34,11 @@ public class FirebaseUserIdentityProvider implements UserIdentityProvider {
     }
 
     @Override
-    public String sendVerificationEmail(String emailAddress) {
+    public String generateVerificationEmail(String emailAddress) {
        try {
-           HttpRequest request = HttpRequest.newBuilder()
-                   .uri(URI.create("https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=" + apiKey))
-                   .header("Content-Type", "application/json")
-                   .POST(HttpRequest.BodyPublishers.ofString("""
-                            {
-                                "requestType": "VERIFY_EMAIL",
-                                "email": "%s"
-                            }
-                            """.formatted(emailAddress)))
-                   .build();
-           HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-           if(response.statusCode() != 200) {
-               throw new RuntimeException("Firebase sendOobCode failed: " + response.body());
-           }
-           return response.body();
+           return FirebaseAuth.getInstance().generateEmailVerificationLink(emailAddress);
        } catch(Exception e) {
-           throw new RuntimeException("Failed to send email verification link: " + e.getMessage(), e);
+           throw new RuntimeException("Failed to generate email verification link: " + e.getMessage(), e);
        }
     }
 

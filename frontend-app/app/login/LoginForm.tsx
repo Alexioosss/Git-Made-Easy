@@ -40,7 +40,7 @@ export default function LoginForm() {
                 <div className="w-full max-w-xl bg-card px-6 pt-6 pb-4 rounded-xl shadow text-lg space-y-3">
                     <div className="mb-6 text-center">
                         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-primary">
-                            <GitBranch className="h-8 w-8 text-primary-foreground" />
+                            <GitBranch className="h-10 w-10 text-primary-foreground" />
                         </div>
                         <h1 className="text-3xl font-bold text-foreground">Welcome back!</h1>
                         <p className="mt-2 text-lg text-muted-foreground">

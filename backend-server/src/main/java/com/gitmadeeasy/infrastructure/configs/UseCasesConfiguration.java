@@ -9,6 +9,7 @@ import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.attemptTask.AttemptTask;
 import com.gitmadeeasy.usecases.attemptTask.GetTaskProgress;
 import com.gitmadeeasy.usecases.auth.*;
+import com.gitmadeeasy.usecases.email.EmailSender;
 import com.gitmadeeasy.usecases.lessonProgress.GetLessonProgress;
 import com.gitmadeeasy.usecases.lessonProgress.UpdateLessonProgress;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
@@ -30,8 +31,8 @@ public class UseCasesConfiguration {
     // ----- User-Related Use Cases ----- //
 
     @Bean
-    public CreateUser createUserUseCase(UserGateway userGateway, UserIdentityProvider identityProvider) {
-        return new CreateUser(userGateway, identityProvider);
+    public CreateUser createUserUseCase(UserGateway userGateway, UserIdentityProvider identityProvider, EmailSender emailSender) {
+        return new CreateUser(userGateway, identityProvider, emailSender);
     }
 
     @Bean

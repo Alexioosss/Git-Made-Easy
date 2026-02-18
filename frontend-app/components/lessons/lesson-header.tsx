@@ -22,7 +22,7 @@ export function LessonHeader({ lesson, progress }: LessonHeaderProps) {
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-secondary text-base font-bold text-secondary-foreground sm:h-12 sm:w-12 sm:text-lg">
-          {String(lesson.orderIndex).padStart(2, "0")}
+          {String(lesson.lessonOrder).padStart(2, "0")}
         </span>
         <div className="flex-1">
           <h1 className="text-xl font-bold text-foreground sm:text-2xl md:text-3xl">

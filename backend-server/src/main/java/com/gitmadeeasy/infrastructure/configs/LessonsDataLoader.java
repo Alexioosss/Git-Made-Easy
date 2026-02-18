@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component @Profile("!test")
-public class LessonDataLoader implements CommandLineRunner {
+public class LessonsDataLoader implements CommandLineRunner {
     private final LessonGateway lessonGateway;
 
-    public LessonDataLoader(LessonGateway lessonGateway) {
+    public LessonsDataLoader(LessonGateway lessonGateway) {
         this.lessonGateway = lessonGateway;
     }
 

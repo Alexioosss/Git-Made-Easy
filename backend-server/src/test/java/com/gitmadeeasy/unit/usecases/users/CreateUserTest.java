@@ -45,7 +45,7 @@ class CreateUserTest {
                 request.firstName(), request.lastName(),
                 request.emailAddress(), request.password())).thenReturn(USER_ID);
         when(this.userGateway.createUser(any(User.class))).thenReturn(user);
-        when(this.identityProvider.sendVerificationEmail(anyString())).thenReturn("test-verification-email@gmail.com");
+        when(this.identityProvider.generateVerificationEmail(anyString())).thenReturn("test-verification-email@gmail.com");
 
         // Act
         User result = this.createUser.execute(request);

@@ -4,24 +4,22 @@ import { LessonCard } from "@/components/lessons/lesson-card";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { mockLessonProgress, mockLessons } from "@/lib/mock-data";
 import { Lesson } from "@/types/lesson";
-import { LessonProgress } from "@/types/taskProgress";
 import { useEffect, useState } from "react";
 
 export default function LessonPageClient() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [lessons, setLessons] = useState<Lesson[]>([]);
-    const [lessonProgress, setLessonProgress] = useState<LessonProgress>();
 
     const lessonGateway = GatewayFactory.instance.lessonGateway;
-    const lessonProgressGateway = GatewayFactory.instance.lessonProgressGateway;
 
     useEffect(() => {
-        const fetchLessonsAndProgresses = async () => {
-            // setLessons(await lessonGateway.getAll());
-            // setLessonProgress(await lessonProgressGateway.getLessonProgress());
+        const fetchLessons = async () => {
+            const lessons = await lessonGateway.getAll();
+            lessons.sort((a, b) => a.lessonOrder - b.lessonOrder);
+            setLessons(lessons);
         }
-        fetchLessonsAndProgresses();
-        setIsAuthenticated(true);
+        fetchLessons();
+        setIsAuthenticated(false);
     }, []);
 
     return (
@@ -38,7 +36,7 @@ export default function LessonPageClient() {
                 </div>
         
                 <div className="grid gap-4 sm:gap-6">
-                    {mockLessons.map((lesson) => (
+                    {lessons.map((lesson) => (
                     <LessonCard key={lesson.lessonId} lesson={lesson} progress={ isAuthenticated ? mockLessonProgress[lesson.lessonId] : undefined} />
                     ))}
                 </div>
