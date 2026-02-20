@@ -32,7 +32,7 @@ public class JpaLessonDatabaseGateway implements LessonGateway {
 
     @Override
     public List<Lesson> findAllLessons() {
-        return this.jpa.findAll().stream().map(this.lessonSchemaMapper::fromJpaSchema).toList();
+        return this.jpa.findAllByOrderByLessonOrderAsc().stream().map(this.lessonSchemaMapper::fromJpaSchema).toList();
     }
 
     @Override

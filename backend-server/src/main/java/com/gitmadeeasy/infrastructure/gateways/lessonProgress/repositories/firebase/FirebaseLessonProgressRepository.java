@@ -43,6 +43,22 @@ public class FirebaseLessonProgressRepository {
         }
     }
 
+    public List<FirebaseLessonProgressSchema> findAllByUserId(String userId) {
+        CollectionReference progress = firestore.collection("lesson_progress");
+        Query query = progress.whereEqualTo("userId", userId);
+        try {
+            ApiFuture<QuerySnapshot> querySnapshot = query.get();
+            return querySnapshot.get().getDocuments().stream()
+                    .map(doc -> {
+                        FirebaseLessonProgressSchema schema = doc.toObject(FirebaseLessonProgressSchema.class);
+                        schema.setId(doc.getId());
+                        return schema;
+                    }).toList();
+        } catch(InterruptedException | ExecutionException e) {
+            return List.of();
+        }
+    }
+
     public void deleteAll() {
         try {
             ApiFuture<QuerySnapshot> future = firestore.collection("lesson_progress").get();

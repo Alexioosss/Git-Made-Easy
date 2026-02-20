@@ -3,14 +3,17 @@
 import { DashboardLessons } from "@/components/dashboard/dashboard-lessons";
 import { DashboardStats } from "@/components/dashboard/dashboard-stats";
 import { RecentActivity } from "@/components/dashboard/recent-activity";
+import { GatewayFactory } from "@/config/GatewayFactory";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export default function DashboardClient() {
+export default async function DashboardClient() {
     const router = useRouter();
     const isLoading = false;
     const isAuthenticated = true;
-    const user = { firstName: "John" };
+    const dashboardGateway = GatewayFactory.instance.dashboardGateway;
+    const dashboardData = await dashboardGateway.getDashboardData();
+    console.log(dashboardData);
 
     useEffect(() => {
         if(!isLoading && !isAuthenticated) {
@@ -31,7 +34,7 @@ export default function DashboardClient() {
             <div className="mx-auto max-w-6xl px-4 py-8 sm:py-12">
                 <div className="mb-8 sm:mb-10">
                 <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
-                    Welcome back, {user?.firstName}
+                    Welcome back, {dashboardData.firstName}
                 </h1>
                 <p className="mt-2 text-sm text-muted-foreground sm:text-base">
                     Here can be found an overview of your learning progress so far.

@@ -27,6 +27,7 @@ public class LoginUser {
 
         User user = this.userGateway.getUserByEmailAddress(request.email())
                 .orElseThrow(InvalidCredentialsException::new);
+        user.setFirebaseUid(firebaseUid);
         log.info("user found with emailAddress={}", request.email());
 
         // Potentially require users to be verified before login

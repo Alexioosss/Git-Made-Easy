@@ -5,6 +5,7 @@ import com.gitmadeeasy.entities.lessonProgress.LessonProgressGateway;
 import com.gitmadeeasy.infrastructure.gateways.lessonProgress.repositories.firebase.FirebaseLessonProgressRepository;
 import com.gitmadeeasy.infrastructure.mappers.lessonProgress.LessonProgressSchemaMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 public class FirebaseLessonProgressDatabaseGateway implements LessonProgressGateway {
@@ -26,5 +27,10 @@ public class FirebaseLessonProgressDatabaseGateway implements LessonProgressGate
     @Override
     public Optional<LessonProgress> findByUserIdAndLessonId(String userId, String lessonId) {
         return this.firebase.findByUserIdAndLessonId(userId, lessonId).map(this.mapper::fromFirebaseSchema);
+    }
+
+    @Override
+    public List<LessonProgress> findAllByUserId(String userId) {
+        return this.firebase.findAllByUserId(userId).stream().map(this.mapper::fromFirebaseSchema).toList();
     }
 }

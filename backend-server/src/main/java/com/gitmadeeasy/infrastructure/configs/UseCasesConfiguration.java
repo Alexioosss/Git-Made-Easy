@@ -9,6 +9,7 @@ import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.attemptTask.AttemptTask;
 import com.gitmadeeasy.usecases.attemptTask.GetTaskProgress;
 import com.gitmadeeasy.usecases.auth.*;
+import com.gitmadeeasy.usecases.dashboard.GetDashboardData;
 import com.gitmadeeasy.usecases.email.EmailSender;
 import com.gitmadeeasy.usecases.lessonProgress.GetLessonProgress;
 import com.gitmadeeasy.usecases.lessonProgress.UpdateLessonProgress;
@@ -124,5 +125,15 @@ public class UseCasesConfiguration {
     public UpdateLessonProgress updateLessonProgress(LessonProgressGateway lessonProgressGateway,
                                                      TaskAttemptGateway taskAttemptGateway, TaskGateway taskGateway) {
         return new UpdateLessonProgress(lessonProgressGateway, taskAttemptGateway, taskGateway);
+    }
+
+
+
+    // ----- Dashboard-Related Use Cases ----- //
+
+    @Bean
+    public GetDashboardData getDashboardData(UserGateway userGateway, LessonProgressGateway lessonProgressGateway,
+                                             TaskAttemptGateway taskAttemptGateway) {
+        return new GetDashboardData(userGateway, lessonProgressGateway, taskAttemptGateway);
     }
 }

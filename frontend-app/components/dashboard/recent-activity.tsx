@@ -1,34 +1,6 @@
-import { mockTaskProgress, mockLessons } from "@/lib/mock-data";
 import { CheckCircle2, XCircle } from "lucide-react";
 
-export function RecentActivity() {
-  // Build activity list from task progress
-  const activities = Object.values(mockTaskProgress)
-    .sort((a, b) => new Date(b.).getTime() - new Date(a.lastAttemptDate).getTime())
-    .map((progress) => {const lesson = mockLessons.find((l) => l.lessonId === progress.lessonId);
-      const task = lesson?.tasks.find((t) => t.taskId === progress.taskId);
-
-      return {
-        id: progress.taskId,
-        taskTitle: task?.title || "Unknown task",
-        lessonTitle: lesson?.title || "Unknown lesson",
-        completed: progress.completed,
-        attempts: progress.attempts,
-        date: progress.lastAttemptDate,
-      };
-    });
-
-  function formatRelativeTime(dateString: string) {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    const diffDays = Math.floor(diffHours / 24);
-
-    if (diffDays > 0) return `${diffDays}d ago`;
-    if (diffHours > 0) return `${diffHours}h ago`;
-    return "Just now";
-  }
+export async function RecentActivity() {
 
   return (
     <div>
@@ -59,7 +31,7 @@ export function RecentActivity() {
                   <p className="mt-1 text-xs text-muted-foreground">
                     {activity.attempts} attempt
                     {activity.attempts !== 1 ? "s" : ""} &middot;{" "}
-                    {formatRelativeTime(activity.date)}
+                    {activity.date}
                   </p>
                 </div>
               </div>

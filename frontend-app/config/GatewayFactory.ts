@@ -1,5 +1,6 @@
 import { getApiClient } from "@/infrastructure/factories/singletonApiClient";
 import { FetchAuthGateway } from "@/infrastructure/gateways/auth/FetchAuthGateway";
+import { FetchDashboardGateway } from "@/infrastructure/gateways/dashboard/FetchDashboardGateway";
 import { FetchLessonProgressGateway } from "@/infrastructure/gateways/lessonProgress/FetchLessonProgressGateway";
 import { FetchLessonGateway } from "@/infrastructure/gateways/lessons/FetchLessonGateway";
 import { FetchTaskProgressGateway } from "@/infrastructure/gateways/taskProgress/FetchTaskProgressGateway";
@@ -17,6 +18,7 @@ export class GatewayFactory {
     private readonly _taskGateway = new FetchTaskGateway(this._apiClient);
     private readonly _taskProgressGateway = new FetchTaskProgressGateway(this._apiClient);
     private readonly _lessonProgressGateway = new FetchLessonProgressGateway(this._apiClient);
+    private readonly _dashboardGateway = new FetchDashboardGateway(this._apiClient);
 
     private constructor() {}
 
@@ -35,4 +37,6 @@ export class GatewayFactory {
     get taskProgressGateway() { return this._taskProgressGateway; }
 
     get lessonProgressGateway() { return this._lessonProgressGateway; }
+
+    get dashboardGateway() { return this._dashboardGateway; }
 }

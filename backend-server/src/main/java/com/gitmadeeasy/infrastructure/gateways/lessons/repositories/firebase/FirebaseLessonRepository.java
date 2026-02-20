@@ -51,8 +51,8 @@ public class FirebaseLessonRepository {
     }
 
     public List<FirebaseLessonSchema> findAll() {
-        CollectionReference collectionReference = firestore.collection("lessons");
-        ApiFuture<QuerySnapshot> future = collectionReference.get();
+        Query query = firestore.collection("lessons").orderBy("lessonOrder", Query.Direction.ASCENDING);
+        ApiFuture<QuerySnapshot> future = query.get();
         try {
             QuerySnapshot snapshot = future.get();
             return snapshot.getDocuments()

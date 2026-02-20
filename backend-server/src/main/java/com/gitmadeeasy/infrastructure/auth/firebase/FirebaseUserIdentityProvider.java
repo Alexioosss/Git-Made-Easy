@@ -10,6 +10,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Map;
 
 public class FirebaseUserIdentityProvider implements UserIdentityProvider {
     private final HttpClient httpClient = HttpClient.newHttpClient();
@@ -54,23 +55,22 @@ public class FirebaseUserIdentityProvider implements UserIdentityProvider {
     @Override
     public String login(String emailAddress, String password) {
         try {
+            String payload = new ObjectMapper().writeValueAsString(Map.of(
+                    "email", emailAddress,
+                    "password", password,
+                    "returnSecureToken", true));
+
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + apiKey))
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString("""
-                            {
-                                "email": "%s",
-                                "password": "%s",
-                                "returnSecureToken": true
-                            }
-                            """.formatted(emailAddress, password)))
-                    .build();
+                    .POST(HttpRequest.BodyPublishers.ofString(payload)).build();
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if(response.statusCode() != 200) { throw new InvalidCredentialsException(); }
 
-            ObjectMapper mapper = new ObjectMapper();
-            FirebaseLoginResponse loginResponse = mapper.readValue(response.body(), FirebaseLoginResponse.class);
+            FirebaseLoginResponse loginResponse = new ObjectMapper().readValue(response.body(), FirebaseLoginResponse.class);
             return loginResponse.getLocalId();
+        } catch(InvalidCredentialsException e) {
+            throw e;
         } catch(Exception e) {
             throw new RuntimeException("Failed to login user: " + e.getMessage(), e);
         }

@@ -25,7 +25,8 @@ export default function LoginForm() {
         setIsLoading(true);
 
         try {
-            await authGateway.login(emailAddress, password);
+            const loginResponse = await authGateway.login(emailAddress, password);
+            console.log(loginResponse);
             setTimeout(() => { router.push("/dashboard"); }, 3000);
         } catch(error: any) {
             setError(error.message || "Something went wrong");

@@ -48,7 +48,7 @@ public class CreateTask {
 
         DifficultyLevels taskDifficulty;
         try {
-            taskDifficulty = DifficultyLevels.valueOf(request.taskDifficulty());
+            taskDifficulty = DifficultyLevels.valueOf(request.taskDifficulty().toUpperCase());
         } catch(IllegalArgumentException e) {
             throw new DifficultyLevelNotRecognisedException(request.taskDifficulty());
         }

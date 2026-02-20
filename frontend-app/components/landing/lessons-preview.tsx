@@ -3,8 +3,12 @@ import { mockLessons } from "@/lib/mock-data";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { GatewayFactory } from "@/config/GatewayFactory";
 
-export function LessonsPreview() {
+export async function LessonsPreview() {
+  const lessonsGateway = GatewayFactory.instance.lessonGateway;
+  const lessons = await lessonsGateway.getAll();
+
   return (
     <section className="border-t border-border px-4 py-14 sm:py-20">
       <div className="mx-auto max-w-6xl">
@@ -24,7 +28,7 @@ export function LessonsPreview() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          {mockLessons.map((lesson) => {
+          {lessons.map((lesson) => {
             const difficultyDistribution = lesson.tasks.reduce((acc, task) => {acc[task.difficulty] = (acc[task.difficulty] || 0) + 1; return acc; }, {} as Record<string, number>);
 
             return (
@@ -32,7 +36,7 @@ export function LessonsPreview() {
                 className="group flex flex-col rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 sm:p-6">
                 <div className="mb-3 flex items-center gap-3">
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary text-sm font-semibold text-secondary-foreground">
-                    {lesson.orderIndex}
+                    {lesson.lessonOrder}
                   </span>
                   <h3 className="font-semibold text-card-foreground group-hover:text-primary transition-colors">
                     {lesson.title}

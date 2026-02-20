@@ -5,6 +5,7 @@ import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.infrastructure.gateways.taskAttempts.repositories.firebase.FirebaseTaskAttemptRepository;
 import com.gitmadeeasy.infrastructure.mappers.taskAttempts.TaskAttemptSchemaMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 public class FirebaseTaskAttemptDatabaseGateway implements TaskAttemptGateway {
@@ -31,5 +32,10 @@ public class FirebaseTaskAttemptDatabaseGateway implements TaskAttemptGateway {
     @Override
     public int countCompletedTasks(String userId, String lessonId) {
         return this.firebase.countCompletedTasks(userId, lessonId);
+    }
+
+    @Override
+    public List<TaskProgress> findAllByUserId(String userId) {
+        return this.firebase.findAllByUserId(userId).stream().map(this.mapper::fromFirebaseSchema).toList();
     }
 }

@@ -7,7 +7,7 @@ export class FetchAuthGateway implements AuthGateway {
     constructor(private apiClient: ApiClient) {}
 
     login(emailAddress: string, password: string): Promise<string> {
-        return this.apiClient.apiRequest("/auth/login", HttpMethods.POST, { emailAddress, password });
+        return this.apiClient.apiRequest("/auth/login", HttpMethods.POST, { email: emailAddress, password });
     }
 
     logout(): Promise<void> {

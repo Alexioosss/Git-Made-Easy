@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository @Profile("test")
@@ -16,4 +17,5 @@ public interface JpaTaskAttemptRepository extends JpaRepository<JpaTaskAttemptSc
             WHERE tp.userId = :userId AND t.lessonId = :lessonId AND tp.status = 'COMPLETED'
             """)
     int countCompletedTasks(String userId, String lessonId);
+    List<JpaTaskAttemptSchema> findAllByUserId(String userId);
 }

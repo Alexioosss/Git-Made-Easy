@@ -8,7 +8,7 @@ export function DashboardStats() {
   const lessonPercent = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
 
   const totalTasks = mockLessons.reduce((sum, lesson) => sum + lesson.tasks.length, 0);
-  const totalTasksCompleted = Object.values(mockTaskProgress).filter((p) => p.completed).length;
+  const totalTasksCompleted = Object.values(mockTaskProgress).filter((p) => p.completedAt).length;
   const taskPercent = totalTasks > 0 ? Math.round((totalTasksCompleted / totalTasks) * 100) : 0;
 
   const totalAttempts = Object.values(mockTaskProgress).reduce((sum, p) => sum + p.attempts, 0);
@@ -37,19 +37,11 @@ export function DashboardStats() {
       icon: Target,
       color: "text-warning",
       bgColor: "bg-warning/10",
-    },
-    {
-      label: "Current Streak",
-      value: "3 days",
-      percent: null,
-      icon: Flame,
-      color: "text-destructive",
-      bgColor: "bg-destructive/10",
-    },
+    }
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-3 sm:gap-3 lg:grid-cols-3">
       {stats.map((stat) => (
         <div key={stat.label} className="rounded-xl border border-border bg-card p-4 sm:p-5">
           <div className="flex items-center gap-2 sm:gap-3">

@@ -55,6 +55,22 @@ public class FirebaseTaskAttemptRepository {
         }
     }
 
+    public List<FirebaseTaskAttemptSchema> findAllByUserId(String userId) {
+        CollectionReference attempts = firestore.collection("task_attempts");
+        Query query = attempts.whereEqualTo("userId", userId);
+        try {
+            ApiFuture<QuerySnapshot> querySnapshot = query.get();
+            return querySnapshot.get().getDocuments().stream()
+                    .map(doc -> {
+                        FirebaseTaskAttemptSchema schema = doc.toObject(FirebaseTaskAttemptSchema.class);
+                        schema.setId(doc.getId());
+                        return schema;
+                    }).toList();
+        } catch(InterruptedException | ExecutionException e) {
+            return List.of();
+        }
+    }
+
     public void deleteAll() {
         try {
             ApiFuture<QuerySnapshot> future = firestore.collection("task_attempts").get();

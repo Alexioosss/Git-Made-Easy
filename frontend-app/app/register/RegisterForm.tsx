@@ -29,7 +29,7 @@ export default function RegisterForm() {
 
       try {
         await userGateway.register(firstName, lastName, emailAddress, password);
-        setTimeout(() => router.push("/dashboard"), 5000);
+        setTimeout(() => router.push("/login"), 5000);
       } catch(error: any) {
         setError(error.message || "Something went wrong");
       } finally {

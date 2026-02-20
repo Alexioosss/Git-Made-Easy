@@ -3,6 +3,7 @@ package com.gitmadeeasy.entities.users;
 import java.util.Objects;
 
 public class User {
+    public String firebaseUid;
     private String userId;
     private final String firstName;
     private final String lastName;
@@ -32,6 +33,8 @@ public class User {
         this.isEmailVerified = isEmailVerified;
     }
 
+    public String getFirebaseUid() { return firebaseUid; }
+
     public String getUserId() {
         return userId;
     }
@@ -58,9 +61,12 @@ public class User {
 
     public void setEmailVerified(boolean emailVerified) { isEmailVerified = emailVerified; }
 
+    public void setFirebaseUid(String firebaseUid) { this.firebaseUid = firebaseUid; }
+
     @Override
     public String toString() {
         return "User{" +
+                "firebaseUid='" + firebaseUid + '\'' +
                 "id='" + userId + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

@@ -9,6 +9,7 @@ import com.gitmadeeasy.infrastructure.mappers.taskAttempts.TaskAttemptSchemaMapp
 import com.gitmadeeasy.usecases.tasks.exceptions.TaskNotFoundWithIdException;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public class JpaTaskAttemptDatabaseGateway implements TaskAttemptGateway {
@@ -48,5 +49,10 @@ public class JpaTaskAttemptDatabaseGateway implements TaskAttemptGateway {
     @Override
     public int countCompletedTasks(String userId, String lessonId) {
         return this.jpa.countCompletedTasks(userId, lessonId);
+    }
+
+    @Override
+    public List<TaskProgress> findAllByUserId(String userId) {
+        return this.jpa.findAllByUserId(userId).stream().map(this.taskAttemptSchemaMapper::toEntity).toList();
     }
 }

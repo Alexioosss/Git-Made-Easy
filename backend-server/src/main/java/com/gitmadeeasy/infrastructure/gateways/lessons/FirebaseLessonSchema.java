@@ -20,6 +20,7 @@ public class FirebaseLessonSchema {
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
+        this.lessonOrder = lessonOrder;
     }
 
     public FirebaseLessonSchema(String id, String title, String description,
@@ -28,6 +29,7 @@ public class FirebaseLessonSchema {
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
+        this.lessonOrder = lessonOrder;
     }
 
     public String getId() {
@@ -48,7 +50,7 @@ public class FirebaseLessonSchema {
 
     public Integer getLessonOrder() { return lessonOrder; }
 
-    public List<String> getTasks() {
+    public List<String> getTaskIds() {
         return taskIds;
     }
 

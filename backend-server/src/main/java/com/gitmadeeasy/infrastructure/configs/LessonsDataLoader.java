@@ -25,6 +25,6 @@ public class LessonsDataLoader implements CommandLineRunner {
             this.lessonGateway.createLesson(new Lesson(
                     "Branching", "Learn branching in Git", DifficultyLevels.MEDIUM, 2));
             System.out.println("Seeded default lessons successfully.");
-        }
+        } else { System.out.println("Startup lessons seeding skipped because lessons already exist."); }
     }
 }

@@ -30,8 +30,9 @@ public class TokenDatabaseGateway implements TokenGateway {
     public String generateToken(User user) {
         return Jwts.builder()
                 .setId(UUID.randomUUID().toString())
-                .setSubject(user.getEmailAddress())
+                .setSubject(user.getUserId())
                 .claim("email", user.getEmailAddress())
+                .claim("firebaseUid", user.getFirebaseUid())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // Token is valid for 1 Hour
                 .signWith(key)
@@ -49,8 +50,9 @@ public class TokenDatabaseGateway implements TokenGateway {
                 .setId(UUID.randomUUID().toString())
                 .setSubject(user.getUserId())
                 .claim("email", user.getEmailAddress())
+                .claim("firebaseUid", user.getFirebaseUid())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // Refresh the token for another 1 hour
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // Refresh the token for 1 hour
                 .signWith(key)
                 .compact();
     }
