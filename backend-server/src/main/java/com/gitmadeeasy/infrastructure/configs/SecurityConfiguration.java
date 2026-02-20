@@ -36,7 +36,7 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.GET, "/users").authenticated()
                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/logout").authenticated()
-                .requestMatchers(HttpMethod.POST, "/auth/refresh").authenticated()
+                .requestMatchers(HttpMethod.POST, "/auth/refresh").permitAll()
                 .requestMatchers(HttpMethod.GET, "/lessons").permitAll()
                 .requestMatchers(HttpMethod.POST, "/lessons").authenticated()
                 .requestMatchers(HttpMethod.GET, "/lessons/{lessonId}").permitAll()

@@ -68,7 +68,7 @@ class JpaLessonDatabaseGatewayTest {
         JpaLessonSchema schema2 = provideLessonSchema();
         Lesson lesson1 = provideLesson();
         Lesson lesson2 = provideLesson();
-        when(this.lessonRepository.findAll()).thenReturn(List.of(schema1, schema2));
+        when(this.lessonRepository.findAllByOrderByLessonOrderAsc()).thenReturn(List.of(schema1, schema2));
         when(this.lessonSchemaMapper.fromJpaSchema(schema1)).thenReturn(lesson1);
         when(this.lessonSchemaMapper.fromJpaSchema(schema2)).thenReturn(lesson2);
 
@@ -77,7 +77,7 @@ class JpaLessonDatabaseGatewayTest {
 
         // Assert
         assertEquals(List.of(lesson1, lesson2), result);
-        verify(this.lessonRepository).findAll();
+        verify(this.lessonRepository).findAllByOrderByLessonOrderAsc();
         verify(this.lessonSchemaMapper).fromJpaSchema(schema1);
         verify(this.lessonSchemaMapper).fromJpaSchema(schema2);
     }
@@ -86,14 +86,14 @@ class JpaLessonDatabaseGatewayTest {
     @DisplayName("Find All Lessons - No Lessons Exist - Returns Empty List")
     void findAllLessons_WhenNoLessonsExist_ReturnsEmptyList() {
         // Arrange
-        when(this.lessonRepository.findAll()).thenReturn(List.of());
+        when(this.lessonRepository.findAllByOrderByLessonOrderAsc()).thenReturn(List.of());
 
         // Act
         List<Lesson> result = this.jpaLessonDatabaseGateway.findAllLessons();
 
         // Assert
         assertTrue(result.isEmpty());
-        verify(this.lessonRepository).findAll();
+        verify(this.lessonRepository).findAllByOrderByLessonOrderAsc();
         verify(this.lessonSchemaMapper, never()).fromJpaSchema(any());
     }
 

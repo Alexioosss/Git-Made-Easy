@@ -3,6 +3,7 @@ package com.gitmadeeasy.unit.usecases.users;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.auth.UserIdentityProvider;
+import com.gitmadeeasy.usecases.email.EmailSender;
 import com.gitmadeeasy.usecases.users.CreateUser;
 import com.gitmadeeasy.usecases.users.dto.CreateUserRequest;
 import com.gitmadeeasy.usecases.users.exceptions.DuplicatedEmailException;
@@ -28,6 +29,7 @@ import static org.mockito.Mockito.*;
 class CreateUserTest {
     @Mock private UserGateway userGateway;
     @Mock private UserIdentityProvider identityProvider;
+    @Mock private EmailSender emailSender;
     @InjectMocks private CreateUser createUser;
 
     private static final String USER_ID = "user-123";
@@ -46,6 +48,7 @@ class CreateUserTest {
                 request.emailAddress(), request.password())).thenReturn(USER_ID);
         when(this.userGateway.createUser(any(User.class))).thenReturn(user);
         when(this.identityProvider.generateVerificationEmail(anyString())).thenReturn("test-verification-email@gmail.com");
+        doNothing().when(this.emailSender).send(eq(request.emailAddress()), anyString(), anyString());
 
         // Act
         User result = this.createUser.execute(request);

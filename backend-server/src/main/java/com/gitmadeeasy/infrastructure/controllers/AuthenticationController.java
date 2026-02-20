@@ -5,6 +5,7 @@ import com.gitmadeeasy.usecases.auth.LogoutUser;
 import com.gitmadeeasy.usecases.auth.RefreshToken;
 import com.gitmadeeasy.usecases.auth.dto.AuthToken;
 import com.gitmadeeasy.usecases.auth.dto.LoginRequest;
+import com.gitmadeeasy.usecases.auth.exceptions.InvalidTokenException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -50,6 +51,8 @@ public class AuthenticationController {
     public ResponseEntity<AuthToken> refreshToken(HttpServletRequest request) {
         log.info("POST /logout - Refreshing a user's JWT Token");
         String token = (String) request.getAttribute("jwt");
+        if(token == null || token.isBlank()) { throw new InvalidTokenException(); }
+
         AuthToken authToken = refreshToken.execute(token);
         log.info("User's JWT Token refreshed successfully.");
         return ResponseEntity.ok(authToken);

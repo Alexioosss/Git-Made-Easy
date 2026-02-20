@@ -3,6 +3,7 @@ package com.gitmadeeasy.infrastructure.gateways.security;
 import com.gitmadeeasy.entities.security.TokenGateway;
 import com.gitmadeeasy.entities.users.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -52,7 +53,7 @@ public class TokenDatabaseGateway implements TokenGateway {
                 .claim("email", user.getEmailAddress())
                 .claim("firebaseUid", user.getFirebaseUid())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // Refresh the token for 1 hour
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(key)
                 .compact();
     }
@@ -70,9 +71,15 @@ public class TokenDatabaseGateway implements TokenGateway {
 
     @Override
     public String getUserIdFromToken(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build().parseClaimsJws(token).getBody();
-        return claims.getSubject();
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
+        } catch(ExpiredJwtException e) {
+            return e.getClaims().getSubject();
+        }
     }
 }

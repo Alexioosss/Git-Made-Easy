@@ -1,9 +1,13 @@
 package com.gitmadeeasy.integration.controllers;
 
+import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.infrastructure.gateways.users.JpaUserSchema;
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.jpa.JpaUserRepository;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.auth.dto.LoginRequest;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +18,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import java.util.Date;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -95,16 +102,12 @@ class AuthenticationControllerIntegrationTest {
     void refreshToken_WhenCurrentTokenExpired_ReturnsRefreshedToken() throws Exception {
         // Arrange
         saveMockUserInDataStore();
-        LoginRequest request = new LoginRequest("myemail1@gmail.com", "MyPassword123'");
-        String loginResponse = this.mockMvc.perform(post("/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtil.objectToJson(request)))
-                .andReturn().getResponse().getContentAsString();
-        String accessToken = JsonUtil.readJson(loginResponse, "accessToken");
+        JpaUserSchema user = userRepository.findByEmailAddress("myemail1@gmail.com").get();
+        String expiredToken = generateExpiredToken(user, "TEST_ONLY_32_CHAR_SECRET_KEY_ABCDEF123456!");
 
         // Act & Assert
         this.mockMvc.perform(post("/auth/refresh")
-                        .header("Authorization", "Bearer " + accessToken))
+                        .header("Authorization", "Bearer " + expiredToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken").exists());
     }
@@ -131,5 +134,17 @@ class AuthenticationControllerIntegrationTest {
                 false
         ));
         System.out.println("Mock User Saved Successfully.");
+    }
+
+    private String generateExpiredToken(JpaUserSchema user, String secret) {
+        Key key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        return Jwts.builder().setId(UUID.randomUUID().toString())
+                .setSubject(user.getId())
+                .claim("email",user.getEmailAddress())
+                .claim("firebaseUid",user.getFirebaseUid())
+                .setIssuedAt(new Date(System.currentTimeMillis() - 1000 * 60 * 60)) // issued 1 hour ago
+                .setExpiration(new Date(System.currentTimeMillis() - 1000 * 60 * 45)) // expired 45 mins ago
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
     }
 }
