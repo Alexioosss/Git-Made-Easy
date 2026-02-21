@@ -43,4 +43,9 @@ public class FirebaseLessonDatabaseGateway implements LessonGateway {
     public Integer getNextLessonOrder() {
         return this.firebase.findMaxLessonOrder() + 1;
     }
+
+    @Override
+    public void updateTaskIds(String lessonId, List<String> taskIds) {
+        this.firebase.updateTaskIds(lessonId, taskIds);
+    }
 }

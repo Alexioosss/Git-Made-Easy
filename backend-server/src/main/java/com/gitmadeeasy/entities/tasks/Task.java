@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class Task {
     private String taskId;
-    private final String lessonId;
+    private String lessonId;
     private final String title;
     private final String content;
     private final String expectedCommand;
@@ -74,6 +74,8 @@ public class Task {
     }
 
     public void setTaskId(String id) { this.taskId = id; }
+
+    public void setLessonId(String lessonId) { this.lessonId = lessonId; }
 
     @Override
     public String toString() {

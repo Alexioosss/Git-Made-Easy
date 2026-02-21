@@ -23,15 +23,6 @@ public class FirebaseLessonSchema {
         this.lessonOrder = lessonOrder;
     }
 
-    public FirebaseLessonSchema(String id, String title, String description,
-                                DifficultyLevels difficulty, Integer lessonOrder) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.difficulty = difficulty;
-        this.lessonOrder = lessonOrder;
-    }
-
     public String getId() {
         return id;
     }

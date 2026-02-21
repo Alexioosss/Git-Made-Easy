@@ -39,4 +39,9 @@ public class JpaLessonDatabaseGateway implements LessonGateway {
     public Integer getNextLessonOrder() {
         return this.jpa.findMaxLessonOrder() + 1;
     }
+
+    @Override
+    public void updateTaskIds(String lessonId, List<String> taskIds) {
+        // Empty because in JPA, lessons do not store task IDs
+    }
 }

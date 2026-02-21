@@ -79,6 +79,10 @@ public class FirebaseLessonRepository {
         return 0;
     }
 
+    public void updateTaskIds(String lessonId, List<String> taskIds) {
+        firestore.collection("lessons").document(lessonId).update("taskIds", taskIds);
+    }
+
     public void deleteAll() {
         try {
             ApiFuture<QuerySnapshot> future = firestore.collection("lessons").get();

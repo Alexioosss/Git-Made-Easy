@@ -3,10 +3,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { GatewayFactory } from "@/config/GatewayFactory";
+import { Lesson } from "@/types/lesson";
 
 export async function LessonsPreview() {
   const lessonsGateway = GatewayFactory.instance.lessonGateway;
-  const lessons = await lessonsGateway.getAll();
+  const lessons: Lesson[] = await lessonsGateway.getAll();
 
   return (
     <section className="border-t border-border px-4 py-14 sm:py-20">

@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import RegisterForm from "./RegisterForm"
 
 export const metadata: Metadata = {
-  title: "Create Account",
+  title: "Create Your Account",
   description: "Register to save your progress and track your learning journey"
 }
 
