@@ -10,7 +10,6 @@ import java.time.LocalDate;
 public class JpaTaskAttemptSchema {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
     private String userId;
 
     @ManyToOne(cascade = CascadeType.REMOVE)

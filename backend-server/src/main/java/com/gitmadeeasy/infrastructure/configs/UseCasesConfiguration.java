@@ -132,8 +132,8 @@ public class UseCasesConfiguration {
     // ----- Dashboard-Related Use Cases ----- //
 
     @Bean
-    public GetDashboardData getDashboardData(UserGateway userGateway, LessonProgressGateway lessonProgressGateway,
-                                             TaskAttemptGateway taskAttemptGateway) {
-        return new GetDashboardData(userGateway, lessonProgressGateway, taskAttemptGateway);
+    public GetDashboardData getDashboardData(UserGateway userGateway, LessonGateway lessonGateway,
+                                             LessonProgressGateway lessonProgressGateway, TaskAttemptGateway taskAttemptGateway) {
+        return new GetDashboardData(userGateway, lessonGateway, lessonProgressGateway, taskAttemptGateway);
     }
 }

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GatewayFactory } from "@/config/GatewayFactory";
+import { useAuth } from "@/context/AuthContext";
 import { GitBranch, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,11 +12,13 @@ import { useState } from "react";
 
 export default function LoginForm() {
     const router = useRouter();
+    const { refreshUser } = useAuth();
 
     const [emailAddress, setEmailAddress] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
+    const [isSuccess, setIsSuccess] = useState(false);
 
     const authGateway = GatewayFactory.instance.authGateway;
 
@@ -25,14 +28,39 @@ export default function LoginForm() {
         setIsLoading(true);
 
         try {
-            const loginResponse = await authGateway.login(emailAddress, password);
-            console.log(loginResponse);
-            setTimeout(() => { router.push("/dashboard"); }, 3000);
+            await authGateway.login(emailAddress, password);
+            setIsSuccess(true);
+            await refreshUser();
+            setTimeout(() => { router.push("/dashboard"); }, 2000);
         } catch(error: any) {
             setError(error.message || "Something went wrong");
         } finally {
             setIsLoading(false);
         }
+    }
+
+    if(isSuccess) {
+        return (
+            <div className="min-h-[calc(100dvh-56px)] sm:min-h-[calc(100dvh-64px)] bg-background flex justify-center items-center overflow-y-auto px-4 py-6">
+                <div className="flex justify-center px-4">
+                    <div className="w-full max-w-xl bg-card px-6 pt-6 pb-4 rounded-xl shadow text-lg space-y-3 animate-fade-in">
+                        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-600">
+                            <svg className="h-12 w-12 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+
+                        <h2 className="text-3xl font-bold text-foreground">
+                            Logged in successfully!
+                        </h2>
+
+                        <p className="text-lg text-muted-foreground">
+                            Redirecting you to your dashboard...
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -76,9 +104,7 @@ export default function LoginForm() {
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                 Signing in...
                             </>
-                            ) : (
-                            "Sign In"
-                            )}
+                            ) : ( "Sign In" )}
                         </Button>
                     </form>
         

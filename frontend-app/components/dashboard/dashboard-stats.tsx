@@ -1,17 +1,20 @@
-import { mockLessons, mockLessonProgress, mockTaskProgress } from "@/lib/mock-data";
 import { Progress } from "@/components/ui/progress";
 import { BookOpen, CheckCircle2, Target, Flame } from "lucide-react";
+import { DashboardData } from "@/types/dashboard";
 
-export function DashboardStats() {
-  const totalLessons = mockLessons.length;
-  const completedLessons = Object.values(mockLessonProgress).filter((p) => p.completedTasksCount / p.totalTasksCount === 1).length;
+export function DashboardStats({ data } : { data: DashboardData }) {
+  const lessons = data.lessons ?? [];
+  const tasksProgress = data.tasksProgress ?? [];
+
+  const totalLessons = lessons.length;
+  const completedLessons = lessons.filter((lesson) => lesson.totalTasksCount > 0 && lesson.completedTasksCount === lesson.totalTasksCount).length;
   const lessonPercent = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
 
-  const totalTasks = mockLessons.reduce((sum, lesson) => sum + lesson.tasks.length, 0);
-  const totalTasksCompleted = Object.values(mockTaskProgress).filter((p) => p.completedAt).length;
+  const totalTasks = lessons.reduce((sum, lesson) => sum + lesson.totalTasksCount, 0);
+  const totalTasksCompleted = lessons.reduce((sum, lesson) => sum + lesson.completedTasksCount, 0);
   const taskPercent = totalTasks > 0 ? Math.round((totalTasksCompleted / totalTasks) * 100) : 0;
-
-  const totalAttempts = Object.values(mockTaskProgress).reduce((sum, p) => sum + p.attempts, 0);
+  
+  const totalAttempts = tasksProgress.reduce((sum, task) => sum + task.attempts, 0);
 
   const stats = [
     {

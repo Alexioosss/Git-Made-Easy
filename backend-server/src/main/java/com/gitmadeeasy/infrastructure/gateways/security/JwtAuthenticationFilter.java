@@ -4,6 +4,7 @@ import com.gitmadeeasy.entities.security.TokenGateway;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,22 +25,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        String authenticationHeader = request.getHeader("Authorization");
-
-        if(authenticationHeader != null && authenticationHeader.startsWith("Bearer ")) {
-            String token = authenticationHeader.substring(7);
+        String token = resolveToken(request);
+        if(token != null) {
             request.setAttribute("jwt", token);
-
             try {
                 if(this.tokenGateway.isTokenValid(token)) {
                     String userId = this.tokenGateway.getUserIdFromToken(token);
                     UserPrincipal principal = new UserPrincipal(userId);
 
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
-
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    UsernamePasswordAuthenticationToken authenticationToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    principal, null, principal.getAuthorities());
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
             } catch(JwtException | IllegalArgumentException e) {
                 SecurityContextHolder.clearContext();
@@ -47,5 +45,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    private String resolveToken(HttpServletRequest request) {
+        // Try retrieving the JWT Token via the Authorization header first
+        String authorizationHeader = request.getHeader("Authorization");
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7);
+        }
+
+        // Try retrieving the JWT Token via the cookies
+        if(request.getCookies() != null) {
+            for(Cookie cookie : request.getCookies()) {
+                if("access_token".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+
+        // Token was not passed along with the request
+        return null;
     }
 }

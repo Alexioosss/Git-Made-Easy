@@ -31,7 +31,7 @@ public class AttemptTask {
 
         // Find an existing task progress for the user, or create a new one
         TaskProgress taskProgress = this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId)
-                .orElse(new TaskProgress(null, userId, taskId));
+                .orElse(new TaskProgress(null, userId, taskId, lessonId, task.getTitle()));
         log.info("Task progress found for userID={}", userId);
 
         // Attempt the task, check if input matches expected command, increase number of attempts, mark task as completed if correct

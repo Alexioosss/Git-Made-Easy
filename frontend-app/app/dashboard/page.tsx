@@ -5,6 +5,6 @@ export const metadata: Metadata = {
   title: "Dashboard"
 }
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
   return <DashboardClient />;
 }

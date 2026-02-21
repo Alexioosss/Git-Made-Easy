@@ -8,7 +8,8 @@ import { mockTaskProgress } from "@/lib/mock-data";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CheckCircle2, ChevronDown, ChevronUp, Lightbulb, RotateCcw, Send } from "lucide-react";
+import { CheckCircle2, ChevronDown, ChevronUp, Diff, Lightbulb, RotateCcw, Send } from "lucide-react";
+import { DifficultyLevels } from "@/types/difficultyLevels";
 
 interface TaskItemProps {
   task: Task;
@@ -25,12 +26,6 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete }: T
   const [showHint, setShowHint] = useState(false);
   const [localAttempts, setLocalAttempts] = useState(0);
   const [localCompleted, setLocalCompleted] = useState(false);
-
-  const difficultyVariant: Record<Task["difficulty"], "easy" | "medium" | "hard"> = {
-    EASY: "easy",
-    MEDIUM: "medium",
-    HARD: "hard",
-  };
 
   // Check if user has existing progress (for logged-in users)
   const existingProgress = isAuthenticated ? mockTaskProgress[task.taskId] : undefined;
@@ -72,8 +67,8 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete }: T
             <h3 className={`text-base sm:text-lg font-medium sm:text-base ${isCompleted ? "text-primary" : "text-card-foreground"}`}>
               {task.title}
             </h3>
-            <Badge variant={difficultyVariant[task.difficulty]}>
-              {task.difficulty.toLowerCase()}
+            <Badge variant={task.difficulty}>
+              {task.difficulty}
             </Badge>
           </div>
           {totalAttempts > 0 && (<span className="text-xs text-muted-foreground">{totalAttempts} attempt{totalAttempts !== 1 ? "s" : ""}</span>)}

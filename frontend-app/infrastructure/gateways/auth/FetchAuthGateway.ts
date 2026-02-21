@@ -1,3 +1,4 @@
+import { UserResponse } from "@/types/user";
 import { ApiClient } from "../ApiClient";
 import { HttpMethods } from "../HttpMethods";
 import { AuthGateway } from "./AuthGateway";
@@ -16,5 +17,9 @@ export class FetchAuthGateway implements AuthGateway {
 
     refresh(): Promise<string> {
         return this.apiClient.apiRequest("/auth/refresh", HttpMethods.POST);
+    }
+
+    getCurrentUser(): Promise<UserResponse> {
+        return this.apiClient.apiRequest("/auth/me", HttpMethods.GET);
     }
 }

@@ -9,5 +9,5 @@ export abstract class ApiClient {
 
     // An api request will require a path and an HTTP Method, a body is not required for a request
     // This sets the contract of what an api request will require when creating api client implementations
-    abstract apiRequest<T>(path: string, method: HttpMethods, body?: any): Promise<T>;
+    abstract apiRequest<T>(path: string, method: HttpMethods, body?: any, options?: RequestInit & { next?: { revalidate?: number | false } }): Promise<T>;
 }

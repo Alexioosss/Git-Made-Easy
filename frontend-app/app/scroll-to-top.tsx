@@ -11,7 +11,7 @@ import { useEffect } from "react";
  * 
  * Usage: To place inside a page layout, i.e. root layout, so it runs on every route transition across the entire application.
  * 
- * @returns null - This component does not require returns since it does not render anything visual.
+ * @returns null - This component does not require returns since it does not render anything.
  */
 export function ScrollToTop() {
     const pathName = usePathname(); // Grab the current path name, i.e. /lessons

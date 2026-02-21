@@ -4,8 +4,10 @@ import com.gitmadeeasy.entities.taskAttempts.TaskCompletionStatus;
 
 public class FirebaseTaskAttemptSchema {
     private String id;
-    private String userId;
+    private String lessonId;
     private String taskId;
+    private String userId;
+    private String taskTitle;
     private TaskCompletionStatus status;
     private int attempts;
     private String lastInput;
@@ -32,17 +34,13 @@ public class FirebaseTaskAttemptSchema {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public String getLessonId() { return lessonId; }
 
-    public String getUserId() {
-        return userId;
-    }
+    public String getTaskId() { return taskId; }
 
-    public String getTaskId() {
-        return taskId;
-    }
+    public String getUserId() { return userId; }
+
+    public String getTaskTitle() { return taskTitle; }
 
     public TaskCompletionStatus getStatus() {
         return status;
@@ -67,4 +65,6 @@ public class FirebaseTaskAttemptSchema {
     public String getCompletedAt() {
         return completedAt;
     }
+
+    public void setId(String id) { this.id = id; }
 }

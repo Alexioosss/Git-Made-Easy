@@ -3,14 +3,15 @@ import { HttpMethods } from "./HttpMethods";
 
 export class FetchApiClient extends ApiClient {
 
-    async apiRequest<T>(path: string, method: HttpMethods, body?: any): Promise<T> {
+    async apiRequest<T>(path: string, method: HttpMethods, body?: any, options?: RequestInit & { next?: { revalidate?: number | false } }): Promise<T> {
         try {
             const response = await fetch(`${this.BACKEND_URL}${path}`, {
                 method,
                 credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: body ? JSON.stringify(body) : undefined,
-                cache: "no-store"
+                cache: options?.cache ?? "no-store",
+                next: options?.next
             });
             const contentType = response.headers.get("Content-Type") ?? "";
 

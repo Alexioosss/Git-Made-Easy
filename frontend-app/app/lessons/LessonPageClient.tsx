@@ -2,21 +2,18 @@
 
 import { LessonCard } from "@/components/lessons/lesson-card";
 import { GatewayFactory } from "@/config/GatewayFactory";
-import { mockLessonProgress, mockLessons } from "@/lib/mock-data";
+import { mockLessonProgress } from "@/lib/mock-data";
 import { Lesson } from "@/types/lesson";
 import { useEffect, useState } from "react";
 
 export default function LessonPageClient() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [lessons, setLessons] = useState<Lesson[]>([]);
-
     const lessonGateway = GatewayFactory.instance.lessonGateway;
 
     useEffect(() => {
         const fetchLessons = async () => {
-            const lessons = await lessonGateway.getAll();
-            lessons.sort((a, b) => a.lessonOrder - b.lessonOrder);
-            setLessons(lessons);
+            setLessons(await lessonGateway.getAll());
         }
         fetchLessons();
         setIsAuthenticated(false);

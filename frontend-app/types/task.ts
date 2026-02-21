@@ -1,3 +1,5 @@
+import { DifficultyLevels } from "./difficultyLevels";
+
 export interface Task {
   taskId: string;
   lessonId: string;
@@ -6,5 +8,5 @@ export interface Task {
   expectedCommand: string;
   hint: string;
   taskOrder: number;
-  difficulty: string;
+  difficulty: DifficultyLevels;
 }

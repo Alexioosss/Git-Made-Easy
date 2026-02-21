@@ -35,6 +35,7 @@ public class TaskAttemptSchemaMapper {
     public TaskProgress toEntity(JpaTaskAttemptSchema schema) {
         return new TaskProgress(
                 schema.getId(), schema.getUserId(), schema.getTask().getId(),
+                schema.getTask().getLessonId(), schema.getTask().getTitle(),
                 schema.getStatus(), schema.getAttempts(), schema.getLastInput(),
                 schema.getLastError(), schema.getStartedAt(), schema.getCompletedAt());
     }
@@ -58,6 +59,7 @@ public class TaskAttemptSchemaMapper {
         LocalDate completedAt = schema.getCompletedAt() != null ? LocalDate.parse(schema.getCompletedAt()) : null;
         return new TaskProgress(
                 schema.getId(), schema.getUserId(), schema.getTaskId(),
+                schema.getLessonId(), schema.getTaskTitle(),
                 schema.getStatus(), schema.getAttempts(), schema.getLastInput(),
                 schema.getLastError(), startedAt, completedAt);
     }

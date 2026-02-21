@@ -92,3 +92,30 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes success-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(10px);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale(1.02) translateY(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-success-pop {
+  animation: success-pop 0.45s ease-out forwards;
+}
+
+button, a {
+  [role="button"] {
+    cursor: pointer;
+  }
+}

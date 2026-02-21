@@ -74,6 +74,7 @@ public final class TaskTestDataFactory {
         TaskProgress progress = taskProgress();
         return new TaskProgress(
                 id, progress.getUserId(), progress.getTaskId(),
+                progress.getLessonId(), progress.getTaskTitle(),
                 progress.getStatus(), progress.getAttempts(),
                 progress.getLastInput(), progress.getLastError(),
                 progress.getStartedAt(), progress.getCompletedAt()

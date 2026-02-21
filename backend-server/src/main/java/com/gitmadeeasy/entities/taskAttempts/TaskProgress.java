@@ -7,8 +7,10 @@ import java.util.Objects;
 
 public class TaskProgress {
     private String taskProgressId;
-    private final String userId;
+    private String lessonId;
     private final String taskId;
+    private final String userId;
+    private String taskTitle;
     private TaskCompletionStatus status;
     private int attempts;
     private String lastInput;
@@ -20,17 +22,27 @@ public class TaskProgress {
         this.taskProgressId = taskProgressId;
         this.userId = userId;
         this.taskId = taskId;
+    }
+
+    public TaskProgress(String taskProgressId, String userId, String taskId, String lessonId, String taskTitle) {
+        this.taskProgressId = taskProgressId;
+        this.userId = userId;
+        this.taskId = taskId;
+        this.lessonId = lessonId;
+        this.taskTitle = taskTitle;
         this.status = TaskCompletionStatus.NOT_STARTED;
         this.attempts = 0;
         this.startedAt = LocalDate.now();
     }
 
-    public TaskProgress(String taskProgressId, String userId, String taskId, TaskCompletionStatus status,
-                        int attempts, String lastInput, String lastError,
-                        LocalDate startedAt, LocalDate completedAt) {
+    public TaskProgress(String taskProgressId, String userId, String taskId, String lessonId,
+                        String taskTitle, TaskCompletionStatus status, int attempts,
+                        String lastInput, String lastError, LocalDate startedAt, LocalDate completedAt) {
         this.taskProgressId = taskProgressId;
         this.userId = userId;
         this.taskId = taskId;
+        this.lessonId = lessonId;
+        this.taskTitle = taskTitle;
         this.status = status;
         this.attempts = attempts;
         this.lastInput = lastInput;
@@ -43,13 +55,13 @@ public class TaskProgress {
         return taskProgressId;
     }
 
-    public String getUserId() {
-        return userId;
-    }
+    public String getLessonId() { return lessonId; }
 
-    public String getTaskId() {
-        return taskId;
-    }
+    public String getTaskId() { return taskId; }
+
+    public String getUserId() { return userId; }
+
+    public String getTaskTitle() { return taskTitle; }
 
     public TaskCompletionStatus getStatus() {
         return status;
@@ -136,7 +148,9 @@ public class TaskProgress {
         return "TaskProgress{" +
                 "taskProgressId='" + taskProgressId + '\'' +
                 ", userId='" + userId + '\'' +
+                ", lessonId='" + lessonId + '\'' +
                 ", taskId='" + taskId + '\'' +
+                ", taskTitle='" + taskTitle + '\'' +
                 ", status=" + status +
                 ", attempts=" + attempts +
                 ", lastInput='" + lastInput + '\'' +
@@ -154,6 +168,8 @@ public class TaskProgress {
                 Objects.equals(taskProgressId, that.taskProgressId) &&
                 Objects.equals(userId, that.userId) &&
                 Objects.equals(taskId, that.taskId) &&
+                Objects.equals(lessonId, that.lessonId) &&
+                Objects.equals(taskTitle, that.taskTitle) &&
                 status == that.status &&
                 Objects.equals(lastInput, that.lastInput) &&
                 Objects.equals(lastError, that.lastError) &&
@@ -163,6 +179,7 @@ public class TaskProgress {
 
     @Override
     public int hashCode() {
-        return Objects.hash(taskProgressId, userId, taskId, status, attempts, lastInput, lastError, startedAt, completedAt);
+        return Objects.hash(taskProgressId, userId, taskId, status, lessonId, taskTitle,
+                attempts, lastInput, lastError, startedAt, completedAt);
     }
 }

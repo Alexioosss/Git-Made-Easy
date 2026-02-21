@@ -11,17 +11,14 @@ import java.util.List;
 public class JpaTaskSchema {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
     private String lessonId;
     private String title;
     private String content;
     private String expectedCommand;
     private String hint;
     private Integer taskOrder;
-
     @Enumerated(EnumType.STRING)
     private DifficultyLevels taskDifficulty;
-
     @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private final List<JpaTaskAttemptSchema> attempts = new ArrayList<>();
 

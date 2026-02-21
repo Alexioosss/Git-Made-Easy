@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { mockLessons } from "@/lib/mock-data";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -21,15 +20,16 @@ export async function LessonsPreview() {
               Start from the basics or jump to what you need.
             </p>
           </div>
-          <Link href="/lessons" title="View lessons catalog" className="hidden items-center gap-1 text-sm text-primary transition-colors hover:text-primary/80 sm:flex">
+          <Link href="/lessons" title="View lessons catalog" className="hidden items-center gap-1 text-sm text-primary transition-colors hover:font-bold sm:flex">
             View all lessons
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          {lessons.map((lesson) => {
-            const difficultyDistribution = lesson.tasks.reduce((acc, task) => {acc[task.difficulty] = (acc[task.difficulty] || 0) + 1; return acc; }, {} as Record<string, number>);
+          {lessons.slice(0, 4).map((lesson) => { // Show a maximum of 4 lessons in the home page lessons preview / catalog
+            const difficultyDistribution = lesson.tasks.reduce((acc, task) => { acc[task.difficulty] = (acc[task.difficulty] || 0) + 1; return acc; }, {} as Record<string, number>);
+            const hasDifficulties = Object.keys(difficultyDistribution).length > 0;
 
             return (
               <Link key={lesson.lessonId} href={`/lessons/${lesson.lessonId}`}
@@ -46,16 +46,20 @@ export async function LessonsPreview() {
                   {lesson.description}
                 </p>
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-xs text-muted-foreground">
-                    {lesson.tasks.length} tasks
-                  </span>
-                  <span className="text-muted-foreground/30">|</span>
-                  {Object.entries(difficultyDistribution).map(
-                    ([difficulty, count]) => (
-                      <Badge key={difficulty} variant={difficulty.toLowerCase() as "easy" | "medium" | "hard"} className="`text-xs`">
-                        {count} {difficulty.toLowerCase()}
-                      </Badge>
-                    )
+                  {lesson.tasks.length === 0 ? (<span className="text-xs text-muted-foreground">No tasks yet</span>) : (
+                    <>
+                    <span className="text-xs text-muted-foreground">
+                      {lesson.tasks.length}{" "} {lesson.tasks.length === 1 ? "task" : "tasks"}{""}
+                      {hasDifficulties && ( <span className="text-muted-foreground/30"> | </span> )}
+                    </span>
+                    {Object.entries(difficultyDistribution).map(
+                      ([difficulty, count]) => (
+                        <Badge key={difficulty} variant={difficulty.toLowerCase() as "easy" | "medium" | "hard"} className="text-xs">
+                          {count} {difficulty.toLowerCase()}
+                        </Badge>
+                      )
+                    )}
+                    </>
                   )}
                 </div>
               </Link>
@@ -65,7 +69,7 @@ export async function LessonsPreview() {
 
         {/* Mobile "View all" button */}
         <div className="mt-6 flex justify-center sm:hidden">
-          <Button variant="outline" asChild className="w-full bg-transparent" title="View lessons catalog">
+          <Button variant="outline" asChild className="w-full bg-transparent hover:font-bold" title="View lessons catalog">
             <Link href="/lessons" className="gap-2">
               View all lessons
               <ArrowRight className="h-4 w-4" />

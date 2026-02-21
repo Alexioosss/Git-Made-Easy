@@ -5,12 +5,21 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { GitBranch, User, LogOut, LayoutDashboard, Menu, X } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export function Navbar() {
-  const isAuthenticated = false;
-  const user = { firstName: "John" };
-  const logout = () => { console.log("Logging out..."); };
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const { user, isAuthenticated, logout } = useAuth();
+  const router = useRouter();
+
+  const pathName = usePathname();
+  
+  const handleLogout = async () => {
+    await logout();
+    setIsMobileMenuOpen(false);
+    router.push("/");
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
@@ -24,15 +33,20 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop nav */}
         <nav className="hidden items-center gap-6 md:flex">
-          <Link href="/lessons" title="View all lessons" className="text-2xl text-foreground transition-colors hover:text-foreground hover:scale-125 transition-transform duration-300">
+          <Link href="/lessons" title="View lessons catalog" className={`text-2xl transition-colors hover:text-foreground hover:scale-125 transition-transform duration-300
+          ${pathName.startsWith("/lessons") ? 'font-bold text-foreground' : 'text-muted-foreground'}`}>
             Lessons
           </Link>
           {isAuthenticated && (
-            <Link href="/dashboard" className="text-2xl text-muted-foreground transition-colors hover:text-foreground hover:scale-125 transition-transform duration-300">
-              Dashboard
-            </Link>
+            <>
+              <span className="h-6 border-l-2 border-foreground/80"></span>
+              <Link href="/dashboard" title="Go to your personalised dashboard"
+              className={`text-2xl transition-colors hover:text-foreground hover:scale-125 transition-transform duration-300
+              ${pathName.startsWith("/dashboard") ? 'font-bold text-foreground' : 'text-muted-foreground'}`}>
+                Dashboard
+              </Link>
+            </>
           )}
         </nav>
 
@@ -51,13 +65,15 @@ export function Navbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48 bg-card text-card-foreground">
                 <DropdownMenuItem asChild>
-                  <Link href="/dashboard" className="flex items-center gap-2 py-3 text-xl hover:text-white transition-colors duration-400">
+                  <Link href="/dashboard" title="Go to your personalised dashboard"
+                  className="cursor-pointer flex items-center gap-2 py-3 text-xl hover:text-white transition-colors duration-400">
                     <LayoutDashboard className="h-5 w-5" />
                     Dashboard
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout} className="flex items-center gap-2 py-3 text-destructive focus:text-destructive text-xl hover:text-white transition-colors duration-400">
+                <DropdownMenuItem onClick={handleLogout} title="Sign out"
+                className="cursor-pointer flex items-center gap-2 py-3 text-destructive focus:text-destructive text-xl hover:text-white transition-colors duration-400">
                   <LogOut className="h-5 w-5" />
                   Sign Out
                 </DropdownMenuItem>
@@ -65,10 +81,10 @@ export function Navbar() {
             </DropdownMenu>
           ) : (
             <div className="hidden items-center gap-2 sm:flex">
-              <Button asChild className="text-xl px-5 py-2 hover:text-white transition-colors duration-400" title="Sign in to your account">
+              <Button asChild className="cursor-pointer text-xl px-5 py-2 hover:text-white transition-colors duration-400" title="Sign in to your account">
                 <Link href="/login">Sign In</Link>
               </Button>
-              <Button asChild className="text-xl px-5 py-2 hover:text-white transition-colors duration-400" title="Create a new account">
+              <Button asChild className="cursor-pointer text-xl px-5 py-2 hover:text-white transition-colors duration-400" title="Create a new account">
                 <Link href="/register">Get Started</Link>
               </Button>
             </div>
@@ -87,23 +103,26 @@ export function Navbar() {
       {isMobileMenuOpen && (
         <div className="border-t border-border bg-background px-4 pb-4 pt-3 md:hidden">
           <nav className="flex flex-col gap-1">
-            <Link href="/lessons" onClick={() => setIsMobileMenuOpen(false)} className="rounded-lg px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-secondary">
+            <Link href="/lessons" title="View lessons catalog" onClick={() => setIsMobileMenuOpen(false)} className={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-secondary
+            ${pathName.startsWith("/lessons") ? 'font-bold text-foreground' : 'text-muted-foreground'}`}>
               Lessons
             </Link>
             {isAuthenticated && (
-              <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)} className="rounded-lg px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-secondary">
+              <Link href="/dashboard" title="Go to your personalised dashboard"
+              onClick={() => setIsMobileMenuOpen(false)} className={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-secondary
+              ${pathName.startsWith("/dashboard") ? 'font-bold text-foreground' : 'text-muted-foreground'}`}>
                 Dashboard
               </Link>
             )}
           </nav>
           {!isAuthenticated && (
             <div className="mt-3 flex flex-col gap-2 border-t border-border pt-3">
-              <Button variant="outline" asChild className="w-full bg-transparent">
+              <Button variant="outline" title="Sign in to your account" asChild className="w-full bg-transparent">
                 <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} >
                   Sign In
                 </Link>
               </Button>
-              <Button asChild className="w-full">
+              <Button asChild className="w-full" title="Create a new account">
                 <Link href="/register" onClick={() => setIsMobileMenuOpen(false)}>
                   Get Started
                 </Link>

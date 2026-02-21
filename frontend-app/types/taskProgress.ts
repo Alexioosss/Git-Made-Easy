@@ -6,6 +6,8 @@ export interface TaskProgress {
   taskProgressId: string;
   userId: string;
   taskId: string;
+  lessonId: string;
+  taskTitle: string;
   status: string;
   attempts: number;
   lastInput: string;

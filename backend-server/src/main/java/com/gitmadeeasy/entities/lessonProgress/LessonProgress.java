@@ -10,6 +10,13 @@ public class LessonProgress {
     private Integer completedTasksCount;
     private Integer totalTasksCount;
 
+    public LessonProgress(String userId, String lessonId, Integer completedTasksCount, Integer totalTasksCount) {
+        this.userId = userId;
+        this.lessonId = lessonId;
+        this.completedTasksCount = completedTasksCount;
+        this.totalTasksCount = totalTasksCount;
+    }
+
     public LessonProgress(String lessonProgressId, String userId, String lessonId,
                           String currentTaskProgressId, Integer completedTasksCount,
                           Integer totalTasksCount) {

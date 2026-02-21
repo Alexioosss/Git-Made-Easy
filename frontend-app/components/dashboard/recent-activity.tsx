@@ -1,6 +1,18 @@
 import { CheckCircle2, XCircle } from "lucide-react";
 
-export async function RecentActivity() {
+interface RecentActivityProps {
+  activities: {
+    taskId: string;
+    taskTitle: string;
+    lessonTitle: string;
+    attempts: number;
+    completed: boolean;
+    date: string;
+  }[];
+}
+
+export function RecentActivity({ activities }: RecentActivityProps) {
+  const hasActivities = activities && activities.length > 0;
 
   return (
     <div>
@@ -8,15 +20,15 @@ export async function RecentActivity() {
         Recent Activity
       </h2>
       <div className="rounded-xl border border-border bg-card">
-        {activities.length === 0 ? (
+        {!hasActivities ? (
           <div className="p-6 text-center text-sm text-muted-foreground">
             No activity yet. Start a lesson to see your progress here.
           </div>
         ) : (
           <div className="divide-y divide-border">
             {activities.map((activity) => (
-              <div key={activity.id} className="flex items-start gap-3 p-4">
-                {activity.completed ? (
+              <div key={activity.taskId} className="flex items-start gap-3 p-4">
+                {activity.date ? (
                   <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                 ) : (
                   <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
@@ -31,7 +43,6 @@ export async function RecentActivity() {
                   <p className="mt-1 text-xs text-muted-foreground">
                     {activity.attempts} attempt
                     {activity.attempts !== 1 ? "s" : ""} &middot;{" "}
-                    {activity.date}
                   </p>
                 </div>
               </div>

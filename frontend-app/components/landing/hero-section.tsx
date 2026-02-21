@@ -2,22 +2,18 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Terminal, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 export function HeroSection() {
+  const { isAuthenticated } = useAuth();
+
   return (
     <section className="relative overflow-hidden px-4 py-16 sm:py-24 md:py-32">
-      {/* Subtle grid background */}
-      <div className="absolute inset-0 opacity-[0.03]"
-        style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)", backgroundSize: "60px 60px"}}/>
+      <div className="absolute inset-0 opacity-[0.03]" />
 
       <div className="relative mx-auto max-w-6xl">
         <div className="flex flex-col items-center text-center">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1.5 text-xs text-muted-foreground sm:px-4 sm:text-sm">
-            <Terminal className="h-3 w-3 text-primary sm:h-3.5 sm:w-3.5" />
-            Interactive git learning platform
-          </div>
-
           <h1 className="max-w-3xl text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-6xl">
             Learn Git the
             <span className="text-primary"> right way.</span>
@@ -35,9 +31,11 @@ export function HeroSection() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-            <Button variant="outline" size="lg" asChild className="w-full bg-transparent py-6 text-base sm:w-auto sm:py-3 sm:text-sm">
-              <Link href="/register" title="Create an account">Create Account</Link>
-            </Button>
+            {!isAuthenticated && (
+              <Button variant="outline" size="lg" asChild className="w-full bg-transparent py-6 text-base sm:w-auto sm:py-3 sm:text-sm">
+                <Link href="/register" title="Create an account">Create Account</Link>
+              </Button>
+            )}
           </div>
 
           {/* Terminal preview */}
@@ -48,7 +46,7 @@ export function HeroSection() {
                 <div className="h-2.5 w-2.5 rounded-full bg-warning/60 sm:h-3 sm:w-3" />
                 <div className="h-2.5 w-2.5 rounded-full bg-primary/60 sm:h-3 sm:w-3" />
                 <span className="ml-2 text-xs text-muted-foreground">
-                  terminal
+                  Terminal
                 </span>
               </div>
               <div className="overflow-x-auto p-4 font-mono text-xs sm:p-6 sm:text-sm">

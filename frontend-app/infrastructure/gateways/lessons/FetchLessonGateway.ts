@@ -12,10 +12,10 @@ export class FetchLessonGateway implements LessonGateway {
     }
 
     getById(lessonId: string): Promise<Lesson> {
-        return this.apiClient.apiRequest(`/lessons/${lessonId}`, HttpMethods.GET);
+        return this.apiClient.apiRequest(`/lessons/${lessonId}`, HttpMethods.GET, undefined, { cache: "force-cache" });
     }
 
     getAll(): Promise<Lesson[]> {
-        return this.apiClient.apiRequest("/lessons", HttpMethods.GET);
+        return this.apiClient.apiRequest("/lessons", HttpMethods.GET, undefined, { cache: "force-cache" });
     }
 }
