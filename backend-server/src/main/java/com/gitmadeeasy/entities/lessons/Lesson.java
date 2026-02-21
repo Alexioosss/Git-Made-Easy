@@ -76,14 +76,11 @@ public class Lesson {
     public boolean equals(Object o) {
         if(o == null || getClass() != o.getClass()) return false;
         Lesson lesson = (Lesson) o;
-        return Objects.equals(title, lesson.title) &&
-                Objects.equals(description, lesson.description) &&
-                Objects.equals(difficulty, lesson.difficulty) &&
-                Objects.equals(lessonOrder, lesson.lessonOrder);
+        return Objects.equals(lessonId, lesson.lessonId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, description, difficulty, lessonOrder);
+        return Objects.hash(lessonId);
     }
 }

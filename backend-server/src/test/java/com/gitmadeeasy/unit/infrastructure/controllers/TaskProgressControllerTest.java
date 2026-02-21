@@ -34,13 +34,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class TaskProgressControllerTest {
     @Autowired private MockMvc mockMvc;
-
     @MockitoBean private AttemptTask attemptTask;
     @MockitoBean private GetTaskProgress getTaskProgress;
 
     private static final String USER_ID = "1";
     private static final String LESSON_ID = "1";
     private static final String TASK_ID = "1";
+
 
     @Test
     @DisplayName("Record Task Attempt - Valid Payload - Returns 200")

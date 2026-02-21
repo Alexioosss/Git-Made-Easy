@@ -1,7 +1,7 @@
 package com.gitmadeeasy.unit.infrastructure.gateways.lessons;
 
-import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.entities.enums.DifficultyLevels;
+import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.infrastructure.gateways.lessons.JpaLessonDatabaseGateway;
 import com.gitmadeeasy.infrastructure.gateways.lessons.JpaLessonSchema;
 import com.gitmadeeasy.infrastructure.gateways.lessons.repositories.jpa.JpaLessonRepository;

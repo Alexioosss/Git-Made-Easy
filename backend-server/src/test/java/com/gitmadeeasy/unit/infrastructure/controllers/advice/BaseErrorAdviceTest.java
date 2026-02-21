@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BaseErrorAdviceTest {
-
     @Test
     @DisplayName("Build Error - Returns Api Error With Given Values")
     void buildError_WhenGivenValues_ReturnsApiErrorWithCorrectValues() {

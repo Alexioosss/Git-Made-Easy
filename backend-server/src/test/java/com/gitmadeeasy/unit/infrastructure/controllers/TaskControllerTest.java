@@ -1,6 +1,5 @@
 package com.gitmadeeasy.unit.infrastructure.controllers;
 
-import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.infrastructure.controllers.TaskController;
 import com.gitmadeeasy.infrastructure.mappers.tasks.TaskResponseMapper;
@@ -32,10 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(TaskResponseMapper.class)
 class TaskControllerTest {
     @Autowired private MockMvc mockMvc;
-
     @MockitoBean private CreateTask createTask;
     @MockitoBean private GetTaskById getTaskById;
-
 
 
     @Test

@@ -1,7 +1,7 @@
 package com.gitmadeeasy.usecases.lessons;
 
-import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.entities.enums.DifficultyLevels;
+import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.usecases.lessons.dto.CreateLessonRequest;
 import com.gitmadeeasy.usecases.lessons.exceptions.DifficultyLevelNotRecognisedException;

@@ -25,6 +25,7 @@ class LessonProgressControllerTest {
     @Autowired private MockMvc mockMvc;
     @MockitoBean private GetLessonProgress getLessonProgress;
 
+
     @Test
     @DisplayName("Get Lesson Progress - Lesson Progress Exists")
     void getLessonProgress_WhenLessonProgressExists_ReturnsOk() throws Exception {

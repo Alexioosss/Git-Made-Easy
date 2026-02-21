@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public final class TaskTestDataFactory {
+
     private TaskTestDataFactory() {}
+
 
     // ----- TASKS ----- //
 
@@ -42,6 +44,7 @@ public final class TaskTestDataFactory {
                 Arguments.of("Populated Tasks List", List.of(jpaTaskSchema(), jpaTaskSchema()))
         );
     }
+
 
     // ----- TASK PROGRESS ----- //
 
@@ -80,6 +83,7 @@ public final class TaskTestDataFactory {
                 progress.getStartedAt(), progress.getCompletedAt()
         );
     }
+
 
     // ----- TASK ATTEMPT SCHEMAS ----- //
 

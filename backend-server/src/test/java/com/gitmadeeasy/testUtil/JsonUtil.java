@@ -9,6 +9,9 @@ public class JsonUtil {
             .registerModule(new JavaTimeModule())
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
+    /*
+    Helper method to convert an object to a JSON string, used for response and request JSON objects
+     */
     public static String objectToJson(Object value) {
         try {
             return objectMapper.writeValueAsString(value);

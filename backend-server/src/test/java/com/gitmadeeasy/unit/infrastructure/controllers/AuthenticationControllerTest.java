@@ -7,6 +7,7 @@ import com.gitmadeeasy.usecases.auth.LogoutUser;
 import com.gitmadeeasy.usecases.auth.RefreshToken;
 import com.gitmadeeasy.usecases.auth.dto.AuthToken;
 import com.gitmadeeasy.usecases.auth.dto.LoginRequest;
+import com.gitmadeeasy.usecases.users.GetUserById;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 class AuthenticationControllerTest {
     @Autowired private MockMvc mockMvc;
-
     @MockitoBean private LoginUser loginUser;
     @MockitoBean private LogoutUser logoutUser;
     @MockitoBean private RefreshToken refreshToken;
+    @MockitoBean private GetUserById getUserById;
 
 
     @Test

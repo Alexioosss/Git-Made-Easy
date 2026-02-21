@@ -1,7 +1,7 @@
 package com.gitmadeeasy.unit.usecases.lessons;
 
-import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.entities.enums.DifficultyLevels;
+import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.entities.tasks.TaskGateway;

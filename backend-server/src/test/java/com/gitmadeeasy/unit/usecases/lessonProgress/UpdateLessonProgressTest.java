@@ -28,7 +28,6 @@ class UpdateLessonProgressTest {
     @Mock private TaskGateway taskGateway;
     @InjectMocks private UpdateLessonProgress updateLessonProgress;
 
-
     private static final String USER_ID = "1";
     private static final String LESSON_ID = "1";
 

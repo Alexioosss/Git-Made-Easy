@@ -1,6 +1,5 @@
 package com.gitmadeeasy.integration.controllers;
 
-import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.infrastructure.gateways.users.JpaUserSchema;
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.jpa.JpaUserRepository;
 import com.gitmadeeasy.testUtil.JsonUtil;

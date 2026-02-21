@@ -1,7 +1,7 @@
 package com.gitmadeeasy.unit.infrastructure.controllers;
 
-import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.entities.enums.DifficultyLevels;
+import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.infrastructure.controllers.LessonController;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
@@ -30,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 class LessonControllerTest {
     @Autowired private MockMvc mockMvc;
-
     @MockitoBean private CreateLesson createLesson;
     @MockitoBean private GetLessonById getLessonById;
     @MockitoBean private GetAllLessons getAllLessons;

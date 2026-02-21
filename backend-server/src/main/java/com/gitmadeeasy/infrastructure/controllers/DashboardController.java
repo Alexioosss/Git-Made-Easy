@@ -23,6 +23,7 @@ public class DashboardController {
 
     @GetMapping
     public ResponseEntity<DashboardResponse> getDashboard(Principal principal) {
+        if(principal == null) { return ResponseEntity.status(401).build(); }
         log.info("GET /dashboard - Fetching dashboard data for user {}", principal.getName());
         DashboardResponse response = this.getDashboardData.execute(principal.getName());
         return ResponseEntity.ok(response);

@@ -82,7 +82,7 @@ public class AuthenticationController {
 
     @GetMapping("/me")
     public ResponseEntity<User> getCurrentUser(Principal principal) {
-        if(principal == null) { return ResponseEntity.status(401).build(); }
+        if(principal == null) { return ResponseEntity.status(401).build(); } // The token is expired but still valid
         User user = this.getUserById.execute(principal.getName());
         return ResponseEntity.ok(user);
     }
