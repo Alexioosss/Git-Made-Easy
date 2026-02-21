@@ -127,7 +127,7 @@ class JpaUserDatabaseGatewayTest {
 
     @Test
     @DisplayName("Exists By Email - Email Exists")
-    void existsByEmailAddress_WhenExists_ReturnsTrueAddress() {
+    void existsByEmailAddress_WhenUserExists_ReturnsTrueAddress() {
         // Arrange
         final String email = "found@gmail.com";
         when(jpaUserRepository.existsByEmailAddress(email)).thenReturn(true);
@@ -141,7 +141,7 @@ class JpaUserDatabaseGatewayTest {
 
     @Test
     @DisplayName("Exists By Email - Email Does Not Exist")
-    void existsByEmailAddress_WhenNotExists_ReturnsFalseAddress() {
+    void existsByEmailAddress_WhenUserDoesNotExist_ReturnsFalseAddress() {
         // Arrange
         final String email = "notfound@gmail.com";
         when(jpaUserRepository.existsByEmailAddress(email)).thenReturn(false);
@@ -160,10 +160,10 @@ class JpaUserDatabaseGatewayTest {
 
 
     private static User provideUserWithId() {
-        return new User("1", "Alessio", "Cocuzza", "myemail1@gmail.com", false);
+        return new User("1", "John", "Doe", "myemail1@gmail.com", false);
     }
 
     private static JpaUserSchema provideUserSchemaWithId() {
-        return new JpaUserSchema("1", "Alessio", "Cocuzza", "myemail1@gmail.com", false);
+        return new JpaUserSchema("1", "John", "Doe", "myemail1@gmail.com", false);
     }
 }
