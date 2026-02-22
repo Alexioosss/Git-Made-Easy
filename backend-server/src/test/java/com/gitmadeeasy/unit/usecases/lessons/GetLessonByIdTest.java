@@ -36,9 +36,10 @@ class GetLessonByIdTest {
     @DisplayName("Get Lesson By ID - Lesson Exists")
     void execute_WhenLessonExists_ReturnsLesson() {
         // Arrange
-        Lesson lesson = new Lesson("Intro", "Description", DifficultyLevels.EASY, 1);
+        Lesson lesson = new Lesson("1", "Intro", "Description", DifficultyLevels.EASY, 1);
+        lesson.setTaskIds(List.of());
         when(this.lessonGateway.getLessonById("1")).thenReturn(Optional.of(lesson));
-        when(this.taskGateway.getTasksByLessonId("1")).thenReturn(List.of());
+        when(this.taskGateway.getTasksByIds(List.of())).thenReturn(List.of());
 
         // Act
         Lesson result = this.getLessonById.execute("1");
@@ -47,12 +48,15 @@ class GetLessonByIdTest {
         assertEquals("Intro", result.getTitle());
         assertEquals("Description", result.getDescription());
         assertEquals(DifficultyLevels.EASY, result.getDifficulty());
-        verify(this.taskGateway).getTasksByLessonId("1");
+        verify(this.taskGateway).getTasksByIds(List.of());
     }
 
     @Test
     @DisplayName("Get Lesson By ID - Lesson Does Not Exist")
     void execute_WhenLessonDoesNotExist_ThrowsLessonNotFoundWithIdException() {
+        // Arrange
+        when(this.lessonGateway.getLessonById("1")).thenReturn(Optional.empty());
+
         // Act & Assert
         assertThrows(LessonNotFoundWithIdException.class, () -> this.getLessonById.execute("1"));
     }
@@ -61,55 +65,46 @@ class GetLessonByIdTest {
     @DisplayName("Get Lesson By ID - Lesson Exists With No Tasks")
     void execute_WhenLessonExistsWithNoTasks_ReturnsLessonWithEmptyTasksList() {
         // Arrange
-        Lesson lesson = new Lesson("Intro", "Description", DifficultyLevels.EASY, 1);
+        Lesson lesson = new Lesson("1", "Intro", "Description", DifficultyLevels.EASY, 1);
+        lesson.setTaskIds(List.of());
         when(this.lessonGateway.getLessonById("1")).thenReturn(Optional.of(lesson));
-        when(this.taskGateway.getTasksByLessonId("1")).thenReturn(List.of());
+        when(this.taskGateway.getTasksByIds(List.of())).thenReturn(List.of());
 
         // Act
         Lesson result = this.getLessonById.execute("1");
 
         // Assert
-        assertEquals("Intro", result.getTitle());
-        assertEquals("Description", result.getDescription());
-        assertEquals(DifficultyLevels.EASY, result.getDifficulty());
         assertEquals(List.of(), result.getTasks());
-        verify(this.taskGateway).getTasksByLessonId("1");
+        verify(this.taskGateway).getTasksByIds(List.of());
     }
 
     @ParameterizedTest
     @MethodSource("provideValidTasksList")
     @DisplayName("Get Lesson By ID - Lesson Exists With Tasks")
     void execute_WhenLessonExistsWithTasks_ReturnsLessonWithTasks(List<Task> tasks) {
-        Lesson lesson = new Lesson("Intro", "Description", DifficultyLevels.EASY, 1);
-        lesson.setTasks(tasks);
+        // Arrange
+        Lesson lesson = new Lesson("1", "Intro", "Description", DifficultyLevels.EASY, 1);
+        lesson.setTaskIds(List.of("1", "2"));
         when(this.lessonGateway.getLessonById("1")).thenReturn(Optional.of(lesson));
-        when(this.taskGateway.getTasksByLessonId("1")).thenReturn(List.of());
+        when(this.taskGateway.getTasksByIds(List.of("1", "2"))).thenReturn(tasks);
 
         // Act
         Lesson result = this.getLessonById.execute("1");
 
         // Assert
-        assertEquals("Intro", result.getTitle());
-        assertEquals("Description", result.getDescription());
-        assertEquals(DifficultyLevels.EASY, result.getDifficulty());
-        assertEquals(List.of(), result.getTasks());
-        verify(this.taskGateway).getTasksByLessonId("1");
+        assertEquals(tasks.size(), result.getTasks().size());
+        verify(this.taskGateway).getTasksByIds(List.of("1", "2"));
     }
 
-
-
-    // ----------  HELPER METHODS FOR PARAMETERISED TESTS ---------- //
 
 
     private static Stream<List<Task>> provideValidTasksList() {
         return Stream.of(
                 List.of(
-                        new Task("1", "1", "git overview - task 1",
-                                "A simple task to get comfortable with Git",
-                                "git", "as easy as it can be", 1, DifficultyLevels.EASY),
-                        new Task("2", "1", "git overview - task 2",
-                                "A simple task to get even more comfortable with Git",
-                                "git", "as easy as it can be, really", 1, DifficultyLevels.EASY)
+                        new Task("1", "1", "Task 1",
+                                "Content", "git", "easy", 1, DifficultyLevels.EASY),
+                        new Task("2", "1", "Task 2",
+                                "Content", "git", "easy", 2, DifficultyLevels.EASY)
                 )
         );
     }

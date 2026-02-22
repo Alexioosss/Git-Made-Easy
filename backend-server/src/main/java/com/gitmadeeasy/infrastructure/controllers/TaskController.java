@@ -1,6 +1,5 @@
 package com.gitmadeeasy.infrastructure.controllers;
 
-import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.infrastructure.dto.tasks.TaskResponse;
 import com.gitmadeeasy.infrastructure.mappers.tasks.TaskResponseMapper;

@@ -3,6 +3,7 @@ package com.gitmadeeasy.unit.usecases.lessons;
 import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.entities.lessons.LessonGateway;
+import com.gitmadeeasy.entities.tasks.TaskGateway;
 import com.gitmadeeasy.usecases.lessons.GetAllLessons;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class GetAllLessonsTest {
     @Mock private LessonGateway lessonGateway;
+    @Mock private TaskGateway taskGateway;
     @InjectMocks private GetAllLessons getAllLessons;
 
 

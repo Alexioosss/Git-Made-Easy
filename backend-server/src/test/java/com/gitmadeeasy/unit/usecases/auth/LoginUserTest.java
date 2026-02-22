@@ -7,6 +7,7 @@ import com.gitmadeeasy.usecases.auth.LoginUser;
 import com.gitmadeeasy.usecases.auth.UserIdentityProvider;
 import com.gitmadeeasy.usecases.auth.dto.AuthToken;
 import com.gitmadeeasy.usecases.auth.dto.LoginRequest;
+import com.gitmadeeasy.usecases.auth.exceptions.EmailNotVerifiedException;
 import com.gitmadeeasy.usecases.users.exceptions.InvalidCredentialsException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,15 +30,17 @@ class LoginUserTest {
 
 
     @Test
-    @DisplayName("Login User - Valid Credentials Returns AuthToken")
-    void execute_WhenValidCredentials_ReturnsAuthToken() {
+    @DisplayName("Login User - Valid Credentials & Verified Email Returns AuthToken")
+    void execute_WhenEmailVerified_ReturnsAuthToken() {
         // Arrange
         LoginRequest loginRequest = new LoginRequest("myemail1@gmail.com", "MyPassword123'");
         User user = new User("1", "John", "Doe", "myemail1@gmail.com", false);
 
+        when(this.userIdentityProvider.login("myemail1@gmail.com", "MyPassword123'"))
+                .thenReturn("firebase-myemail1@gmail.com");
         when(this.userGateway.getUserByEmailAddress("myemail1@gmail.com")).thenReturn(Optional.of(user));
+        when(this.userIdentityProvider.isEmailVerified("firebase-myemail1@gmail.com")).thenReturn(true);
         when(this.tokenGateway.generateToken(user)).thenReturn("token");
-        when(this.userIdentityProvider.login("myemail1@gmail.com", "MyPassword123'")).thenReturn("firebase-myemail1@gmail.com");
 
         // Act
         AuthToken result = this.loginUser.execute(loginRequest);
@@ -48,10 +51,29 @@ class LoginUserTest {
     }
 
     @Test
-    @DisplayName("Login User - Email Is Not Valid Throws Exception")
+    @DisplayName("Login User - Email Not Verified Throws EmailNotVerifiedException")
+    void execute_WhenEmailNotVerified_ThrowsEmailNotVerifiedException() {
+        // Arrange
+        LoginRequest loginRequest = new LoginRequest("myemail1@gmail.com", "MyPassword123'");
+        User user = new User("1", "John", "Doe", "myemail1@gmail.com", false);
+
+        when(this.userIdentityProvider.login("myemail1@gmail.com", "MyPassword123'"))
+                .thenReturn("firebase-myemail1@gmail.com");
+        when(this.userGateway.getUserByEmailAddress("myemail1@gmail.com")).thenReturn(Optional.of(user));
+        when(this.userIdentityProvider.isEmailVerified("firebase-myemail1@gmail.com")).thenReturn(false);
+
+        // Act & Assert
+        assertThrows(EmailNotVerifiedException.class, () -> this.loginUser.execute(loginRequest));
+    }
+
+    @Test
+    @DisplayName("Login User - Email Not Found Throws InvalidCredentialsException")
     void execute_WhenEmailIsNotValid_ThrowsInvalidCredentialsException() {
         // Arrange
         LoginRequest loginRequest = new LoginRequest("myemail1@gmail.com", "MyPassword123'");
+
+        when(this.userIdentityProvider.login("myemail1@gmail.com", "MyPassword123'"))
+                .thenReturn("firebase-myemail1@gmail.com");
         when(this.userGateway.getUserByEmailAddress("myemail1@gmail.com")).thenReturn(Optional.empty());
 
         // Act & Assert

@@ -71,4 +71,34 @@ class LessonProgressControllerIntegrationTest {
                         .with(user(USER_ID)))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    @DisplayName("Get All Lesson Progress - Returns List")
+    void getAllLessonProgress_WhenProgressExists_ReturnsList() throws Exception {
+        // Arrange
+        JpaLessonProgressSchema schema1 = new JpaLessonProgressSchema(
+                USER_ID, "1", "1", 1, 3);
+        JpaLessonProgressSchema schema2 = new JpaLessonProgressSchema(
+                USER_ID, "2", "2", 2, 5);
+        this.lessonProgressRepository.save(schema1);
+        this.lessonProgressRepository.save(schema2);
+
+        // Act & Assert
+        this.mockMvc.perform(get("/lessons/progress")
+                        .with(user(USER_ID)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].userId").value(USER_ID))
+                .andExpect(jsonPath("$[1].userId").value(USER_ID));
+    }
+
+    @Test
+    @DisplayName("Get All Lesson Progress - No Progress Exists")
+    void getAllLessonProgress_WhenNoProgressExists_ReturnsEmptyList() throws Exception {
+        // Act & Assert
+        this.mockMvc.perform(get("/lessons/progress")
+                        .with(user(USER_ID)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0));
+    }
 }
