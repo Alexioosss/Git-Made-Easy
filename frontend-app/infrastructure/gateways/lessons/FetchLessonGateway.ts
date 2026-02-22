@@ -2,6 +2,7 @@ import { Lesson } from "@/types/lesson";
 import { ApiClient } from "../ApiClient";
 import { LessonGateway } from "./LessonGateway";
 import { HttpMethods } from "../HttpMethods";
+import { Task } from "@/types/task";
 
 export class FetchLessonGateway implements LessonGateway {
 
@@ -17,5 +18,9 @@ export class FetchLessonGateway implements LessonGateway {
 
     getAll(): Promise<Lesson[]> {
         return this.apiClient.apiRequest("/lessons", HttpMethods.GET, undefined, { cache: "force-cache" });
+    }
+
+    getTasksForLesson(lessonId: string): Promise<Task[]> {
+        return this.apiClient.apiRequest(`/lessons/${lessonId}/tasks`, HttpMethods.GET, undefined, { cache: "force-cache" });
     }
 }

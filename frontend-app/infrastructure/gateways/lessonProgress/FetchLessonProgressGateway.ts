@@ -10,4 +10,8 @@ export class FetchLessonProgressGateway implements LessonProgressGateway {
     getLessonProgress(lessonId: string): Promise<LessonProgress> {
         return this.apiClient.apiRequest(`/lessons/${lessonId}/progress`, HttpMethods.GET);
     }
+
+    getAllLessonsProgress(): Promise<LessonProgress[]> {
+        return this.apiClient.apiRequest(`/lessons/progress`, HttpMethods.GET);
+    }
 }

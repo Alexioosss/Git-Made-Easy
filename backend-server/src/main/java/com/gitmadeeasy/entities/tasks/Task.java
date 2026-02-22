@@ -12,11 +12,11 @@ public class Task {
     private final String expectedCommand;
     private final String hint;
     private final Integer taskOrder;
-    private final DifficultyLevels taskDifficulty;
+    private final DifficultyLevels difficulty;
 
     public Task(
             String taskId, String lessonId, String title, String content,
-            String expectedCommand, String hint, Integer taskOrder, DifficultyLevels taskDifficulty) {
+            String expectedCommand, String hint, Integer taskOrder, DifficultyLevels difficulty) {
         this.taskId = taskId;
         this.lessonId = lessonId;
         this.title = title;
@@ -24,19 +24,19 @@ public class Task {
         this.expectedCommand = expectedCommand;
         this.hint = hint;
         this.taskOrder = taskOrder;
-        this.taskDifficulty = taskDifficulty;
+        this.difficulty = difficulty;
     }
 
     public Task(
             String lessonId, String title, String content,
-            String expectedCommand, String hint, Integer taskOrder, DifficultyLevels taskDifficulty) {
+            String expectedCommand, String hint, Integer taskOrder, DifficultyLevels difficulty) {
         this.lessonId = lessonId;
         this.title = title;
         this.content = content;
         this.expectedCommand = expectedCommand;
         this.hint = hint;
         this.taskOrder = taskOrder;
-        this.taskDifficulty = taskDifficulty;
+        this.difficulty = difficulty;
     }
 
     public String getTaskId() {
@@ -67,7 +67,7 @@ public class Task {
         return taskOrder;
     }
 
-    public DifficultyLevels getTaskDifficulty() { return taskDifficulty; }
+    public DifficultyLevels getDifficulty() { return difficulty; }
 
     public boolean isCorrectAnswer(String input) {
         return expectedCommand.equals(input);
@@ -86,7 +86,7 @@ public class Task {
                 ", content='" + content + '\'' +
                 ", expectedCommand='" + expectedCommand + '\'' +
                 ", hint='" + hint + '\'' +
-                ", difficulty='" + taskDifficulty + '\'' +
+                ", difficulty='" + difficulty + '\'' +
                 '}';
     }
 
@@ -98,11 +98,11 @@ public class Task {
                 Objects.equals(content, task.content) &&
                 Objects.equals(expectedCommand, task.expectedCommand) &&
                 Objects.equals(hint, task.hint) &&
-                Objects.equals(taskDifficulty, task.taskDifficulty);
+                Objects.equals(difficulty, task.difficulty);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, content, expectedCommand, hint, taskDifficulty);
+        return Objects.hash(title, content, expectedCommand, hint, difficulty);
     }
 }

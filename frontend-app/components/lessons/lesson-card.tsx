@@ -4,6 +4,7 @@ import { LessonProgress } from "@/types/taskProgress";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { DifficultyLevels } from "@/types/difficultyLevels";
 
 interface LessonCardProps {
   lesson: Lesson;
@@ -49,12 +50,12 @@ export function LessonCard({ lesson, progress }: LessonCardProps) {
 
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs text-muted-foreground">
-            {lesson.tasks.length} tasks
+            {lesson.taskIds.length} tasks
           </span>
           <span className="text-muted-foreground/30">|</span>
           {Object.entries(difficultyDistribution).map(
             ([difficulty, count]) => (
-              <Badge key={difficulty} variant={difficulty.toLowerCase() as "easy" | "medium" | "hard"} className={`text-xs`}>
+              <Badge key={difficulty} variant={difficulty.toLowerCase() as DifficultyLevels} className={`text-xs`}>
                 {count} {difficulty.toLowerCase()}
               </Badge>
             )

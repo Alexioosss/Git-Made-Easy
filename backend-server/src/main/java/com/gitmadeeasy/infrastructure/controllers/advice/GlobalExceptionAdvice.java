@@ -1,5 +1,6 @@
 package com.gitmadeeasy.infrastructure.controllers.advice;
 
+import com.gitmadeeasy.usecases.auth.exceptions.EmailNotVerifiedException;
 import com.gitmadeeasy.usecases.auth.exceptions.InvalidTokenException;
 import com.gitmadeeasy.usecases.users.exceptions.InvalidCredentialsException;
 import com.gitmadeeasy.usecases.validation.exceptions.MissingRequiredFieldException;
@@ -41,5 +42,10 @@ public class GlobalExceptionAdvice extends BaseErrorAdvice {
     @ExceptionHandler(MissingRequiredFieldException.class)
     public ResponseEntity<ApiError> handleInvalidUserData(MissingRequiredFieldException ex) {
         return this.buildError(HttpStatus.BAD_REQUEST, "MISSING_REQUIRED_FIELD", ex.getMessage());
+    }
+
+    @ExceptionHandler(EmailNotVerifiedException.class)
+    public ResponseEntity<ApiError> handleEmailNotVerified(EmailNotVerifiedException ex) {
+        return this.buildError(HttpStatus.FORBIDDEN, "EMAIL_NOT_VERIFIED", ex.getMessage());
     }
 }

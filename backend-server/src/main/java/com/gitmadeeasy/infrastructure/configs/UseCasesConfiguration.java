@@ -14,6 +14,7 @@ import com.gitmadeeasy.usecases.auth.RefreshToken;
 import com.gitmadeeasy.usecases.auth.UserIdentityProvider;
 import com.gitmadeeasy.usecases.dashboard.GetDashboardData;
 import com.gitmadeeasy.usecases.email.EmailSender;
+import com.gitmadeeasy.usecases.lessonProgress.GetAllLessonProgress;
 import com.gitmadeeasy.usecases.lessonProgress.GetLessonProgress;
 import com.gitmadeeasy.usecases.lessonProgress.UpdateLessonProgress;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
@@ -21,6 +22,7 @@ import com.gitmadeeasy.usecases.lessons.GetAllLessons;
 import com.gitmadeeasy.usecases.lessons.GetLessonById;
 import com.gitmadeeasy.usecases.tasks.CreateTask;
 import com.gitmadeeasy.usecases.tasks.GetTaskById;
+import com.gitmadeeasy.usecases.tasks.GetTasksForLesson;
 import com.gitmadeeasy.usecases.users.CreateUser;
 import com.gitmadeeasy.usecases.users.GetUserByEmail;
 import com.gitmadeeasy.usecases.users.GetUserById;
@@ -81,8 +83,8 @@ public class UseCasesConfiguration {
     }
 
     @Bean
-    public GetAllLessons getAllLessons(LessonGateway lessonGateway) {
-        return new GetAllLessons(lessonGateway);
+    public GetAllLessons getAllLessons(LessonGateway lessonGateway, TaskGateway taskGateway) {
+        return new GetAllLessons(lessonGateway, taskGateway);
     }
 
 
@@ -97,6 +99,11 @@ public class UseCasesConfiguration {
     @Bean
     public GetTaskById getTaskById(TaskGateway taskGateway, LessonGateway lessonGateway) {
         return new GetTaskById(taskGateway, lessonGateway);
+    }
+
+    @Bean
+    public GetTasksForLesson getTasksForLesson(TaskGateway taskGateway) {
+        return new GetTasksForLesson(taskGateway);
     }
 
 
@@ -122,6 +129,11 @@ public class UseCasesConfiguration {
     @Bean
     public GetLessonProgress getLessonProgress(LessonProgressGateway lessonProgressGateway) {
         return new GetLessonProgress(lessonProgressGateway);
+    }
+
+    @Bean
+    public GetAllLessonProgress getAllLessonProgress(LessonProgressGateway lessonProgressGateway, LessonGateway lessonGateway) {
+        return new GetAllLessonProgress(lessonProgressGateway,lessonGateway);
     }
 
     @Bean

@@ -15,7 +15,7 @@ public class TaskSchemaMapper {
                 task.getExpectedCommand(),
                 task.getHint(),
                 task.getTaskOrder(),
-                task.getTaskDifficulty());
+                task.getDifficulty());
         if(task.getTaskId() != null) { schema.setId(task.getTaskId()); }
         return schema;
     }
@@ -29,7 +29,7 @@ public class TaskSchemaMapper {
                 taskSchema.getExpectedCommand(),
                 taskSchema.getHint(),
                 taskSchema.getTaskOrder(),
-                taskSchema.getTaskDifficulty());
+                taskSchema.getDifficulty());
     }
 
 
@@ -44,12 +44,15 @@ public class TaskSchemaMapper {
                 task.getExpectedCommand(),
                 task.getHint(),
                 task.getTaskOrder(),
-                task.getTaskDifficulty().name());
+                task.getDifficulty().name());
         if(task.getTaskId() != null) { schema.setId(task.getTaskId()); }
         return schema;
     }
 
     public Task fromFirebaseSchema(FirebaseTaskSchema schema) {
+        String difficultyFromSchema = schema.getDifficulty();
+        DifficultyLevels difficulty = difficultyFromSchema == null ?
+                DifficultyLevels.EASY : DifficultyLevels.valueOf(difficultyFromSchema.toUpperCase());
         return new Task(
                 schema.getId(),
                 schema.getLessonId(),
@@ -58,6 +61,6 @@ public class TaskSchemaMapper {
                 schema.getExpectedCommand(),
                 schema.getHint(),
                 schema.getTaskOrder(),
-                DifficultyLevels.valueOf(schema.getTaskDifficulty()));
+                difficulty);
     }
 }

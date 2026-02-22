@@ -1,40 +1,70 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { Lesson } from "@/types/lesson";
-import { mockTaskProgress } from "@/lib/mock-data";
 import { TaskItem } from "@/components/lessons/task-item";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, PartyPopper } from "lucide-react";
+import { getCurrentUser, hasToken } from "@/lib/auth";
+import { GatewayFactory } from "@/config/GatewayFactory";
 
 interface TaskListProps {
   lesson: Lesson;
+  nextLesson?: Lesson | null;
 }
 
-export function TaskList({ lesson }: TaskListProps) {
-  const isAuthenticated = false;
+export function TaskList({ lesson, nextLesson }: TaskListProps) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
   const [sessionCompletedIds, setSessionCompletedIds] = useState<Set<string>>(new Set());
+  const [taskProgressMap, setTaskProgressMap] = useState<Record<string, any>>({});
+
+  useEffect(() => {
+    async function checkAuthentication() {
+      if(hasToken()) {
+        const user = await getCurrentUser();
+        setIsAuthenticated(!!user);
+      } else { setIsAuthenticated(false); }
+    }
+    checkAuthentication();
+  }, []);
+
+  useEffect(() => {
+    async function loadProgress() {
+      if(isAuthenticated) {
+        const map: Record<string, any> = {};
+        for(const task of lesson.tasks) {
+          try {
+            const progress = await GatewayFactory.instance.taskProgressGateway.getTaskProgress(lesson.lessonId, task.taskId);
+            map[task.taskId] = progress;
+          } catch {} // No progress, ignore / continue
+        }
+        setTaskProgressMap(map);
+      }
+    }
+    loadProgress();
+  }, [isAuthenticated, lesson.lessonId, lesson.tasks]);
 
   const savedCompletedIds = useMemo(() => {
     if(!isAuthenticated) return new Set<string>();
     const ids = new Set<string>();
+
     for(const task of lesson.tasks) {
-      const progress = mockTaskProgress[task.taskId];
+      const progress = taskProgressMap[task.taskId];
       if(progress?.status == "COMPLETED") { ids.add(task.taskId); }
     }
     return ids;
-  }, [isAuthenticated, lesson.tasks]);
+  }, [isAuthenticated, lesson.tasks, taskProgressMap]);
 
   const allCompleted = lesson.tasks.every((t) => savedCompletedIds.has(t.taskId) || sessionCompletedIds.has(t.taskId));
   const completedCount = new Set([...savedCompletedIds, ...sessionCompletedIds]).size;
   const completionPercent = lesson.tasks.length > 0 ? Math.round((completedCount / lesson.tasks.length) * 100) : 0;
 
-  const handleTaskComplete = useCallback((taskId: string) => {
+  const handleTaskComplete = useCallback(async (taskId: string) => {
     setSessionCompletedIds((prev) => new Set(prev).add(taskId));
-  }, []);
+  }, [lesson.lessonId]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -55,23 +85,24 @@ export function TaskList({ lesson }: TaskListProps) {
 
       {lesson.tasks.map((task) => (
         <TaskItem key={task.taskId} task={task} lessonId={lesson.lessonId} isExpanded={expandedTaskId === task.taskId}
-        onToggle={() => setExpandedTaskId(expandedTaskId === task.taskId ? null : task.taskId)} onComplete={handleTaskComplete} />
+        onToggle={() => setExpandedTaskId(expandedTaskId === task.taskId ? null : task.taskId)}
+        onComplete={handleTaskComplete} isAuthenticated={isAuthenticated} progress={taskProgressMap[task.taskId]} />
       ))}
 
       {/* Next lesson banner */}
       {allCompleted && (
-        <div className="mt-4 flex flex-col items-center gap-4 rounded-xl border border-primary/20 bg-primary/5 p-6 text-center">
+        <div className="mt-4 flex flex-col items-center gap-4 rounded-xl border border-green-300 bg-green-50 p-6 text-center">
           {lesson.tasks.length === 0 ? (
             <div className="flex items-center gap-2 text-primary">
               <span className="font-semibold">The current lesson has no tasks</span>
             </div>
           ) : (
-            <div className="flex items-center gap-2 text-primary">
+            <div className="flex items-center gap-2 text-green-700">
               <PartyPopper className="h-5 w-5" />
               <span className="font-semibold">All tasks completed!</span>
             </div>
           )}
-          {/* {nextLesson ? (
+          {nextLesson ? (
             <>
               <p className="text-sm text-muted-foreground">
                 Ready to move on? Continue to{" "}
@@ -88,7 +119,7 @@ export function TaskList({ lesson }: TaskListProps) {
             <p className="text-sm text-muted-foreground">
               You have finished all available lessons. Great work!
             </p>
-          )} */}
+          )}
         </div>
       )}
     </div>

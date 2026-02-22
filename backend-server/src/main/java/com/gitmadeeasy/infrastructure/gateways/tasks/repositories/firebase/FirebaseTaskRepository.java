@@ -61,6 +61,21 @@ public class FirebaseTaskRepository {
         return result;
     }
 
+    public Optional<FirebaseTaskSchema> findById(String taskId) {
+        DocumentReference docRef = firestore.collection("tasks").document(taskId);
+        try {
+            DocumentSnapshot doc = docRef.get().get();
+            if(doc.exists()) {
+                FirebaseTaskSchema schema = doc.toObject(FirebaseTaskSchema.class);
+                if(schema != null) {
+                    schema.setId(doc.getId());
+                    return Optional.of(schema);
+                }
+            }
+        } catch(Exception ignored) {}
+        return Optional.empty();
+    }
+
     public boolean existsById(String taskId) {
         DocumentReference docRef = firestore.collection("tasks").document(taskId);
         ApiFuture<DocumentSnapshot> future = docRef.get();

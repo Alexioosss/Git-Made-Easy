@@ -30,7 +30,7 @@ public class LessonController {
     @PostMapping
     public ResponseEntity<Lesson> createLesson(@Valid @RequestBody CreateLessonRequest createLessonRequest) {
         log.info("POST /lessons - Creating new lesson");
-        Lesson createdLesson = createLesson.execute(createLessonRequest);
+        Lesson createdLesson = this.createLesson.execute(createLessonRequest);
         log.info("Lesson created successfully. LessonID={}", createdLesson.getLessonId());
         return ResponseEntity.created(URI.create("/lessons/" + createdLesson.getLessonId())).body(createdLesson);
     }
@@ -45,7 +45,7 @@ public class LessonController {
     @GetMapping("/{lessonId}")
     public ResponseEntity<Lesson> getLessonById(@PathVariable("lessonId") String lessonId) {
         log.info("GET /lessons/{} - Fetching lesson by its id", lessonId);
-        Lesson foundLesson = getLessonById.execute(lessonId);
+        Lesson foundLesson = this.getLessonById.execute(lessonId);
         log.info("Lesson found successfully. LessonID={}", foundLesson.getLessonId());
         return ResponseEntity.ok(foundLesson);
     }

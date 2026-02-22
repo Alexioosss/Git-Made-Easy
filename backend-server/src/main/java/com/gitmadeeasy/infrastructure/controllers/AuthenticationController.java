@@ -59,7 +59,7 @@ public class AuthenticationController {
 
     @PostMapping("/refresh")
     public ResponseEntity<AuthToken> refreshToken(HttpServletRequest request, HttpServletResponse response) {
-        log.info("POST /logout - Refreshing a user's JWT Token");
+        log.info("POST /refresh - Refreshing a user's JWT Token");
         String token = (String) request.getAttribute("jwt");
         if(token == null || token.isBlank()) { throw new InvalidTokenException(); }
 

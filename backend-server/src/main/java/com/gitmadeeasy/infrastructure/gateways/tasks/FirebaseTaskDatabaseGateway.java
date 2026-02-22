@@ -35,6 +35,18 @@ public class FirebaseTaskDatabaseGateway implements TaskGateway {
     }
 
     @Override
+    public List<Task> getTasksByIds(List<String> taskIds) {
+        return taskIds.stream().map(firebase::findById)
+                .filter(Optional::isPresent).map(Optional::get)
+                .map(this.mapper::fromFirebaseSchema).toList();
+    }
+
+    @Override
+    public Optional<Task> findById(String taskId) {
+        return firebase.findById(taskId).map(this.mapper::fromFirebaseSchema);
+    }
+
+    @Override
     public boolean existsById(String taskId) {
         return this.firebase.existsById(taskId);
     }

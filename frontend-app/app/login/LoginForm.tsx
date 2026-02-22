@@ -33,7 +33,11 @@ export default function LoginForm() {
             await refreshUser();
             setTimeout(() => { router.push("/dashboard"); }, 2000);
         } catch(error: any) {
-            setError(error.message || "Something went wrong");
+            if(error.code === "INVALID_CREDENTIALS") {
+                setError(error.message);
+            } else if(error.code === "EMAIL_NOT_VERIFIED") {
+                setError(error.message);
+            } else { setError(error.message || "Something went wrong"); }
         } finally {
             setIsLoading(false);
         }

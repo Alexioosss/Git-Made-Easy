@@ -14,6 +14,7 @@ public class Lesson {
     private final DifficultyLevels difficulty;
     private final Integer lessonOrder;
     private List<Task> tasks = new ArrayList<>();
+    private List<String> taskIds = new ArrayList<>();
 
     public Lesson(String lessonId, String title, String description,
                   DifficultyLevels difficulty, Integer lessonOrder) {
@@ -53,13 +54,15 @@ public class Lesson {
         return tasks;
     }
 
+    public List<String> getTaskIds() { return taskIds; }
+
     public void setLessonId(String lessonId) {
         this.lessonId = lessonId;
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
+    public void setTasks(List<Task> tasks) { this.tasks = tasks; }
+
+    public void setTaskIds(List<String> taskIds) { this.taskIds = taskIds; }
 
     @Override
     public String toString() {

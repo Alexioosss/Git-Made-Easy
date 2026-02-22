@@ -4,12 +4,13 @@ import React from "react";
 
 import { useState, useCallback } from "react";
 import { Task } from "@/types/task";
-import { mockTaskProgress } from "@/lib/mock-data";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CheckCircle2, ChevronDown, ChevronUp, Diff, Lightbulb, RotateCcw, Send } from "lucide-react";
+import { CheckCircle2, ChevronDown, ChevronUp, Lightbulb, RotateCcw, Send } from "lucide-react";
 import { DifficultyLevels } from "@/types/difficultyLevels";
+import { GatewayFactory } from "@/config/GatewayFactory";
+import { TaskProgress } from "@/types/taskProgress";
 
 interface TaskItemProps {
   task: Task;
@@ -17,32 +18,36 @@ interface TaskItemProps {
   isExpanded: boolean;
   onToggle: () => void;
   onComplete?: (taskId: string) => void;
+  isAuthenticated: boolean;
+  progress?: TaskProgress;
 }
 
-export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete }: TaskItemProps) {
-  const isAuthenticated = false;
+export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isAuthenticated, progress }: TaskItemProps) {
   const [answer, setAnswer] = useState("");
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string; } | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [localAttempts, setLocalAttempts] = useState(0);
   const [localCompleted, setLocalCompleted] = useState(false);
 
-  // Check if user has existing progress (for logged-in users)
-  const existingProgress = isAuthenticated ? mockTaskProgress[task.taskId] : undefined;
-  const isCompleted = existingProgress?.completedAt || localCompleted;
-  const totalAttempts = (existingProgress?.attempts || 0) + localAttempts;
+  const isCompleted = progress?.status === "COMPLETED" || localCompleted;
+  const totalAttempts = (progress?.attempts || 0) + localAttempts;
 
-  const handleSubmit = useCallback((e: React.SyntheticEvent<HTMLFormElement>) => {
+
+  const handleSubmit = useCallback(async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!answer.trim()) { return; }
 
     setLocalAttempts((prev) => prev + 1);
     const isCorrect = answer.trim().toLowerCase() === task.expectedCommand.toLowerCase();
-    if (isCorrect) {
+    
+    if(isCorrect) {
       const wasAlreadyCompleted = isCompleted;
       setLocalCompleted(true);
       setFeedback({type: "success", message: wasAlreadyCompleted ? "Correct again! Attempt recorded." : "Correct! Well done."});
-      if (!wasAlreadyCompleted && onComplete) { onComplete(task.taskId); }
+
+      if(isAuthenticated) { await GatewayFactory.instance.taskProgressGateway.recordTaskAttempt(lessonId, task.taskId, answer); }
+      if(!wasAlreadyCompleted && onComplete) { onComplete(task.taskId); }
+      
     } else {
       setFeedback({type: "error", message: "Not quite right. Try again!"});
     }
@@ -55,9 +60,9 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete }: T
   }, []);
 
   return (
-    <div className={`rounded-xl border transition-all ${isCompleted ? "border-primary/20 bg-primary/5" : "border-border bg-card"} p-5 sm:p-6`}>
+    <div className={`rounded-xl border transition-all ${isCompleted ? "border-primary/20 bg-primary/5" : "border-border bg-card"} p-3 sm:p-4`}>
       {/* Task header - always visible */}
-      <button type="button" onClick={onToggle} className="flex w-full items-center gap-3 p-5 text-left sm:gap-4 sm:p-6">
+      <button type="button" onClick={onToggle} className="flex w-full items-center gap-3 p-3 text-left sm:p-4">
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary">
           {isCompleted ? (<CheckCircle2 className="h-4 w-4 text-primary" />) : (<span className="text-xs font-medium text-secondary-foreground">{task.taskOrder}</span>)}
         </div>
@@ -67,8 +72,8 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete }: T
             <h3 className={`text-base sm:text-lg font-medium sm:text-base ${isCompleted ? "text-primary" : "text-card-foreground"}`}>
               {task.title}
             </h3>
-            <Badge variant={task.difficulty}>
-              {task.difficulty}
+            <Badge variant={task.difficulty.toLowerCase() as DifficultyLevels}>
+              {task.difficulty.charAt(0).toUpperCase() + task.difficulty.slice(1).toLowerCase()}
             </Badge>
           </div>
           {totalAttempts > 0 && (<span className="text-xs text-muted-foreground">{totalAttempts} attempt{totalAttempts !== 1 ? "s" : ""}</span>)}
@@ -79,7 +84,7 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete }: T
 
       {/* Expanded content */}
       {isExpanded && (
-        <div className="border-t border-border px-4 pb-4 pt-4 sm:px-5 sm:pb-5">
+        <div className="border-t border-border px-3 pb-3 pt-3 sm:px-4 sm:pb-4">
           <p className="mb-4 text-md leading-relaxed text-muted-foreground">
             {task.content}
           </p>
@@ -87,11 +92,14 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete }: T
           {/* Hint toggle */}
           {showHint ? (
             <div className="mb-4 flex items-start gap-2 rounded-lg bg-secondary p-3">
-              <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
+              <button type="button" title="Hide hint" onClick={() => setShowHint(false)} className="mt-0.5">
+                <Lightbulb className="h-4 w-4 shrink-0 text-warning" />
+              </button>
               <p className="text-sm text-secondary-foreground">{task.hint}</p>
             </div>
           ) : (
-            <button type="button" onClick={() => setShowHint(true)} className="mb-4 flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground">
+            <button type="button" title="View hint" onClick={() => setShowHint(true)}
+            className="mb-4 flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground">
               <Lightbulb className="h-3.5 w-3.5" />
               Show hint
             </button>
@@ -107,14 +115,14 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete }: T
               placeholder="Type your git command..." className="bg-secondary pl-7 font-mono text-sm text-foreground placeholder:text-muted-foreground"/>
             </div>
             <div className="flex gap-2">
-              <Button type="submit" size="default" disabled={!answer.trim()} className="flex-1 sm:flex-none">
+              <Button type="submit" size="default" disabled={!answer.trim()} title="Submit your answer" className="flex-1 sm:flex-none">
                 <Send className="mr-2 h-4 w-4 sm:mr-0" />
                 <span className="sm:hidden">Submit</span>
                 <span className="sr-only sm:not-sr-only">
                   <span className="sr-only">Submit answer</span>
                 </span>
               </Button>
-              <Button type="button" variant="outline" size="icon" onClick={handleReset} className="shrink-0 bg-transparent">
+              <Button type="button" variant="outline" size="icon" onClick={handleReset} title="Reset your answer" className="shrink-0 bg-transparent">
                 <RotateCcw className="h-4 w-4" />
                 <span className="sr-only">Reset</span>
               </Button>
@@ -123,7 +131,7 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete }: T
 
           {/* Feedback */}
           {feedback && (
-            <div className={`mt-3 rounded-lg px-3 py-2 text-sm ${feedback.type === "success" ? "text-green-700 bg-primary/10 text-primary" : "text-red-700 bg-destructive/10 text-destructive"}`}>
+            <div className={`mt-3 rounded-lg px-3 py-2 text-sm ${feedback.type === "success" ? "text-green-700 bg-green-100" : "text-red-700 bg-destructive/10 text-destructive"}`}>
               {feedback.message}
             </div>
           )}
@@ -131,7 +139,7 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete }: T
           {/* Save progress note for non-logged-in users */}
           {!isAuthenticated && isCompleted && (
             <p className="mt-3 text-xs text-muted-foreground">
-              Sign in to save your progress across sessions.
+              P.S. Sign in to save your progress
             </p>
           )}
         </div>

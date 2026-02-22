@@ -2,21 +2,47 @@
 
 import { LessonCard } from "@/components/lessons/lesson-card";
 import { GatewayFactory } from "@/config/GatewayFactory";
-import { mockLessonProgress } from "@/lib/mock-data";
+import { getCurrentUser, hasToken } from "@/lib/auth";
 import { Lesson } from "@/types/lesson";
+import { LessonProgress } from "@/types/taskProgress";
+import { set } from "date-fns";
 import { useEffect, useState } from "react";
 
 export default function LessonPageClient() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [lessons, setLessons] = useState<Lesson[]>([]);
+    const [progressMap, setProgressMap] = useState<Record<string, LessonProgress>>({});
     const lessonGateway = GatewayFactory.instance.lessonGateway;
+    const lessonProgressGateway = GatewayFactory.instance.lessonProgressGateway;
 
     useEffect(() => {
-        const fetchLessons = async () => {
-            setLessons(await lessonGateway.getAll());
+        const fetchData = async () => {
+            const tokenExists = hasToken();
+            setIsAuthenticated(tokenExists);
+
+            // Fetch all lessons for display
+            const lessons = await lessonGateway.getAll();
+
+            const lessonsWithTasks = await Promise.all(
+                lessons.map(async (lesson) => ({
+                    ...lesson,
+                    tasks: await lessonGateway.getTasksForLesson(lesson.lessonId)
+                }))
+            );
+            setLessons(lessonsWithTasks);
+
+            // If the user is not authenticated, skip fetching progress data
+            if(!tokenExists) { return; }
+
+            const user = await getCurrentUser();
+            if(!user) { setIsAuthenticated(false); return; }
+            
+            // Fetch progress for all tasks for this lesson
+            const progressList = await lessonProgressGateway.getAllLessonsProgress();
+            const progressMap = Object.fromEntries(progressList.map((progress: LessonProgress) => [progress.lessonId, progress]));
+            setProgressMap(progressMap);
         }
-        fetchLessons();
-        setIsAuthenticated(false);
+        fetchData();
     }, []);
 
     return (
@@ -34,7 +60,7 @@ export default function LessonPageClient() {
         
                 <div className="grid gap-4 sm:gap-6">
                     {lessons.map((lesson) => (
-                    <LessonCard key={lesson.lessonId} lesson={lesson} progress={ isAuthenticated ? mockLessonProgress[lesson.lessonId] : undefined} />
+                    <LessonCard key={lesson.lessonId} lesson={lesson} progress={ isAuthenticated ? progressMap[lesson.lessonId] : undefined} />
                     ))}
                 </div>
             </div>

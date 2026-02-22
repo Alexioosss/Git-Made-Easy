@@ -11,7 +11,7 @@ interface LessonHeaderProps {
 
 export function LessonHeader({ lesson, progress }: LessonHeaderProps) {
   let progressPercentage: number | null = null;
-  if(progress) { progressPercentage = progress?.totalTasksCount / progress?.totalTasksCount; }
+  if(progress) { progressPercentage = Math.round((progress.completedTasksCount / progress.totalTasksCount) * 100); }
 
   return (
     <div className="mb-8 sm:mb-10">

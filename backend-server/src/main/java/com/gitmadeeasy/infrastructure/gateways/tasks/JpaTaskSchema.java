@@ -17,22 +17,22 @@ public class JpaTaskSchema {
     private String expectedCommand;
     private String hint;
     private Integer taskOrder;
-    @Enumerated(EnumType.STRING)
-    private DifficultyLevels taskDifficulty;
+
+    @Enumerated(EnumType.STRING) private DifficultyLevels difficulty;
     @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private final List<JpaTaskAttemptSchema> attempts = new ArrayList<>();
 
     protected JpaTaskSchema() {}
 
     public JpaTaskSchema(String lessonId, String title, String content, String expectedCommand,
-                         String hint, Integer taskOrder, DifficultyLevels taskDifficulty) {
+                         String hint, Integer taskOrder, DifficultyLevels difficulty) {
         this.lessonId = lessonId;
         this.title = title;
         this.content = content;
         this.expectedCommand = expectedCommand;
         this.hint = hint;
         this.taskOrder = taskOrder;
-        this.taskDifficulty = taskDifficulty;
+        this.difficulty = difficulty;
     }
 
     public String getId() {
@@ -63,7 +63,7 @@ public class JpaTaskSchema {
         return taskOrder;
     }
 
-    public DifficultyLevels getTaskDifficulty() { return taskDifficulty; }
+    public DifficultyLevels getDifficulty() { return difficulty; }
 
     public void setId(String id) { this.id = id; }
 }

@@ -8,20 +8,20 @@ public class FirebaseTaskSchema {
     private String expectedCommand;
     private String hint;
     private Integer taskOrder;
-    private String taskDifficulty;
+    private String difficulty;
 
     public FirebaseTaskSchema() {}
 
     public FirebaseTaskSchema(
             String lessonId, String title, String content, String expectedCommand,
-            String hint, Integer taskOrder, String taskDifficulty) {
+            String hint, Integer taskOrder, String difficulty) {
         this.lessonId = lessonId;
         this.title = title;
         this.content = content;
         this.expectedCommand = expectedCommand;
         this.hint = hint;
         this.taskOrder = taskOrder;
-        this.taskDifficulty = taskDifficulty;
+        this.difficulty = difficulty;
     }
 
     public String getId() {
@@ -52,7 +52,9 @@ public class FirebaseTaskSchema {
         return taskOrder;
     }
 
-    public String getTaskDifficulty() { return taskDifficulty; }
+    public String getDifficulty() { return difficulty; }
 
     public void setId(String id) { this.id = id; }
+
+    public void setDifficulty(String difficulty) { this.difficulty = difficulty; }
 }

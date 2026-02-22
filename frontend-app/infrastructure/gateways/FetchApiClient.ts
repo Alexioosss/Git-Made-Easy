@@ -38,6 +38,7 @@ export class FetchApiClient extends ApiClient {
             const message = data?.error_message || data?.message || response.statusText || "Request Failed";
             const err: any = new Error(message);
             err.status = response.status;
+            err.code = data?.code;
             throw err;
         }
         

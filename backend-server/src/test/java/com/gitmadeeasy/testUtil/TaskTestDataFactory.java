@@ -35,7 +35,7 @@ public final class TaskTestDataFactory {
         return new Task(
                 schema.getLessonId(), schema.getTitle(),
                 schema.getContent(), schema.getExpectedCommand(),
-                schema.getHint(), schema.getTaskOrder(), schema.getTaskDifficulty());
+                schema.getHint(), schema.getTaskOrder(), schema.getDifficulty());
     }
 
     public static Stream<Arguments> validTasksList() {

@@ -33,6 +33,16 @@ public class JpaTaskDatabaseGateway implements TaskGateway {
     }
 
     @Override
+    public List<Task> getTasksByIds(List<String> taskIds) {
+        return this.jpa.findAllById(taskIds).stream().map(this.taskSchemaMapper::fromJpaSchema).toList();
+    }
+
+    @Override
+    public Optional<Task> findById(String taskId) {
+        return this.jpa.findById(taskId).map(this.taskSchemaMapper::fromJpaSchema);
+    }
+
+    @Override
     public boolean existsById(String taskId) {
         return this.jpa.existsById(taskId);
     }

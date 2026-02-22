@@ -5,6 +5,7 @@ import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.auth.dto.AuthToken;
 import com.gitmadeeasy.usecases.auth.dto.LoginRequest;
+import com.gitmadeeasy.usecases.auth.exceptions.EmailNotVerifiedException;
 import com.gitmadeeasy.usecases.users.exceptions.InvalidCredentialsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,10 +31,8 @@ public class LoginUser {
         user.setFirebaseUid(firebaseUid);
         log.info("user found with emailAddress={}", request.email());
 
-        // Potentially require users to be verified before login
-//        if(!this.identityProvider.isEmailVerified(firebaseUid)) {
-//            throw new EmailNotVerifiedException();
-//        }
+        // Require users to be verified before login
+        if(!this.identityProvider.isEmailVerified(firebaseUid)) { throw new EmailNotVerifiedException(); }
 
         String accessToken = this.tokenGateway.generateToken(user);
         log.info("JWT Token generated successfully");

@@ -38,9 +38,11 @@ public class LessonSchemaMapper {
     }
 
     public Lesson fromFirebaseSchema(FirebaseLessonSchema schema) {
-        return new Lesson(
+        Lesson lesson = new Lesson(
                 schema.getId(), schema.getTitle(),
                 schema.getDescription(), schema.getDifficulty(),
                 schema.getLessonOrder());
+        lesson.setTaskIds(schema.getTaskIds());
+        return lesson;
     }
 }
