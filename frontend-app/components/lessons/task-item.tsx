@@ -48,9 +48,7 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
       if(isAuthenticated) { await GatewayFactory.instance.taskProgressGateway.recordTaskAttempt(lessonId, task.taskId, answer); }
       if(!wasAlreadyCompleted && onComplete) { onComplete(task.taskId); }
       
-    } else {
-      setFeedback({type: "error", message: "Not quite right. Try again!"});
-    }
+    } else { setFeedback({type: "error", message: "Not quite right. Try again!"}); }
   }, [answer, task.expectedCommand, task.taskId, isCompleted, onComplete]);
 
   const handleReset = useCallback(() => {
@@ -60,7 +58,8 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
   }, []);
 
   return (
-    <div className={`rounded-xl border transition-all ${isCompleted ? "border-primary/20 bg-primary/5" : "border-border bg-card"} p-3 sm:p-4`}>
+    <div title={`${isExpanded ? "Collapse task" : "Expand task"}`}
+    className={`rounded-xl border transition-all ${isCompleted ? "border-primary/20 bg-primary/5" : "border-border bg-card"} p-3 sm:p-4`}>
       {/* Task header - always visible */}
       <button type="button" onClick={onToggle} className="flex w-full items-center gap-3 p-3 text-left sm:p-4">
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary">
@@ -92,7 +91,7 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
           {/* Hint toggle */}
           {showHint ? (
             <div className="mb-4 flex items-start gap-2 rounded-lg bg-secondary p-3">
-              <button type="button" title="Hide hint" onClick={() => setShowHint(false)} className="mt-0.5">
+              <button type="button" title="Hide hint" onClick={() => setShowHint(false)}>
                 <Lightbulb className="h-4 w-4 shrink-0 text-warning" />
               </button>
               <p className="text-sm text-secondary-foreground">{task.hint}</p>

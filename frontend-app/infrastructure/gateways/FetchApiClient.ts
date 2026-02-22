@@ -3,14 +3,22 @@ import { HttpMethods } from "./HttpMethods";
 
 export class FetchApiClient extends ApiClient {
     private isRefreshing: boolean = false;
-    private refreshPromise: Promise<void> | null = null;
+    private refreshPromise: Promise<boolean> | null = null;
 
     async apiRequest<T>(path: string, method: HttpMethods, body?: any, options?: RequestInit & { next?: { revalidate?: number | false } }): Promise<T> {
+        const isAuthRequest = path.startsWith("/auth/");
+
         try {
             return await this.performRequest<T>(path, method, body, options);
         } catch(error: any) {
-            if(error.status === 401) {
-                await this.refreshToken();
+            if(!isAuthRequest && error.status === 401) { // Do not refresh the token for the user if the backend fails or if the user is making any authentication-related requests
+                const refreshed = await this.refreshToken();
+                if(!refreshed) {
+                    const err: any = new Error("Authentication required. Please log in.");
+                    err.status = 401;
+                    err.code = "AUTH_REQUIRED";
+                    throw err;
+                }
                 return await this.performRequest<T>(path, method, body, options);
             }
             throw error;
@@ -29,7 +37,7 @@ export class FetchApiClient extends ApiClient {
         const contentType = response.headers.get("Content-Type") ?? "";
 
         let data: any = null;
-        if(contentType.includes("application/json")) {
+        if(contentType.toLowerCase().includes("application/json")) {
             data = await response.json();
         } else if(contentType.includes("text/plain")) {
             data = await response.text();
@@ -38,23 +46,21 @@ export class FetchApiClient extends ApiClient {
             const message = data?.error_message || data?.message || response.statusText || "Request Failed";
             const err: any = new Error(message);
             err.status = response.status;
-            err.code = data?.code;
+            err.code = data?.errorCode || data?.code;
             throw err;
         }
         
         return data;
     }
 
-    private async refreshToken(): Promise<void> {
+    private async refreshToken(): Promise<boolean> {
         if(this.isRefreshing) { return this.refreshPromise!; }
         this.isRefreshing = true;
         this.refreshPromise = fetch(`${this.BACKEND_URL}/auth/refresh`, {
             method: "POST",
             credentials: "include"
         }).then(response => {
-            if(!response.ok) {
-                throw new Error("Failed to refresh token");
-            }
+            return response.ok;
         }).finally(() => {
             this.isRefreshing = false;
             this.refreshPromise = null;

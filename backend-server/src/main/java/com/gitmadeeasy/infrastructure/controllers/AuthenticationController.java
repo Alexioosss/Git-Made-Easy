@@ -70,6 +70,14 @@ public class AuthenticationController {
         return ResponseEntity.ok(newToken);
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<User> getCurrentUser(Principal principal) {
+        if(principal == null) { return ResponseEntity.status(401).build(); } // The token is expired but still valid
+        User user = this.getUserById.execute(principal.getName());
+        return ResponseEntity.ok(user);
+    }
+
+
     private void setAuthenticationCookie(HttpServletResponse response, String token) {
         response.addHeader("Set-Cookie",
                 String.format("access_token=%s; HttpOnly; Secure; Path=/; Max-Age=%d; SameSite=None",
@@ -78,12 +86,5 @@ public class AuthenticationController {
 
     private void clearAuthenticationCookie(HttpServletResponse response) {
         response.addHeader("Set-Cookie", "access_token=; HttpOnly; Secure; Path=/; Max-Age=0; SameSite=None");
-    }
-
-    @GetMapping("/me")
-    public ResponseEntity<User> getCurrentUser(Principal principal) {
-        if(principal == null) { return ResponseEntity.status(401).build(); } // The token is expired but still valid
-        User user = this.getUserById.execute(principal.getName());
-        return ResponseEntity.ok(user);
     }
 }

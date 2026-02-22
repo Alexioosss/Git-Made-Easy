@@ -19,7 +19,7 @@ export function LessonCard({ lesson, progress }: LessonCardProps) {
   const isComplete = progress && progressPercentage === 100;
 
   return (
-    <Link href={`/lessons/${lesson.lessonId}`}
+    <Link href={`/lessons/${lesson.lessonId}`} title={`Lesson ${lesson.lessonOrder} - ${lesson.title}`}
       className="group flex flex-col rounded-xl border border-border bg-card transition-all hover:border-primary/100 hover:shadow-lg hover:shadow-primary/5 md:flex-row md:items-center">
       {/* Order number */}
       <div className="flex items-center gap-4 border-b border-border px-5 py-4 md:justify-center md:gap-0 md:border-b-0 md:border-r md:px-8 md:py-10">

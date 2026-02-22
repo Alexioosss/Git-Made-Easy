@@ -36,7 +36,9 @@ export default function LoginForm() {
             if(error.code === "INVALID_CREDENTIALS") {
                 setError(error.message);
             } else if(error.code === "EMAIL_NOT_VERIFIED") {
-                setError(error.message);
+                setError(error.message + "\nIf the email address exists, verify your email address via the verification link.");
+            } else if(error.code === "AUTH_REQUIRED") {
+                setError("Your session has expired. Please log in again.");
             } else { setError(error.message || "Something went wrong"); }
         } finally {
             setIsLoading(false);
@@ -99,7 +101,10 @@ export default function LoginForm() {
                         </div>
             
                         {error && (
-                            <p className="text-xl text-destructive">{error}</p>
+                            <div className="animate-in fade-in slide-in-from-top-2 duration-1000 rounded-lg
+                            border border-destructive/100 bg-destructive/20 p-3 text-xl text-destructive whitespace-pre-line">
+                                {error}
+                            </div>
                         )}
             
                         <Button type="submit" className="mt-4 w-full h-16 text-xl hover:text-white transition-colors duration-400" disabled={isLoading}>
