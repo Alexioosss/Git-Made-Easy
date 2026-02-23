@@ -3,13 +3,13 @@ name: Perform Code Coverage On Frontend System With Vitest
 on:
   pull_request:
     paths:
-      - 'frontend-app/src/**'
+      - 'frontend-app/**'
       - '.github/workflows/frontend-code-coverage.yml'
   push:
     branches:
       - main
     paths:
-      - 'frontend-app/src/**'
+      - 'frontend-app/**'
       - '.github/workflows/frontend-code-coverage.yml'
 
 permissions:
