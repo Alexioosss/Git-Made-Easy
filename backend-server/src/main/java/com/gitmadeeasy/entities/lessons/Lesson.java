@@ -1,5 +1,7 @@
 package com.gitmadeeasy.entities.lessons;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.entities.tasks.Task;
 
@@ -15,6 +17,19 @@ public class Lesson {
     private final Integer lessonOrder;
     private List<Task> tasks = new ArrayList<>();
     private List<String> taskIds = new ArrayList<>();
+
+    @JsonCreator
+    public Lesson(@JsonProperty("title") String title,
+                  @JsonProperty("description") String description,
+                  @JsonProperty("difficulty") DifficultyLevels difficulty,
+                  @JsonProperty("lessonOrder") Integer lessonOrder,
+                  @JsonProperty("tasks") List<Task> tasks) {
+        this.title = title;
+        this.description = description;
+        this.difficulty = difficulty;
+        this.lessonOrder = lessonOrder;
+        this.tasks = tasks != null ? tasks : new ArrayList<>();
+    }
 
     public Lesson(String lessonId, String title, String description,
                   DifficultyLevels difficulty, Integer lessonOrder) {

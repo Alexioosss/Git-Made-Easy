@@ -9,10 +9,10 @@ import com.gitmadeeasy.usecases.auth.dto.AuthToken;
 import com.gitmadeeasy.usecases.auth.dto.LoginRequest;
 import com.gitmadeeasy.usecases.auth.exceptions.EmailNotVerifiedException;
 import com.gitmadeeasy.usecases.users.exceptions.InvalidCredentialsException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -26,7 +26,13 @@ class LoginUserTest {
     @Mock private UserGateway userGateway;
     @Mock private TokenGateway tokenGateway;
     @Mock private UserIdentityProvider userIdentityProvider;
-    @InjectMocks private LoginUser loginUser;
+    private LoginUser loginUser;
+
+    @BeforeEach
+    void setUp() {
+        boolean requireEmailVerification = true;
+        loginUser = new LoginUser(userGateway, tokenGateway, userIdentityProvider, requireEmailVerification);
+    }
 
 
     @Test
@@ -78,5 +84,27 @@ class LoginUserTest {
 
         // Act & Assert
         assertThrows(InvalidCredentialsException.class, () -> this.loginUser.execute(loginRequest));
+    }
+
+    @Test
+    @DisplayName("Login User - Email Verification Disabled Allows Login Even If Email Not Verified")
+    void execute_WhenVerificationDisabled_ReturnsAuthToken() {
+        // Arrange
+        boolean requireEmailVerification = false;
+        LoginUser loginUserNoVerification =
+                new LoginUser(this.userGateway, this.tokenGateway, this.userIdentityProvider, requireEmailVerification);
+        LoginRequest loginRequest = new LoginRequest("myemail1@gmail.com", "MyPassword123'");
+        User user = new User("1", "John", "Doe", "myemail1@gmail.com", false);
+        when(this.userIdentityProvider.login("myemail1@gmail.com", "MyPassword123'"))
+                .thenReturn("firebase-myemail1@gmail.com");
+        when(this.userGateway.getUserByEmailAddress("myemail1@gmail.com")).thenReturn(Optional.of(user));
+        when(this.tokenGateway.generateToken(user)).thenReturn("token");
+
+        // Act
+        AuthToken result = loginUserNoVerification.execute(loginRequest);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals("token", result.accessToken());
     }
 }

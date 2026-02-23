@@ -14,12 +14,15 @@ public class LoginUser {
     private final UserGateway userGateway;
     private final TokenGateway tokenGateway;
     private final UserIdentityProvider identityProvider;
+    private final boolean requireEmailVerification;
     private static final Logger log = LoggerFactory.getLogger(LoginUser.class);
 
-    public LoginUser(UserGateway userGateway, TokenGateway tokenGateway, UserIdentityProvider identityProvider) {
+    public LoginUser(UserGateway userGateway, TokenGateway tokenGateway,
+                     UserIdentityProvider identityProvider, boolean requireEmailVerification) {
         this.userGateway = userGateway;
         this.tokenGateway = tokenGateway;
         this.identityProvider = identityProvider;
+        this.requireEmailVerification = requireEmailVerification;
     }
 
     public AuthToken execute(LoginRequest request) {
@@ -31,8 +34,9 @@ public class LoginUser {
         user.setFirebaseUid(firebaseUid);
         log.info("user found with emailAddress={}", request.email());
 
-        // Require users to be verified before login
-        if(!this.identityProvider.isEmailVerified(firebaseUid)) { throw new EmailNotVerifiedException(); }
+        if(requireEmailVerification && !this.identityProvider.isEmailVerified(firebaseUid)) {
+            throw new EmailNotVerifiedException();
+        }
 
         String accessToken = this.tokenGateway.generateToken(user);
         log.info("JWT Token generated successfully");

@@ -1,5 +1,7 @@
 package com.gitmadeeasy.entities.tasks;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gitmadeeasy.entities.enums.DifficultyLevels;
 
 import java.util.Objects;
@@ -13,6 +15,21 @@ public class Task {
     private final String hint;
     private final Integer taskOrder;
     private final DifficultyLevels difficulty;
+
+    @JsonCreator
+    public Task(@JsonProperty("title") String title,
+                @JsonProperty("content") String content,
+                @JsonProperty("expectedCommand") String expectedCommand,
+                @JsonProperty("hint") String hint,
+                @JsonProperty("taskOrder") Integer taskOrder,
+                @JsonProperty("difficulty") DifficultyLevels difficulty) {
+        this.title = title;
+        this.content = content;
+        this.expectedCommand = expectedCommand;
+        this.hint = hint;
+        this.taskOrder = taskOrder;
+        this.difficulty = difficulty;
+    }
 
     public Task(
             String taskId, String lessonId, String title, String content,
