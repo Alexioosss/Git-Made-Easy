@@ -1,0 +1,65 @@
+name: Perform Code Coverage On Frontend System With Vitest
+
+on:
+  pull_request:
+    paths:
+      - 'frontend-app/src/**'
+      - '.github/workflows/frontend-code-coverage.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend-app/src/**'
+      - '.github/workflows/frontend-code-coverage.yml'
+
+permissions:
+  contents: write
+  
+jobs:
+  perform-frontend-code-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          
+      - name: Set Up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend-app/package-lock.json
+
+      - name: Install Dependencies
+        working-directory: frontend-app
+        run: npm ci
+
+      - name: Run Code Coverage With Vitest
+        working-directory: frontend-app
+        run: |
+          npx vitest --coverage --reporter=json --outputFile=frontend-code-coverage-summary.json
+
+      - name: Upload Code Coverage Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-code-coverage-report
+          path: frontend-app/coverage
+
+      - name: Create GitHub Actions Summary
+        if: always()
+        working-directory: frontend-app/coverage
+        run: |
+          total_lines=$(jq '[.. | objects | .s? // empty | to_entries[]] | length' coverage-final.json)
+          covered_lines=$(jq '[.. | objects | .s? // empty | to_entries[] | select(.value > 0)] | length' coverage-final.json)
+          missed_lines=$((total_lines - covered_lines))
+          coverage_percentage=$(awk "BEGIN { printf \"%.2f\", ($covered_lines/$total_lines)*100 }")
+          
+          echo "# Frontend Vitest Code Coverage Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Parameter | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "| --------- | ----- |" >> $GITHUB_STEP_SUMMARY
+          echo "Code Coverage (%) | **${coverage_percentage}** " >> $GITHUB_STEP_SUMMARY
+          echo "Total Lines Counted | **${total_lines}** |" >> $GITHUB_STEP_SUMMARY
+          echo "Lines Covered | ${covered_lines} |" >> $GITHUB_STEP_SUMMARY
+          echo "Lines Missed | ${missed_lines} |" >> $GITHUB_STEP_SUMMARY
