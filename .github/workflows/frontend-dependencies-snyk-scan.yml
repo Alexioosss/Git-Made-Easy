@@ -3,13 +3,13 @@ name: Performing Snyk Scan On Frontend System For Vulnerabilities In Dependencie
 on:
   pull_request:
     paths:
-      - 'frontend-app/src/**'
+      - 'frontend-app/**'
       - '.github/workflows/frontend-dependencies-snyk-scan.yml'
   push:
     branches:
       - main
     paths:
-      - 'frontend-app/src/**'
+      - 'frontend-app/**'
       - '.github/workflows/frontend-dependencies-snyk-scan.yml'
 
 jobs:
