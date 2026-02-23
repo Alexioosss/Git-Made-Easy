@@ -21,9 +21,9 @@ export const viewport: Viewport = { themeColor: "#0a0c10" };
 
 export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body className="font-sans antialiased min-h-screen flex flex-col">
-        <ThemeProvider attribute="class">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
             <ScrollToTop /> {/* Script to automatically scroll the page to the top on page change, since the pages remain to the last scrolled position  */}
             <Navbar /> {/* Show the navbar on every single page */}

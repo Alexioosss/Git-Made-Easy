@@ -10,6 +10,15 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  .arrow-hover {
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+  
+  .group:hover .arrow-hover {
+    transform: translateX(4px);
+    opacity: 0.85;
+  }
 }
 
 @layer base {

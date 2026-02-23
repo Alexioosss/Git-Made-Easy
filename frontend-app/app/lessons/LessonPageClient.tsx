@@ -61,7 +61,7 @@ export default function LessonPageClient() {
 
     if(loading) {
         return (
-            <div className="min-h-[calc(100dvh-3.5rem)] sm:min-h-[calc(100dvh-4rem)] flex items-center justify-center text-foreground">
+            <div className="min-h-[calc(100dvh-3.5rem)] sm:min-h-[calc(100dvh-4rem)] flex items-center justify-center text-foreground text-2xl">
                 Loading lessons…
             </div>
         );
@@ -69,8 +69,11 @@ export default function LessonPageClient() {
 
     if(!loading && lessons.length === 0) {
         return (
-            <div className="min-h-[calc(100dvh-3.5rem)] sm:min-h-[calc(100dvh-4rem)] flex items-center justify-center text-foreground text-xl text-center">
-                Could not load lessons. Please try again later.
+            <div className="min-h-[calc(100dvh-3.5rem)] sm:min-h-[calc(100dvh-4rem)] flex items-center justify-center px-6">
+                <p className="text-center text-foreground text-2xl">
+                    Could not load lessons.
+                    <span className="block sm:inline"> Please try again later.</span>
+                </p>
             </div>
         );
     }

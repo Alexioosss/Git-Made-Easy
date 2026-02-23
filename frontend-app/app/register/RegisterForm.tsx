@@ -24,19 +24,19 @@ export default function RegisterForm() {
   const userGateway = GatewayFactory.instance.userGateway;
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
-      e.preventDefault();
-      setError("");
-      setIsLoading(true);
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
 
-      try {
-        await userGateway.register(firstName, lastName, emailAddress, password);
-        setIsSuccess(true);
-        setTimeout(() => router.push("/login"), 4000);
-      } catch(error: any) {
-        setError(error.message || "Something went wrong");
-      } finally {
-        setIsLoading(false);
-      }
+    try {
+      await userGateway.register(firstName, lastName, emailAddress, password);
+      setIsSuccess(true);
+      setTimeout(() => router.push("/login"), 4000);
+    } catch(error: any) {
+      setError(error.message || "Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   if(isSuccess) {

@@ -14,9 +14,9 @@ export function CTASection() {
         </p>
         <div className="mt-6 sm:mt-8">
           <Button size="lg" asChild className="w-full sm:w-auto" title="View lessons catalog">
-            <Link href="/lessons" className="gap-2">
+            <Link href="/lessons" className="gap-2 group">
               Browse Lessons
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4 arrow-hover" />
             </Link>
           </Button>
         </div>

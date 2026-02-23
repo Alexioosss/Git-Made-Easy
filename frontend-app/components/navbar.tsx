@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -11,10 +11,13 @@ import ThemeToggle from "./theme-toggle";
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [mounted, setMounted] = useState(false);
   const { user, isAuthenticated, logout } = useAuth();
   const router = useRouter();
-
   const pathName = usePathname();
+
+  useEffect(() => { setMounted(true); }, []);
+  if(!mounted) return null;
   
   const handleLogout = async () => {
     await logout();
@@ -100,7 +103,8 @@ export function Navbar() {
         </div>
       </div>
       
-      <div className={`md:hidden overflow-hidden transition-all duration-500 ease-out ${isMobileMenuOpen ? "max-h-96 opacity-100 translate-y-0" : "max-h-0 opacity-0 -translate-y-3 ease-in"} `}>
+      <div className={`md:hidden overflow-hidden transition-all duration-500 ease-out
+        ${isMobileMenuOpen ? "max-h-96 opacity-100 translate-y-0 pointer-events-auto" : "max-h-0 opacity-0 -translate-y-3 pointer-events-none"} `}>
         <div className="border-t border-border bg-background px-4 pb-4 pt-3">
           <nav className="flex flex-col gap-1">
             <Link href="/lessons" title="View lessons catalog" onClick={() => setIsMobileMenuOpen(false)}
@@ -117,7 +121,7 @@ export function Navbar() {
           </nav>
           
           {!isAuthenticated && (
-            <div className="mt-3 flex flex-col gap-2 border-t border-border pt-3">
+            <div className="mt-3 flex flex-col gap-2 border-t border-border pt-3 transition-colors duration-500">
               <Button variant="outline" title="Sign in to your account" asChild className="w-full">
                 <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
                   Sign In

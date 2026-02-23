@@ -39,9 +39,9 @@ export async function LessonsPreview() {
               Start from the basics or jump to what you need.
             </p>
           </div>
-          <Link href="/lessons" title="View lessons catalog" className="hidden items-center gap-1 text-sm text-primary transition-colors hover:font-bold sm:flex">
+          <Link href="/lessons" title="View lessons catalog" className="hidden items-center gap-1 text-md text-primary transition-colors hover:font-bold sm:flex group">
             View all lessons
-            <ArrowRight className="h-3.5 w-3.5" />
+            <ArrowRight className="h-3.5 w-3.5 arrow-hover drop-shadow-[0_0_4px_hsl(var(--primary))]" />
           </Link>
         </div>
 
@@ -52,7 +52,7 @@ export async function LessonsPreview() {
 
             return (
               <Link key={lesson.lessonId} href={`/lessons/${lesson.lessonId}`}
-                className="group flex flex-col rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 sm:p-6">
+                className="group flex flex-col rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/20 sm:p-6">
                 <div className="mb-3 flex items-center gap-3">
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary text-sm font-semibold text-secondary-foreground">
                     {lesson.lessonOrder}

@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { useAuth } from "@/context/AuthContext";
-import { GitBranch, Loader2 } from "lucide-react";
+import { Eye, EyeOff, GitBranch, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -13,14 +13,14 @@ import { useState } from "react";
 export default function LoginForm() {
     const router = useRouter();
     const { refreshUser } = useAuth();
-
     const [emailAddress, setEmailAddress] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
-
+    const [showPassword, setShowPassword] = useState(false);
     const authGateway = GatewayFactory.instance.authGateway;
+
 
     async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -96,8 +96,16 @@ export default function LoginForm() {
                             <Label htmlFor="password" className="text-foreground text-xl">
                             Password
                             </Label>
-                            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Enter your password" required className="bg-secondary text-foreground h-11 text-lg px-3 placeholder:text-lg" />
+                            <div className="relative">
+                                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Enter your password" required className="bg-secondary text-foreground h-11 text-lg px-3 placeholder:text-lg" />
+
+                                <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                title={showPassword ? "Hide password" : "Show password"}
+                                onMouseDown={() => setShowPassword(true)} onMouseUp={() => setShowPassword(false)} onMouseLeave={() => setShowPassword(false)}>
+                                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                                </button>
+                            </div>
                         </div>
             
                         {error && (
@@ -107,7 +115,7 @@ export default function LoginForm() {
                             </div>
                         )}
             
-                        <Button type="submit" className="mt-4 w-full h-16 text-xl hover:text-white transition-colors duration-400" disabled={isLoading}>
+                        <Button type="submit" className="mt-4 w-full h-16 text-xl transition-colors duration-500" disabled={isLoading}>
                             {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
