@@ -28,7 +28,7 @@ jobs:
         
       - name: Run Snyk Code Scan
         run: |
-          snyk code test frontend-app/src \
+          snyk code test frontend-app \
           --sarif-file-output=frontend-code-vulnerabilities.sarif || true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
