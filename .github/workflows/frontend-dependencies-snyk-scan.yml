@@ -24,11 +24,11 @@ jobs:
         run: npm install -g snyk
 
       - name: Install npm Packages
-        working-directory: frontend-
+        working-directory: frontend-app
         run: npm install
         
       - name: Run Snyk Scan For Vulnerabilities In Dependencies And Libraries
-        run: snyk test frontend- --all-projects --sarif-file-output=frontend-dependency-vulnerabilities.sarif || true
+        run: snyk test frontend-app --all-projects --sarif-file-output=frontend-dependency-vulnerabilities.sarif || true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
