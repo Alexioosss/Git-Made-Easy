@@ -20,7 +20,8 @@ export function LessonCard({ lesson, progress }: LessonCardProps) {
 
   return (
     <Link href={`/lessons/${lesson.lessonId}`} title={`Lesson ${lesson.lessonOrder} - ${lesson.title}`}
-      className="group flex flex-col rounded-xl border border-border bg-card transition-all hover:border-primary/100 hover:shadow-lg hover:shadow-primary/5 md:flex-row md:items-center">
+      className="group flex flex-col rounded-xl border border-border bg-card transition-all
+      hover:scale-[1.02] hover:border-primary/80 hover:shadow-xl hover:shadow-primary/20 md:flex-row md:items-center">
       {/* Order number */}
       <div className="flex items-center gap-4 border-b border-border px-5 py-4 md:justify-center md:gap-0 md:border-b-0 md:border-r md:px-8 md:py-10">
         <span className="text-2xl font-bold text-muted-foreground/40 group-hover:text-primary/100 transition-colors md:text-3xl">
