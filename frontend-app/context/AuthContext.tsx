@@ -15,19 +15,11 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<any | null>(null);
 
-    async function refreshUser() {
-        const user = await getCurrentUser();
-        setUser(user ?? null);
-    }
+    async function refreshUser() { const user = await getCurrentUser(); setUser(user ?? null); }
 
-    async function logout() {
-        await logoutUser();
-        setUser(null);
-    }
+    async function logout() { await logoutUser(); setUser(null); }
 
-    useEffect(() => {
-        refreshUser();
-    }, []);
+    useEffect(() => { refreshUser(); }, []);
 
     return (
         <AuthContext.Provider value={{ user, isAuthenticated: !!user, refreshUser, logout }}>

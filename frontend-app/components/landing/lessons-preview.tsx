@@ -4,10 +4,28 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { Lesson } from "@/types/lesson";
+import { safeCallWrapper } from "@/lib/safeCallWrapper";
 
 export async function LessonsPreview() {
   const lessonsGateway = GatewayFactory.instance.lessonGateway;
-  const lessons: Lesson[] = await lessonsGateway.getAll();
+  const response = await safeCallWrapper(lessonsGateway.getAll())
+
+  if(!response.ok || !response.data) {
+    return (
+      <section className="border-t border-border px-4 py-14 sm:py-20">
+        <div className="mx-auto max-w-6xl text-center">
+          <h2 className="text-xl font-bold text-foreground sm:text-2xl md:text-3xl">
+            Lesson Catalog
+          </h2>
+          <p className="mt-2 text-md text-muted-foreground">
+            We couldn't load lessons right now. Please try again later.
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  const lessons = response.data as Lesson[];
 
   return (
     <section className="border-t border-border px-4 py-14 sm:py-20">

@@ -3,6 +3,7 @@
 import { LessonCard } from "@/components/lessons/lesson-card";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { getCurrentUser, hasToken } from "@/lib/auth";
+import { safeCallWrapper } from "@/lib/safeCallWrapper";
 import { Lesson } from "@/types/lesson";
 import { LessonProgress } from "@/types/taskProgress";
 import { set } from "date-fns";
@@ -12,6 +13,7 @@ export default function LessonPageClient() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [lessons, setLessons] = useState<Lesson[]>([]);
     const [progressMap, setProgressMap] = useState<Record<string, LessonProgress>>({});
+    const [loading, setLoading] = useState(true);
     const lessonGateway = GatewayFactory.instance.lessonGateway;
     const lessonProgressGateway = GatewayFactory.instance.lessonProgressGateway;
 
@@ -21,29 +23,57 @@ export default function LessonPageClient() {
             setIsAuthenticated(tokenExists);
 
             // Fetch all lessons for display
-            const lessons = await lessonGateway.getAll();
+            const response = await safeCallWrapper(lessonGateway.getAll());
+            if(!response.ok || !response.data) { setLessons([]); setLoading(false); return; }
+
+            const lessons = response.data;
 
             const lessonsWithTasks = await Promise.all(
-                lessons.map(async (lesson) => ({
-                    ...lesson,
-                    tasks: await lessonGateway.getTasksForLesson(lesson.lessonId)
-                }))
+                lessons.map(async (lesson) => {
+                    const tasksResult = await safeCallWrapper(lessonGateway.getTasksForLesson(lesson.lessonId));
+                    return {
+                        ...lesson,
+                        tasks: tasksResult.ok && tasksResult.data ? tasksResult.data : []
+                    }
+                })
             );
             setLessons(lessonsWithTasks);
 
             // If the user is not authenticated, skip fetching progress data
-            if(!tokenExists) { return; }
+            if(!tokenExists) { setIsAuthenticated(false); setLoading(false); return; }
 
-            const user = await getCurrentUser();
-            if(!user) { setIsAuthenticated(false); return; }
+            const userResult = await safeCallWrapper(getCurrentUser());
+            if(!userResult.ok || !userResult.data) { setIsAuthenticated(false); setLoading(false); return; }
+            const user = userResult.data;
             
             // Fetch progress for all tasks for this lesson
-            const progressList = await lessonProgressGateway.getAllLessonsProgress();
-            const progressMap = Object.fromEntries(progressList.map((progress: LessonProgress) => [progress.lessonId, progress]));
-            setProgressMap(progressMap);
-        }
+            const progressResult = await safeCallWrapper(lessonProgressGateway.getAllLessonsProgress());
+            if(progressResult.ok && progressResult.data) {
+                const progressList: LessonProgress[] = progressResult.data;
+                const progressMap = Object.fromEntries(progressList.map(progress => [progress.lessonId, progress]));
+                setProgressMap(progressMap);
+            }
+
+            setLoading(false);
+        };
         fetchData();
     }, []);
+
+    if(loading) {
+        return (
+            <div className="min-h-[calc(100dvh-3.5rem)] sm:min-h-[calc(100dvh-4rem)] flex items-center justify-center text-foreground">
+                Loading lessons…
+            </div>
+        );
+    }
+
+    if(!loading && lessons.length === 0) {
+        return (
+            <div className="min-h-[calc(100dvh-3.5rem)] sm:min-h-[calc(100dvh-4rem)] flex items-center justify-center text-foreground text-xl text-center">
+                Could not load lessons. Please try again later.
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-background py-12">

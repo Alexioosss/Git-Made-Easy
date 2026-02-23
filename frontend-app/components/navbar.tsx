@@ -7,6 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { GitBranch, User, LogOut, LayoutDashboard, Menu, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import ThemeToggle from "./theme-toggle";
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
@@ -81,48 +82,48 @@ export function Navbar() {
             </DropdownMenu>
           ) : (
             <div className="hidden items-center gap-2 sm:flex">
-              <Button asChild className="cursor-pointer text-xl px-5 py-2 hover:text-white transition-colors duration-400" title="Sign in to your account">
+              <Button asChild variant="default" className="text-xl px-5 py-2" title="Sign in to your account">
                 <Link href="/login">Sign In</Link>
               </Button>
-              <Button asChild className="cursor-pointer text-xl px-5 py-2 hover:text-white transition-colors duration-400" title="Create a new account">
+              <Button asChild variant="default" className="text-xl px-5 py-2" title="Create your account">
                 <Link href="/register">Get Started</Link>
               </Button>
             </div>
           )}
 
-          {/* Mobile hamburger */}
           <button type="button" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground md:hidden"
             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}>
             {isMobileMenuOpen ? ( <X className="h-5 w-5" /> ) : ( <Menu className="h-5 w-5" /> )}
           </button>
+          <ThemeToggle />
         </div>
       </div>
-
-      {/* Mobile menu */}
-      {isMobileMenuOpen && (
-        <div className="border-t border-border bg-background px-4 pb-4 pt-3 md:hidden">
+      
+      <div className={`md:hidden overflow-hidden transition-all duration-500 ease-out ${isMobileMenuOpen ? "max-h-96 opacity-100 translate-y-0" : "max-h-0 opacity-0 -translate-y-3 ease-in"} `}>
+        <div className="border-t border-border bg-background px-4 pb-4 pt-3">
           <nav className="flex flex-col gap-1">
-            <Link href="/lessons" title="View lessons catalog" onClick={() => setIsMobileMenuOpen(false)} className={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-secondary
-            ${pathName.startsWith("/lessons") ? 'font-bold text-foreground' : 'text-muted-foreground'}`}>
+            <Link href="/lessons" title="View lessons catalog" onClick={() => setIsMobileMenuOpen(false)}
+            className={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-secondary ${pathName.startsWith("/lessons") ? "font-bold text-foreground" : "text-muted-foreground"}`}>
               Lessons
             </Link>
+
             {isAuthenticated && (
-              <Link href="/dashboard" title="Go to your personalised dashboard"
-              onClick={() => setIsMobileMenuOpen(false)} className={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-secondary
-              ${pathName.startsWith("/dashboard") ? 'font-bold text-foreground' : 'text-muted-foreground'}`}>
+              <Link href="/dashboard" title="Go to your personalised dashboard" onClick={() => setIsMobileMenuOpen(false)}
+              className={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-secondary ${pathName.startsWith("/dashboard") ? "font-bold text-foreground" : "text-muted-foreground"}`}>
                 Dashboard
               </Link>
             )}
           </nav>
+          
           {!isAuthenticated && (
             <div className="mt-3 flex flex-col gap-2 border-t border-border pt-3">
-              <Button variant="outline" title="Sign in to your account" asChild className="w-full bg-transparent">
-                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} >
+              <Button variant="outline" title="Sign in to your account" asChild className="w-full">
+                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
                   Sign In
                 </Link>
               </Button>
-              <Button asChild className="w-full" title="Create a new account">
+              <Button variant="default" title="Create a new account" asChild className="w-full">
                 <Link href="/register" onClick={() => setIsMobileMenuOpen(false)}>
                   Get Started
                 </Link>
@@ -130,7 +131,7 @@ export function Navbar() {
             </div>
           )}
         </div>
-      )}
+      </div>
     </header>
   );
 }

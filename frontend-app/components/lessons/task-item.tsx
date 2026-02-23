@@ -60,7 +60,6 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
   return (
     <div title={`${isExpanded ? "Collapse task" : "Expand task"}`}
     className={`rounded-xl border transition-all ${isCompleted ? "border-primary/20 bg-primary/5" : "border-border bg-card"} p-3 sm:p-4`}>
-      {/* Task header - always visible */}
       <button type="button" onClick={onToggle} className="flex w-full items-center gap-3 p-3 text-left sm:p-4">
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary">
           {isCompleted ? (<CheckCircle2 className="h-4 w-4 text-primary" />) : (<span className="text-xs font-medium text-secondary-foreground">{task.taskOrder}</span>)}
@@ -81,14 +80,12 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
         {isExpanded ? (<ChevronUp className="h-4 w-4 shrink-0 text-muted-foreground" />) : (<ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />)}
       </button>
 
-      {/* Expanded content */}
       {isExpanded && (
         <div className="border-t border-border px-3 pb-3 pt-3 sm:px-4 sm:pb-4">
           <p className="mb-4 text-md leading-relaxed text-muted-foreground">
             {task.content}
           </p>
 
-          {/* Hint toggle */}
           {showHint ? (
             <div className="mb-4 flex items-start gap-2 rounded-lg bg-secondary p-3">
               <button type="button" title="Hide hint" onClick={() => setShowHint(false)}>
@@ -104,7 +101,6 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
             </button>
           )}
 
-          {/* Answer form */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row">
             <div className="relative flex-1">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 font-mono text-sm text-primary">
@@ -114,28 +110,27 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
               placeholder="Type your git command..." className="bg-secondary pl-7 font-mono text-sm text-foreground placeholder:text-muted-foreground"/>
             </div>
             <div className="flex gap-2">
-              <Button type="submit" size="default" disabled={!answer.trim()} title="Submit your answer" className="flex-1 sm:flex-none">
-                <Send className="mr-2 h-4 w-4 sm:mr-0" />
+              <Button type="submit" size="default" disabled={!answer.trim()} title="Submit your answer"
+              className={`flex-1 sm:flex-none transition-all duration-200 ${answer.trim() ? "hover:-translate-y-0.5 hover:shadow-md hover:shadow-primary/20" : ""}`}>
+                <Send className="h-4 w-4" />
                 <span className="sm:hidden">Submit</span>
                 <span className="sr-only sm:not-sr-only">
                   <span className="sr-only">Submit answer</span>
                 </span>
               </Button>
-              <Button type="button" variant="outline" size="icon" onClick={handleReset} title="Reset your answer" className="shrink-0 bg-transparent">
-                <RotateCcw className="h-4 w-4" />
+              <Button type="button" variant="outline" size="icon" onClick={handleReset} title="Reset your answer" className="shrink-0 bg-transparent group">
+                <RotateCcw className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-180" />
                 <span className="sr-only">Reset</span>
               </Button>
             </div>
           </form>
 
-          {/* Feedback */}
           {feedback && (
             <div className={`mt-3 rounded-lg px-3 py-2 text-sm ${feedback.type === "success" ? "text-green-700 bg-green-100" : "text-red-700 bg-destructive/10 text-destructive"}`}>
               {feedback.message}
             </div>
           )}
 
-          {/* Save progress note for non-logged-in users */}
           {!isAuthenticated && isCompleted && (
             <p className="mt-3 text-xs text-muted-foreground">
               P.S. Sign in to save your progress

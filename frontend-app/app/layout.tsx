@@ -5,6 +5,7 @@ import "./styles/globals.css";
 import { Navbar } from "@/components/navbar";
 import { ScrollToTop } from "./scroll-to-top";
 import { AuthProvider } from "@/context/AuthContext";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const DEFAULT_TITLE: string = "Git Made Easy" as const;
 
@@ -20,15 +21,17 @@ export const viewport: Viewport = { themeColor: "#0a0c10" };
 
 export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className="font-sans antialiased min-h-screen flex flex-col">
-        <AuthProvider>
-          <ScrollToTop /> {/* Script to automatically scroll the page to the top on page change, since the pages remain to the last scrolled position  */}
-          <Navbar /> {/* Show the navbar on every single page */}
-          <main className="flex-1">
-            {children}
-          </main>
-        </AuthProvider>
+        <ThemeProvider attribute="class">
+          <AuthProvider>
+            <ScrollToTop /> {/* Script to automatically scroll the page to the top on page change, since the pages remain to the last scrolled position  */}
+            <Navbar /> {/* Show the navbar on every single page */}
+            <main className="flex-1">
+              {children}
+            </main>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

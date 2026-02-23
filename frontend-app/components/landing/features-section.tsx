@@ -15,7 +15,7 @@ export function FeaturesSection() {
           <h2 className="text-balance text-xl font-bold text-foreground sm:text-2xl md:text-3xl">
             Everything you need to master Git
           </h2>
-          <p className="mt-3 text-sm text-muted-foreground sm:text-base">
+          <p className="mt-3 text-md text-muted-foreground sm:text-base">
             A practical, interactive approach to learning version control.
           </p>
         </div>
