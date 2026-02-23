@@ -1,0 +1,69 @@
+name: Performing Snyk Scan On Frontend System For Code Vulnerabilities
+
+on:
+  pull_request:
+    paths:
+      - 'frontend-app/src/**'
+      - '.github/workflows/frontend-code-vulnerabilities-snyk-scan.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend-app/src/**'
+      - '.github/workflows/frontend-code-vulnerabilities-snyk-scan.yml'
+
+jobs:
+  frontend-code-snyk-scan:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+        
+      - name: Run Snyk Code Scan
+        run: |
+          snyk code test frontend-app/src \
+          --sarif-file-output=frontend-code-vulnerabilities.sarif || true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      #If Advanced Security Was Turned On, Uncomment The Below To Upload The Entire SARIF Artifact To The GitHub Summary, For A Visual Summary Of Results
+      #- name: Upload SARIF File To GitHub Code Scanning
+      #  uses: github/codeql-action/upload-sarif@v4
+      #  with:
+      #    sarif_file: snyk-code-vulnerabilities.sarif
+      
+      - name: Upload SARIF File Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-code-vulnerabilities-result
+          path: frontend-code-vulnerabilities.sarif
+
+      - name: Upload Code Vulnerabilities Scan Summary
+        run: |
+          echo "# Code Vulnerabilities Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "## **Total Findings**" >> $GITHUB_STEP_SUMMARY
+          echo "**$(jq -r '.runs[0].results | length' frontend-code-vulnerabilities.sarif)** Vulnerabilities Detected" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          jq -r '
+          .runs[0].results[] |
+          "## **Vulnerability:** '\''\(.ruleId)'\''
+          **Description:** \(.message.text)
+          **File Location:** '\''\(.locations[0].physicalLocation.artifactLocation.uri)'\''
+          **Lines:** \(.locations[0].physicalLocation.region.startLine) - \(.locations[0].physicalLocation.region.endLine)
+          **Is Autofixable?** \(.properties.isAutofixable)
+          "' frontend-code-vulnerabilities.sarif >> "$GITHUB_STEP_SUMMARY"
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          jq -r '.runs[0].tool.driver.rules[] |
+          "## Understanding The Problem: \(.name)
+          \(.help.markdown)"' frontend-code-vulnerabilities.sarif >> "$GITHUB_STEP_SUMMARY"
