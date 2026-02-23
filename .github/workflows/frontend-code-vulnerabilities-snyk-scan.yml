@@ -45,8 +45,19 @@ jobs:
           name: frontend-code-vulnerabilities-result
           path: frontend-code-vulnerabilities.sarif
 
+      - name: Download SARIF Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-code-vulnerabilities-result
+          path: .
+
       - name: Upload Code Vulnerabilities Scan Summary
         run: |
+          if [ ! -f frontend-code-vulnerabilities.sarif ]; then
+            echo "SARIF file not found. Skipping summary." >> $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
+          
           echo "# Code Vulnerabilities Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
