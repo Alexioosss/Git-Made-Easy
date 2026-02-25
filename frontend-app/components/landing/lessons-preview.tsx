@@ -51,8 +51,8 @@ export async function LessonsPreview() {
             const hasDifficulties = Object.keys(difficultyDistribution).length > 0;
 
             return (
-              <Link key={lesson.lessonId} href={`/lessons/${lesson.lessonId}`}
-                className="group flex flex-col rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/20 sm:p-6">
+              <Link key={lesson.lessonId} href={`/lessons/${lesson.lessonId}`} title={`Lesson ${lesson.lessonOrder} - ${lesson.title}`}
+                className="group flex flex-col rounded-xl border border-border bg-card p-5 transition-all hover:-translate-y-2 hover:shadow-xl dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:border-primary/100 sm:p-6">
                 <div className="mb-3 flex items-center gap-3">
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary text-sm font-semibold text-secondary-foreground">
                     {lesson.lessonOrder}

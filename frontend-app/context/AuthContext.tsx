@@ -3,7 +3,7 @@
 import { getCurrentUser, logoutUser } from "@/lib/auth";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
-type AuthContextType = {
+export type AuthContextType = {
     user: any | null;
     isAuthenticated: boolean;
     refreshUser: () => Promise<void>;

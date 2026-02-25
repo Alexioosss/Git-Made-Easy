@@ -2,10 +2,10 @@ import React from "react"
 import type { Metadata, Viewport } from "next";
 
 import "./styles/globals.css";
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/components/navbar/navbar";
 import { ScrollToTop } from "./scroll-to-top";
 import { AuthProvider } from "@/context/AuthContext";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 
 const DEFAULT_TITLE: string = "Git Made Easy" as const;
 

@@ -23,7 +23,7 @@ export function FeaturesSection() {
         <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
           {features.map((feature) => (
             <div key={feature.title} className="rounded-xl border border-border bg-card p-6 transition-all
-            hover:-translate-y-2 hover:scale-[1.03] hover:shadow-xl dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:border-primary/100 sm:p-6">
+            hover:-translate-y-2 hover:scale-[1.03] hover:shadow-xl dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:border-primary/100 sm:p-6">
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
                 <feature.icon className="h-5 w-5 text-primary" />
               </div>

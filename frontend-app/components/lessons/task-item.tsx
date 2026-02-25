@@ -74,7 +74,7 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
               {task.difficulty.charAt(0).toUpperCase() + task.difficulty.slice(1).toLowerCase()}
             </Badge>
           </div>
-          {totalAttempts > 0 && (<span className="text-xs text-muted-foreground">{totalAttempts} attempt{totalAttempts !== 1 ? "s" : ""}</span>)}
+          {totalAttempts > 0 && (<span className="text-md text-muted-foreground">{totalAttempts} attempt{totalAttempts !== 1 ? "s" : ""}</span>)}
         </div>
 
         {isExpanded ? (<ChevronUp className="h-4 w-4 shrink-0 text-muted-foreground" />) : (<ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />)}
@@ -95,7 +95,7 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
             </div>
           ) : (
             <button type="button" title="View hint" onClick={() => setShowHint(true)}
-            className="mb-4 flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground">
+            className="mb-4 flex items-center gap-1.5 text-md text-muted-foreground transition-colors hover:text-foreground">
               <Lightbulb className="h-3.5 w-3.5" />
               Show hint
             </button>
@@ -107,7 +107,7 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
                 $
               </span>
               <Input value={answer} onChange={(e) => { setAnswer(e.target.value); if(feedback) setFeedback(null); }}
-              placeholder="Type your git command..." className="bg-secondary pl-7 font-mono text-sm text-foreground placeholder:text-muted-foreground"/>
+              placeholder="Type your git command..." className="bg-secondary pl-7 font-mono text-sm text-foreground placeholder:text-muted-foreground placeholder:text-lg"/>
             </div>
             <div className="flex gap-2">
               <Button type="submit" size="default" disabled={!answer.trim()} title="Submit your answer"
@@ -126,7 +126,7 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
           </form>
 
           {feedback && (
-            <div className={`mt-3 rounded-lg px-3 py-2 text-sm ${feedback.type === "success" ? "text-green-700 bg-green-100" : "text-red-700 bg-destructive/10 text-destructive"}`}>
+            <div className={`mt-3 rounded-xl px-3 py-2 text-xl ${feedback.type === "success" ? "text-green-700 bg-green-100" : "text-red-700 bg-destructive/10 text-destructive"}`}>
               {feedback.message}
             </div>
           )}

@@ -7,7 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { GitBranch, User, LogOut, LayoutDashboard, Menu, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import ThemeToggle from "./theme-toggle";
+import ThemeToggle from "../theme/theme-toggle";
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
