@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for infrastructure/gateways/lessonProgress/FetchLessonProgressGateway.ts</title>
+    <title>Code coverage report for app/scroll-to-top.tsx</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../../prettify.css" />
-    <link rel="stylesheet" href="../../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../../sort-arrow-sprite.png);
+            background-image: url(../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">infrastructure/gateways/lessonProgress</a> FetchLessonProgressGateway.ts</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">app</a> scroll-to-top.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -79,7 +79,12 @@
 <a name='L14'></a><a href='#L14'>14</a>
 <a name='L15'></a><a href='#L15'>15</a>
 <a name='L16'></a><a href='#L16'>16</a>
-<a name='L17'></a><a href='#L17'>17</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -89,28 +94,38 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { LessonProgress } from "@/types/taskProgress";
-import { ApiClient } from "../ApiClient";
-import { LessonProgressGateway } from "./LessonProgressGateway";
-import { HttpMethods } from "../HttpMethods";
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use client"
 &nbsp;
-export class FetchLessonProgressGateway implements LessonProgressGateway {
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 &nbsp;
-    constructor(private apiClient: ApiClient) {}
-&nbsp;
-    getLessonProgress(lessonId: string): Promise&lt;LessonProgress&gt; {
-        return this.apiClient.apiRequest(`/lessons/${lessonId}/progress`, HttpMethods.GET);
-    }
-&nbsp;
-    getAllLessonsProgress(): Promise&lt;LessonProgress[]&gt; {
-        return this.apiClient.apiRequest(`/lessons/progress`, HttpMethods.GET);
-    }
+/**
+ * ScrollToTop
+ * 
+ * A utility component that automatically scrolls the page to the top whenever the route changes.
+ * In Next.js Apps, page transitions preserve the last scroll position.
+ * 
+ * Usage: To place inside a page layout, i.e. root layout, so it runs on every route transition across the entire application.
+ * 
+ * @returns null - This component does not require returns since it does not render anything.
+ */
+export function ScrollToTop() {
+    const pathName = usePathname(); // Grab the current path name, i.e. /lessons
+    useEffect(() =&gt; {
+        window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to the top of the page with a smooth animation / motion
+    }, [pathName]); // Happens every time the pathName changes, i.e. from /lessons to /lessons/1
+    return null;
 }</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -120,14 +135,14 @@ export class FetchLessonProgressGateway implements LessonProgressGateway {
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
                 at 2026-02-26T17:46:08.222Z
             </div>
-        <script src="../../../prettify.js"></script>
+        <script src="../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../../sorter.js"></script>
-        <script src="../../../block-navigation.js"></script>
+        <script src="../sorter.js"></script>
+        <script src="../block-navigation.js"></script>
     </body>
 </html>
     
