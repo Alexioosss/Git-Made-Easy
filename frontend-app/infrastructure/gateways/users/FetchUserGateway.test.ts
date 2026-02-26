@@ -1,6 +1,7 @@
 import { createMockApiClient } from "@/tests/mocks/mockApiClient";
 import { FetchUserGateway } from "./FetchUserGateway";
 import { HttpMethods } from "../HttpMethods";
+import { createMockUser } from "@/tests/mocks/mockUser";
 
 describe("FetchUserGateway" , () => {
     let apiClient: ReturnType<typeof createMockApiClient>;
@@ -10,10 +11,12 @@ describe("FetchUserGateway" , () => {
         apiClient = createMockApiClient();
         gateway = new FetchUserGateway(apiClient);
     });
+    
 
-    test("Register Calls ApiRequest Correctly", async () => {
-        apiClient.apiRequest.mockResolvedValue({ id: "1" });
-        await gateway.register("John", "Doe", "myemail1@gmail.com", "MyPassword123'");
+    test("register Calls ApiRequest Correctly", async () => {
+        const mockResponse = createMockUser();
+        apiClient.apiRequest.mockResolvedValue(mockResponse);
+        const response = await gateway.register("John", "Doe", "myemail1@gmail.com", "MyPassword123'");
         expect(apiClient.apiRequest).toHaveBeenCalledWith(
             "/users", HttpMethods.POST,
             {
@@ -23,10 +26,11 @@ describe("FetchUserGateway" , () => {
                 password: "MyPassword123'",
             }
         );
+        expect(response).toEqual(mockResponse);
     });
 
-    test("GetById Calls ApiRequest Correctly", async () => {
-        const mockResponse = { id: "1", firstName: "John", lastName: "Doe", emailAddress: "myemail1@gmail.com" };
+    test("getById Calls ApiRequest Correctly", async () => {
+        const mockResponse = createMockUser();
         apiClient.apiRequest.mockResolvedValue(mockResponse);
         const userId = "1";
         const response = await gateway.getById(userId);
@@ -34,8 +38,8 @@ describe("FetchUserGateway" , () => {
         expect(response).toEqual(mockResponse);
     });
 
-    test("GetByEmailAddress Calls ApiRequest Correctly", async () => {
-        const mockResponse = { id: "1", firstName: "John", lastName: "Doe", emailAddress: "myemail1@gmail.com" };
+    test("getByEmailAddress Calls ApiRequest Correctly", async () => {
+        const mockResponse = createMockUser();
         apiClient.apiRequest.mockResolvedValue(mockResponse);
         const response = await gateway.getByEmailAddress("myemail1@gmail.com");
         expect(apiClient.apiRequest).toHaveBeenCalledWith(

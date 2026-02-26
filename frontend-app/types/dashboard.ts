@@ -1,4 +1,4 @@
-import { LessonProgress, TaskProgress } from "./taskProgress";
+import { TaskProgress } from "./taskProgress";
 
 export interface LessonSummary {
     lessonId: string;

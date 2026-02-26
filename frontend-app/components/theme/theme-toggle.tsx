@@ -25,7 +25,7 @@ export default function ThemeToggle() {
 
     return (
         <button onClick={changeTheme} title={`Switch to ${nextTheme} mode`} className="p-2 border rounded cursor-pointer overflow-hidden relative w-10 h-10 flex items-center justify-center">
-            <div className={`transition-transform duration-200 ${animating ? "-translate-x-10 opacity-0" : "translate-x-0 opacity-100"}}`}>
+            <div className={`transition-transform duration-200 ${animating ? "-translate-x-10 opacity-0" : "translate-x-0 opacity-100"}`}>
                 {icon}
             </div>
         </button>

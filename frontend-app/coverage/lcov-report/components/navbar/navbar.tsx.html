@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.89% </span>
+                <span class="strong">68.42% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/19</span>
+                <span class='fraction'>13/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">70.83% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>17/24</span>
+                <span class='fraction'>24/24</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/8</span>
+                <span class='fraction'>4/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">52.94% </span>
+                <span class="strong">64.7% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/17</span>
+                <span class='fraction'>11/17</span>
             </div>
         
             
@@ -215,22 +215,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -299,7 +299,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -312,7 +312,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -384,7 +384,7 @@ export function Navbar() {
 &nbsp;
         &lt;nav className="hidden items-center gap-6 md:flex"&gt;
           &lt;Link href="/lessons" title="View lessons catalog" className={`text-2xl transition-colors hover:text-foreground hover:scale-125 transition-transform duration-300
-          ${pathName.startsWith("/lessons") ? <span class="branch-0 cbranch-no" title="branch not covered" >'font-bold text-foreground' </span>: 'text-muted-foreground'}`}&gt;
+          ${pathName.startsWith("/lessons") ? 'font-bold text-foreground' : 'text-muted-foreground'}`}&gt;
             Lessons
           &lt;/Link&gt;
           {isAuthenticated &amp;&amp; (
@@ -392,7 +392,7 @@ export function Navbar() {
               &lt;span className="h-6 border-l-2 border-foreground/80"&gt;&lt;/span&gt;
               &lt;Link href="/dashboard" title="Go to your personalised dashboard"
               className={`text-2xl transition-colors hover:text-foreground hover:scale-125 transition-transform duration-300
-              ${pathName.startsWith("/dashboard") ? <span class="branch-0 cbranch-no" title="branch not covered" >'font-bold text-foreground' </span>: 'text-muted-foreground'}`}&gt;
+              ${pathName.startsWith("/dashboard") ? 'font-bold text-foreground' : 'text-muted-foreground'}`}&gt;
                 Dashboard
               &lt;/Link&gt;
             &lt;/&gt;
@@ -439,27 +439,27 @@ export function Navbar() {
             &lt;/div&gt;
           )}
 &nbsp;
-          &lt;button type="button" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setIsMobileMenuOpen(!isMobileMenuOpen)}</span>
+          &lt;button type="button" onClick={() =&gt; setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground md:hidden"
-            aria-label={isMobileMenuOpen ? <span class="branch-0 cbranch-no" title="branch not covered" >"Close menu" </span>: "Open menu"}&gt;
-            {isMobileMenuOpen ? ( <span class="branch-0 cbranch-no" title="branch not covered" >&lt;X className="h-5 w-5" /&gt; </span>) : ( &lt;Menu className="h-5 w-5" /&gt; )}
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}&gt;
+            {isMobileMenuOpen ? ( &lt;X className="h-5 w-5" /&gt; ) : ( &lt;Menu className="h-5 w-5" /&gt; )}
           &lt;/button&gt;
           &lt;ThemeToggle /&gt;
         &lt;/div&gt;
       &lt;/div&gt;
       
       &lt;div className={`md:hidden overflow-hidden transition-all duration-500 ease-out
-        ${isMobileMenuOpen ? <span class="branch-0 cbranch-no" title="branch not covered" >"max-h-96 opacity-100 translate-y-0 pointer-events-auto" </span>: "max-h-0 opacity-0 -translate-y-3 pointer-events-none"} `}&gt;
+        ${isMobileMenuOpen ? "max-h-96 opacity-100 translate-y-0 pointer-events-auto" : "max-h-0 opacity-0 -translate-y-3 pointer-events-none"} `}&gt;
         &lt;div className="border-t border-border bg-background px-4 pb-4 pt-3"&gt;
           &lt;nav className="flex flex-col gap-1"&gt;
-            &lt;Link href="/lessons" title="View lessons catalog" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setIsMobileMenuOpen(false)}</span>
-            className={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-secondary ${pathName.startsWith("/lessons") ? <span class="branch-0 cbranch-no" title="branch not covered" >"font-bold text-foreground" </span>: "text-muted-foreground"}`}&gt;
+            &lt;Link href="/lessons" title="View lessons catalog" onClick={() =&gt; setIsMobileMenuOpen(false)}
+            className={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-secondary ${pathName.startsWith("/lessons") ? "font-bold text-foreground" : "text-muted-foreground"}`}&gt;
               Lessons
             &lt;/Link&gt;
 &nbsp;
             {isAuthenticated &amp;&amp; (
               &lt;Link href="/dashboard" title="Go to your personalised dashboard" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setIsMobileMenuOpen(false)}</span>
-              className={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-secondary ${pathName.startsWith("/dashboard") ? <span class="branch-0 cbranch-no" title="branch not covered" >"font-bold text-foreground" </span>: "text-muted-foreground"}`}&gt;
+              className={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-secondary ${pathName.startsWith("/dashboard") ? "font-bold text-foreground" : "text-muted-foreground"}`}&gt;
                 Dashboard
               &lt;/Link&gt;
             )}
@@ -490,7 +490,7 @@ export function Navbar() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-25T23:32:04.612Z
+                at 2026-02-26T12:01:48.826Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
