@@ -19,11 +19,7 @@ export function Navbar() {
   useEffect(() => { setMounted(true); }, []);
   if(!mounted) return null;
   
-  const handleLogout = async () => {
-    await logout();
-    setIsMobileMenuOpen(false);
-    router.push("/");
-  }
+  const handleLogout = async () => { router.push("/logout"); }
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">

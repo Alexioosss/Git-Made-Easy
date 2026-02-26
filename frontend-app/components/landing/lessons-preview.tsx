@@ -18,7 +18,7 @@ export async function LessonsPreview() {
             Lesson Catalog
           </h2>
           <p className="mt-2 text-md text-muted-foreground">
-            We couldn't load lessons right now. Please try again later.
+            Looks like the lessons are temporarily unavailable. Please try again in a moment.
           </p>
         </div>
       </section>
@@ -52,7 +52,8 @@ export async function LessonsPreview() {
 
             return (
               <Link key={lesson.lessonId} href={`/lessons/${lesson.lessonId}`} title={`Lesson ${lesson.lessonOrder} - ${lesson.title}`}
-                className="group flex flex-col rounded-xl border border-border bg-card p-5 transition-all hover:-translate-y-2 hover:shadow-xl dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:border-primary/100 sm:p-6">
+                className="group flex flex-col rounded-xl border border-border bg-card p-5 transition-all
+                hover:-translate-y-2 hover:shadow-xl dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:border-primary/100 sm:p-6">
                 <div className="mb-3 flex items-center gap-3">
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary text-sm font-semibold text-secondary-foreground">
                     {lesson.lessonOrder}

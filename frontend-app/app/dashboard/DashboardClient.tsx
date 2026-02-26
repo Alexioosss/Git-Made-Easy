@@ -3,6 +3,7 @@
 import { DashboardLessons } from "@/components/dashboard/dashboard-lessons";
 import { DashboardStats } from "@/components/dashboard/dashboard-stats";
 import { RecentActivity } from "@/components/dashboard/recent-activity";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { getCurrentUser, hasToken } from "@/lib/auth";
 import { DashboardData } from "@/types/dashboard";
@@ -13,12 +14,15 @@ export default function DashboardClient() {
     const [data, setData] = useState<DashboardData>();
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const router = useRouter();
 
     useEffect(() => {
         async function loadDashboard() {
             const user = await getCurrentUser();
+            setIsLoggedIn(!!user);
             if(!user) { router.push("/login"); return; }
+            setIsLoggedIn(true);
             try {
                 const response = await GatewayFactory.instance.dashboardGateway.getDashboardData();
                 setData(response);
@@ -44,11 +48,7 @@ export default function DashboardClient() {
     }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
     if(isLoading) {
-        return (
-        <div className="flex min-h-screen items-center justify-center bg-background">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-        </div>
-        );
+        return ( <LoadingSpinner message={isLoggedIn ? "Your personalised dashboard will be displayed soon." : "If your dashboard does not load, please log in again."} /> );
     }
 
     if(error) {

@@ -1,6 +1,7 @@
 "use client"
 
 import { LessonCard } from "@/components/lessons/lesson-card";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { getCurrentUser, hasToken } from "@/lib/auth";
 import { safeCallWrapper } from "@/lib/safeCallWrapper";
@@ -59,11 +60,7 @@ export default function LessonPageClient() {
     }, []);
 
     if(loading) {
-        return (
-            <div className="min-h-[calc(100dvh-3.5rem)] sm:min-h-[calc(100dvh-4rem)] flex items-center justify-center text-foreground text-2xl">
-                Loading lessons…
-            </div>
-        );
+        return ( <LoadingSpinner message="Loading lessons, please wait..." /> );
     }
 
     if(!loading && lessons.length === 0) {
