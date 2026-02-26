@@ -1,10 +1,10 @@
 import { Metadata } from "next";
-import LessonPageClient from "./LessonPageClient";
+import LessonPage from "./LessonPage";
 
 export const metadata: Metadata = {
   title: "Lessons"
 }
 
 export default function LessonsPage() {
-  return <LessonPageClient />;
+  return <LessonPage />;
 }

@@ -9,7 +9,7 @@ import { Lesson } from "@/types/lesson";
 import { LessonProgress } from "@/types/taskProgress";
 import { useEffect, useState } from "react";
 
-export default function LessonPageClient() {
+export default function LessonPage() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [lessons, setLessons] = useState<Lesson[]>([]);
     const [progressMap, setProgressMap] = useState<Record<string, LessonProgress>>({});

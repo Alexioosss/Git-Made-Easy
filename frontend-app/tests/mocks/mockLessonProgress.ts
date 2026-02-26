@@ -6,7 +6,7 @@ export function createMockLessonProgress(overrides: Partial<LessonProgress> = {}
         userId: "u-1",
         lessonId: "l-1",
         currentTaskProgressId: "tp-1",
-        completedTasksCount: 2,
+        completedTasksCount: 5,
         totalTasksCount: 5,
         ...overrides
     };
