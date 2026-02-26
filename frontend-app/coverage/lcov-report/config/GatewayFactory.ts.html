@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">58.82% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>10/17</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">30% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>3/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">58.82% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>10/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -117,26 +117,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -158,18 +158,18 @@ export class GatewayFactory {
     private static _instance: GatewayFactory;
 &nbsp;
     // Create readonly gateway instances so they are made only instantiated once
-    private readonly _apiClient = <span class="cstat-no" title="statement not covered" >getApiClient();</span>
-    private readonly _userGateway = <span class="cstat-no" title="statement not covered" >new FetchUserGateway(this._apiClient);</span>
-    private readonly _authGateway = <span class="cstat-no" title="statement not covered" >new FetchAuthGateway(this._apiClient);</span>
-    private readonly _lessonGateway = <span class="cstat-no" title="statement not covered" >new FetchLessonGateway(this._apiClient);</span>
-    private readonly _taskGateway = <span class="cstat-no" title="statement not covered" >new FetchTaskGateway(this._apiClient);</span>
-    private readonly _taskProgressGateway = <span class="cstat-no" title="statement not covered" >new FetchTaskProgressGateway(this._apiClient);</span>
-    private readonly _lessonProgressGateway = <span class="cstat-no" title="statement not covered" >new FetchLessonProgressGateway(this._apiClient);</span>
-    private readonly _dashboardGateway = <span class="cstat-no" title="statement not covered" >new FetchDashboardGateway(this._apiClient);</span>
+    private readonly _apiClient = getApiClient();
+    private readonly _userGateway = new FetchUserGateway(this._apiClient);
+    private readonly _authGateway = new FetchAuthGateway(this._apiClient);
+    private readonly _lessonGateway = new FetchLessonGateway(this._apiClient);
+    private readonly _taskGateway = new FetchTaskGateway(this._apiClient);
+    private readonly _taskProgressGateway = new FetchTaskProgressGateway(this._apiClient);
+    private readonly _lessonProgressGateway = new FetchLessonProgressGateway(this._apiClient);
+    private readonly _dashboardGateway = new FetchDashboardGateway(this._apiClient);
 &nbsp;
-<span class="fstat-no" title="function not covered" >    pr</span>ivate constructor() {}
+    private constructor() {}
 &nbsp;
-<span class="fstat-no" title="function not covered" >    st</span>atic get instance(): GatewayFactory { <span class="cstat-no" title="statement not covered" >return this._instance ??= new GatewayFactory(); </span>}
+    static get instance(): GatewayFactory { return this._instance ??= new GatewayFactory(); }
 &nbsp;
 <span class="fstat-no" title="function not covered" >    ge</span>t apiClient() { <span class="cstat-no" title="statement not covered" >return getApiClient(); </span>}
 &nbsp;
@@ -177,7 +177,7 @@ export class GatewayFactory {
 &nbsp;
 <span class="fstat-no" title="function not covered" >    ge</span>t authGateway() { <span class="cstat-no" title="statement not covered" >return this._authGateway; </span>}
 &nbsp;
-<span class="fstat-no" title="function not covered" >    ge</span>t lessonGateway() { <span class="cstat-no" title="statement not covered" >return this._lessonGateway; </span>}
+    get lessonGateway() { return this._lessonGateway; }
 &nbsp;
 <span class="fstat-no" title="function not covered" >    ge</span>t taskGateway() { <span class="cstat-no" title="statement not covered" >return this._taskGateway; </span>}
 &nbsp;
@@ -193,7 +193,7 @@ export class GatewayFactory {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-24T16:24:03.194Z
+                at 2026-02-26T14:21:12.462Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -86,7 +86,7 @@ export default function LoginForm() {
                     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
                             <Label htmlFor="email" className="text-foreground text-xl">
-                            Email
+                                Email
                             </Label>
                             <Input id="email" type="email" value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)}
                             placeholder="you@example.com" required className="bg-secondary text-foreground h-11 text-lg px-3 placeholder:text-lg" />
@@ -94,7 +94,7 @@ export default function LoginForm() {
             
                         <div className="flex flex-col gap-2">
                             <Label htmlFor="password" className="text-foreground text-xl">
-                            Password
+                                Password
                             </Label>
                             <div className="relative">
                                 <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}

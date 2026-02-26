@@ -6,7 +6,6 @@ import { getCurrentUser, hasToken } from "@/lib/auth";
 import { safeCallWrapper } from "@/lib/safeCallWrapper";
 import { Lesson } from "@/types/lesson";
 import { LessonProgress } from "@/types/taskProgress";
-import { set } from "date-fns";
 import { useEffect, useState } from "react";
 
 export default function LessonPageClient() {
