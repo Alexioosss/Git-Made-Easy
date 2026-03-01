@@ -7,7 +7,7 @@ import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
 import com.gitmadeeasy.usecases.attemptTask.AttemptTask;
 import com.gitmadeeasy.usecases.attemptTask.dto.TaskAttemptRequest;
-import com.gitmadeeasy.usecases.lessonProgress.UpdateLessonProgress;
+import com.gitmadeeasy.usecases.lessonProgress.LessonProgressFacade;
 import com.gitmadeeasy.usecases.tasks.exceptions.TaskNotFoundWithIdException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 class AttemptTaskTest {
     @Mock private TaskAttemptGateway taskAttemptGateway;
     @Mock private TaskGateway taskGateway;
-    @Mock private UpdateLessonProgress updateLessonProgress;
+    @Mock private LessonProgressFacade lessonProgressFacade;
     @InjectMocks private AttemptTask attemptTask;
 
     private static final String USER_ID = "1";
@@ -63,7 +63,7 @@ class AttemptTaskTest {
         assertEquals("1", savedTaskProgress.getUserId());
         assertEquals("1", savedTaskProgress.getTaskId());
         verify(this.taskAttemptGateway).save(savedTaskProgress);
-        verify(this.updateLessonProgress).update(USER_ID, LESSON_ID, savedTaskProgress);
+        verify(this.lessonProgressFacade).update(USER_ID, LESSON_ID, savedTaskProgress);
     }
 
     @Test
@@ -82,7 +82,7 @@ class AttemptTaskTest {
         // Assert
         assertEquals(existingTaskProgress, updatedTaskProgress);
         verify(this.taskAttemptGateway).save(existingTaskProgress);
-        verify(this.updateLessonProgress).update(USER_ID, LESSON_ID, updatedTaskProgress);
+        verify(this.lessonProgressFacade).update(USER_ID, LESSON_ID, updatedTaskProgress);
     }
 
     @Test

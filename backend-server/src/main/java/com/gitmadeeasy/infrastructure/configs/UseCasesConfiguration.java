@@ -16,7 +16,7 @@ import com.gitmadeeasy.usecases.dashboard.GetDashboardData;
 import com.gitmadeeasy.usecases.email.EmailSender;
 import com.gitmadeeasy.usecases.lessonProgress.GetAllLessonProgress;
 import com.gitmadeeasy.usecases.lessonProgress.GetLessonProgress;
-import com.gitmadeeasy.usecases.lessonProgress.UpdateLessonProgress;
+import com.gitmadeeasy.usecases.lessonProgress.LessonProgressFacade;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
 import com.gitmadeeasy.usecases.lessons.GetAllLessons;
 import com.gitmadeeasy.usecases.lessons.GetLessonById;
@@ -116,8 +116,8 @@ public class UseCasesConfiguration {
     @Bean
     public AttemptTask taskAttempt(TaskAttemptGateway taskAttemptGateway,
                                    TaskGateway taskGateway,
-                                   UpdateLessonProgress updateLessonProgress) {
-        return new AttemptTask(taskAttemptGateway, taskGateway, updateLessonProgress);
+                                   LessonProgressFacade lessonProgressFacade) {
+        return new AttemptTask(taskAttemptGateway, taskGateway, lessonProgressFacade);
     }
 
     @Bean
@@ -140,9 +140,9 @@ public class UseCasesConfiguration {
     }
 
     @Bean
-    public UpdateLessonProgress updateLessonProgress(LessonProgressGateway lessonProgressGateway,
+    public LessonProgressFacade updateLessonProgress(LessonProgressGateway lessonProgressGateway,
                                                      TaskAttemptGateway taskAttemptGateway, TaskGateway taskGateway) {
-        return new UpdateLessonProgress(lessonProgressGateway, taskAttemptGateway, taskGateway);
+        return new LessonProgressFacade(lessonProgressGateway, taskAttemptGateway, taskGateway);
     }
 
 

@@ -5,7 +5,7 @@ import com.gitmadeeasy.entities.lessonProgress.LessonProgressGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
-import com.gitmadeeasy.usecases.lessonProgress.UpdateLessonProgress;
+import com.gitmadeeasy.usecases.lessonProgress.LessonProgressFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,11 +22,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class UpdateLessonProgressTest {
+class LessonProgressFacadeTest {
     @Mock private LessonProgressGateway lessonProgressGateway;
     @Mock private TaskAttemptGateway taskAttemptGateway;
     @Mock private TaskGateway taskGateway;
-    @InjectMocks private UpdateLessonProgress updateLessonProgress;
+    @InjectMocks private LessonProgressFacade lessonProgressFacade;
 
     private static final String USER_ID = "1";
     private static final String LESSON_ID = "1";
@@ -54,7 +54,7 @@ class UpdateLessonProgressTest {
         when(this.taskGateway.countTasksInLesson(LESSON_ID)).thenReturn(3);
 
         // Act
-        this.updateLessonProgress.update(USER_ID, LESSON_ID, completedTaskProgress);
+        this.lessonProgressFacade.update(USER_ID, LESSON_ID, completedTaskProgress);
 
         // Assert
         assertEquals(completedTaskProgress.getTaskProgressId(), existingLessonProgress.getCurrentTaskProgressId());
@@ -74,7 +74,7 @@ class UpdateLessonProgressTest {
         when(this.taskGateway.countTasksInLesson(LESSON_ID)).thenReturn(3);
 
         // Act
-        this.updateLessonProgress.update(USER_ID, LESSON_ID, inProgressTaskProgress);
+        this.lessonProgressFacade.update(USER_ID, LESSON_ID, inProgressTaskProgress);
 
         // Assert
         assertEquals(inProgressTaskProgress.getTaskProgressId(), existing.getCurrentTaskProgressId());
@@ -93,7 +93,7 @@ class UpdateLessonProgressTest {
         when(this.lessonProgressGateway.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        this.updateLessonProgress.update(USER_ID, LESSON_ID, completedTaskProgress);
+        this.lessonProgressFacade.update(USER_ID, LESSON_ID, completedTaskProgress);
 
         // Assert
         verify(this.lessonProgressGateway).save(any(LessonProgress.class));
@@ -109,7 +109,7 @@ class UpdateLessonProgressTest {
         when(this.lessonProgressGateway.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        this.updateLessonProgress.update(USER_ID, LESSON_ID, inProgressTaskProgress);
+        this.lessonProgressFacade.update(USER_ID, LESSON_ID, inProgressTaskProgress);
 
         // Assert
         verify(this.lessonProgressGateway).save(any(LessonProgress.class));

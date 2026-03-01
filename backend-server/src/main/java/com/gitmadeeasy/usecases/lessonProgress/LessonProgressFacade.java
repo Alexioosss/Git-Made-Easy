@@ -9,13 +9,13 @@ import com.gitmadeeasy.entities.tasks.TaskGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UpdateLessonProgress {
+public class LessonProgressFacade {
     private final LessonProgressGateway lessonProgressGateway;
     private final TaskAttemptGateway taskAttemptGateway;
     private final TaskGateway taskGateway;
-    private static final Logger log = LoggerFactory.getLogger(UpdateLessonProgress.class);
+    private static final Logger log = LoggerFactory.getLogger(LessonProgressFacade.class);
 
-    public UpdateLessonProgress(LessonProgressGateway lessonProgressGateway,
+    public LessonProgressFacade(LessonProgressGateway lessonProgressGateway,
                                 TaskAttemptGateway taskAttemptGateway, TaskGateway taskGateway) {
         this.lessonProgressGateway = lessonProgressGateway;
         this.taskAttemptGateway = taskAttemptGateway;

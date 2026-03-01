@@ -5,7 +5,7 @@ import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
 import com.gitmadeeasy.usecases.attemptTask.dto.TaskAttemptRequest;
-import com.gitmadeeasy.usecases.lessonProgress.UpdateLessonProgress;
+import com.gitmadeeasy.usecases.lessonProgress.LessonProgressFacade;
 import com.gitmadeeasy.usecases.tasks.exceptions.TaskNotFoundWithIdException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,14 +13,14 @@ import org.slf4j.LoggerFactory;
 public class AttemptTask {
     private final TaskAttemptGateway taskAttemptGateway;
     private final TaskGateway taskGateway;
-    private final UpdateLessonProgress updateLessonProgress;
+    private final LessonProgressFacade lessonProgressFacade;
     private static final Logger log = LoggerFactory.getLogger(AttemptTask.class);
 
     public AttemptTask(TaskAttemptGateway taskAttemptGateway, TaskGateway taskGateway,
-                       UpdateLessonProgress updateLessonProgress) {
+                       LessonProgressFacade lessonProgressFacade) {
         this.taskAttemptGateway = taskAttemptGateway;
         this.taskGateway = taskGateway;
-        this.updateLessonProgress = updateLessonProgress;
+        this.lessonProgressFacade = lessonProgressFacade;
     }
 
     public TaskProgress attempt(String userId, String lessonId, String taskId, TaskAttemptRequest request) {
@@ -39,7 +39,7 @@ public class AttemptTask {
 
         TaskProgress savedTaskProgress = this.taskAttemptGateway.save(taskProgress);
         log.info("Saved user's task attempt");
-        updateLessonProgress.update(userId, lessonId, savedTaskProgress);
+        this.lessonProgressFacade.update(userId, lessonId, savedTaskProgress);
         log.info("Updating user progress on lessonID={}", lessonId);
         return savedTaskProgress;
     }
