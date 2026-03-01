@@ -2,6 +2,7 @@ package com.gitmadeeasy.integration.controllers;
 
 import com.gitmadeeasy.infrastructure.gateways.users.JpaUserSchema;
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.jpa.JpaUserRepository;
+import com.gitmadeeasy.infrastructure.mappers.users.UserResponseMapper;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.auth.dto.LoginRequest;
 import io.jsonwebtoken.Jwts;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.charset.StandardCharsets;
@@ -23,6 +25,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AuthenticationControllerIntegrationTest {
     @Autowired MockMvc mockMvc;
     @Autowired JpaUserRepository userRepository;
+    @MockitoBean private UserResponseMapper mapper;
 
     @BeforeEach
     public void setUp() { this.userRepository.deleteAll(); }
@@ -116,6 +120,46 @@ class AuthenticationControllerIntegrationTest {
     void refreshToken_WhenNoTokenPresent_ThrowsException() throws Exception {
         // Act & Assert
         this.mockMvc.perform(post("/auth/refresh"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("Refresh Token - Blank Token Returns 401")
+    void refreshToken_WhenTokenBlank_ThrowsInvalidTokenException() throws Exception {
+        // Act & Assert
+        this.mockMvc.perform(post("/auth/refresh")
+                        .requestAttr("jwt", ""))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("Get Current User - With Valid Token Returns UserResponse")
+    void getCurrentUser_WithValidToken_ReturnsUserResponse() throws Exception {
+        // Arrange
+        saveMockUserInDataStore();
+        JpaUserSchema user = this.userRepository.findByEmailAddress("myemail1@gmail.com").get();
+        LoginRequest loginRequest = new LoginRequest(user.getEmailAddress(), "MyPassword123'");
+        String loginResponse = this.mockMvc.perform(post("/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.objectToJson(loginRequest)))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        String accessToken = JsonUtil.readJson(loginResponse, "accessToken");
+
+        // Act & Assert
+        this.mockMvc.perform(get("/auth/me")
+                        .header("Authorization", "Bearer " + accessToken)
+                        .principal(user::getId))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Get Current User - Principal Is Null Returns 401")
+    void getCurrentUser_WhenPrincipalNull_ReturnsUnauthorized() throws Exception {
+        // Act & Assert
+        this.mockMvc.perform(get("/auth/me"))
                 .andExpect(status().isUnauthorized());
     }
 

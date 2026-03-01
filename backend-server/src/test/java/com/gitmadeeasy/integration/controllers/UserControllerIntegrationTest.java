@@ -1,7 +1,7 @@
 package com.gitmadeeasy.integration.controllers;
 
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.jpa.JpaUserRepository;
-import com.gitmadeeasy.testConfig.FirebaseTestConfig;
+import com.gitmadeeasy.testConfig.TestConfig;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.users.dto.CreateUserRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
-@Import(FirebaseTestConfig.class)
 class UserControllerIntegrationTest {
     @Autowired private MockMvc mockMvc;
     @Autowired private JpaUserRepository userRepository;

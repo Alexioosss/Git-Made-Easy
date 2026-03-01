@@ -1,6 +1,9 @@
 package com.gitmadeeasy.unit.infrastructure.controllers;
 
+import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.infrastructure.controllers.AuthenticationController;
+import com.gitmadeeasy.infrastructure.dto.users.UserResponse;
+import com.gitmadeeasy.infrastructure.mappers.users.UserResponseMapper;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.auth.LoginUser;
 import com.gitmadeeasy.usecases.auth.LogoutUser;
@@ -17,8 +20,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.security.Principal;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -30,6 +36,7 @@ class AuthenticationControllerTest {
     @MockitoBean private LogoutUser logoutUser;
     @MockitoBean private RefreshToken refreshToken;
     @MockitoBean private GetUserById getUserById;
+    @MockitoBean private UserResponseMapper userResponseMapper;
 
 
     @Test
@@ -108,5 +115,32 @@ class AuthenticationControllerTest {
                         .requestAttr("jwt", "my-old-jwt-token"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(JsonUtil.objectToJson(refreshedToken)));
+    }
+
+    @Test
+    @DisplayName("Get Current User - Returns UserResponse and 200")
+    void getCurrentUser_WhenPrincipalIsPresent_ReturnsUserResponse() throws Exception {
+        // Arrange
+        String userId = "firebase-myemail1@gmail.com";
+        Principal principal = () -> userId;
+
+        User mockUser = new User(userId, "John", "Doe", "myemail1@gmail.com");
+        UserResponse mockResponse = new UserResponse(userId, "John", "Doe", "myemail1@gmail.com", false);
+
+        when(this.getUserById.execute(userId)).thenReturn(mockUser);
+        when(this.userResponseMapper.toUserResponse(mockUser)).thenReturn(mockResponse);
+
+        // Act & Assert
+        this.mockMvc.perform(get("/auth/me").principal(principal))
+                .andExpect(status().isOk())
+                .andExpect(content().json(JsonUtil.objectToJson(mockResponse)));
+    }
+
+    @Test
+    @DisplayName("Get Current User - No Principal - Returns 401")
+    void getCurrentUser_WhenPrincipalIsNull_ReturnsUnauthorized() throws Exception {
+        // Act & Assert
+        this.mockMvc.perform(get("/auth/me"))
+                .andExpect(status().isUnauthorized());
     }
 }

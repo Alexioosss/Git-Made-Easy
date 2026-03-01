@@ -37,4 +37,5 @@ build/
 
 # Ignore sensitive configuration files
 /src/main/resources/seed/
+/src/main/resources/service-account.json
 *.local.properties

@@ -1,6 +1,8 @@
 package com.gitmadeeasy.infrastructure.controllers;
 
 import com.gitmadeeasy.entities.users.User;
+import com.gitmadeeasy.infrastructure.dto.users.UserResponse;
+import com.gitmadeeasy.infrastructure.mappers.users.UserResponseMapper;
 import com.gitmadeeasy.usecases.auth.LoginUser;
 import com.gitmadeeasy.usecases.auth.LogoutUser;
 import com.gitmadeeasy.usecases.auth.RefreshToken;
@@ -24,13 +26,16 @@ public class AuthenticationController {
     private final LogoutUser logoutUser;
     private final RefreshToken refreshToken;
     private final GetUserById getUserById;
+    private final UserResponseMapper userResponseMapper;
     private final Logger log = LoggerFactory.getLogger(AuthenticationController.class);
 
-    public AuthenticationController(LoginUser loginUser, LogoutUser logoutUser, RefreshToken refreshToken, GetUserById getUserById) {
+    public AuthenticationController(LoginUser loginUser, LogoutUser logoutUser, RefreshToken refreshToken,
+                                    GetUserById getUserById, UserResponseMapper userResponseMapper) {
         this.loginUser = loginUser;
         this.logoutUser = logoutUser;
         this.refreshToken = refreshToken;
         this.getUserById = getUserById;
+        this.userResponseMapper = userResponseMapper;
     }
 
     @PostMapping("/login")
@@ -38,7 +43,7 @@ public class AuthenticationController {
                                                HttpServletResponse response) {
         log.info("POST /login - Logging a user in with email address={}", loginRequest.email());
 
-        AuthToken authToken = loginUser.execute(loginRequest);
+        AuthToken authToken = this.loginUser.execute(loginRequest);
         setAuthenticationCookie(response, authToken.accessToken());
 
         log.info("User logged in successfully.");
@@ -50,7 +55,7 @@ public class AuthenticationController {
         log.info("POST /logout - Logging out a user using their JWT Token from the request");
         String token = (String) request.getAttribute("jwt");
 
-        logoutUser.execute(token);
+        this.logoutUser.execute(token);
         clearAuthenticationCookie(response);
 
         log.info("User logged out successfully.");
@@ -63,7 +68,7 @@ public class AuthenticationController {
         String token = (String) request.getAttribute("jwt");
         if(token == null || token.isBlank()) { throw new InvalidTokenException(); }
 
-        AuthToken newToken = refreshToken.execute(token);
+        AuthToken newToken = this.refreshToken.execute(token);
         setAuthenticationCookie(response, newToken.accessToken());
 
         log.info("User's JWT Token refreshed successfully.");
@@ -71,10 +76,11 @@ public class AuthenticationController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<User> getCurrentUser(Principal principal) {
+    public ResponseEntity<UserResponse> getCurrentUser(Principal principal) {
         if(principal == null) { return ResponseEntity.status(401).build(); } // The token is expired but still valid
-        User user = this.getUserById.execute(principal.getName());
-        return ResponseEntity.ok(user);
+        User foundUser = this.getUserById.execute(principal.getName());
+        UserResponse userResponse = this.userResponseMapper.toUserResponse(foundUser);
+        return ResponseEntity.ok(userResponse);
     }
 
 
