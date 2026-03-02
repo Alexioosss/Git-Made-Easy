@@ -7,6 +7,7 @@ import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.testUtil.TaskTestDataFactory;
 import com.gitmadeeasy.usecases.attemptTask.AttemptTask;
 import com.gitmadeeasy.usecases.attemptTask.GetTaskProgress;
+import com.gitmadeeasy.usecases.attemptTask.SyncTaskProgress;
 import com.gitmadeeasy.usecases.attemptTask.dto.TaskAttemptRequest;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonNotFoundWithIdException;
 import com.gitmadeeasy.usecases.tasks.exceptions.TaskNotFoundWithIdException;
@@ -36,6 +37,7 @@ class TaskProgressControllerTest {
     @Autowired private MockMvc mockMvc;
     @MockitoBean private AttemptTask attemptTask;
     @MockitoBean private GetTaskProgress getTaskProgress;
+    @MockitoBean private SyncTaskProgress syncTaskProgress;
 
     private static final String USER_ID = "1";
     private static final String LESSON_ID = "1";

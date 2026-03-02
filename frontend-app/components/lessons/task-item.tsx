@@ -17,7 +17,7 @@ interface TaskItemProps {
   lessonId: string;
   isExpanded: boolean;
   onToggle: () => void;
-  onComplete?: (taskId: string) => void;
+  onComplete?: (taskId: string, answer: string) => void;
   isAuthenticated: boolean;
   progress?: TaskProgress;
 }
@@ -46,7 +46,7 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
       setFeedback({type: "success", message: wasAlreadyCompleted ? "Correct again! Attempt recorded." : "Correct! Well done."});
 
       if(isAuthenticated) { await GatewayFactory.instance.taskProgressGateway.recordTaskAttempt(lessonId, task.taskId, answer); }
-      if(!wasAlreadyCompleted && onComplete) { onComplete(task.taskId); }
+      if(!wasAlreadyCompleted && onComplete) { onComplete(task.taskId, answer); }
       
     } else { setFeedback({type: "error", message: "Not quite right. Try again!"}); }
   }, [answer, task.expectedCommand, task.taskId, isCompleted, onComplete]);
@@ -129,12 +129,6 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
             <div className={`mt-3 rounded-xl px-3 py-2 text-xl ${feedback.type === "success" ? "text-green-700 bg-green-100" : "text-red-700 bg-destructive/10 text-destructive"}`}>
               {feedback.message}
             </div>
-          )}
-
-          {!isAuthenticated && isCompleted && (
-            <p className="mt-3 text-xs text-muted-foreground">
-              P.S. Sign in to save your progress
-            </p>
           )}
         </div>
       )}

@@ -1,11 +1,8 @@
 import { GatewayFactory } from "@/config/GatewayFactory";
 
 export async function getCurrentUser() {
-    try {
-        return await GatewayFactory.instance.authGateway.getCurrentUser();
-    } catch {
-        return null;
-    }
+    try { return await GatewayFactory.instance.authGateway.getCurrentUser(); }
+    catch { return null; }
 }
 
 export async function logoutUser() {
@@ -13,9 +10,7 @@ export async function logoutUser() {
         await GatewayFactory.instance.authGateway.logout();
         document.cookie = "access_token=; Max-Age=0; path=/;";
         return true;
-    } catch {
-        return false;
-    }
+    } catch { return false; }
 }
 
 export function hasToken() {

@@ -8,6 +8,7 @@ import com.gitmadeeasy.entities.tasks.TaskGateway;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.attemptTask.AttemptTask;
 import com.gitmadeeasy.usecases.attemptTask.GetTaskProgress;
+import com.gitmadeeasy.usecases.attemptTask.SyncTaskProgress;
 import com.gitmadeeasy.usecases.auth.LoginUser;
 import com.gitmadeeasy.usecases.auth.LogoutUser;
 import com.gitmadeeasy.usecases.auth.RefreshToken;
@@ -123,6 +124,12 @@ public class UseCasesConfiguration {
     @Bean
     public GetTaskProgress getTaskProgress(TaskAttemptGateway taskAttemptGateway, LessonGateway lessonGateway) {
         return new GetTaskProgress(taskAttemptGateway, lessonGateway);
+    }
+
+    @Bean
+    public SyncTaskProgress syncTaskProgress(TaskAttemptGateway taskAttemptGateway, TaskGateway taskGateway,
+                                             LessonProgressFacade lessonGateway) {
+        return new SyncTaskProgress(taskAttemptGateway, taskGateway, lessonGateway);
     }
 
 

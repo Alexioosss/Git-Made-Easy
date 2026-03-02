@@ -51,6 +51,7 @@ export default function LessonPage() {
             if(progressResult.ok && progressResult.data) {
                 const progressList: LessonProgress[] = progressResult.data;
                 const progressMap = Object.fromEntries(progressList.map(progress => [progress.lessonId, progress]));
+                console.log(progressMap);
                 setProgressMap(progressMap);
             }
 

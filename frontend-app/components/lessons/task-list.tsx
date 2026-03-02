@@ -1,5 +1,6 @@
 "use client";
 
+import ProgressManager from "@/lib/progressManager";
 import { useState, useCallback, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { Lesson } from "@/types/lesson";
@@ -9,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, PartyPopper } from "lucide-react";
 import { getCurrentUser, hasToken } from "@/lib/auth";
 import { GatewayFactory } from "@/config/GatewayFactory";
+import { LocalTaskProgress } from "@/infrastructure/persistence/localProgressData";
 
 interface TaskListProps {
   lesson: Lesson;
@@ -62,8 +64,27 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
   const completedCount = new Set([...savedCompletedIds, ...sessionCompletedIds]).size;
   const completionPercent = lesson.tasks.length > 0 ? Math.round((completedCount / lesson.tasks.length) * 100) : 0;
 
-  const handleTaskComplete = useCallback(async (taskId: string) => {
+
+  const handleTaskComplete = useCallback(async (taskId: string, answer: string) => {
     setSessionCompletedIds((prev) => new Set(prev).add(taskId));
+    const currentProgress = taskProgressMap[taskId];
+
+    const taskProgress: LocalTaskProgress = {
+      taskId: taskId,
+      answer: answer,
+      status: "COMPLETED",
+      attempts: (currentProgress?.attempts || 0) + 1,
+      lastInput: answer,
+      lastError: "",
+      startedAt: currentProgress?.startedAt || new Date().toISOString(),
+      completedAt: new Date().toISOString(),
+    };
+
+    if(!hasToken()) { // If the user is not logged in / authenticated, the progress made by the user is saved locally
+      await ProgressManager.updateLesson(lesson.lessonId, taskProgress);
+    } else { // If the user is logged in, any attempt made is directly saved in the backend
+      await GatewayFactory.instance.taskProgressGateway.recordTaskAttempt(lesson.lessonId, taskId, answer);
+    }
   }, [lesson.lessonId]);
 
   return (

@@ -47,6 +47,7 @@ public class LessonsDataLoader implements CommandLineRunner {
         List<Lesson> lessons = new ArrayList<>();
 
         if(this.seedProperties.isFromFile()) {
+            log.info("Loading lessons data from file.");
             for(String filePath : this.seedProperties.getFilePath()) {
                 try {
                     List<Lesson> loaded = loadFromFile(filePath);
@@ -85,17 +86,16 @@ public class LessonsDataLoader implements CommandLineRunner {
     }
 
     private void seedLessons(List<Lesson> lessons) {
-        lessons.forEach(lesson -> {
+        for(Lesson lesson : lessons) {
             Lesson savedLesson = this.lessonGateway.createLesson(lesson);
             List<String> taskIds = new ArrayList<>();
-            lesson.getTasks().forEach(task -> {
+            for(Task task : lesson.getTasks()) {
                 task.setTaskId(null);
                 task.setLessonId(savedLesson.getLessonId());
-
                 Task savedTask = this.taskGateway.createTask(task);
                 taskIds.add(savedTask.getTaskId());
-            });
+            }
             this.lessonGateway.updateTaskIds(savedLesson.getLessonId(), taskIds);
-        });
+        }
     }
 }
