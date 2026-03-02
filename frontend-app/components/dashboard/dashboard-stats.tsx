@@ -55,7 +55,7 @@ export function DashboardStats({ data } : { data: DashboardData }) {
               <p className="truncate text-xl font-bold text-card-foreground sm:text-2xl">
                 {stat.value}
               </p>
-              <p className="truncate text-xs text-muted-foreground">
+              <p className="truncate text-md text-muted-foreground">
                 {stat.label}
               </p>
             </div>

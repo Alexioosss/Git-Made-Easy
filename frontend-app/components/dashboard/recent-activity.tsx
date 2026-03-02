@@ -13,6 +13,7 @@ interface RecentActivityProps {
 
 export function RecentActivity({ activities }: RecentActivityProps) {
   const hasActivities = activities && activities.length > 0;
+  console.log(activities);
 
   return (
     <div>
@@ -42,7 +43,7 @@ export function RecentActivity({ activities }: RecentActivityProps) {
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground">
                     {activity.attempts} attempt
-                    {activity.attempts !== 1 ? "s" : ""} &middot;{" "}
+                    {activity.attempts !== 1 ? "s" : ""}
                   </p>
                 </div>
               </div>

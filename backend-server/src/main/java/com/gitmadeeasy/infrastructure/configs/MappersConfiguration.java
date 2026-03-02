@@ -17,7 +17,9 @@ public class MappersConfiguration {
     }
 
     @Bean
-    public LessonSchemaMapper lessonSchemaMapper() { return new LessonSchemaMapper(); }
+    public LessonSchemaMapper lessonSchemaMapper(TaskSchemaMapper taskSchemaMapper) {
+        return new LessonSchemaMapper(taskSchemaMapper);
+    }
 
     @Bean
     public TaskSchemaMapper taskSchemaMapper() { return new TaskSchemaMapper(); }

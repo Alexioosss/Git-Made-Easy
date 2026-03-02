@@ -31,7 +31,7 @@ export function DashboardLessons({ lessons }: DashboardLessonsProps) {
 
       <div className="flex flex-col gap-3">
         {lessons.map((lesson) => {
-          const progressPercentage = lesson.totalTasksCount > 0 ? (lesson.completedTasksCount / lesson.totalTasksCount * 100) : 0;
+          const progressPercentage = lesson.totalTasksCount > 0 ? Math.round((lesson.completedTasksCount / lesson.totalTasksCount) * 1000) / 10 : 0;
           const isComplete = progressPercentage === 100;
           const hasStarted = lesson.completedTasksCount > 0;
 

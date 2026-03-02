@@ -5,7 +5,7 @@ import { DashboardStats } from "@/components/dashboard/dashboard-stats";
 import { RecentActivity } from "@/components/dashboard/recent-activity";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { GatewayFactory } from "@/config/GatewayFactory";
-import { getCurrentUser, hasToken } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth";
 import { DashboardData } from "@/types/dashboard";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

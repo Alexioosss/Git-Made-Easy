@@ -67,4 +67,8 @@ public class FirebaseTaskAttemptSchema {
     }
 
     public void setId(String id) { this.id = id; }
+
+    public void setLessonId(String lessonId) { this.lessonId = lessonId; }
+
+    public void setTaskTitle(String taskTitle) { this.taskTitle = taskTitle; }
 }

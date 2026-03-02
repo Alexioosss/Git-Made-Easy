@@ -37,6 +37,10 @@ class ProgressManager {
         this.progress[lessonId].completedTasks[taskProgress.taskId] = taskProgress;
         await this.storage.setProgress(this.progress);
     }
+
+    async clearProgress() {
+        await this.storage.clearProgress();
+    }
 }
 
 export default ProgressManager.getInstance();

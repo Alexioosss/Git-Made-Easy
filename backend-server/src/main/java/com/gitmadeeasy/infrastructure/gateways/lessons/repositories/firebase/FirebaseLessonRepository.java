@@ -1,9 +1,11 @@
 package com.gitmadeeasy.infrastructure.gateways.lessons.repositories.firebase;
 
 import com.gitmadeeasy.infrastructure.gateways.lessons.FirebaseLessonSchema;
+import com.gitmadeeasy.infrastructure.gateways.tasks.FirebaseTaskSchema;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -52,16 +54,18 @@ public class FirebaseLessonRepository {
 
     public List<FirebaseLessonSchema> findAll() {
         Query query = firestore.collection("lessons").orderBy("lessonOrder", Query.Direction.ASCENDING);
-        ApiFuture<QuerySnapshot> future = query.get();
         try {
-            QuerySnapshot snapshot = future.get();
-            return snapshot.getDocuments()
-                    .stream().map(doc -> {
-                        FirebaseLessonSchema schema = doc.toObject(FirebaseLessonSchema.class);
-                        schema.setId(doc.getId());
-                        return schema;
-                    }).toList();
-        } catch(InterruptedException | ExecutionException e) {
+            QuerySnapshot snapshot = query.get().get();
+            List<FirebaseLessonSchema> lessons = new ArrayList<>();
+            for (DocumentSnapshot doc : snapshot.getDocuments()) {
+                FirebaseLessonSchema schema = doc.toObject(FirebaseLessonSchema.class);
+                if (schema != null) {
+                    schema.setId(doc.getId());
+                    lessons.add(schema);
+                }
+            }
+            return lessons;
+        } catch (InterruptedException | ExecutionException e) {
             return List.of();
         }
     }

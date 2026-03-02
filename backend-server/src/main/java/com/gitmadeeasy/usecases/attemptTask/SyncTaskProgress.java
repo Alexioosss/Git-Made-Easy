@@ -37,10 +37,10 @@ public class SyncTaskProgress {
             TaskProgress existingProgress =
                     this.taskProgressGateway.findByUserIdAndTaskId(userId, update.taskId()).orElse(null);
 
-            LocalDate startedAtDate = null;
-            if (update.startedAt() != null) { startedAtDate = OffsetDateTime.parse(update.startedAt()).toLocalDate(); }
-            else { startedAtDate = LocalDate.now(); }
-            LocalDate completedAtDate = OffsetDateTime.parse(update.completedAt()).toLocalDate();
+            LocalDate startedAt = update.startedAt() != null ?
+                    OffsetDateTime.parse(update.startedAt()).toLocalDate() : LocalDate.now();
+            LocalDate completedAt = OffsetDateTime.parse(update.completedAt()).toLocalDate();
+
             TaskProgress progress = new TaskProgress(
                     existingProgress != null ? existingProgress.getTaskProgressId() : null,
                     userId, update.taskId(), lessonId,
@@ -49,11 +49,12 @@ public class SyncTaskProgress {
                     update.attempts() != null ? update.attempts() : 0,
                     update.answer(),
                     update.lastError() != null ? update.lastError() : "",
-                    startedAtDate,
-                    completedAtDate
+                    startedAt,
+                    completedAt
             );
 
             TaskProgress savedProgress = this.taskProgressGateway.save(progress);
+            log.info("Saved task progress. Task ID: {}, task status: {}", savedProgress.getTaskId(), savedProgress.getStatus());
             this.lessonProgressFacade.update(userId, lessonId, savedProgress);
             return savedProgress;
         }).collect(Collectors.toList());

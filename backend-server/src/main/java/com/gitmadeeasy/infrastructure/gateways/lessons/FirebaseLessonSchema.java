@@ -1,6 +1,7 @@
 package com.gitmadeeasy.infrastructure.gateways.lessons;
 
 import com.gitmadeeasy.entities.enums.DifficultyLevels;
+import com.gitmadeeasy.infrastructure.gateways.tasks.FirebaseTaskSchema;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ public class FirebaseLessonSchema {
     private DifficultyLevels difficulty;
     private Integer lessonOrder;
     private List<String> taskIds = new ArrayList<>();
+    private List<FirebaseTaskSchema> tasks = new ArrayList<>();
 
     protected FirebaseLessonSchema() {}
 
@@ -45,7 +47,11 @@ public class FirebaseLessonSchema {
         return taskIds;
     }
 
-    public void setTaskIds(List<String> taskIds) { this.taskIds = taskIds; }
+    public List<FirebaseTaskSchema> getTasks() { return tasks; }
 
     public void setId(String id) { this.id = id; }
+
+    public void setTaskIds(List<String> taskIds) { this.taskIds = taskIds; }
+
+    public void setTasks(List<FirebaseTaskSchema> tasks) { this.tasks = tasks; }
 }

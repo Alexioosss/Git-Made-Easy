@@ -48,7 +48,7 @@ public class GetDashboardData {
                             lesson.getLessonId(), userId, 0, lesson.getTasks().size()));
             return new LessonSummary(
                     lesson.getLessonId(), lesson.getTitle(), lesson.getLessonOrder(),
-                    progress.getCompletedTasksCount(), progress.getTotalTasksCount());
+                    progress.getCompletedTasksCount(), lesson.getTaskIds().size());
         }).toList();
 
         List<TaskProgress> tasksProgress = this.taskAttemptGateway.findAllByUserId(userId);

@@ -97,12 +97,12 @@ export default function LoginForm() {
                                 Password
                             </Label>
                             <div className="relative">
-                                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+                                <Input id="password" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
                                 placeholder="Enter your password" required className="bg-secondary text-foreground h-11 text-lg px-3 placeholder:text-lg" />
 
                                 <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                                 title={showPassword ? "Hide password" : "Show password"}
-                                onMouseDown={() => setShowPassword(true)} onMouseUp={() => setShowPassword(false)} onMouseLeave={() => setShowPassword(false)}>
+                                onClick={() => setShowPassword(!showPassword)}>
                                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                                 </button>
                             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useState, useCallback } from "react";
 import { Task } from "@/types/task";
@@ -30,7 +30,15 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
   const [localCompleted, setLocalCompleted] = useState(false);
 
   const isCompleted = progress?.status === "COMPLETED" || localCompleted;
+  const savedAnswer = progress?.lastInput ?? "";
   const totalAttempts = (progress?.attempts || 0) + localAttempts;
+
+  useEffect(() => {
+    if (isCompleted && savedAnswer) {
+      setAnswer(savedAnswer);
+    }
+  }, [isCompleted, savedAnswer]);
+
 
 
   const handleSubmit = useCallback(async (e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -106,12 +114,12 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
               <span className="absolute left-3 top-1/2 -translate-y-1/2 font-mono text-sm text-primary">
                 $
               </span>
-              <Input value={answer} onChange={(e) => { setAnswer(e.target.value); if(feedback) setFeedback(null); }}
+              <Input value={answer} disabled={isCompleted} onChange={(e) => { setAnswer(e.target.value); if(feedback) setFeedback(null); }}
               placeholder="Type your git command..." className="bg-secondary pl-7 font-mono text-sm text-foreground placeholder:text-muted-foreground placeholder:text-lg"/>
             </div>
             <div className="flex gap-2">
-              <Button type="submit" size="default" disabled={!answer.trim()} title="Submit your answer"
-              className={`flex-1 sm:flex-none transition-all duration-200 ${answer.trim() ? "hover:-translate-y-0.5 hover:shadow-md hover:shadow-primary/20" : ""}`}>
+              <Button type="submit" size="default" disabled={!answer.trim() || isCompleted} title="Submit your answer"
+              className={`flex-1 sm:flex-none transition-all duration-200 ${answer.trim() || !isCompleted ? "hover:-translate-y-0.5 hover:shadow-md hover:shadow-primary/20" : ""}`}>
                 <Send className="h-4 w-4" />
                 <span className="sm:hidden">Submit</span>
                 <span className="sr-only sm:not-sr-only">
@@ -126,7 +134,7 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
           </form>
 
           {feedback && (
-            <div className={`mt-3 rounded-xl px-3 py-2 text-xl ${feedback.type === "success" ? "text-green-700 bg-green-100" : "text-red-700 bg-destructive/10 text-destructive"}`}>
+            <div className={`mt-3 rounded-xl px-3 py-2 text-xl ${feedback.type === "success" ? "text-green-700 bg-green-200" : "text-red-700 bg-destructive/10 text-destructive"}`}>
               {feedback.message}
             </div>
           )}

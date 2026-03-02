@@ -23,6 +23,17 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
   const [sessionCompletedIds, setSessionCompletedIds] = useState<Set<string>>(new Set());
   const [taskProgressMap, setTaskProgressMap] = useState<Record<string, any>>({});
 
+  const savedCompletedIds = useMemo(() => {
+    if(!isAuthenticated) return new Set<string>();
+    const ids = new Set<string>();
+
+    for(const task of lesson.tasks) {
+      const progress = taskProgressMap[task.taskId];
+      if(progress?.status == "COMPLETED") { ids.add(task.taskId); }
+    }
+    return ids;
+  }, [isAuthenticated, lesson.tasks, taskProgressMap]);
+
   useEffect(() => {
     async function checkAuthentication() {
       if(hasToken()) {
@@ -32,6 +43,17 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
     }
     checkAuthentication();
   }, []);
+
+  useEffect(() => {
+    const firstIncomplete = lesson.tasks.find(t => !savedCompletedIds.has(t.taskId));
+    if (firstIncomplete) {
+      setExpandedTaskId(firstIncomplete.taskId);
+    } else {
+      // all completed → expand first
+      setExpandedTaskId(lesson.tasks[0]?.taskId ?? null);
+    }
+  }, [lesson.tasks, savedCompletedIds]);
+
 
   useEffect(() => {
     async function loadProgress() {
@@ -48,17 +70,6 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
     }
     loadProgress();
   }, [isAuthenticated, lesson.lessonId, lesson.tasks]);
-
-  const savedCompletedIds = useMemo(() => {
-    if(!isAuthenticated) return new Set<string>();
-    const ids = new Set<string>();
-
-    for(const task of lesson.tasks) {
-      const progress = taskProgressMap[task.taskId];
-      if(progress?.status == "COMPLETED") { ids.add(task.taskId); }
-    }
-    return ids;
-  }, [isAuthenticated, lesson.tasks, taskProgressMap]);
 
   const allCompleted = lesson.tasks.every((t) => savedCompletedIds.has(t.taskId) || sessionCompletedIds.has(t.taskId));
   const completedCount = new Set([...savedCompletedIds, ...sessionCompletedIds]).size;
@@ -112,7 +123,7 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
 
       {/* Next lesson banner */}
       {allCompleted && (
-        <div className="mt-4 flex flex-col items-center gap-4 rounded-xl border border-green-300 bg-green-50 p-6 text-center">
+        <div className="mt-4 flex flex-col items-center gap-4 rounded-xl border border-green-300 bg-green-300 p-6 text-center">
           {lesson.tasks.length === 0 ? (
             <div className="flex items-center gap-2 text-primary">
               <span className="font-semibold">The current lesson has no tasks</span>
@@ -125,12 +136,12 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
           )}
           {nextLesson ? (
             <>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-md text-muted-foreground">
                 Ready to move on? Continue to{" "}
                 <span className="text-foreground">{nextLesson.title}</span>.
               </p>
               <Button asChild>
-                <Link href={`/lessons/${nextLesson.lessonId}`}>
+                <Link href={`/lessons/${nextLesson.lessonId}`} title="Go to the next lesson">
                   Next Lesson
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
