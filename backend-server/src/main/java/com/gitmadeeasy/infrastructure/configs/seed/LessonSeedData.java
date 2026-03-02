@@ -104,6 +104,24 @@ public class LessonSeedData {
         ));
         lessons.add(remote);
 
+        Lesson rebaseAndSquash = new Lesson("Rebase & Commit Squashing",
+                "Learn how to rebase branches and squash commits to maintain a clean history.", DifficultyLevels.HARD, 6);
+        rebaseAndSquash.setTasks(List.of(
+                new Task(rebaseAndSquash.getLessonId(), "Rebasing Branches",
+                        "Rebase your feature branch onto main to keep history linear",
+                        "git rebase main",
+                        "Rebase your branch into branch 'main'", 1, DifficultyLevels.HARD),
+                new Task(rebaseAndSquash.getLessonId(), "Resolving Rebase Conflicts",
+                        "Handle conflicts during rebase and continue rebase process",
+                        "git rebase --continue",
+                        "Resolve conflicts manually, stage them, then rebase and continue", 2, DifficultyLevels.HARD),
+                new Task(rebaseAndSquash.getLessonId(), "Force Push After Rebase",
+                        "Force push your rebased branch to remote after rewriting history",
+                        "git push --force",
+                        "Be cautious with force pushing, especially on shared branches.", 3, DifficultyLevels.HARD)
+        ));
+        lessons.add(rebaseAndSquash);
+
         return lessons;
     }
 }
