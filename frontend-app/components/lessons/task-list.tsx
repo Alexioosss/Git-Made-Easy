@@ -11,6 +11,7 @@ import { ArrowRight, PartyPopper } from "lucide-react";
 import { getCurrentUser, hasToken } from "@/lib/auth";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { LocalTaskProgress } from "@/infrastructure/persistence/localProgressData";
+import progressManager from "@/lib/progressManager";
 
 interface TaskListProps {
   lesson: Lesson;
@@ -19,20 +20,8 @@ interface TaskListProps {
 
 export function TaskList({ lesson, nextLesson }: TaskListProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
-  const [sessionCompletedIds, setSessionCompletedIds] = useState<Set<string>>(new Set());
+  const [expandedTaskIds, setExpandedTaskIds] = useState<Set<string>>(new Set());
   const [taskProgressMap, setTaskProgressMap] = useState<Record<string, any>>({});
-
-  const savedCompletedIds = useMemo(() => {
-    if(!isAuthenticated) return new Set<string>();
-    const ids = new Set<string>();
-
-    for(const task of lesson.tasks) {
-      const progress = taskProgressMap[task.taskId];
-      if(progress?.status == "COMPLETED") { ids.add(task.taskId); }
-    }
-    return ids;
-  }, [isAuthenticated, lesson.tasks, taskProgressMap]);
 
   useEffect(() => {
     async function checkAuthentication() {
@@ -43,60 +32,81 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
     }
     checkAuthentication();
   }, []);
-
+  
   useEffect(() => {
-    const firstIncomplete = lesson.tasks.find(t => !savedCompletedIds.has(t.taskId));
-    if (firstIncomplete) {
-      setExpandedTaskId(firstIncomplete.taskId);
-    } else {
-      // all completed → expand first
-      setExpandedTaskId(lesson.tasks[0]?.taskId ?? null);
-    }
-  }, [lesson.tasks, savedCompletedIds]);
-
+    if (Object.keys(taskProgressMap).length === 0) return;
+    const nextTask = lesson.tasks.find(task => { const p = taskProgressMap[task.taskId]; return p?.status !== "COMPLETED"; });
+    if (nextTask) { setExpandedTaskIds(prev => { const next = new Set(prev); next.add(nextTask.taskId); return next; }); }
+  }, [lesson.tasks, taskProgressMap]);
 
   useEffect(() => {
     async function loadProgress() {
-      if(isAuthenticated) {
-        const map: Record<string, any> = {};
-        for(const task of lesson.tasks) {
+      let map: Record<string, any> = {};
+      if (isAuthenticated) {
+        for (const task of lesson.tasks) {
           try {
             const progress = await GatewayFactory.instance.taskProgressGateway.getTaskProgress(lesson.lessonId, task.taskId);
             map[task.taskId] = progress;
-          } catch {} // No progress, ignore / continue
+          } catch { map[task.taskId] = { status: "NOT_STARTED", attempts: 0 }; }
         }
-        setTaskProgressMap(map);
+      } else {
+        const raw = await progressManager.getProgress();
+        const flat: Record<string, any> = {};
+        for (const lessonId in raw) {
+          const lesson = raw[lessonId];
+          for (const taskId in lesson.completedTasks) {
+            flat[taskId] = lesson.completedTasks[taskId];
+          }
+        }
+        for (const task of lesson.tasks) {
+          if (!flat[task.taskId]) {
+            flat[task.taskId] = { status: "NOT_STARTED", attempts: 0 };
+          }
+        }
+        map = flat;
+        for(const task of lesson.tasks) {
+          if(!map[task.taskId]) {
+            map[task.taskId] = { status: "NOT_STARTED", attempts: 0 };
+          }
+        }
       }
+      setTaskProgressMap(map);
     }
     loadProgress();
   }, [isAuthenticated, lesson.lessonId, lesson.tasks]);
 
-  const allCompleted = lesson.tasks.every((t) => savedCompletedIds.has(t.taskId) || sessionCompletedIds.has(t.taskId));
-  const completedCount = new Set([...savedCompletedIds, ...sessionCompletedIds]).size;
+  const toggleTask = (taskId: string) => {
+    setExpandedTaskIds(prev => {
+      const next = new Set(prev);
+      if (next.has(taskId)) next.delete(taskId);
+      else next.add(taskId);
+      return next;
+    });
+  };
+
+  const completedCount = lesson.tasks.filter((task) => { const progress = taskProgressMap[task.taskId]; return progress?.status === "COMPLETED"; }).length;
+  const allCompleted = completedCount === lesson.tasks.length;
   const completionPercent = lesson.tasks.length > 0 ? Math.round((completedCount / lesson.tasks.length) * 100) : 0;
 
-
-  const handleTaskComplete = useCallback(async (taskId: string, answer: string) => {
-    setSessionCompletedIds((prev) => new Set(prev).add(taskId));
-    const currentProgress = taskProgressMap[taskId];
-
+  const handleTaskComplete = useCallback(async (taskId: string, answer: string, isCorrect: boolean) => {
+    const prev = taskProgressMap[taskId];
+    const newAttempts = (prev?.attempts || 0) + 1;
+    const newStatus = isCorrect ? "COMPLETED" : prev?.status === "COMPLETED" ? "COMPLETED" : "IN_PROGRESS";
     const taskProgress: LocalTaskProgress = {
-      taskId: taskId,
-      answer: answer,
-      status: "COMPLETED",
-      attempts: (currentProgress?.attempts || 0) + 1,
+      taskId,
+      status: newStatus,
+      attempts: newAttempts,
       lastInput: answer,
       lastError: "",
-      startedAt: currentProgress?.startedAt || new Date().toISOString(),
-      completedAt: new Date().toISOString(),
+      startedAt: prev?.startedAt || new Date().toISOString(),
+      completedAt: newStatus === "COMPLETED" ? prev?.completedAt || new Date().toISOString() : prev?.completedAt
     };
 
-    if(!hasToken()) { // If the user is not logged in / authenticated, the progress made by the user is saved locally
-      await ProgressManager.updateLesson(lesson.lessonId, taskProgress);
-    } else { // If the user is logged in, any attempt made is directly saved in the backend
-      await GatewayFactory.instance.taskProgressGateway.recordTaskAttempt(lesson.lessonId, taskId, answer);
-    }
-  }, [lesson.lessonId]);
+    if (!hasToken()) { await ProgressManager.updateLesson(lesson.lessonId, taskProgress); }
+    else {} // Backend already recorded the user attempt
+    setTaskProgressMap(prevMap => ({ ...prevMap, [taskId]: taskProgress }));
+
+  }, [lesson.lessonId, taskProgressMap]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -116,8 +126,8 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
       </div>
 
       {lesson.tasks.map((task) => (
-        <TaskItem key={task.taskId} task={task} lessonId={lesson.lessonId} isExpanded={expandedTaskId === task.taskId}
-        onToggle={() => setExpandedTaskId(expandedTaskId === task.taskId ? null : task.taskId)}
+        <TaskItem key={task.taskId} task={task} lessonId={lesson.lessonId} isExpanded={expandedTaskIds.has(task.taskId)}
+        onToggle={() => toggleTask(task.taskId)}
         onComplete={handleTaskComplete} isAuthenticated={isAuthenticated} progress={taskProgressMap[task.taskId]} />
       ))}
 

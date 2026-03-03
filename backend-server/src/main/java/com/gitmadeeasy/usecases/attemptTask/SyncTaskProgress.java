@@ -47,7 +47,7 @@ public class SyncTaskProgress {
                     task.getTitle(),
                     update.status() != null ? TaskCompletionStatus.valueOf(update.status()) : TaskCompletionStatus.IN_PROGRESS,
                     update.attempts() != null ? update.attempts() : 0,
-                    update.answer(),
+                    update.lastInput(),
                     update.lastError() != null ? update.lastError() : "",
                     startedAt,
                     completedAt

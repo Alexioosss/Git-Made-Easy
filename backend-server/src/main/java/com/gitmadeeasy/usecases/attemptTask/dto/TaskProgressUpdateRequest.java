@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record TaskProgressUpdateRequest(
         @NotBlank String taskId,
-        @NotBlank String answer,
         String status,
         @NotNull Integer attempts,
         String lastInput,

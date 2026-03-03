@@ -10,7 +10,6 @@ export async function syncProgressFromTemporaryStorage() {
 
             const taskUpdates = Object.values(lesson.completedTasks).map((task) => ({
                 taskId: task.taskId,
-                answer: task.answer,
                 status: task.status,
                 attempts: task.attempts,
                 lastInput: task.lastInput,

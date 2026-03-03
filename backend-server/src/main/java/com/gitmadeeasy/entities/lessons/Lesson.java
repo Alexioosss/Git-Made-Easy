@@ -17,6 +17,8 @@ public class Lesson {
     private final Integer lessonOrder;
     private List<Task> tasks = new ArrayList<>();
     private List<String> taskIds = new ArrayList<>();
+    private String longDescription;
+    private List<String> referenceLinks;
 
     @JsonCreator
     public Lesson(@JsonProperty("title") String title,
@@ -47,6 +49,16 @@ public class Lesson {
         this.lessonOrder = lessonOrder;
     }
 
+    public Lesson(String title, String description, DifficultyLevels difficulty,
+                  Integer lessonOrder, String longDescription, List<String> referenceLinks) {
+        this.title = title;
+        this.description = description;
+        this.difficulty = difficulty;
+        this.lessonOrder = lessonOrder;
+        this.longDescription = longDescription;
+        this.referenceLinks = referenceLinks != null ? referenceLinks : new ArrayList<>();
+    }
+
     public String getLessonId() {
         return lessonId;
     }
@@ -71,6 +83,10 @@ public class Lesson {
 
     public List<String> getTaskIds() { return taskIds; }
 
+    public String getLongDescription() { return longDescription; }
+
+    public List<String> getReferenceLinks() { return referenceLinks; }
+
     public void setLessonId(String lessonId) {
         this.lessonId = lessonId;
     }
@@ -78,6 +94,10 @@ public class Lesson {
     public void setTasks(List<Task> tasks) { this.tasks = tasks; }
 
     public void setTaskIds(List<String> taskIds) { this.taskIds = taskIds; }
+
+    public void setLongDescription(String longDescription) { this.longDescription = longDescription; }
+
+    public void setReferenceLinks(List<String> referenceLinks) { this.referenceLinks = referenceLinks; }
 
     @Override
     public String toString() {

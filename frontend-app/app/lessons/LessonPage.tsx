@@ -10,7 +10,6 @@ import { LessonProgress } from "@/types/taskProgress";
 import { useEffect, useState } from "react";
 
 export default function LessonPage() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [lessons, setLessons] = useState<Lesson[]>([]);
     const [progressMap, setProgressMap] = useState<Record<string, LessonProgress>>({});
     const [loading, setLoading] = useState(true);
@@ -19,42 +18,33 @@ export default function LessonPage() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const tokenExists = hasToken();
-            setIsAuthenticated(tokenExists);
-
             // Fetch all lessons for display
-            const response = await safeCallWrapper(lessonGateway.getAll());
+            const response = await safeCallWrapper(() => lessonGateway.getAll());
             if(!response.ok || !response.data) { setLessons([]); setLoading(false); return; }
 
             const lessons = response.data;
 
             const lessonsWithTasks = await Promise.all(
                 lessons.map(async (lesson) => {
-                    const tasksResult = await safeCallWrapper(lessonGateway.getTasksForLesson(lesson.lessonId));
+                    const tasksResult = await safeCallWrapper(() => lessonGateway.getTasksForLesson(lesson.lessonId));
                     return {
                         ...lesson,
-                        tasks: tasksResult.ok && tasksResult.data ? tasksResult.data : []
+                        tasks: Array.isArray(tasksResult.data) ? tasksResult.data : []
                     }
                 })
             );
             setLessons(lessonsWithTasks);
 
-            // If the user is not authenticated, skip fetching progress data
-            if(!tokenExists) { setIsAuthenticated(false); setLoading(false); return; }
-
-            const userResult = await safeCallWrapper(getCurrentUser());
-            if(!userResult.ok || !userResult.data) { setIsAuthenticated(false); setLoading(false); return; }
-            const user = userResult.data;
+            const userResult = await safeCallWrapper(() => getCurrentUser());
+            if(!userResult.ok || !userResult.data) { setLoading(false); return; }
             
             // Fetch progress for all tasks for this lesson
-            const progressResult = await safeCallWrapper(lessonProgressGateway.getAllLessonsProgress());
+            const progressResult = await safeCallWrapper(() => lessonProgressGateway.getAllLessonsProgress());
             if(progressResult.ok && progressResult.data) {
                 const progressList: LessonProgress[] = progressResult.data;
                 const progressMap = Object.fromEntries(progressList.map(progress => [progress.lessonId, progress]));
-                console.log(progressMap);
                 setProgressMap(progressMap);
             }
-
             setLoading(false);
         };
         fetchData();
@@ -90,7 +80,7 @@ export default function LessonPage() {
         
                 <div className="grid gap-4 sm:gap-6">
                     {lessons.map((lesson) => (
-                    <LessonCard key={lesson.lessonId} lesson={lesson} progress={ isAuthenticated ? progressMap[lesson.lessonId] : undefined} />
+                    <LessonCard key={lesson.lessonId} lesson={lesson} progress={ progressMap[lesson.lessonId]} />
                     ))}
                 </div>
             </div>

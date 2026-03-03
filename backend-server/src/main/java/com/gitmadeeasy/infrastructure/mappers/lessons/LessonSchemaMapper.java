@@ -40,6 +40,9 @@ public class LessonSchemaMapper {
                 lesson.getTitle(), lesson.getDescription(),
                 lesson.getDifficulty(), lesson.getLessonOrder());
         if (lesson.getLessonId() != null) { schema.setId(lesson.getLessonId()); }
+        schema.setTaskIds(lesson.getTaskIds());
+        schema.setTasks(lesson.getTasks().stream().map(this.taskSchemaMapper::toFirebaseSchema).toList());
+        schema.setLongDescription(lesson.getLongDescription());
         return schema;
     }
 
@@ -50,6 +53,7 @@ public class LessonSchemaMapper {
                 schema.getLessonOrder());
         lesson.setTaskIds(schema.getTaskIds());
         lesson.setTasks(schema.getTasks().stream().map(this.taskSchemaMapper::fromFirebaseSchema).toList());
+        lesson.setLongDescription(schema.getLongDescription());
         return lesson;
     }
 }

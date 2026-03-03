@@ -1,6 +1,5 @@
 export interface LocalTaskProgress {
     taskId: string;
-    answer: string;
     status: "NOT_STARTED" | "IN_PROGRESS" | "COMPLETED";
     attempts: number;
     lastInput: string;

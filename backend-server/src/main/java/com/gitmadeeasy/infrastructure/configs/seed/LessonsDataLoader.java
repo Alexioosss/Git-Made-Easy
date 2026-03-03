@@ -78,7 +78,7 @@ public class LessonsDataLoader implements CommandLineRunner {
             Resource resource = resourceLoader.getResource(filePath);
             if(!resource.exists()) { log.warn("Resource not found at path: {}", filePath); return List.of(); }
             try (InputStream inputStream = resource.getInputStream()) {
-                return this.objectMapper.readValue(inputStream, new TypeReference<List<Lesson>>() {});
+                return this.objectMapper.readValue(inputStream, new TypeReference<>() {});
             }
         } catch(Exception e) {
             throw new RuntimeException("Failed to load lessons from file: " + filePath, e);

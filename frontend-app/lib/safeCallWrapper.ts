@@ -1,6 +1,6 @@
-export async function safeCallWrapper<T>(promise: Promise<T>) {
+export async function safeCallWrapper<T>(fn: () => Promise<T>) {
     try {
-        const data = await promise;
+        const data = await fn();
         return { ok: true, data, error: null };
     } catch(error: any) {
         return {
