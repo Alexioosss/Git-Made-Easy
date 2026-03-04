@@ -49,6 +49,12 @@ public class LessonSeedData {
                         "git log", "Use the command that shows a list, or log, of all past commits",
                         4, DifficultyLevels.EASY)
         ));
+        filesAndCommits.setLongDescription("""
+                To do anything useful in Git, you first need one or more commits in your repository. A commit is created from the changes
+                to one or more files in a repository, review the differences, add them to the index, create a new commit from the contents
+                of the index, and repeat this cycle. Git's index is a staging area used to build up new commits. Rather than require all
+                changes in the working tree to make up for the next commit, Git allows files to be added incrementally to the index.
+                """); // McQuaid, M. (2014) Git in Practice
         lessons.add(filesAndCommits);
 
         Lesson branchingBasics = new Lesson("Branching Basics",
@@ -73,6 +79,14 @@ public class LessonSeedData {
                         "Use the branch command with the delete flag to remove a branch safely." +
                                 "Let's delete the branch my-new-branch", 5, DifficultyLevels.MEDIUM)
         ));
+        branchingBasics.setLongDescription("""
+                A branch in a version control system is an active parallel line of development (also called a codeline). They are used to isolate, separate,
+                and gather different types of work. For example, branches can be used to prevent your current unfinished work on a feature in
+                progress from interfering with the management of bug fixes, or to gather fixed for an older version of the developed software.
+                A single Git repository can have an arbitrarily large number of branches. Moreover, with a distributed version control system, such as Git,
+                there could be many repositories for a single project (known as forks or clones), some public and some private; each such repository will
+                have their own local branches. This can be considered source branching. Each developer would have at least one private clone of the project's public repository to work in.
+                """); // Narębski, J. (2024) Mastering Git : attain expert-level proficiency with Git by mastering distributed version control features. Second edition. Packt Publishing Ltd. Available at: https://www.oreilly.com/library/view/-/9781835086070/
         lessons.add(branchingBasics);
 
         Lesson mergingAndConflicts = new Lesson("Merging & Conflict Resolution",
@@ -96,6 +110,14 @@ public class LessonSeedData {
                         "If conflicts were resolved manually, Git requires a commit to finalize the merge." +
                                 "Recalling a previous task...", 4, DifficultyLevels.MEDIUM)
         ));
+        mergingAndConflicts.setLongDescription("""
+                Now that you have changes from other people in the remote-tracking branches, you need to combine them, perhaps also with your changes.
+                Alternatively, your work on a new feature, created and performed on a separate topic branch, is now ready to be included in the long-lived development branch and made available to other people.
+                Maybe you have created a bug fix and want to include it in all the long-lived graduation branches. In short, you want to join two divergent lines of development by integrating their changes.
+                Git provides a few different methods to combine changes and variations of these methods. One of these methods is a merge operation, joining two lines of development with a two-parent commit.
+                Another way to copy introduced work from one branch to another is via cherry-picking, which is creating a new commit with the same changeset on another line of development
+                (this is sometimes necessary to use). Alternatively, you can reapply changes, transplanting one branch on top of another with rebase. In many cases, Git will be able to combine changes automatically.
+                """); // Packt Publishing, Mastering Git - Second Edition (2024)
         lessons.add(mergingAndConflicts);
 
         Lesson remoteRepositories = new Lesson("Remote Repositories & Collaboration",
@@ -110,6 +132,11 @@ public class LessonSeedData {
                         "Let's push our local branch to the `main` branch of the remote repository. Remote repository is called my-new-branch",
                         2, DifficultyLevels.MEDIUM)
         ));
+        remoteRepositories.setLongDescription("""
+                When collaborating on any project managed with Git, you will interact often with a constant set of other repositories.
+                When cloning a repository, Git will create one remote for you—the origin remote, which stores information about where you cloned from—that is the
+                origin of your copy of the repository (hence the name). You can use this remote to fetch updates. This is the default remote.
+                """); // Packt Publishing, Mastering Git - Second Edition (2024)
         lessons.add(remoteRepositories);
 
         Lesson rebaseAndSquashing = new Lesson("Rebase & Commit Squashing",
@@ -130,6 +157,16 @@ public class LessonSeedData {
                         "git push --force",
                         "Be cautious with force pushing, especially on shared branches.", 3, DifficultyLevels.HARD)
         ));
+        rebaseAndSquashing.setLongDescription("""
+                Besides merging, Git supports an additional way to integrate changes from one branch into another – namely, the rebase operation.
+                Like a merge, it deals with the changes since the point of divergence (at least, by default).
+                However, while a merge creates a new commit by joining two branches, rebase takes the new commits from one branch
+                (i.e., takes the commits since the divergence) and reapplies them on top of the other branch.
+                With merge, you first switch to the branch to be merged and then use the merge command to select a branch to merge in.
+                With rebase, it is a bit different. First, you select a branch to rebase (i.e., the changes to reapply)
+                and then use the rebase command to select where to put it. In both cases, you first check out the branch to be modified,
+                where a new commit or commits would be (a merge commit in the case of merging, and a replay of commits in the case of rebasing)
+                """); // Packt Publishing, Mastering Git - Second Edition (2024)
         lessons.add(rebaseAndSquashing);
 
         return lessons;

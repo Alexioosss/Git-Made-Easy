@@ -16,12 +16,17 @@ public class FirebaseLessonProgressRepository {
     }
 
     public FirebaseLessonProgressSchema save(FirebaseLessonProgressSchema schema) {
-        if (schema.getId() == null) {
-            DocumentReference docRef = firestore.collection("lesson_progress").document();
-            schema.setId(docRef.getId());
+        try {
+            if (schema.getId() == null) {
+                DocumentReference docRef = firestore.collection("lesson_progress").document();
+                schema.setId(docRef.getId());
+            }
+            ApiFuture<WriteResult> future = firestore.collection("lesson_progress").document(schema.getId()).set(schema);
+            future.get();
+            return schema;
+        } catch(InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Failed to save lesson progress", e);
         }
-        firestore.collection("lesson_progress").document(schema.getId()).set(schema);
-        return schema;
     }
 
     public Optional<FirebaseLessonProgressSchema> findByUserIdAndLessonId(String userId, String lessonId) {

@@ -16,12 +16,17 @@ public class FirebaseUserRepository {
     }
 
     public FirebaseUserSchema save(FirebaseUserSchema schema) {
-        if (schema.getId() == null) {
-            DocumentReference docRef = firestore.collection("users").document();
-            schema.setId(docRef.getId());
+        try {
+            if (schema.getId() == null) {
+                DocumentReference docRef = firestore.collection("users").document();
+                schema.setId(docRef.getId());
+            }
+            ApiFuture<WriteResult> future = firestore.collection("users").document(schema.getId()).set(schema);
+            future.get();
+            return schema;
+        } catch(InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Failed to save user", e);
         }
-        firestore.collection("users").document(schema.getId()).set(schema);
-        return schema;
     }
 
     public Optional<FirebaseUserSchema> findById(String userId) {

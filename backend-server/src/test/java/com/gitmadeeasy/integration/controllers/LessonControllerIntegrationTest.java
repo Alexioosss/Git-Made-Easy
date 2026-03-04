@@ -44,7 +44,7 @@ class LessonControllerIntegrationTest {
         // Arrange
         CreateLessonRequest request = new CreateLessonRequest(
                 "Intro to Git", "An introduction to an industry-standard technology",
-                "easy", 1);
+                "easy", 1, null, null);
 
         // Act & Assert
         this.mockMvc.perform(post("/lessons")
@@ -74,7 +74,7 @@ class LessonControllerIntegrationTest {
     void createLesson_WhenInvalidRequestData_ReturnsBadRequest() throws Exception {
         // Arrange
         CreateLessonRequest invalidRequest = new CreateLessonRequest("Intro to Git",
-                "An introduction to an industry-standard technology", "impossible", 1);
+                "An introduction to an industry-standard technology", "impossible", 1, null, null);
 
         // Act & Assert
         this.mockMvc.perform(post("/lessons")
@@ -153,11 +153,13 @@ class LessonControllerIntegrationTest {
     private static Stream<Arguments> provideInvalidLessonCreationRequest() {
         return Stream.of(
                 Arguments.of("Missing Title",
-                        new CreateLessonRequest("", "An introduction to an industry-standard technology", "easy", 1)),
+                        new CreateLessonRequest("", "An introduction to an industry-standard technology",
+                                "easy", 1, null, null)),
                 Arguments.of("Missing Description",
-                        new CreateLessonRequest("Intro to Git", "", "easy", 1)),
+                        new CreateLessonRequest("Intro to Git", "", "easy", 1, null, null)),
                 Arguments.of("Missing Difficulty",
-                        new CreateLessonRequest("Intro to Git", "An introduction to an industry-standard technology", "", 1))
+                        new CreateLessonRequest("Intro to Git", "An introduction to an industry-standard technology",
+                                "", 1, null, null))
         );
     }
 }

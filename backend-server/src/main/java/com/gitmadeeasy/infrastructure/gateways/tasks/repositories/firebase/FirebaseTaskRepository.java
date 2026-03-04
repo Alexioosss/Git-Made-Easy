@@ -17,12 +17,17 @@ public class FirebaseTaskRepository {
     }
 
     public FirebaseTaskSchema save(FirebaseTaskSchema schema) {
-        if(schema.getId() == null) {
-            DocumentReference docRef = firestore.collection("tasks").document();
-            schema.setId(docRef.getId());
+        try {
+            if(schema.getId() == null) {
+                DocumentReference docRef = firestore.collection("tasks").document();
+                schema.setId(docRef.getId());
+            }
+            ApiFuture<WriteResult> future = firestore.collection("tasks").document(schema.getId()).set(schema);
+            future.get();
+            return schema;
+        } catch(InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Failed to save task", e);
         }
-        firestore.collection("tasks").document(schema.getId()).set(schema);
-        return schema;
     }
 
     public Optional<FirebaseTaskSchema> findByLessonIdAndTaskId(String lessonId, String taskId) {

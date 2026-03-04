@@ -13,7 +13,6 @@ public class FirebaseLessonSchema {
     private DifficultyLevels difficulty;
     private Integer lessonOrder;
     private List<String> taskIds = new ArrayList<>();
-    private List<FirebaseTaskSchema> tasks = new ArrayList<>();
     private String longDescription;
 
     protected FirebaseLessonSchema() {}
@@ -48,15 +47,11 @@ public class FirebaseLessonSchema {
         return taskIds;
     }
 
-    public List<FirebaseTaskSchema> getTasks() { return tasks; }
-
     public String getLongDescription() { return longDescription; }
 
     public void setId(String id) { this.id = id; }
 
     public void setTaskIds(List<String> taskIds) { this.taskIds = taskIds; }
-
-    public void setTasks(List<FirebaseTaskSchema> tasks) { this.tasks = tasks; }
 
     public void setLongDescription(String longDescription) { this.longDescription = longDescription; }
 }

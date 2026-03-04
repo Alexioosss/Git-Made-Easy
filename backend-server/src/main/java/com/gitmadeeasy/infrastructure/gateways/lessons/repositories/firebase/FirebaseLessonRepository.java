@@ -18,12 +18,17 @@ public class FirebaseLessonRepository {
     }
 
     public FirebaseLessonSchema save(FirebaseLessonSchema schema) {
-        if (schema.getId() == null) {
-            DocumentReference docRef = firestore.collection("lessons").document();
-            schema.setId(docRef.getId());
+        try {
+            if (schema.getId() == null) {
+                DocumentReference docRef = firestore.collection("lessons").document();
+                schema.setId(docRef.getId());
+            }
+            ApiFuture<WriteResult> future = firestore.collection("lessons").document(schema.getId()).set(schema);
+            future.get();
+            return schema;
+        } catch(InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Failed to save lesson", e);
         }
-        firestore.collection("lessons").document(schema.getId()).set(schema);
-        return schema;
     }
 
     public Optional<FirebaseLessonSchema> findById(String lessonId) {
@@ -84,7 +89,12 @@ public class FirebaseLessonRepository {
     }
 
     public void updateTaskIds(String lessonId, List<String> taskIds) {
-        firestore.collection("lessons").document(lessonId).update("taskIds", taskIds);
+        try {
+            ApiFuture<WriteResult> future = firestore.collection("lessons").document(lessonId).update("taskIds", taskIds);
+            future.get();
+        } catch(InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Failed to update taskIds for lesson " + lessonId, e);
+        }
     }
 
     public void deleteAll() {

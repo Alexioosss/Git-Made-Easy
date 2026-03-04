@@ -1,6 +1,7 @@
 package com.gitmadeeasy.infrastructure.controllers;
 
 import com.gitmadeeasy.entities.lessons.Lesson;
+import com.gitmadeeasy.infrastructure.dto.lessons.LessonResponse;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
 import com.gitmadeeasy.usecases.lessons.GetAllLessons;
 import com.gitmadeeasy.usecases.lessons.GetLessonById;
@@ -36,10 +37,11 @@ public class LessonController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Lesson>> getAll() {
+    public ResponseEntity<List<LessonResponse>> getAll() {
         log.info("GET /lessons - Fetching all lessons");
         List<Lesson> allLessons = this.getAllLessons.execute();
-        return ResponseEntity.ok(allLessons);
+        List<LessonResponse> lessonResponse = allLessons.stream().map(LessonResponse::new).toList();
+        return ResponseEntity.ok(lessonResponse);
     }
 
     @GetMapping("/{lessonId}")

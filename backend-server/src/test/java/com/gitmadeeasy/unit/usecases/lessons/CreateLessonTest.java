@@ -37,7 +37,7 @@ class CreateLessonTest {
         CreateLessonRequest request = new CreateLessonRequest(
                 "Intro to Git",
                 "A simple overview of an industry-famous version control system.",
-                "easy", 1);
+                "easy", 1, null, null);
         Lesson createdLesson = new Lesson(
                 "1", "Intro to Git",
                 "A simple overview of an industry-famous version control system.",
@@ -60,7 +60,7 @@ class CreateLessonTest {
     void execute_WhenInvalidPayload_ThrowsMissingRequiredFieldException(
             String title, String description, String difficulty, Integer lessonOrder, String expectedErrorMessage) {
         // Arrange
-        CreateLessonRequest request = new CreateLessonRequest(title, description, difficulty, lessonOrder);
+        CreateLessonRequest request = new CreateLessonRequest(title, description, difficulty, lessonOrder, null, null);
 
         // Act
         MissingRequiredFieldException ex = assertThrows(MissingRequiredFieldException.class, () -> this.createLesson.execute(request));
@@ -79,7 +79,8 @@ class CreateLessonTest {
     @DisplayName("Create A Lesson - Lesson Difficulty Is Invalid/Not Recognised")
     void execute_WhenInvalidDifficulty_ThrowsLessonDifficultyNotRecognisedException(String invalidDifficulty) {
         // Arrange
-        CreateLessonRequest request = new CreateLessonRequest("Title", "Description", invalidDifficulty, 1);
+        CreateLessonRequest request = new CreateLessonRequest(
+                "Title", "Description", invalidDifficulty, 1, null, null);
 
         // Act
         DifficultyLevelNotRecognisedException ex = assertThrows(DifficultyLevelNotRecognisedException.class,

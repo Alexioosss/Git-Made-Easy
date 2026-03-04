@@ -3,6 +3,7 @@ package com.gitmadeeasy.unit.infrastructure.controllers;
 import com.gitmadeeasy.entities.enums.DifficultyLevels;
 import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.infrastructure.controllers.LessonController;
+import com.gitmadeeasy.infrastructure.dto.lessons.LessonResponse;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
 import com.gitmadeeasy.usecases.lessons.GetAllLessons;
@@ -42,7 +43,7 @@ class LessonControllerTest {
         CreateLessonRequest validRequest = new CreateLessonRequest(
                 "Intro to Git",
                 "A simple introduction to an industry-standard version control system.",
-                "easy", 1);
+                "easy", 1, null, null);
         Lesson createdLesson = new Lesson("1", "Intro to Git",
                 "A simple introduction to an industry-standard version control system.",
                 DifficultyLevels.EASY, 1);
@@ -60,7 +61,7 @@ class LessonControllerTest {
     @DisplayName("Create Lesson - Invalid Payload Returns Unsuccessful Response / 400")
     void createLesson_WhenInvalidPayload_ReturnsBadRequest() throws Exception {
         // Arrange
-        CreateLessonRequest invalidRequest = new CreateLessonRequest("", "", "", 0);
+        CreateLessonRequest invalidRequest = new CreateLessonRequest("", "", "", 0, null, null);
 
         // Act & Assert
         this.mockMvc.perform(post("/lessons")
@@ -75,16 +76,18 @@ class LessonControllerTest {
         // Arrange
         Lesson lesson1 = new Lesson("1", "Intro to Git",
                 "A simple introduction to an industry-standard version control system.",
-                DifficultyLevels.EASY, 1);
+                DifficultyLevels.EASY, 1, "", List.of());
         Lesson lesson2 = new Lesson("2", "Branching",
-                "Learn how to branch in Git.", DifficultyLevels.MEDIUM, 2);
+                "Learn how to branch in Git.", DifficultyLevels.MEDIUM, 2, "", List.of());
         List<Lesson> lessons = List.of(lesson1, lesson2);
         when(this.getAllLessons.execute()).thenReturn(lessons);
+        LessonResponse lesson1ResponseDTO = new LessonResponse(lesson1);
+        LessonResponse lesson2ResponseDTO = new LessonResponse(lesson2);
 
         // Act & Assert
         this.mockMvc.perform(get("/lessons"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(JsonUtil.objectToJson(lessons)));
+                .andExpect(content().json(JsonUtil.objectToJson(List.of(lesson1ResponseDTO, lesson2ResponseDTO))));
     }
 
     @Test @DisplayName("Get All Lessons - Empty Lessons List Returns 200 With Empty List")

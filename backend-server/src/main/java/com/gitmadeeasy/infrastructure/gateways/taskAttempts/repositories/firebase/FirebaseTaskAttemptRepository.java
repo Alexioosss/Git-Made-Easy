@@ -34,12 +34,17 @@ public class FirebaseTaskAttemptRepository {
     }
 
     public FirebaseTaskAttemptSchema save(FirebaseTaskAttemptSchema schema) {
-        if (schema.getId() == null) {
-            DocumentReference docRef = firestore.collection("task_attempts").document();
-            schema.setId(docRef.getId());
+        try {
+            if (schema.getId() == null) {
+                DocumentReference docRef = firestore.collection("task_attempts").document();
+                schema.setId(docRef.getId());
+            }
+            ApiFuture<WriteResult> future = firestore.collection("task_attempts").document(schema.getId()).set(schema);
+            future.get();
+            return schema;
+        } catch(InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Failed to save task attempt", e);
         }
-        firestore.collection("task_attempts").document(schema.getId()).set(schema);
-        return schema;
     }
 
     public Integer countCompletedTasks(String userId, String lessonId) {

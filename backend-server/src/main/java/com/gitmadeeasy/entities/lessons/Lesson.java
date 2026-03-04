@@ -49,8 +49,9 @@ public class Lesson {
         this.lessonOrder = lessonOrder;
     }
 
-    public Lesson(String title, String description, DifficultyLevels difficulty,
+    public Lesson(String lessonId, String title, String description, DifficultyLevels difficulty,
                   Integer lessonOrder, String longDescription, List<String> referenceLinks) {
+        this.lessonId = lessonId;
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;

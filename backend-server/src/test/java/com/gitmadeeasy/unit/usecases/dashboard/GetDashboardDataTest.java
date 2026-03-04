@@ -150,13 +150,18 @@ class GetDashboardDataTest {
                 "Description", DifficultyLevels.EASY,  1);
 
         List<Task> tasks = new ArrayList<>();
+        List<String> taskIds = new ArrayList<>();
+
         for(int i = 0; i < taskCount; i++) {
+            String taskId = "T" + i;
             tasks.add(new Task(
-                    "T" + i, id,"Task " + i,
+                    taskId, id,"Task " + i,
                     "Content", "expCommand", "hint",
                     1, DifficultyLevels.EASY));
+            taskIds.add(taskId);
         }
         lesson.setTasks(tasks);
+        lesson.setTaskIds(taskIds);
         return lesson;
     }
 }

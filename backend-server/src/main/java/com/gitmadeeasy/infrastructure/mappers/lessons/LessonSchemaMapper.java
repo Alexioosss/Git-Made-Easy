@@ -3,14 +3,8 @@ package com.gitmadeeasy.infrastructure.mappers.lessons;
 import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.infrastructure.gateways.lessons.FirebaseLessonSchema;
 import com.gitmadeeasy.infrastructure.gateways.lessons.JpaLessonSchema;
-import com.gitmadeeasy.infrastructure.mappers.tasks.TaskSchemaMapper;
 
 public class LessonSchemaMapper {
-    private final TaskSchemaMapper taskSchemaMapper;
-
-    public LessonSchemaMapper(TaskSchemaMapper taskSchemaMapper) {
-        this.taskSchemaMapper = taskSchemaMapper;
-    }
 
     public JpaLessonSchema toJpaSchema(Lesson lesson) {
         JpaLessonSchema schema =  new JpaLessonSchema(
@@ -41,7 +35,6 @@ public class LessonSchemaMapper {
                 lesson.getDifficulty(), lesson.getLessonOrder());
         if (lesson.getLessonId() != null) { schema.setId(lesson.getLessonId()); }
         schema.setTaskIds(lesson.getTaskIds());
-        schema.setTasks(lesson.getTasks().stream().map(this.taskSchemaMapper::toFirebaseSchema).toList());
         schema.setLongDescription(lesson.getLongDescription());
         return schema;
     }
@@ -52,7 +45,6 @@ public class LessonSchemaMapper {
                 schema.getDescription(), schema.getDifficulty(),
                 schema.getLessonOrder());
         lesson.setTaskIds(schema.getTaskIds());
-        lesson.setTasks(schema.getTasks().stream().map(this.taskSchemaMapper::fromFirebaseSchema).toList());
         lesson.setLongDescription(schema.getLongDescription());
         return lesson;
     }
