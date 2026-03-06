@@ -8,7 +8,7 @@ import { safeCallWrapper } from "@/lib/safeCallWrapper";
 
 export async function LessonsPreview() {
   const lessonsGateway = GatewayFactory.instance.lessonGateway;
-  const response = await safeCallWrapper(() => lessonsGateway.getAll())
+  const response = await safeCallWrapper(() => lessonsGateway.getAllLessons())
 
   if(!response.ok || !response.data) {
     return (

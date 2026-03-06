@@ -14,7 +14,7 @@ interface LessonCardProps {
 export function LessonCard({ lesson, progress }: LessonCardProps) {
   const difficultyDistribution = (lesson.tasks ?? []).reduce((acc, task) => { acc[task.difficulty] = (acc[task.difficulty] || 0) + 1; return acc; }, {} as Record<string, number>);
 
-  let progressPercentage = null;
+  let progressPercentage = 0;
   if(progress) { progressPercentage = (progress.completedTasksCount / progress.totalTasksCount) * 100; }
   const isComplete = progress && progressPercentage === 100;
 
@@ -62,24 +62,19 @@ export function LessonCard({ lesson, progress }: LessonCardProps) {
             )
           )}
         </div>
-
-        {/* Progress bar if logged in */}
-        {progress && (
-          <div className="mt-1 flex items-center gap-2 sm:gap-3">
-            <Progress value={progressPercentage} className="h-1.5 flex-1"/>
-            <span className="shrink-0 text-xs font-medium text-muted-foreground">
-              {progressPercentage}%
-            </span>
-            <span className="hidden shrink-0 text-xs text-muted-foreground/60 sm:inline">
-              ({progress.completedTasksCount}/{progress.totalTasksCount} tasks)
-            </span>
-          </div>
-        )}
       </div>
 
-      {/* Arrow */}
-      <div className="hidden items-center px-6 md:flex">
+      <div className="hidden md:flex flex-col items-center px-6 py-4 gap-2">
         <ArrowRight className="h-5 w-5 text-muted-foreground/40 transition-all group-hover:translate-x-1 group-hover:text-primary" />
+
+        <div className="flex flex-col items-center text-xs text-foreground">
+          <span className="text-lg font-bold">{progressPercentage}%</span>
+          {progress && (
+            <span className="text-muted-foreground/60">
+              {progress.completedTasksCount}/{progress.totalTasksCount}
+            </span>
+          )}
+        </div>
       </div>
     </Link>
   );

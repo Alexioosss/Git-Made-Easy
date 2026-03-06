@@ -7,5 +7,5 @@ export interface Lesson {
   difficulty: string;
   lessonOrder: number;
   taskIds: String[];
-  tasks?: Task[];
+  tasks: Task[];
 }

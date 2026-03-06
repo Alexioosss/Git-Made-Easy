@@ -1,6 +1,7 @@
 import { LocalTaskProgress, ProgressData } from "@/infrastructure/persistence/localProgressData";
 import { LocalStorageProgressStorage } from "@/infrastructure/persistence/localStorageProgressStorage";
 import { ProgressStorage } from "@/infrastructure/persistence/progressStorage";
+import { Lesson } from "@/types/lesson";
 
 class ProgressManager {
     private static instance: ProgressManager;
@@ -40,6 +41,29 @@ class ProgressManager {
 
     async clearProgress() {
         await this.storage.clearProgress();
+    }
+
+    convertLocalToLessonProgress(localProgress: ProgressData, lessons: Lesson[]) {
+        return Object.fromEntries(
+            Object.values(localProgress).map(lp => {
+                const lesson = lessons.find(l => l.lessonId === lp.lessonId);
+                const totalTasksCount = lesson?.tasks?.length ?? 0;
+                const completedTasksCount = Object.keys(lp.completedTasks).length;
+                const currentTaskProgressId = Object.values(lp.completedTasks).at(-1)?.taskId ?? "";
+
+                return [
+                    lp.lessonId,
+                    {
+                        lessonProgressId: "",
+                        userId: "",
+                        lessonId: lp.lessonId,
+                        currentTaskProgressId,
+                        completedTasksCount,
+                        totalTasksCount
+                    }
+                ];
+            })
+        );
     }
 }
 

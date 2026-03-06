@@ -37,7 +37,7 @@ describe("LessonDetailPage", () => {
     test("Passes correct props to LessonDetail", async () => {
         (GatewayFactory.instance.lessonGateway.getById as jest.Mock).mockResolvedValue(createMockLesson({ lessonId: "1", title: "Lesson 1" }));
 
-        (GatewayFactory.instance.lessonGateway.getAll as jest.Mock)
+        (GatewayFactory.instance.lessonGateway.getAllLessons as jest.Mock)
         .mockResolvedValue([ createMockLesson(), createMockLesson({ lessonId: "2" }) ]);
 
         (GatewayFactory.instance.lessonProgressGateway.getLessonProgress as jest.Mock)

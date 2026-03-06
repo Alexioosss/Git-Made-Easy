@@ -34,16 +34,16 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
   }, []);
   
   useEffect(() => {
-    if (Object.keys(taskProgressMap).length === 0) return;
+    if(Object.keys(taskProgressMap).length === 0) return;
     const nextTask = lesson.tasks.find(task => { const p = taskProgressMap[task.taskId]; return p?.status !== "COMPLETED"; });
-    if (nextTask) { setExpandedTaskIds(prev => { const next = new Set(prev); next.add(nextTask.taskId); return next; }); }
+    if(nextTask) { setExpandedTaskIds(prev => { const next = new Set(prev); next.add(nextTask.taskId); return next; }); }
   }, [lesson.tasks, taskProgressMap]);
 
   useEffect(() => {
     async function loadProgress() {
       let map: Record<string, any> = {};
-      if (isAuthenticated) {
-        for (const task of lesson.tasks) {
+      if(isAuthenticated) {
+        for(const task of lesson.tasks) {
           try {
             const progress = await GatewayFactory.instance.taskProgressGateway.getTaskProgress(lesson.lessonId, task.taskId);
             map[task.taskId] = progress;
@@ -52,14 +52,14 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
       } else {
         const raw = await progressManager.getProgress();
         const flat: Record<string, any> = {};
-        for (const lessonId in raw) {
+        for(const lessonId in raw) {
           const lesson = raw[lessonId];
-          for (const taskId in lesson.completedTasks) {
+          for(const taskId in lesson.completedTasks) {
             flat[taskId] = lesson.completedTasks[taskId];
           }
         }
-        for (const task of lesson.tasks) {
-          if (!flat[task.taskId]) {
+        for(const task of lesson.tasks) {
+          if(!flat[task.taskId]) {
             flat[task.taskId] = { status: "NOT_STARTED", attempts: 0 };
           }
         }
@@ -78,7 +78,7 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
   const toggleTask = (taskId: string) => {
     setExpandedTaskIds(prev => {
       const next = new Set(prev);
-      if (next.has(taskId)) next.delete(taskId);
+      if(next.has(taskId)) next.delete(taskId);
       else next.add(taskId);
       return next;
     });
@@ -86,7 +86,7 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
 
   const completedCount = lesson.tasks.filter((task) => { const progress = taskProgressMap[task.taskId]; return progress?.status === "COMPLETED"; }).length;
   const allCompleted = completedCount === lesson.tasks.length;
-  const completionPercent = lesson.tasks.length > 0 ? Math.round((completedCount / lesson.tasks.length) * 100) : 0;
+  const completionPercentage = lesson.tasks.length > 0 ? Math.round((completedCount / lesson.tasks.length) * 100) : 0;
 
   const handleTaskComplete = useCallback(async (taskId: string, answer: string, isCorrect: boolean) => {
     const prev = taskProgressMap[taskId];
@@ -115,14 +115,14 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
           <h2 className="text-lg font-semibold text-foreground">Tasks</h2>
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium text-foreground">
-              {completionPercent}%
+              {completionPercentage}%
             </span>
             <span className="text-sm text-muted-foreground">
               ({completedCount}/{lesson.tasks.length} completed)
             </span>
           </div>
         </div>
-        <Progress value={completionPercent} className="h-1.5" />
+        <Progress value={completionPercentage} className="h-1.5" />
       </div>
 
       {lesson.tasks.map((task) => (

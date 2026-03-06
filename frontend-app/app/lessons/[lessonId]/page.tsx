@@ -28,7 +28,7 @@ export default async function LessonDetailPage({ params }: { params: Promise<{ l
 
   const lesson = lessonResponse.data;
 
-  const allLessonsResponse = await safeCallWrapper(() => lessonGateway.getAll());
+  const allLessonsResponse = await safeCallWrapper(() => lessonGateway.getAllLessons());
   const allLessons = (allLessonsResponse.ok && Array.isArray(allLessonsResponse.data)) ? allLessonsResponse.data : [];
 
   const currentIndex = allLessons.findIndex((lesson) => lesson.lessonId === lessonId);

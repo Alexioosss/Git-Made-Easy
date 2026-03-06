@@ -4,6 +4,7 @@ import { LessonCard } from "@/components/lessons/lesson-card";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { getCurrentUser, hasToken } from "@/lib/auth";
+import progressManager from "@/lib/progressManager";
 import { safeCallWrapper } from "@/lib/safeCallWrapper";
 import { Lesson } from "@/types/lesson";
 import { LessonProgress } from "@/types/taskProgress";
@@ -19,7 +20,7 @@ export default function LessonPage() {
     useEffect(() => {
         const fetchData = async () => {
             // Fetch all lessons for display
-            const response = await safeCallWrapper(() => lessonGateway.getAll());
+            const response = await safeCallWrapper(() => lessonGateway.getAllLessons());
             if(!response.ok || !response.data) { setLessons([]); setLoading(false); return; }
 
             const lessons = response.data;
@@ -44,6 +45,9 @@ export default function LessonPage() {
                 const progressList: LessonProgress[] = progressResult.data;
                 const progressMap = Object.fromEntries(progressList.map(progress => [progress.lessonId, progress]));
                 setProgressMap(progressMap);
+            } else {
+                const progressList = await progressManager.getProgress();
+                setProgressMap(progressManager.convertLocalToLessonProgress(progressList, lessons));
             }
             setLoading(false);
         };
@@ -80,7 +84,7 @@ export default function LessonPage() {
         
                 <div className="grid gap-4 sm:gap-6">
                     {lessons.map((lesson) => (
-                    <LessonCard key={lesson.lessonId} lesson={lesson} progress={ progressMap[lesson.lessonId]} />
+                    <LessonCard key={lesson.lessonId} lesson={lesson} progress={progressMap[lesson.lessonId]} />
                     ))}
                 </div>
             </div>

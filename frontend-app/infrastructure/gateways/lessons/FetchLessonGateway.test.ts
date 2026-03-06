@@ -39,7 +39,7 @@ describe("FetchLessonGateway", () => {
     test("getAll Calls ApiRequest Correctly", async () => {
         const mockResponse = [createMockLesson(), createMockLesson({ id: "2" })];
         apiClient.apiRequest.mockResolvedValue(mockResponse);
-        const response = await gateway.getAll();
+        const response = await gateway.getAllLessons();
         expect(apiClient.apiRequest).toHaveBeenCalledWith(
             "/lessons", HttpMethods.GET, undefined, { cache: "force-cache" });
         expect(response).toEqual(mockResponse);

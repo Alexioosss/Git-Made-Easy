@@ -7,10 +7,13 @@ import { Task } from "@/types/task";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CheckCircle2, ChevronDown, ChevronUp, Lightbulb, RotateCcw, Send } from "lucide-react";
+import { CheckCircle2, ChevronDown, ChevronUp, KeyRound, Lightbulb, RotateCcw, Send, Unlock } from "lucide-react";
 import { DifficultyLevels } from "@/types/difficultyLevels";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { TaskProgress } from "@/types/taskProgress";
+import { LocalStorageProgressStorage } from "@/infrastructure/persistence/localStorageProgressStorage";
+import progressManager from "@/lib/progressManager";
+import { LocalTaskProgress } from "@/infrastructure/persistence/localProgressData";
 
 interface TaskItemProps {
   task: Task;
@@ -28,36 +31,49 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
   const [showHint, setShowHint] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
   const [localCompleted, setLocalCompleted] = useState(false);
+  const [reset, setReset] = useState(false);
 
-  const isCompleted = (progress?.status === "COMPLETED") || localCompleted;
+  const isCompleted = (!reset && (progress?.status === "COMPLETED")) || localCompleted;
   const savedUserInput = progress?.lastInput ?? "";
   const totalAttempts = progress?.attempts || 0;
   
-  const effectiveStatus = localCompleted || progress?.status === "COMPLETED" ? "COMPLETED" : progress?.status === "IN_PROGRESS" ? "IN_PROGRESS" : "NOT_STARTED";
+  const effectiveStatus = reset ? "NOT_STARTED" : localCompleted || progress?.status === "COMPLETED" ? "COMPLETED" : progress?.status === "IN_PROGRESS" ? "IN_PROGRESS" : "NOT_STARTED";
   const statusVariant = effectiveStatus === "COMPLETED" ? "completed" : effectiveStatus === "IN_PROGRESS" ? "inProgress" : "notStarted";
   const statusLabel = effectiveStatus === "COMPLETED" ? "Completed" : effectiveStatus === "IN_PROGRESS" ? "In Progress" : "Not Started";
 
   useEffect(() => {
-    if (!localCompleted && isCompleted && savedUserInput) {
+    if(!localCompleted && isCompleted && savedUserInput) {
       setUserInput(savedUserInput);
       setLocalCompleted(true);
-      setFeedback({
-        type: "success",
-        message: "Correct! Well Done!"
-      });
+      setFeedback({ type: "success", message: "Correct! Well Done!" });
     }
   }, [isCompleted, savedUserInput, localCompleted]);
 
   const handleSubmit = useCallback(async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!userInput.trim()) { return; }
+    if(reset) { setReset(false); }
+    if(!userInput.trim()) { return; }
 
     const isCorrect = userInput.trim().toLowerCase() === task.expectedCommand.toLowerCase();
     
-    setFeedback({ type: isCorrect ? "success" : "error", message: isCorrect ? "Correct!" : "Not quite right. Try again!"});
+    setFeedback({ type: isCorrect ? "success" : "error", message: isCorrect ? "Correct! Well Done!" : "Not quite right. Try again!"});
 
     if(isCorrect) { setLocalCompleted(true); }
     if(isAuthenticated) { await GatewayFactory.instance.taskProgressGateway.recordTaskAttempt( lessonId, task.taskId, userInput ); }
+    else {
+      const progress = await progressManager.getProgress();
+      const lesson = progress[lessonId];
+      const existing = lesson?.completedTasks?.[task.taskId];
+      const updated: LocalTaskProgress = {
+        taskId: task.taskId,
+        lastInput: userInput,
+        lastError: existing.lastError,
+        attempts: existing ? existing.attempts + 1 : 1,
+        status: isCorrect ? "COMPLETED" : "IN_PROGRESS",
+        startedAt: existing.startedAt
+      };
+      await progressManager.updateLesson(lessonId, updated);
+    }
     if(onComplete) { onComplete(task.taskId, userInput, isCorrect); }
   }, [userInput, task.expectedCommand, task.taskId, isCompleted, onComplete, task.expectedCommand]);
 
@@ -66,6 +82,7 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
     setFeedback(null);
     setShowHint(false);
     setLocalCompleted(false);
+    setReset(false);
   }, []);
 
   return (
@@ -154,14 +171,16 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
           {totalAttempts >= 3 &&
             <>
               {showAnswer ? (
-                <div className="mb-4 flex items-start gap-2 rounded-lg bg-secondary p-3 mt-2">
+                <div className="flex items-start gap-2 rounded-lg bg-secondary p-3 mt-2">
                   <button type="button" title="Hide answer" onClick={() => setShowAnswer(false)}>
+                    <KeyRound className="h-4 w-4" />
                   </button>
                   <p className="text-sm text-secondary-foreground">Expected answer: {task.expectedCommand}</p>
                 </div>
               ) : (
                 <button type="button" title="View answer" onClick={() => setShowAnswer(true)}
-                className="mb-4 flex items-center gap-1.5 text-md text-muted-foreground transition-colors hover:text-foreground mt-2">
+                className="flex items-center gap-1.5 text-md text-muted-foreground transition-colors hover:text-foreground mt-2">
+                  <Unlock className="h-4 w-4" />
                   Show answer
                 </button>
               )}

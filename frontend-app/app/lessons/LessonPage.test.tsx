@@ -43,7 +43,7 @@ describe("LessonPage", () => {
   test("Renders lessons without progress when not authenticated", async () => {
     (hasToken as jest.Mock).mockReturnValue(false);
 
-    (GatewayFactory.instance.lessonGateway.getAll as jest.Mock).mockResolvedValue([{ lessonId: "1", title: "Lesson 1" }]);
+    (GatewayFactory.instance.lessonGateway.getAllLessons as jest.Mock).mockResolvedValue([{ lessonId: "1", title: "Lesson 1" }]);
     (GatewayFactory.instance.lessonGateway.getTasksForLesson as jest.Mock).mockResolvedValue([{ taskId: "t1" }]);
 
     render(<LessonPage />);
@@ -57,7 +57,7 @@ describe("LessonPage", () => {
   test("Renders lessons with progress when authenticated", async () => {
     (hasToken as jest.Mock).mockReturnValue(true);
 
-    (GatewayFactory.instance.lessonGateway.getAll as jest.Mock).mockResolvedValue([{ lessonId: "1", title: "Lesson 1" }]);
+    (GatewayFactory.instance.lessonGateway.getAllLessons as jest.Mock).mockResolvedValue([{ lessonId: "1", title: "Lesson 1" }]);
     (GatewayFactory.instance.lessonGateway.getTasksForLesson as jest.Mock).mockResolvedValue([{ taskId: "t1" }]);
     (GatewayFactory.instance.lessonProgressGateway.getAllLessonsProgress as jest.Mock).mockResolvedValue([{ lessonId: "1", completed: true }]);
 
@@ -72,7 +72,7 @@ describe("LessonPage", () => {
   test("Attaches tasks to lessons", async () => {
       (hasToken as jest.Mock).mockReturnValue(false);
 
-      (GatewayFactory.instance.lessonGateway.getAll as jest.Mock).mockResolvedValue([{ lessonId: "1", title: "Lesson 1" }]);
+      (GatewayFactory.instance.lessonGateway.getAllLessons as jest.Mock).mockResolvedValue([{ lessonId: "1", title: "Lesson 1" }]);
       (GatewayFactory.instance.lessonGateway.getTasksForLesson as jest.Mock).mockResolvedValue([{ taskId: "t1" }, { taskId: "t2" }]);
 
       render(<LessonPage />);
