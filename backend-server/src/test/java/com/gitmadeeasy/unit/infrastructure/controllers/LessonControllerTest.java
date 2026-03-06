@@ -25,8 +25,7 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(LessonController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -129,6 +128,46 @@ class LessonControllerTest {
 
         // Act & Assert
         this.mockMvc.perform(get("/lessons/" + lessonId))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("Get Next Lesson - Next Lesson Exists - Returns Successful Response / 200")
+    void getNextLesson_WhenNextLessonExistsForCurrentLesson_ReturnsNextLesson() throws Exception {
+        // Arrange
+        String lessonId = "1";
+        Lesson nextLesson = new Lesson("2", "Intro 2", "Description", DifficultyLevels.EASY, 2);
+        when(this.getNextLesson.execute(lessonId)).thenReturn(nextLesson);
+
+        // Act & Assert
+        this.mockMvc.perform(get("/lessons/" + lessonId + "/next"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.lessonId").value("2"))
+                .andExpect(jsonPath("$.lessonOrder").value("2"));
+    }
+
+    @Test
+    @DisplayName("Get Next Lesson - Next Lesson Does Not Exist - Returns Null")
+    void getNextLesson_WhenNextLessonExists_ReturnsNull() throws Exception {
+        // Arrange
+        String lessonId = "1";
+        when(this.getNextLesson.execute(lessonId)).thenReturn(null);
+
+        // Act & Assert
+        this.mockMvc.perform(get("/lessons/" + lessonId + "/next"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(""));
+    }
+
+    @Test
+    @DisplayName("Get Next Lesson - Current Lesson Does Not Exist - Returns Unsuccessful Response / 404")
+    void getNextLesson_WhenCurrentLessonDoesNotExist_ReturnsNotFound() throws Exception {
+        // Arrange
+        String lessonId = "1";
+        when(this.getNextLesson.execute(lessonId)).thenThrow(new LessonNotFoundWithIdException(lessonId));
+
+        // Act & Assert
+        this.mockMvc.perform(get("/lessons/" + lessonId + "/next"))
                 .andExpect(status().isNotFound());
     }
 }

@@ -156,6 +156,73 @@ class JpaLessonDatabaseGatewayTest {
         assertFalse(exists);
     }
 
+    // FROM HERE
+    @Test
+    @DisplayName("Get Next Lesson - Next Lesson Exists - Returns Mapped Lesson")
+    void getNextLesson_WhenNextLessonExists_ReturnsLesson() {
+        // Arrange
+        int currentOrder = 1;
+
+        JpaLessonSchema nextSchema = provideLessonSchema();
+        Lesson nextLesson = provideLesson();
+
+        when(this.lessonRepository.findNextLesson(currentOrder)).thenReturn(Optional.of(nextSchema));
+        when(this.lessonSchemaMapper.fromJpaSchema(nextSchema)).thenReturn(nextLesson);
+
+        // Act
+        Lesson result = this.jpaLessonDatabaseGateway.getNextLesson(currentOrder);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(nextLesson, result);
+        verify(this.lessonRepository).findNextLesson(currentOrder);
+        verify(this.lessonSchemaMapper).fromJpaSchema(nextSchema);
+    }
+
+    @Test
+    @DisplayName("Get Next Lesson - No Next Lesson Exists - Returns Null")
+    void getNextLesson_WhenNoNextLessonExists_ReturnsNull() {
+        // Arrange
+        int currentOrder = 1;
+        when(this.lessonRepository.findNextLesson(currentOrder)).thenReturn(Optional.empty());
+
+        // Act
+        Lesson result = this.jpaLessonDatabaseGateway.getNextLesson(currentOrder);
+
+        // Assert
+        assertNull(result);
+        verify(this.lessonRepository).findNextLesson(currentOrder);
+        verify(this.lessonSchemaMapper, never()).fromJpaSchema(any());
+    }
+
+    @Test
+    @DisplayName("Get Next Lesson Order - Lessons Exist - ReturnsMaxPlusOne")
+    void getNextLessonOrder_WhenLessonsExist_ReturnsNextOrder() {
+        // Arrange
+        when(this.lessonRepository.findMaxLessonOrder()).thenReturn(5);
+
+        // Act
+        Integer nextOrder = this.jpaLessonDatabaseGateway.getNextLessonOrder();
+
+        // Assert
+        assertEquals(6, nextOrder);
+        verify(this.lessonRepository).findMaxLessonOrder();
+    }
+
+    @Test
+    @DisplayName("Get Next Lesson Order - No Lessons Exist - Returns 1")
+    void getNextLessonOrder_WhenNoLessonsExist_ReturnsOne() {
+        // Arrange
+        when(this.lessonRepository.findMaxLessonOrder()).thenReturn(0);
+
+        // Act
+        Integer nextOrder = this.jpaLessonDatabaseGateway.getNextLessonOrder();
+
+        // Assert
+        assertEquals(1, nextOrder);
+        verify(this.lessonRepository).findMaxLessonOrder();
+    }
+
 
 
     // ----------  HELPER METHODS FOR PARAMETERISED TESTS ---------- //

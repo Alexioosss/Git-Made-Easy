@@ -60,6 +60,10 @@ public class LessonController {
     public ResponseEntity<Lesson> getNextLesson(@PathVariable("lessonId") String lessonId) {
         log.info("GET /lessons/{}/next - Fetching next lesson of lesson {}", lessonId, lessonId);
         Lesson foundLesson = this.getNextLesson.execute(lessonId);
+        if(foundLesson == null) {
+            log.info("Next lesson not found for lesson {}", lessonId);
+            return ResponseEntity.ok().build();
+        }
         log.info("Next lesson found successfully. LessonID={}", foundLesson.getLessonId());
         return ResponseEntity.ok(foundLesson);
     }

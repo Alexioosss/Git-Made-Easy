@@ -74,7 +74,8 @@ class CreateLessonTest {
             "veryhard",
             "undefined",
             "easyish",
-            "easy123"
+            "easy123",
+            "medium/hard"
     })
     @DisplayName("Create A Lesson - Lesson Difficulty Is Invalid/Not Recognised")
     void execute_WhenInvalidDifficulty_ThrowsLessonDifficultyNotRecognisedException(String invalidDifficulty) {

@@ -137,6 +137,48 @@ class LessonControllerIntegrationTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    @DisplayName("Get Next Lesson - Next Lesson Exists - Returns 200 With Next Lesson")
+    void getNextLesson_WhenNextLessonExists_ReturnsNextLesson() throws Exception {
+        // Arrange
+        JpaLessonSchema lesson1 = new JpaLessonSchema(
+                "Intro to Git", "Description", DifficultyLevels.EASY, 1);
+        JpaLessonSchema lesson2 = new JpaLessonSchema(
+                "Branching", "Description 2", DifficultyLevels.MEDIUM, 2);
+        lesson1 = this.lessonRepository.save(lesson1);
+        lesson2 = this.lessonRepository.save(lesson2);
+
+        // Act & Assert
+        this.mockMvc.perform(get("/lessons/{lessonId}/next", lesson1.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.lessonId").value(lesson2.getId()))
+                .andExpect(jsonPath("$.title").value("Branching"))
+                .andExpect(jsonPath("$.description").value("Description 2"))
+                .andExpect(jsonPath("$.lessonOrder").value(2));
+    }
+
+    @Test
+    @DisplayName("Get Next Lesson - No Next Lesson Exists - Returns 200 With Empty Body")
+    void getNextLesson_WhenNoNextLessonExists_ReturnsEmptyBody() throws Exception {
+        // Arrange
+        JpaLessonSchema lesson = new JpaLessonSchema(
+                "Intro to Git", "Description", DifficultyLevels.EASY, 1);
+        lesson = this.lessonRepository.save(lesson);
+
+        // Act & Assert
+        this.mockMvc.perform(get("/lessons/{lessonId}/next", lesson.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").doesNotExist()); // empty body
+    }
+
+    @Test
+    @DisplayName("Get Next Lesson - Current Lesson Does Not Exist - Returns 404")
+    void getNextLesson_WhenCurrentLessonDoesNotExist_ReturnsNotFound() throws Exception {
+        // Act & Assert
+        this.mockMvc.perform(get("/lessons/{lessonId}/next", "999"))
+                .andExpect(status().isNotFound());
+    }
+
 
 
     // ----- HELPER METHODS ----- //
