@@ -5,15 +5,13 @@ public class FirebaseUserSchema {
     private String firstName;
     private String lastName;
     private String emailAddress;
-    private boolean EmailVerified;
 
     protected FirebaseUserSchema() {}
 
-    public FirebaseUserSchema(String firstName, String lastName, String emailAddress, boolean EmailVerified) {
+    public FirebaseUserSchema(String firstName, String lastName, String emailAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
-        this.EmailVerified = EmailVerified;
     }
 
     public String getId() {
@@ -32,14 +30,8 @@ public class FirebaseUserSchema {
         return emailAddress;
     }
 
-    public boolean isEmailVerified() { return EmailVerified; }
-
     public void setId(String id) {
         this.id = id;
-    }
-
-    public void setEmailVerified(boolean emailVerified) {
-        EmailVerified = emailVerified;
     }
 
     @Override

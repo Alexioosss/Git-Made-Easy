@@ -8,6 +8,7 @@ import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
 import com.gitmadeeasy.usecases.lessons.GetAllLessons;
 import com.gitmadeeasy.usecases.lessons.GetLessonById;
+import com.gitmadeeasy.usecases.lessons.GetNextLesson;
 import com.gitmadeeasy.usecases.lessons.dto.CreateLessonRequest;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonNotFoundWithIdException;
 import org.junit.jupiter.api.DisplayName;
@@ -34,6 +35,7 @@ class LessonControllerTest {
     @MockitoBean private CreateLesson createLesson;
     @MockitoBean private GetLessonById getLessonById;
     @MockitoBean private GetAllLessons getAllLessons;
+    @MockitoBean private GetNextLesson getNextLesson;
 
 
     @Test

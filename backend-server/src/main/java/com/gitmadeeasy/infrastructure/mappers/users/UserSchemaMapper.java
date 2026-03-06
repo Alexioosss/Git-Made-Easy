@@ -9,14 +9,13 @@ public class UserSchemaMapper {
     public JpaUserSchema toJpaSchema(User user) {
         return new JpaUserSchema(
                 user.getUserId(), user.getFirstName(),
-                user.getLastName(), user.getEmailAddress(),
-                user.isEmailVerified());
+                user.getLastName(), user.getEmailAddress());
     }
 
     public User fromJpaSchema(JpaUserSchema schema) {
         return new User(
                 schema.getId(), schema.getFirstName(), schema.getLastName(),
-                schema.getEmailAddress(), schema.isEmailVerified());
+                schema.getEmailAddress());
     }
 
 
@@ -26,7 +25,7 @@ public class UserSchemaMapper {
     public FirebaseUserSchema toFirebaseSchema(User user) {
         FirebaseUserSchema schema = new FirebaseUserSchema(
                 user.getFirstName(), user.getLastName(),
-                user.getEmailAddress(), user.isEmailVerified());
+                user.getEmailAddress());
         schema.setId(user.getUserId());
         return schema;
     }
@@ -34,6 +33,6 @@ public class UserSchemaMapper {
     public User fromFirebaseSchema(FirebaseUserSchema schema) {
         return new User(
                 schema.getId(), schema.getFirstName(), schema.getLastName(),
-                schema.getEmailAddress(), schema.isEmailVerified());
+                schema.getEmailAddress());
     }
 }

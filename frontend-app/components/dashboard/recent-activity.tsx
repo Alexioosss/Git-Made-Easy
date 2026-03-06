@@ -13,7 +13,6 @@ interface RecentActivityProps {
 
 export function RecentActivity({ activities }: RecentActivityProps) {
   const hasActivities = activities && activities.length > 0;
-  console.log(activities);
 
   return (
     <div>

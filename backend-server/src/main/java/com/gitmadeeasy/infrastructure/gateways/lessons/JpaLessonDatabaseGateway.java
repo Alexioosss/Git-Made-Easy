@@ -36,12 +36,17 @@ public class JpaLessonDatabaseGateway implements LessonGateway {
     }
 
     @Override
+    public Lesson getNextLesson(int currentLessonOrder) {
+        return this.jpa.findNextLesson(currentLessonOrder).map(this.lessonSchemaMapper::fromJpaSchema).orElse(null);
+    }
+
+    @Override
     public Integer getNextLessonOrder() {
         return this.jpa.findMaxLessonOrder() + 1;
     }
 
     @Override
     public void updateTaskIds(String lessonId, List<String> taskIds) {
-        // Empty because in JPA, lessons do not store task IDs
+        // Empty because in JPA, lessons can reference tasks via lessonId and fetch their stored tasks directly
     }
 }

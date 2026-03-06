@@ -8,6 +8,7 @@ public interface LessonGateway {
     Optional<Lesson> getLessonById(String lessonId);
     boolean existsById(String lessonId);
     List<Lesson> findAllLessons();
+    Lesson getNextLesson(int currentLessonOrder);
     Integer getNextLessonOrder();
     void updateTaskIds(String lessonId, List<String> taskIds);
 }

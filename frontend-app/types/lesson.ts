@@ -8,4 +8,6 @@ export interface Lesson {
   lessonOrder: number;
   taskIds: String[];
   tasks: Task[];
+  longDescription?: string;
+  referenceLinks?: string[];
 }

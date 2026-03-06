@@ -140,8 +140,7 @@ class GetDashboardDataTest {
     // ----- HELPER METHODS ----- //
 
     private static User provideUser() {
-        return new User(USER_ID, "John", "Doe",
-                "myemail1@gmail.com", false);
+        return new User(USER_ID, "John", "Doe", "myemail1@gmail.com");
     }
 
     private static Lesson provideLesson(String id, int taskCount) {

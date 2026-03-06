@@ -16,6 +16,7 @@ export default function RegisterForm() {
   const [lastName, setLastName] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -27,6 +28,8 @@ export default function RegisterForm() {
     e.preventDefault();
     setError("");
     setIsLoading(true);
+
+    if(password != confirmPassword) { setError("Passwords do not match."); setIsLoading(false); return; }
 
     try {
       await userGateway.register(firstName, lastName, emailAddress, password);
@@ -113,8 +116,22 @@ export default function RegisterForm() {
                 placeholder="Create a password" required minLength={8} className="bg-secondary text-foreground h-11 px-3 placeholder:text-xl !text-xl" />
                 
                 <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                title={showPassword ? "Hide password" : "Show password"}
-                onMouseDown={() => setShowPassword(true)} onMouseUp={() => setShowPassword(false)} onMouseLeave={() => setShowPassword(false)}>
+                title={showPassword ? "Hide password" : "Show password"} onClick={() => setShowPassword(previousFlag => !previousFlag)}>
+                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="confirmPassword" className="text-foreground text-xl">
+                Confirm Password
+              </Label>
+              <div className="relative">
+                <Input id="confirmPassword" type={showPassword ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Re-enter your password" required minLength={8} className="bg-secondary text-foreground h-11 px-3 placeholder:text-xl !text-xl" />
+                
+                <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                title={showPassword ? "Hide password" : "Show password"} onClick={() => setShowPassword(previousFlag => !previousFlag)}>
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
               </div>

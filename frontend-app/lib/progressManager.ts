@@ -2,6 +2,7 @@ import { LocalTaskProgress, ProgressData } from "@/infrastructure/persistence/lo
 import { LocalStorageProgressStorage } from "@/infrastructure/persistence/localStorageProgressStorage";
 import { ProgressStorage } from "@/infrastructure/persistence/progressStorage";
 import { Lesson } from "@/types/lesson";
+import { ProgressStatus } from "@/types/progressStatus";
 
 class ProgressManager {
     private static instance: ProgressManager;
@@ -17,30 +18,30 @@ class ProgressManager {
     }
 
     async init() {
-        if (!this.initialized) {
-        this.progress = await this.storage.getProgress();
-        this.initialized = true;
+        if(!this.initialized) {
+            this.progress = await this.storage.getProgress();
+            this.initialized = true;
         }
     }
 
     async getProgress() {
-        if (!this.initialized) await this.init();
-        return this.progress;
+        const reloadedProgress = await this.storage.getProgress();
+        this.progress = reloadedProgress;
+        return reloadedProgress;
     }
 
     async updateLesson(lessonId: string, taskProgress: LocalTaskProgress) {
-        if(!this.progress[lessonId]) {
-            this.progress[lessonId] = {
-                lessonId,
-                completedTasks: {}
-            };
-        }
-        this.progress[lessonId].completedTasks[taskProgress.taskId] = taskProgress;
-        await this.storage.setProgress(this.progress);
+        const current = await this.getProgress();
+        if(!current[lessonId]) { current[lessonId] = { lessonId, tasks: {} } }
+        current[lessonId].tasks[taskProgress.taskId] = taskProgress;
+        await this.storage.setProgress(current);
+        this.progress = current;
     }
 
     async clearProgress() {
         await this.storage.clearProgress();
+        this.progress = {};
+        this.initialized = false;
     }
 
     convertLocalToLessonProgress(localProgress: ProgressData, lessons: Lesson[]) {
@@ -48,12 +49,9 @@ class ProgressManager {
             Object.values(localProgress).map(lp => {
                 const lesson = lessons.find(l => l.lessonId === lp.lessonId);
                 const totalTasksCount = lesson?.tasks?.length ?? 0;
-                const completedTasksCount = Object.keys(lp.completedTasks).length;
-                const currentTaskProgressId = Object.values(lp.completedTasks).at(-1)?.taskId ?? "";
-
-                return [
-                    lp.lessonId,
-                    {
+                const completedTasksCount = Object.values(lp.tasks).filter(task => task.status === ProgressStatus.COMPLETED).length;
+                const currentTaskProgressId = Object.values(lp.tasks).at(-1)?.taskId ?? "";
+                return [ lp.lessonId, {
                         lessonProgressId: "",
                         userId: "",
                         lessonId: lp.lessonId,

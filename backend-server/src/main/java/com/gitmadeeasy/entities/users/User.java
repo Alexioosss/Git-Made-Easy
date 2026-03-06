@@ -8,13 +8,11 @@ public class User {
     private final String firstName;
     private final String lastName;
     private final String emailAddress;
-    private boolean isEmailVerified;
 
     public User(String firstName, String lastName, String emailAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
-        this.isEmailVerified = false;
     }
 
     public User(String userId, String firstName, String lastName, String emailAddress) {
@@ -22,15 +20,6 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
-        this.isEmailVerified = false;
-    }
-
-    public User(String userId, String firstName, String lastName, String emailAddress, boolean isEmailVerified) {
-        this.userId = userId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.emailAddress = emailAddress;
-        this.isEmailVerified = isEmailVerified;
     }
 
     public String getFirebaseUid() { return firebaseUid; }
@@ -51,15 +40,9 @@ public class User {
         return emailAddress;
     }
 
-    public boolean isEmailVerified() {
-        return this.isEmailVerified;
-    }
-
     public void setUserId(String id) {
         this.userId = id;
     }
-
-    public void setEmailVerified(boolean emailVerified) { isEmailVerified = emailVerified; }
 
     public void setFirebaseUid(String firebaseUid) { this.firebaseUid = firebaseUid; }
 
@@ -71,7 +54,6 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", emailAddress='" + emailAddress + '\'' +
-                ", isEmailVerified=" + isEmailVerified +
                 '}';
     }
 

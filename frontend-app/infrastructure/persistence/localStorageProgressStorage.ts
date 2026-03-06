@@ -12,13 +12,13 @@ export class LocalStorageProgressStorage implements ProgressStorage {
             const progress: ProgressData = {};
             for(const lessonId in rawObject) {
                 const lessonData = rawObject[lessonId];
-                const completedTasks: Record<string, LocalTaskProgress> = {};
-                if(lessonData.completedTasks) {
-                    for(const taskId in lessonData.completedTasks) {
-                        completedTasks[taskId] = lessonData.completedTasks[taskId];
+                const tasks: Record<string, LocalTaskProgress> = {};
+                if(lessonData.tasks) {
+                    for(const taskId in lessonData.tasks) {
+                        tasks[taskId] = lessonData.tasks[taskId];
                     }
                 }
-                progress[lessonId] = { lessonId, completedTasks };
+                progress[lessonId] = { lessonId, tasks: tasks };
             }
             return progress;
         } catch { return {}; }
@@ -26,9 +26,7 @@ export class LocalStorageProgressStorage implements ProgressStorage {
 
     async setProgress(progress: ProgressData): Promise<void> {
         const json = JSON.stringify(progress, (key, value) => {
-            if(value instanceof Set) {
-                return Array.from(value);
-            }
+            if(value instanceof Set) { return Array.from(value); }
             return value;
         });
         localStorage.setItem(this.key, json);

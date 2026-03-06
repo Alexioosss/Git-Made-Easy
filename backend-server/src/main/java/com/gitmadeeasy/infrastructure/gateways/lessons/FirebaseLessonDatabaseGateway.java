@@ -19,9 +19,7 @@ public class FirebaseLessonDatabaseGateway implements LessonGateway {
 
     @Override
     public Lesson createLesson(Lesson newLesson) {
-        return this.mapper.fromFirebaseSchema(
-                this.firebase.save(this.mapper.toFirebaseSchema(newLesson))
-        );
+        return this.mapper.fromFirebaseSchema(this.firebase.save(this.mapper.toFirebaseSchema(newLesson)));
     }
 
     @Override
@@ -37,6 +35,11 @@ public class FirebaseLessonDatabaseGateway implements LessonGateway {
     @Override
     public List<Lesson> findAllLessons() {
         return this.firebase.findAll().stream().map(this.mapper::fromFirebaseSchema).toList();
+    }
+
+    @Override
+    public Lesson getNextLesson(int currentLessonOrder) {
+        return this.mapper.fromFirebaseSchema(this.firebase.findNextLesson(currentLessonOrder));
     }
 
     @Override

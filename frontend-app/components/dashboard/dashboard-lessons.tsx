@@ -36,7 +36,7 @@ export function DashboardLessons({ lessons }: DashboardLessonsProps) {
           const hasStarted = lesson.completedTasksCount > 0;
 
           return (
-            <Link key={lesson.lessonId} href={`/lessons/${lesson.lessonId}`}
+            <Link key={lesson.lessonId} href={`/lessons/${lesson.lessonId}`} title={`Lesson ${lesson.lessonOrder} - ${lesson.title}`}
             className="group flex items-center gap-3 rounded-xl border border-border bg-card p-3.5 transition-all hover:border-primary/30 sm:gap-4 sm:p-4">
               <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg sm:h-10 sm:w-10 ${isComplete ? "bg-primary/20" : hasStarted ? "bg-secondary" : "bg-secondary"}`}>
                 {isComplete ? ( <CheckCircle2 className="h-4 w-4 text-primary sm:h-5 sm:w-5" /> ) : (

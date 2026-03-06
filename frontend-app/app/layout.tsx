@@ -6,6 +6,7 @@ import { Navbar } from "@/components/navbar/navbar";
 import { ScrollToTop } from "./scroll-to-top";
 import { AuthProvider } from "@/context/AuthContext";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { ClientShell } from "./ClientShell";
 
 const DEFAULT_TITLE: string = "Git Made Easy" as const;
 
@@ -27,9 +28,12 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
           <AuthProvider>
             <ScrollToTop /> {/* Script to automatically scroll the page to the top on page change, since the pages remain to the last scrolled position  */}
             <Navbar /> {/* Show the navbar on every single page */}
-            <main className="flex-1">
-              {children}
-            </main>
+
+            <ClientShell>
+              <main className="flex-1">
+                {children}
+              </main>
+            </ClientShell>
           </AuthProvider>
         </ThemeProvider>
       </body>

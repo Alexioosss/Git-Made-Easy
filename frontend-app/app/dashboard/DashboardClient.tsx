@@ -5,26 +5,24 @@ import { DashboardStats } from "@/components/dashboard/dashboard-stats";
 import { RecentActivity } from "@/components/dashboard/recent-activity";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { GatewayFactory } from "@/config/GatewayFactory";
-import { getCurrentUser } from "@/lib/auth";
+import { useAuth } from "@/context/AuthContext";
 import { DashboardData } from "@/types/dashboard";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function DashboardClient() {
-    const [data, setData] = useState<DashboardData>();
+    const [data, setData] = useState<DashboardData | null>(null);
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    const { isAuthenticated } = useAuth();
     const router = useRouter();
+
+    if(!isAuthenticated) { router.push("/login"); return; }
 
     useEffect(() => {
         async function loadDashboard() {
-            const user = await getCurrentUser();
-            setIsLoggedIn(!!user);
-            if(!user) { router.push("/login"); return; }
-            setIsLoggedIn(true);
             try {
-                const response = await GatewayFactory.instance.dashboardGateway.getDashboardData();
+                const response: DashboardData = await GatewayFactory.instance.dashboardGateway.getDashboardData();
                 setData(response);
             } catch(err: any) {
                 setError(err.message || "An error occurred while loading the dashboard.");
@@ -48,7 +46,7 @@ export default function DashboardClient() {
     }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
     if(isLoading) {
-        return ( <LoadingSpinner message={isLoggedIn ? "Your personalised dashboard will be displayed soon." : "If your dashboard does not load, please log in again."} /> );
+        return ( <LoadingSpinner message={isAuthenticated ? "Your personalised dashboard will be displayed soon." : "If your dashboard does not load, please log in again."} /> );
     }
 
     if(error) {
@@ -64,7 +62,7 @@ export default function DashboardClient() {
             <div className="mx-auto max-w-6xl px-4 py-8 sm:py-12">
                 <div className="mb-8 sm:mb-10">
                     <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
-                        Welcome back{data?.firstName && `, ${data.firstName}!`}
+                        Welcome back{data?.firstName ? `, ${data.firstName} ${data.lastName}!` : "!"}
                     </h1>
                     <p className="mt-2 text-sm text-muted-foreground sm:text-base">
                         Here can be found an overview of your learning progress so far.

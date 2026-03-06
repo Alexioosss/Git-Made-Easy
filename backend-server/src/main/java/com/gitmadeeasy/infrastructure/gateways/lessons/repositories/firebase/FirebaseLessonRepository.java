@@ -1,7 +1,6 @@
 package com.gitmadeeasy.infrastructure.gateways.lessons.repositories.firebase;
 
 import com.gitmadeeasy.infrastructure.gateways.lessons.FirebaseLessonSchema;
-import com.gitmadeeasy.infrastructure.gateways.tasks.FirebaseTaskSchema;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 
@@ -73,6 +72,21 @@ public class FirebaseLessonRepository {
         } catch (InterruptedException | ExecutionException e) {
             return List.of();
         }
+    }
+
+    public FirebaseLessonSchema findNextLesson(int currentLessonOrder) {
+        Query query = firestore.collection("lessons").whereGreaterThan("lessonOrder", currentLessonOrder)
+                .orderBy("lessonOrder", Query.Direction.ASCENDING).limit(1);
+        try {
+            QuerySnapshot snapshot = query.get().get();
+            if(!snapshot.isEmpty()) {
+                DocumentSnapshot doc = snapshot.getDocuments().getFirst();
+                FirebaseLessonSchema nextLesson = doc.toObject(FirebaseLessonSchema.class);
+                nextLesson.setId(doc.getId());
+                return nextLesson;
+            }
+        } catch(Exception ignored) {}
+        return null;
     }
 
     public Integer findMaxLessonOrder() {

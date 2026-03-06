@@ -29,8 +29,7 @@ class GetUserByIdTest {
     @DisplayName("Get A User By ID - A User Exists With The Given ID")
     void execute_WhenUserWithIdExists_ReturnsUser() {
         // Arrange
-        User existingUser = new User("1", "Alessio", "Cocuzza",
-                "myemail1@gmail.com", false);
+        User existingUser = new User("1", "Alessio", "Cocuzza","myemail1@gmail.com");
         when(this.userGateway.getUserById(any(String.class))).thenReturn(Optional.of(existingUser));
         when(this.identityProvider.isEmailVerified("1")).thenReturn(true);
 
@@ -42,7 +41,6 @@ class GetUserByIdTest {
         assertEquals("Alessio", foundUser.getFirstName());
         assertEquals("Cocuzza", foundUser.getLastName());
         assertEquals("myemail1@gmail.com", foundUser.getEmailAddress());
-        assertTrue(foundUser.isEmailVerified());
     }
 
     @Test

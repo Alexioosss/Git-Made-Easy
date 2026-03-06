@@ -1,7 +1,7 @@
 "use client";
 
 import ProgressManager from "@/lib/progressManager";
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Lesson } from "@/types/lesson";
 import { TaskItem } from "@/components/lessons/task-item";
@@ -12,6 +12,7 @@ import { getCurrentUser, hasToken } from "@/lib/auth";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { LocalTaskProgress } from "@/infrastructure/persistence/localProgressData";
 import progressManager from "@/lib/progressManager";
+import { ProgressStatus } from "@/types/progressStatus";
 
 interface TaskListProps {
   lesson: Lesson;
@@ -22,6 +23,12 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [expandedTaskIds, setExpandedTaskIds] = useState<Set<string>>(new Set());
   const [taskProgressMap, setTaskProgressMap] = useState<Record<string, any>>({});
+  const inputReferences = useRef<Record<string, HTMLInputElement | null>>({});
+  const completionReference = useRef<HTMLDivElement | null>(null);
+  
+  const completedCount = lesson.tasks.filter((task) => { const progress = taskProgressMap[task.taskId]; return progress?.status === ProgressStatus.COMPLETED; }).length;
+  const allCompleted = completedCount === lesson.tasks.length;
+  const completionPercentage = lesson.tasks.length > 0 ? Math.round((completedCount / lesson.tasks.length) * 100) : 0;
 
   useEffect(() => {
     async function checkAuthentication() {
@@ -35,45 +42,46 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
   
   useEffect(() => {
     if(Object.keys(taskProgressMap).length === 0) return;
-    const nextTask = lesson.tasks.find(task => { const p = taskProgressMap[task.taskId]; return p?.status !== "COMPLETED"; });
+    const nextTask = lesson.tasks.find(task => { const p = taskProgressMap[task.taskId]; return p?.status !== ProgressStatus.COMPLETED; });
     if(nextTask) { setExpandedTaskIds(prev => { const next = new Set(prev); next.add(nextTask.taskId); return next; }); }
   }, [lesson.tasks, taskProgressMap]);
 
   useEffect(() => {
     async function loadProgress() {
       let map: Record<string, any> = {};
-      if(isAuthenticated) {
+      if(isAuthenticated) { // Logged in - progress comes from backend
         for(const task of lesson.tasks) {
           try {
             const progress = await GatewayFactory.instance.taskProgressGateway.getTaskProgress(lesson.lessonId, task.taskId);
             map[task.taskId] = progress;
-          } catch { map[task.taskId] = { status: "NOT_STARTED", attempts: 0 }; }
+          } catch { map[task.taskId] = { status: ProgressStatus.NOT_STARTED, attempts: 0 }; }
         }
-      } else {
-        const raw = await progressManager.getProgress();
-        const flat: Record<string, any> = {};
-        for(const lessonId in raw) {
-          const lesson = raw[lessonId];
-          for(const taskId in lesson.completedTasks) {
-            flat[taskId] = lesson.completedTasks[taskId];
-          }
-        }
-        for(const task of lesson.tasks) {
-          if(!flat[task.taskId]) {
-            flat[task.taskId] = { status: "NOT_STARTED", attempts: 0 };
-          }
-        }
-        map = flat;
-        for(const task of lesson.tasks) {
-          if(!map[task.taskId]) {
-            map[task.taskId] = { status: "NOT_STARTED", attempts: 0 };
-          }
-        }
+        setTaskProgressMap(map);
+        return;
+      }
+
+      // Logged out - progress loaded from local storage
+      const raw = await progressManager.getProgress();
+      const lessonProgress = raw[lesson.lessonId]?.tasks ?? {};
+      map = {};
+      for(const task of lesson.tasks) {
+        map[task.taskId] = lessonProgress[task.taskId] ?? { status: ProgressStatus.NOT_STARTED, attempts: 0 };
       }
       setTaskProgressMap(map);
     }
     loadProgress();
   }, [isAuthenticated, lesson.lessonId, lesson.tasks]);
+
+  useEffect(() => {
+    if(!allCompleted) { return; }
+    setTimeout(() => {
+      const el = completionReference.current;
+      if(!el) { return; }
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      const button = el.querySelector("a, button") as HTMLElement | null;
+      button?.focus();
+    }, 400);
+  }, [allCompleted]);
 
   const toggleTask = (taskId: string) => {
     setExpandedTaskIds(prev => {
@@ -84,14 +92,10 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
     });
   };
 
-  const completedCount = lesson.tasks.filter((task) => { const progress = taskProgressMap[task.taskId]; return progress?.status === "COMPLETED"; }).length;
-  const allCompleted = completedCount === lesson.tasks.length;
-  const completionPercentage = lesson.tasks.length > 0 ? Math.round((completedCount / lesson.tasks.length) * 100) : 0;
-
   const handleTaskComplete = useCallback(async (taskId: string, answer: string, isCorrect: boolean) => {
     const prev = taskProgressMap[taskId];
     const newAttempts = (prev?.attempts || 0) + 1;
-    const newStatus = isCorrect ? "COMPLETED" : prev?.status === "COMPLETED" ? "COMPLETED" : "IN_PROGRESS";
+    const newStatus = isCorrect ? ProgressStatus.COMPLETED : prev?.status === ProgressStatus.COMPLETED ? ProgressStatus.COMPLETED : ProgressStatus.IN_PROGRESS;
     const taskProgress: LocalTaskProgress = {
       taskId,
       status: newStatus,
@@ -99,12 +103,29 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
       lastInput: answer,
       lastError: "",
       startedAt: prev?.startedAt || new Date().toISOString(),
-      completedAt: newStatus === "COMPLETED" ? prev?.completedAt || new Date().toISOString() : prev?.completedAt
+      completedAt: newStatus === ProgressStatus.COMPLETED ? prev?.completedAt || new Date().toISOString() : prev?.completedAt
     };
 
     if (!hasToken()) { await ProgressManager.updateLesson(lesson.lessonId, taskProgress); }
     else {} // Backend already recorded the user attempt
     setTaskProgressMap(prevMap => ({ ...prevMap, [taskId]: taskProgress }));
+    if(isCorrect) {
+      const tasks = lesson.tasks;
+      const currentIndex = tasks.findIndex(t => t.taskId === taskId);
+      const nextTask = tasks[currentIndex + 1];
+      if(nextTask) {
+        setExpandedTaskIds(previous => {
+          const next = new Set(previous);
+          next.add(nextTask.taskId);
+          return next;
+        });
+        setTimeout(() => {
+          const el = document.getElementById(`task-${nextTask.taskId}`);
+          el?.scrollIntoView({ behavior: "smooth", block: "start" });
+          inputReferences.current[nextTask.taskId]?.focus();
+        }, 600);
+      }
+    }
 
   }, [lesson.lessonId, taskProgressMap]);
 
@@ -126,14 +147,13 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
       </div>
 
       {lesson.tasks.map((task) => (
-        <TaskItem key={task.taskId} task={task} lessonId={lesson.lessonId} isExpanded={expandedTaskIds.has(task.taskId)}
-        onToggle={() => toggleTask(task.taskId)}
-        onComplete={handleTaskComplete} isAuthenticated={isAuthenticated} progress={taskProgressMap[task.taskId]} />
+        <TaskItem key={task.taskId} task={task} lessonId={lesson.lessonId} isExpanded={expandedTaskIds.has(task.taskId)} onToggle={() => toggleTask(task.taskId)}
+        onComplete={handleTaskComplete} isAuthenticated={isAuthenticated} progress={taskProgressMap[task.taskId]} currentInputReference={(el) => inputReferences.current[task.taskId] = el} />
       ))}
 
       {/* Next lesson banner */}
       {allCompleted && (
-        <div className="mt-4 flex flex-col items-center gap-4 rounded-xl border border-green-300 bg-green-300 p-6 text-center">
+        <div ref={completionReference} className="mt-4 flex flex-col items-center gap-4 rounded-xl border border-green-300 bg-green-300 p-6 text-center">
           {lesson.tasks.length === 0 ? (
             <div className="flex items-center gap-2 text-primary">
               <span className="font-semibold">The current lesson has no tasks</span>

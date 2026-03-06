@@ -97,7 +97,7 @@ class JpaUserDatabaseGatewayTest {
     void getUserByEmail_WhenUserExists_ReturnsUser() {
         // Arrange
         final String email = "test@test.com";
-        JpaUserSchema schema = new JpaUserSchema("1", "Alessio", "Cocuzza", email, false);
+        JpaUserSchema schema = new JpaUserSchema("1", "Alessio", "Cocuzza", email);
         User user = new User("Alessio", "Cocuzza", email);
         when(jpaUserRepository.findByEmailAddress(email)).thenReturn(Optional.of(schema));
         when(userSchemaMapper.fromJpaSchema(schema)).thenReturn(user);
@@ -160,10 +160,11 @@ class JpaUserDatabaseGatewayTest {
 
 
     private static User provideUserWithId() {
-        return new User("1", "John", "Doe", "myemail1@gmail.com", false);
+        return new User(
+                "1", "John", "Doe", "myemail1@gmail.com");
     }
 
     private static JpaUserSchema provideUserSchemaWithId() {
-        return new JpaUserSchema("1", "John", "Doe", "myemail1@gmail.com", false);
+        return new JpaUserSchema("1", "John", "Doe", "myemail1@gmail.com");
     }
 }

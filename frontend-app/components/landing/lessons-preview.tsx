@@ -47,8 +47,6 @@ export async function LessonsPreview() {
 
         <div className="grid gap-4 sm:grid-cols-2">
           {lessons.slice(0, 4).map((lesson) => { // Show a maximum of 4 lessons in the home page lessons preview / catalog
-            const difficultyDistribution = lesson.tasks.reduce((acc, task) => { acc[task.difficulty] = (acc[task.difficulty] || 0) + 1; return acc; }, {} as Record<string, number>);
-            const hasDifficulties = Object.keys(difficultyDistribution).length > 0;
 
             return (
               <Link key={lesson.lessonId} href={`/lessons/${lesson.lessonId}`} title={`Lesson ${lesson.lessonOrder} - ${lesson.title}`}
@@ -66,20 +64,10 @@ export async function LessonsPreview() {
                   {lesson.description}
                 </p>
                 <div className="flex flex-wrap items-center gap-2">
-                  {lesson.tasks.length === 0 ? (<span className="text-xs text-muted-foreground">No tasks yet</span>) : (
-                    <>
+                  {lesson.taskIds.length === 0 ? (<span className="text-xs text-muted-foreground">No tasks yet</span>) : (
                     <span className="text-xs text-muted-foreground">
-                      {lesson.tasks.length}{" "} {lesson.tasks.length === 1 ? "task" : "tasks"}{""}
-                      {hasDifficulties && ( <span className="text-muted-foreground/30"> | </span> )}
+                      {lesson.taskIds.length}{" "} {lesson.taskIds.length === 1 ? "task" : "tasks"}{""}
                     </span>
-                    {Object.entries(difficultyDistribution).map(
-                      ([difficulty, count]) => (
-                        <Badge key={difficulty} variant={difficulty.toLowerCase() as "easy" | "medium" | "hard"} className="text-xs">
-                          {count} {difficulty.toLowerCase()}
-                        </Badge>
-                      )
-                    )}
-                    </>
                   )}
                 </div>
               </Link>

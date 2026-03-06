@@ -46,7 +46,7 @@ class UserControllerTest {
                 "myemail1@gmail.com", "MyPassword123'"
         );
 
-        User createdUser = new User("1", "Alessio",  "Cocuzza", "myemail1@gmail.com", false);
+        User createdUser = new User("1", "Alessio",  "Cocuzza", "myemail1@gmail.com");
         UserResponse expectedResponse = this.userResponseMapper.toUserResponse(createdUser);
 
         when(this.createUser.execute(validRequest)).thenReturn(createdUser);
@@ -74,7 +74,7 @@ class UserControllerTest {
     @DisplayName("Get User By ID - User Exists - Returns Successful Response / 200")
     void getUserById_WhenUserExists_ReturnsUserResponse() throws Exception {
         // Arrange
-        User foundUser = new User("1", "Alessio", "Cocuzza", "myemail1@gmail.com", false);
+        User foundUser = new User("1", "Alessio", "Cocuzza", "myemail1@gmail.com");
         UserResponse expectedResponse = this.userResponseMapper.toUserResponse(foundUser);
         when(this.getUserById.execute("1")).thenReturn(foundUser);
 
@@ -98,7 +98,7 @@ class UserControllerTest {
     @Test @DisplayName("Get User By Email - User Exists - Returns Successful Response / 200")
     void getUserByEmail_WhenUserExists_ReturnsUserResponse() throws Exception {
         // Arrange
-        User foundUser = new User("1", "Alessio", "Cocuzza", "myemail1@gmail.com", false);
+        User foundUser = new User("1", "Alessio", "Cocuzza", "myemail1@gmail.com");
         UserResponse expectedResponse = userResponseMapper.toUserResponse(foundUser);
         when(getUserByEmail.execute("myemail1@gmail.com")).thenReturn(foundUser);
 

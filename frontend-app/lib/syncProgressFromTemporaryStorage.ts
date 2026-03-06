@@ -8,7 +8,7 @@ export async function syncProgressFromTemporaryStorage() {
         for (const lessonId in localProgress) {
             const lesson = localProgress[lessonId];
 
-            const taskUpdates = Object.values(lesson.completedTasks).map((task) => ({
+            const taskUpdates = Object.values(lesson.tasks).map((task) => ({
                 taskId: task.taskId,
                 status: task.status,
                 attempts: task.attempts,

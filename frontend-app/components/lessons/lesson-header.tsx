@@ -32,6 +32,12 @@ export function LessonHeader({ lesson, progress }: LessonHeaderProps) {
             {lesson.description}
           </p>
 
+          {lesson.longDescription && (
+            <div className="rounded-lg bg-muted/30 p-5 text-sm leading-relaxed text-muted-foreground border border-border/50">
+              {lesson.longDescription}
+            </div>
+          )}
+
           {progress && (
             <div className="mt-4 flex items-center gap-2 sm:gap-3">
               <Progress value={progressPercentage} className="h-2 flex-1 sm:max-w-xs"/>

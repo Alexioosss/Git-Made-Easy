@@ -14,17 +14,14 @@ public class JpaUserSchema {
     @Column(name = "email_address", unique = true)
     private String emailAddress;
 
-    private boolean isEmailVerified;
-
     protected JpaUserSchema() {}
 
     public JpaUserSchema(String firebaseUid, String firstName, String lastName,
-                         String emailAddress, boolean isEmailVerified) {
+                         String emailAddress) {
         this.firebaseUid = firebaseUid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
-        this.isEmailVerified = isEmailVerified;
     }
 
     public String getId() {
@@ -43,9 +40,5 @@ public class JpaUserSchema {
 
     public String getEmailAddress() {
         return emailAddress;
-    }
-
-    public boolean isEmailVerified() {
-        return isEmailVerified;
     }
 }

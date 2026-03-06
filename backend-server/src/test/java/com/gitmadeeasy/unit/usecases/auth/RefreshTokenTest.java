@@ -29,7 +29,7 @@ class RefreshTokenTest {
     void execute_WhenTokenIsValid_ReturnsNewAuthToken() {
         // Arrange
         String oldToken = "token", userId = "1";
-        User user = new User("1", "John", "Doe", "myemail1@gmail.com", false);
+        User user = new User("1", "John", "Doe", "myemail1@gmail.com");
         when(this.tokenGateway.getUserIdFromToken(oldToken)).thenReturn(userId);
         when(this.userGateway.getUserById(userId)).thenReturn(Optional.of(user));
         when(this.tokenGateway.refreshToken(user)).thenReturn("refreshed-token");

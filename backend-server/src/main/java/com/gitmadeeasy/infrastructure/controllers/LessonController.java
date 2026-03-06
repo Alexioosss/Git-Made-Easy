@@ -5,6 +5,7 @@ import com.gitmadeeasy.infrastructure.dto.lessons.LessonResponse;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
 import com.gitmadeeasy.usecases.lessons.GetAllLessons;
 import com.gitmadeeasy.usecases.lessons.GetLessonById;
+import com.gitmadeeasy.usecases.lessons.GetNextLesson;
 import com.gitmadeeasy.usecases.lessons.dto.CreateLessonRequest;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -20,12 +21,15 @@ public class LessonController {
     private final CreateLesson createLesson;
     private final GetLessonById getLessonById;
     private final GetAllLessons getAllLessons;
+    private final GetNextLesson getNextLesson;
     private static final Logger log = LoggerFactory.getLogger(LessonController.class);
 
-    public LessonController(CreateLesson createLesson, GetLessonById getLessonById, GetAllLessons getAllLessons) {
+    public LessonController(CreateLesson createLesson, GetLessonById getLessonById,
+                            GetAllLessons getAllLessons, GetNextLesson getNextLesson) {
         this.createLesson = createLesson;
         this.getLessonById = getLessonById;
         this.getAllLessons = getAllLessons;
+        this.getNextLesson = getNextLesson;
     }
 
     @PostMapping
@@ -49,6 +53,14 @@ public class LessonController {
         log.info("GET /lessons/{} - Fetching lesson by its id", lessonId);
         Lesson foundLesson = this.getLessonById.execute(lessonId);
         log.info("Lesson found successfully. LessonID={}", foundLesson.getLessonId());
+        return ResponseEntity.ok(foundLesson);
+    }
+
+    @GetMapping("/{lessonId}/next")
+    public ResponseEntity<Lesson> getNextLesson(@PathVariable("lessonId") String lessonId) {
+        log.info("GET /lessons/{}/next - Fetching next lesson of lesson {}", lessonId, lessonId);
+        Lesson foundLesson = this.getNextLesson.execute(lessonId);
+        log.info("Next lesson found successfully. LessonID={}", foundLesson.getLessonId());
         return ResponseEntity.ok(foundLesson);
     }
 }

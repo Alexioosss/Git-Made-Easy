@@ -10,7 +10,7 @@ export interface LocalTaskProgress {
 
 export interface LessonProgressData {
     lessonId: string;
-    completedTasks: Record<string, LocalTaskProgress>;
+    tasks: Record<string, LocalTaskProgress>;
 }
 
 export interface ProgressData {

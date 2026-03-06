@@ -3,7 +3,7 @@
 import { LessonCard } from "@/components/lessons/lesson-card";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { GatewayFactory } from "@/config/GatewayFactory";
-import { getCurrentUser, hasToken } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth";
 import progressManager from "@/lib/progressManager";
 import { safeCallWrapper } from "@/lib/safeCallWrapper";
 import { Lesson } from "@/types/lesson";
@@ -19,12 +19,10 @@ export default function LessonPage() {
 
     useEffect(() => {
         const fetchData = async () => {
-            // Fetch all lessons for display
+            // 1. Fetch all lessons
             const response = await safeCallWrapper(() => lessonGateway.getAllLessons());
             if(!response.ok || !response.data) { setLessons([]); setLoading(false); return; }
-
             const lessons = response.data;
-
             const lessonsWithTasks = await Promise.all(
                 lessons.map(async (lesson) => {
                     const tasksResult = await safeCallWrapper(() => lessonGateway.getTasksForLesson(lesson.lessonId));
@@ -36,27 +34,31 @@ export default function LessonPage() {
             );
             setLessons(lessonsWithTasks);
 
+            // 2. Check user is logged in
             const userResult = await safeCallWrapper(() => getCurrentUser());
-            if(!userResult.ok || !userResult.data) { setLoading(false); return; }
-            
-            // Fetch progress for all tasks for this lesson
-            const progressResult = await safeCallWrapper(() => lessonProgressGateway.getAllLessonsProgress());
-            if(progressResult.ok && progressResult.data) {
-                const progressList: LessonProgress[] = progressResult.data;
-                const progressMap = Object.fromEntries(progressList.map(progress => [progress.lessonId, progress]));
-                setProgressMap(progressMap);
+            const isLoggedIn = userResult.ok && userResult.data;
+
+            // 3. Load user progress, either from backend (must be logged in), or from local storage
+            if(isLoggedIn) {
+                const progressResult = await safeCallWrapper(() => lessonProgressGateway.getAllLessonsProgress());
+                if(progressResult.ok && progressResult.data) {
+                    const progressList: LessonProgress[] = progressResult.data;
+                    const backendMap = Object.fromEntries(progressList.map(progress => [progress.lessonId, progress]));
+                    setProgressMap(backendMap);
+                }
             } else {
-                const progressList = await progressManager.getProgress();
-                setProgressMap(progressManager.convertLocalToLessonProgress(progressList, lessons));
+                const raw = await progressManager.getProgress();
+                console.log(raw);
+                const localMap = progressManager.convertLocalToLessonProgress(raw, lessonsWithTasks);
+                setProgressMap(localMap);
             }
             setLoading(false);
         };
         fetchData();
     }, []);
 
-    if(loading) {
-        return ( <LoadingSpinner message="Loading lessons, please wait..." /> );
-    }
+
+    if(loading) { return ( <LoadingSpinner message="Loading lessons, please wait..." /> ); }
 
     if(!loading && lessons.length === 0) {
         return (

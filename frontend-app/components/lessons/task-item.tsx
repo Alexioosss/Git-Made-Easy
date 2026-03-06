@@ -11,9 +11,9 @@ import { CheckCircle2, ChevronDown, ChevronUp, KeyRound, Lightbulb, RotateCcw, S
 import { DifficultyLevels } from "@/types/difficultyLevels";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { TaskProgress } from "@/types/taskProgress";
-import { LocalStorageProgressStorage } from "@/infrastructure/persistence/localStorageProgressStorage";
 import progressManager from "@/lib/progressManager";
 import { LocalTaskProgress } from "@/infrastructure/persistence/localProgressData";
+import { ProgressStatus } from "@/types/progressStatus";
 
 interface TaskItemProps {
   task: Task;
@@ -23,70 +23,69 @@ interface TaskItemProps {
   onComplete?: (taskId: string, answer: string, isCorrect: boolean) => void;
   isAuthenticated: boolean;
   progress?: TaskProgress;
+  currentInputReference?: (el: HTMLInputElement | null) => void;
 }
 
-export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isAuthenticated, progress }: TaskItemProps) {
+export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isAuthenticated, progress, currentInputReference }: TaskItemProps) {
   const [userInput, setUserInput] = useState("");
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string; } | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
-  const [localCompleted, setLocalCompleted] = useState(false);
-  const [reset, setReset] = useState(false);
+  const [sessionStatus, setSessionStatus] = useState<ProgressStatus>(ProgressStatus.NOT_STARTED);
 
-  const isCompleted = (!reset && (progress?.status === "COMPLETED")) || localCompleted;
-  const savedUserInput = progress?.lastInput ?? "";
   const totalAttempts = progress?.attempts || 0;
-  
-  const effectiveStatus = reset ? "NOT_STARTED" : localCompleted || progress?.status === "COMPLETED" ? "COMPLETED" : progress?.status === "IN_PROGRESS" ? "IN_PROGRESS" : "NOT_STARTED";
-  const statusVariant = effectiveStatus === "COMPLETED" ? "completed" : effectiveStatus === "IN_PROGRESS" ? "inProgress" : "notStarted";
-  const statusLabel = effectiveStatus === "COMPLETED" ? "Completed" : effectiveStatus === "IN_PROGRESS" ? "In Progress" : "Not Started";
 
+  // Hydrate from the stored progress on page load
   useEffect(() => {
-    if(!localCompleted && isCompleted && savedUserInput) {
-      setUserInput(savedUserInput);
-      setLocalCompleted(true);
+    if(progress?.status === ProgressStatus.COMPLETED) {
+      setUserInput(progress?.lastInput ?? "");
+      setSessionStatus(ProgressStatus.COMPLETED);
       setFeedback({ type: "success", message: "Correct! Well Done!" });
     }
-  }, [isCompleted, savedUserInput, localCompleted]);
+  }, []);
+
+  const inputDisabled = sessionStatus === ProgressStatus.COMPLETED;
 
   const handleSubmit = useCallback(async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(reset) { setReset(false); }
     if(!userInput.trim()) { return; }
 
     const isCorrect = userInput.trim().toLowerCase() === task.expectedCommand.toLowerCase();
-    
     setFeedback({ type: isCorrect ? "success" : "error", message: isCorrect ? "Correct! Well Done!" : "Not quite right. Try again!"});
+    setSessionStatus(isCorrect ? ProgressStatus.COMPLETED : ProgressStatus.IN_PROGRESS);
 
-    if(isCorrect) { setLocalCompleted(true); }
-    if(isAuthenticated) { await GatewayFactory.instance.taskProgressGateway.recordTaskAttempt( lessonId, task.taskId, userInput ); }
+    if(isAuthenticated) { await GatewayFactory.instance.taskProgressGateway.recordTaskAttempt(lessonId, task.taskId, userInput); }
     else {
       const progress = await progressManager.getProgress();
       const lesson = progress[lessonId];
-      const existing = lesson?.completedTasks?.[task.taskId];
+      const existing = lesson?.tasks?.[task.taskId];
       const updated: LocalTaskProgress = {
         taskId: task.taskId,
         lastInput: userInput,
-        lastError: existing.lastError,
+        lastError: existing ? existing.lastError : isCorrect ? "" : "Not quite right. Try again!", // Use user's last error message, or show message based on answer being correct or not
         attempts: existing ? existing.attempts + 1 : 1,
         status: isCorrect ? "COMPLETED" : "IN_PROGRESS",
-        startedAt: existing.startedAt
+        startedAt: existing ? existing.startedAt : new Date().toISOString()
       };
       await progressManager.updateLesson(lessonId, updated);
     }
     if(onComplete) { onComplete(task.taskId, userInput, isCorrect); }
-  }, [userInput, task.expectedCommand, task.taskId, isCompleted, onComplete, task.expectedCommand]);
+  }, [userInput, task.expectedCommand, task.taskId, isAuthenticated, lessonId, onComplete]);
 
   const handleReset = useCallback(() => {
     setUserInput("");
     setFeedback(null);
     setShowHint(false);
-    setLocalCompleted(false);
-    setReset(false);
+    setShowAnswer(false);
+    setSessionStatus(ProgressStatus.NOT_STARTED);
   }, []);
 
+  const isCompleted = sessionStatus === ProgressStatus.COMPLETED;
+  const statusVariant = sessionStatus === ProgressStatus.COMPLETED ? "completed" : sessionStatus === ProgressStatus.IN_PROGRESS ? "inProgress" : "notStarted";
+  const statusLabel = sessionStatus === ProgressStatus.COMPLETED ? "Completed" : sessionStatus === ProgressStatus.IN_PROGRESS ? "In Progress" : "Not Started";
+
   return (
-    <div title={`${isExpanded ? "Collapse task" : "Expand task"}`}
+    <div id={`task-${task.taskId}`} title={`${isExpanded ? "Collapse task" : "Expand task"}`}
     className={`rounded-xl border transition-all ${isCompleted ? "border-primary/20 bg-primary/5" : "border-border bg-card"} p-3 sm:p-4`}>
       <button type="button" onClick={onToggle} className="flex w-full items-center gap-3 p-3 text-left sm:p-4">
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary">
@@ -143,11 +142,11 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
               <span className="absolute left-3 top-1/2 -translate-y-1/2 font-mono text-sm text-primary">
                 $
               </span>
-              <Input value={userInput} onChange={(e) => { setUserInput(e.target.value); if(feedback) setFeedback(null); }}
+              <Input ref={currentInputReference} value={userInput} disabled={inputDisabled} onChange={(e) => { setUserInput(e.target.value); if(feedback) setFeedback(null); }}
               placeholder="Type your git command..." className="bg-secondary pl-7 font-mono text-sm text-foreground placeholder:text-muted-foreground placeholder:text-lg"/>
             </div>
             <div className="flex gap-2">
-              <Button type="submit" size="default" disabled={!userInput.trim()} title="Submit your answer"
+              <Button type="submit" size="default" disabled={!userInput.trim() || inputDisabled} title="Submit your answer"
               className={`flex-1 sm:flex-none transition-all duration-200 ${userInput.trim() || !isCompleted ? "hover:-translate-y-0.5 hover:shadow-md hover:shadow-primary/20" : ""}`}>
                 <Send className="h-4 w-4" />
                 <span className="sm:hidden">Submit</span>

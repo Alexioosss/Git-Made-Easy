@@ -27,12 +27,7 @@ export default async function LessonDetailPage({ params }: { params: Promise<{ l
   }
 
   const lesson = lessonResponse.data;
-
-  const allLessonsResponse = await safeCallWrapper(() => lessonGateway.getAllLessons());
-  const allLessons = (allLessonsResponse.ok && Array.isArray(allLessonsResponse.data)) ? allLessonsResponse.data : [];
-
-  const currentIndex = allLessons.findIndex((lesson) => lesson.lessonId === lessonId);
-  const nextLesson = currentIndex >= 0 ? allLessons[currentIndex + 1] ?? null : null;
+  const nextLesson = (await safeCallWrapper(() => lessonGateway.getNextLesson(lessonId))).data;
 
   let progress: LessonProgress | undefined = undefined;
   try { progress = await progressGateway.getLessonProgress(lessonId); }

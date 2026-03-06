@@ -41,6 +41,7 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.GET, "/lessons").permitAll()
                 .requestMatchers(HttpMethod.POST, "/lessons").authenticated()
                 .requestMatchers(HttpMethod.GET, "/lessons/{lessonId}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/lessons/{lessonId}/next").permitAll()
                 .requestMatchers(HttpMethod.POST, "/lessons/{lessonId}/tasks").authenticated()
                 .requestMatchers(HttpMethod.GET, "/lessons/{lessonId}/tasks").permitAll()
                 .requestMatchers(HttpMethod.GET, "/lessons/{lessonId}/tasks/{taskId}").permitAll()

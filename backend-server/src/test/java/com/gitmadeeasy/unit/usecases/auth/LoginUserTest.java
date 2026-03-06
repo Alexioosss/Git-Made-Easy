@@ -40,7 +40,7 @@ class LoginUserTest {
     void execute_WhenEmailVerified_ReturnsAuthToken() {
         // Arrange
         LoginRequest loginRequest = new LoginRequest("myemail1@gmail.com", "MyPassword123'");
-        User user = new User("1", "John", "Doe", "myemail1@gmail.com", false);
+        User user = new User("1", "John", "Doe", "myemail1@gmail.com");
 
         when(this.userIdentityProvider.login("myemail1@gmail.com", "MyPassword123'"))
                 .thenReturn("firebase-myemail1@gmail.com");
@@ -61,7 +61,7 @@ class LoginUserTest {
     void execute_WhenEmailNotVerified_ThrowsEmailNotVerifiedException() {
         // Arrange
         LoginRequest loginRequest = new LoginRequest("myemail1@gmail.com", "MyPassword123'");
-        User user = new User("1", "John", "Doe", "myemail1@gmail.com", false);
+        User user = new User("1", "John", "Doe", "myemail1@gmail.com");
 
         when(this.userIdentityProvider.login("myemail1@gmail.com", "MyPassword123'"))
                 .thenReturn("firebase-myemail1@gmail.com");
@@ -94,7 +94,7 @@ class LoginUserTest {
         LoginUser loginUserNoVerification =
                 new LoginUser(this.userGateway, this.tokenGateway, this.userIdentityProvider, requireEmailVerification);
         LoginRequest loginRequest = new LoginRequest("myemail1@gmail.com", "MyPassword123'");
-        User user = new User("1", "John", "Doe", "myemail1@gmail.com", false);
+        User user = new User("1", "John", "Doe", "myemail1@gmail.com");
         when(this.userIdentityProvider.login("myemail1@gmail.com", "MyPassword123'"))
                 .thenReturn("firebase-myemail1@gmail.com");
         when(this.userGateway.getUserByEmailAddress("myemail1@gmail.com")).thenReturn(Optional.of(user));

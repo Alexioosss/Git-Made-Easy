@@ -11,8 +11,6 @@ public class UserResponseMapper {
             user.getUserId(),
             user.getFirstName(),
             user.getLastName(),
-            user.getEmailAddress(),
-            user.isEmailVerified()
-        );
+            user.getEmailAddress());
     }
 }

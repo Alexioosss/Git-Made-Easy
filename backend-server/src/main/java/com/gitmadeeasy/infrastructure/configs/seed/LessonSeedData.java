@@ -60,7 +60,7 @@ public class LessonSeedData {
         Lesson branchingBasics = new Lesson("Branching Basics",
                 "Learn how to create, switch, and manage branches in Git.", DifficultyLevels.MEDIUM, 3);
         branchingBasics.setTasks(List.of(
-                new Task(branchingBasics.getLessonId(), "Create a new branch", "Create a new branch for your own work." +
+                new Task(branchingBasics.getLessonId(), "Create a new branch", "Create a new branch for your own work. " +
                         "Let's call it 'my-new-branch'", "git branch my-new-branch",
                         "Specify the branch name after the keyword branch, and don't forget quotes", 1, DifficultyLevels.EASY),
                 new Task(branchingBasics.getLessonId(), "Switch to a branch", "Move to the branch you just created",

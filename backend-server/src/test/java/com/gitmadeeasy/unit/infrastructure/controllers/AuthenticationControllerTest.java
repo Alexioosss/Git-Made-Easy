@@ -125,7 +125,7 @@ class AuthenticationControllerTest {
         Principal principal = () -> userId;
 
         User mockUser = new User(userId, "John", "Doe", "myemail1@gmail.com");
-        UserResponse mockResponse = new UserResponse(userId, "John", "Doe", "myemail1@gmail.com", false);
+        UserResponse mockResponse = new UserResponse(userId, "John", "Doe", "myemail1@gmail.com");
 
         when(this.getUserById.execute(userId)).thenReturn(mockUser);
         when(this.userResponseMapper.toUserResponse(mockUser)).thenReturn(mockResponse);

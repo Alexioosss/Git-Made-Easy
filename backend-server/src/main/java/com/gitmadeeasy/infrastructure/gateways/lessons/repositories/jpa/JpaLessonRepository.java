@@ -7,10 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository @Profile("test")
 public interface JpaLessonRepository extends JpaRepository<JpaLessonSchema, String> {
     @Query("SELECT COALESCE(MAX(l.lessonOrder), 0) FROM JpaLessonSchema l")
     Integer findMaxLessonOrder();
     List<JpaLessonSchema> findAllByOrderByLessonOrderAsc();
+    @Query("SELECT l from JpaLessonSchema l WHERE l.lessonOrder > :currentLessonOrder ORDER BY l.lessonOrder ASC")
+    Optional<JpaLessonSchema> findNextLesson(int currentLessonOrder);
 }

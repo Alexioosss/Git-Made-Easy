@@ -173,9 +173,7 @@ class AuthenticationControllerIntegrationTest {
         this.userRepository.save(new JpaUserSchema(
                "firebase-" + emailAddress,
                         "John", "Doe",
-                        emailAddress,
-                false
-        ));
+                        emailAddress));
         System.out.println("Mock User Saved Successfully.");
     }
 
