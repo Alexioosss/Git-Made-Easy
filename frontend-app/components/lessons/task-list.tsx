@@ -153,7 +153,7 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
 
       {/* Next lesson banner */}
       {allCompleted && (
-        <div ref={completionReference} className="mt-4 flex flex-col items-center gap-4 rounded-xl border border-green-300 bg-green-300 p-6 text-center">
+        <div ref={completionReference} className="mt-4 flex flex-col items-center gap-4 rounded-xl border border-green-500/40 bg-green-500/15 p-6 text-center shadow-sm">
           {lesson.tasks.length === 0 ? (
             <div className="flex items-center gap-2 text-primary">
               <span className="font-semibold">The current lesson has no tasks</span>

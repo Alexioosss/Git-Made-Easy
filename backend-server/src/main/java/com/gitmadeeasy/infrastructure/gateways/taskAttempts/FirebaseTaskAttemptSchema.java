@@ -1,6 +1,8 @@
 package com.gitmadeeasy.infrastructure.gateways.taskAttempts;
 
-import com.gitmadeeasy.entities.taskAttempts.TaskCompletionStatus;
+import com.gitmadeeasy.entities.enums.TaskCompletionStatus;
+
+import java.util.Objects;
 
 public class FirebaseTaskAttemptSchema {
     private String id;
@@ -71,4 +73,16 @@ public class FirebaseTaskAttemptSchema {
     public void setLessonId(String lessonId) { this.lessonId = lessonId; }
 
     public void setTaskTitle(String taskTitle) { this.taskTitle = taskTitle; }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || getClass() != o.getClass()) return false;
+        FirebaseTaskAttemptSchema that = (FirebaseTaskAttemptSchema) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

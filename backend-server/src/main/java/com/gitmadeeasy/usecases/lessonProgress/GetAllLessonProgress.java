@@ -21,12 +21,12 @@ public class GetAllLessonProgress {
     }
 
     public List<LessonProgress> execute(String userId) {
-        log.info("Fetching all lesson progress for userID={}", userId);
+        log.info("Fetching all lesson progress for User ID {}", userId);
 
         // Find all lesson progress for the user
         List<LessonProgress> progressList = this.lessonProgressGateway.findAllByUserId(userId);
 
-        // For each lesson progress, find the lesson, and sort the progressList by lessonOrder
+        // For each lesson progress, find the lesson, and sort the progressList by lessonOrder, or by Integer.MAX_VALUE
         return progressList.stream().sorted(Comparator.comparing(p ->
                 this.lessonGateway.getLessonById(p.getLessonId())
                         .map(Lesson::getLessonOrder).orElse(Integer.MAX_VALUE))).toList();

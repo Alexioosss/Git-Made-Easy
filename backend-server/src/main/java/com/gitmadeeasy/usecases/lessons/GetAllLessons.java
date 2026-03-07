@@ -6,7 +6,6 @@ import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public class GetAllLessons {
@@ -21,8 +20,7 @@ public class GetAllLessons {
     public List<Lesson> execute() {
         List<Lesson> lessons = this.lessonGateway.findAllLessons();
         for(Lesson lesson : lessons) {
-            List<Task> tasks = lesson.getTaskIds().stream()
-                    .map(this.taskGateway::findById).flatMap(Optional::stream).toList();
+            List<Task> tasks = lesson.getTaskIds().stream().map(this.taskGateway::findById).flatMap(Optional::stream).toList();
             lesson.setTasks(tasks);
         }
         return lessons;

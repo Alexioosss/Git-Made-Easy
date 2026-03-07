@@ -23,7 +23,7 @@ public class CreateTask {
 
     public Task execute(String lessonId, CreateTaskRequest request) {
         if(!this.lessonGateway.existsById(lessonId)) {
-            log.warn("CreateTask failed: lesson does not exist by id={}", lessonId);
+            log.warn("CreateTask failed: lesson does not exist with ID{}", lessonId);
             throw new LessonNotFoundWithIdException(lessonId);
         }
 
@@ -47,11 +47,8 @@ public class CreateTask {
         log.info("Task order has been produced for current task");
 
         DifficultyLevels taskDifficulty;
-        try {
-            taskDifficulty = DifficultyLevels.valueOf(request.taskDifficulty().toUpperCase());
-        } catch(IllegalArgumentException e) {
-            throw new DifficultyLevelNotRecognisedException(request.taskDifficulty());
-        }
+        try { taskDifficulty = DifficultyLevels.valueOf(request.taskDifficulty().toUpperCase()); }
+        catch(IllegalArgumentException e) { throw new DifficultyLevelNotRecognisedException(request.taskDifficulty()); }
 
         Task newTask = new Task(
                 lessonId, request.title(), request.content(), request.expectedCommand(),

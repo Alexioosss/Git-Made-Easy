@@ -88,16 +88,12 @@ public class LessonProgress {
     public boolean equals(Object o) {
         if(o == null || getClass() != o.getClass()) return false;
         LessonProgress that = (LessonProgress) o;
-        return Objects.equals(lessonProgressId, that.lessonProgressId) &&
-                Objects.equals(userId, that.userId) &&
-                Objects.equals(lessonId, that.lessonId) &&
-                Objects.equals(currentTaskProgressId, that.currentTaskProgressId) &&
-                Objects.equals(completedTasksCount, that.completedTasksCount) &&
-                Objects.equals(totalTasksCount, that.totalTasksCount);
+        return Objects.equals(userId, that.userId) &&
+                Objects.equals(lessonId, that.lessonId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(lessonProgressId, userId, lessonId, currentTaskProgressId, completedTasksCount, totalTasksCount);
+        return Objects.hash(userId, lessonId);
     }
 }

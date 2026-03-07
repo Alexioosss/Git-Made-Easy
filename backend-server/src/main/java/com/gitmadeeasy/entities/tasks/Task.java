@@ -31,8 +31,7 @@ public class Task {
         this.difficulty = difficulty;
     }
 
-    public Task(
-            String taskId, String lessonId, String title, String content,
+    public Task(String taskId, String lessonId, String title, String content,
             String expectedCommand, String hint, Integer taskOrder, DifficultyLevels difficulty) {
         this.taskId = taskId;
         this.lessonId = lessonId;
@@ -44,8 +43,7 @@ public class Task {
         this.difficulty = difficulty;
     }
 
-    public Task(
-            String lessonId, String title, String content,
+    public Task(String lessonId, String title, String content,
             String expectedCommand, String hint, Integer taskOrder, DifficultyLevels difficulty) {
         this.lessonId = lessonId;
         this.title = title;
@@ -110,16 +108,14 @@ public class Task {
     @Override
     public boolean equals(Object o) {
         if(o == null || getClass() != o.getClass()) return false;
-        Task task = (Task) o;
-        return Objects.equals(title, task.title) &&
-                Objects.equals(content, task.content) &&
-                Objects.equals(expectedCommand, task.expectedCommand) &&
-                Objects.equals(hint, task.hint) &&
-                Objects.equals(difficulty, task.difficulty);
+        Task that = (Task) o;
+        return Objects.equals(lessonId, that.lessonId) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(taskOrder, that.taskOrder);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, content, expectedCommand, hint, difficulty);
+        return Objects.hash(lessonId, title, taskOrder);
     }
 }

@@ -36,7 +36,7 @@ public class LessonController {
     public ResponseEntity<Lesson> createLesson(@Valid @RequestBody CreateLessonRequest createLessonRequest) {
         log.info("POST /lessons - Creating new lesson");
         Lesson createdLesson = this.createLesson.execute(createLessonRequest);
-        log.info("Lesson created successfully. LessonID={}", createdLesson.getLessonId());
+        log.info("Lesson created successfully. Lesson ID {}", createdLesson.getLessonId());
         return ResponseEntity.created(URI.create("/lessons/" + createdLesson.getLessonId())).body(createdLesson);
     }
 
@@ -52,7 +52,7 @@ public class LessonController {
     public ResponseEntity<Lesson> getLessonById(@PathVariable("lessonId") String lessonId) {
         log.info("GET /lessons/{} - Fetching lesson by its id", lessonId);
         Lesson foundLesson = this.getLessonById.execute(lessonId);
-        log.info("Lesson found successfully. LessonID={}", foundLesson.getLessonId());
+        log.info("Lesson found successfully. Lesson ID {}", foundLesson.getLessonId());
         return ResponseEntity.ok(foundLesson);
     }
 
@@ -64,7 +64,7 @@ public class LessonController {
             log.info("Next lesson not found for lesson {}", lessonId);
             return ResponseEntity.ok().build();
         }
-        log.info("Next lesson found successfully. LessonID={}", foundLesson.getLessonId());
+        log.info("Next lesson found successfully. Lesson ID {}", foundLesson.getLessonId());
         return ResponseEntity.ok(foundLesson);
     }
 }

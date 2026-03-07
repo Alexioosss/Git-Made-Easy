@@ -1,7 +1,6 @@
 package com.gitmadeeasy.integration.controllers;
 
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.jpa.JpaUserRepository;
-import com.gitmadeeasy.testConfig.TestConfig;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.users.dto.CreateUserRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +12,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;

@@ -5,7 +5,6 @@ import com.gitmadeeasy.infrastructure.controllers.LessonProgressController;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.lessonProgress.GetAllLessonProgress;
 import com.gitmadeeasy.usecases.lessonProgress.GetLessonProgress;
-import com.gitmadeeasy.usecases.lessons.GetAllLessons;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

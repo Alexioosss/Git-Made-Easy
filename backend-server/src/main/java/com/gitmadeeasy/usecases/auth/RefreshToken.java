@@ -22,7 +22,6 @@ public class RefreshToken {
         User user = this.userGateway.getUserById(this.tokenGateway.getUserIdFromToken(token))
                 .orElseThrow(InvalidTokenException::new);
         log.info("Found user via the userID, parsed from the JWT Token claims");
-
         return new AuthToken(this.tokenGateway.refreshToken(user));
     }
 }

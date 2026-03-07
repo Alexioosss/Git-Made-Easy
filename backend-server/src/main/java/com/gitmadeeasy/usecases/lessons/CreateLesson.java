@@ -34,9 +34,8 @@ public class CreateLesson {
         }
 
         DifficultyLevels difficulty;
-        try {
-            difficulty = DifficultyLevels.valueOf(request.difficulty().toUpperCase());
-        } catch(IllegalArgumentException e) {
+        try { difficulty = DifficultyLevels.valueOf(request.difficulty().toUpperCase()); }
+        catch(IllegalArgumentException e) {
             log.warn("CreateLesson failed: difficulty entered did not match recognised difficulties.");
             throw new DifficultyLevelNotRecognisedException(request.difficulty());
         }

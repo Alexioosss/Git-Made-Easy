@@ -1,10 +1,10 @@
 package com.gitmadeeasy.infrastructure.gateways.lessons;
 
 import com.gitmadeeasy.entities.enums.DifficultyLevels;
-import com.gitmadeeasy.infrastructure.gateways.tasks.FirebaseTaskSchema;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class FirebaseLessonSchema {
     private String id;
@@ -54,4 +54,16 @@ public class FirebaseLessonSchema {
     public void setTaskIds(List<String> taskIds) { this.taskIds = taskIds; }
 
     public void setLongDescription(String longDescription) { this.longDescription = longDescription; }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || getClass() != o.getClass()) return false;
+        FirebaseLessonSchema that = (FirebaseLessonSchema) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

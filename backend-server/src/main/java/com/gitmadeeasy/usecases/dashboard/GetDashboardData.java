@@ -30,16 +30,16 @@ public class GetDashboardData {
     }
 
     public DashboardResponse execute(String userId) {
-        log.info("Loading all data for user= {}", userId);
+        log.info("Loading all data for User with ID {}", userId);
 
         User user = this.userGateway.getUserById(userId).orElseThrow(() -> new UserNotFoundWithIdException(userId));
-        log.info("User found. UserID= {}, email address= {}", user.getUserId(), user.getEmailAddress());
+        log.info("User found. User ID {}, Email Address {}", user.getUserId(), user.getEmailAddress());
 
         List<Lesson> allLessons = this.lessonGateway.findAllLessons();
         log.info("All lessons found. Lessons found: {}", allLessons.size());
 
         List<LessonProgress> lessonsProgressList = this.lessonProgressGateway.findAllByUserId(userId);
-        log.info("Lessons progress found. Progress found: {}", lessonsProgressList.size());
+        log.info("Lessons progress found. Progress found: {} lesson progresses.", lessonsProgressList.size());
 
         List<LessonSummary> lessonSummaries = allLessons.stream().map(lesson -> {
             LessonProgress progress = lessonsProgressList.stream()
@@ -52,7 +52,7 @@ public class GetDashboardData {
         }).toList();
 
         List<TaskProgress> tasksProgress = this.taskAttemptGateway.findAllByUserId(userId);
-        log.info("Tasks progress found. Progress found: {}", tasksProgress.size());
+        log.info("Tasks progress found. Progress found: {} task progresses.", tasksProgress.size());
 
         return new DashboardResponse(
                 user.getUserId(), user.getFirstName(), user.getLastName(), lessonSummaries, tasksProgress);

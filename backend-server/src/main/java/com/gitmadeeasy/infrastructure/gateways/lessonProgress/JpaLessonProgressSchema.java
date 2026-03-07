@@ -2,6 +2,8 @@ package com.gitmadeeasy.infrastructure.gateways.lessonProgress;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity @Table(name = "lesson_progress")
 public class JpaLessonProgressSchema {
     @Id @GeneratedValue(strategy = GenerationType.UUID)  private String id;
@@ -48,5 +50,17 @@ public class JpaLessonProgressSchema {
 
     public Integer getTotalTasksCount() {
         return totalTasksCount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || getClass() != o.getClass()) return false;
+        JpaLessonProgressSchema that = (JpaLessonProgressSchema) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

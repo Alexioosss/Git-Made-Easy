@@ -99,11 +99,11 @@ class JpaUserDatabaseGatewayTest {
         final String email = "test@test.com";
         JpaUserSchema schema = new JpaUserSchema("1", "Alessio", "Cocuzza", email);
         User user = new User("Alessio", "Cocuzza", email);
-        when(jpaUserRepository.findByEmailAddress(email)).thenReturn(Optional.of(schema));
-        when(userSchemaMapper.fromJpaSchema(schema)).thenReturn(user);
+        when(this.jpaUserRepository.findByEmailAddress(email)).thenReturn(Optional.of(schema));
+        when(this.userSchemaMapper.fromJpaSchema(schema)).thenReturn(user);
 
         // Act
-        Optional<User> result = jpaUserDatabaseGateway.getUserByEmailAddress(email);
+        Optional<User> result = this.jpaUserDatabaseGateway.getUserByEmailAddress(email);
 
         // Assert
         assertTrue(result.isPresent());
@@ -115,14 +115,14 @@ class JpaUserDatabaseGatewayTest {
     void getUserByEmail_WhenUserDoesNotExist_ReturnsEmptyOptional() {
         // Arrange
         final String email = "notfound@gmail.com";
-        when(jpaUserRepository.findByEmailAddress(email)).thenReturn(Optional.empty());
+        when(this.jpaUserRepository.findByEmailAddress(email)).thenReturn(Optional.empty());
 
         // Act
-        Optional<User> result = jpaUserDatabaseGateway.getUserByEmailAddress(email);
+        Optional<User> result = this.jpaUserDatabaseGateway.getUserByEmailAddress(email);
 
         // Assert
         assertTrue(result.isEmpty());
-        verify(userSchemaMapper, never()).fromJpaSchema(any());
+        verify(this.userSchemaMapper, never()).fromJpaSchema(any());
     }
 
     @Test
@@ -130,13 +130,14 @@ class JpaUserDatabaseGatewayTest {
     void existsByEmailAddress_WhenUserExists_ReturnsTrueAddress() {
         // Arrange
         final String email = "found@gmail.com";
-        when(jpaUserRepository.existsByEmailAddress(email)).thenReturn(true);
+        when(this.jpaUserRepository.existsByEmailAddress(email)).thenReturn(true);
 
         // Act
-        boolean exists = jpaUserDatabaseGateway.existsByEmailAddress(email);
+        boolean exists = this.jpaUserDatabaseGateway.existsByEmailAddress(email);
 
         // Assert
-        assertTrue(exists); verify(jpaUserRepository).existsByEmailAddress(email);
+        assertTrue(exists);
+        verify(this.jpaUserRepository).existsByEmailAddress(email);
     }
 
     @Test
@@ -144,14 +145,14 @@ class JpaUserDatabaseGatewayTest {
     void existsByEmailAddress_WhenUserDoesNotExist_ReturnsFalseAddress() {
         // Arrange
         final String email = "notfound@gmail.com";
-        when(jpaUserRepository.existsByEmailAddress(email)).thenReturn(false);
+        when(this.jpaUserRepository.existsByEmailAddress(email)).thenReturn(false);
 
         // Act
-        boolean exists = jpaUserDatabaseGateway.existsByEmailAddress(email);
+        boolean exists = this.jpaUserDatabaseGateway.existsByEmailAddress(email);
 
         // Assert
         assertFalse(exists);
-        verify(jpaUserRepository).existsByEmailAddress(email);
+        verify(this.jpaUserRepository).existsByEmailAddress(email);
     }
 
 

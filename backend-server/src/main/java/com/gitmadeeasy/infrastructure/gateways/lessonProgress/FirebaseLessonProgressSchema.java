@@ -1,5 +1,7 @@
 package com.gitmadeeasy.infrastructure.gateways.lessonProgress;
 
+import java.util.Objects;
+
 public class FirebaseLessonProgressSchema {
     private String id;
     private String userId;
@@ -45,5 +47,17 @@ public class FirebaseLessonProgressSchema {
 
     public Integer getTotalTasksCount() {
         return totalTasksCount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || getClass() != o.getClass()) return false;
+        FirebaseLessonProgressSchema that = (FirebaseLessonProgressSchema) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

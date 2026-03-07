@@ -41,7 +41,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<AuthToken> loginUser(@Valid @RequestBody LoginRequest loginRequest,
                                                HttpServletResponse response) {
-        log.info("POST /login - Logging a user in with email address={}", loginRequest.email());
+        log.info("POST /login - Logging a user in with email address {}", loginRequest.email());
 
         AuthToken authToken = this.loginUser.execute(loginRequest);
         setAuthenticationCookie(response, authToken.accessToken());
@@ -77,9 +77,14 @@ public class AuthenticationController {
 
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getCurrentUser(Principal principal) {
-        if(principal == null) { return ResponseEntity.status(401).build(); } // The token is expired but still valid
+        log.info("GET /me = Retrieving current user");
+        if(principal == null) { // No token was sent over with the request, potentially expired but valid
+            log.info("No token detected. Could not retrieve current user.");
+            return ResponseEntity.status(401).build();
+        }
         User foundUser = this.getUserById.execute(principal.getName());
         UserResponse userResponse = this.userResponseMapper.toUserResponse(foundUser);
+        log.info("Found current user. User ID {}", userResponse.id());
         return ResponseEntity.ok(userResponse);
     }
 

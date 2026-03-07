@@ -1,5 +1,6 @@
 package com.gitmadeeasy.entities.taskAttempts;
 
+import com.gitmadeeasy.entities.enums.TaskCompletionStatus;
 import com.gitmadeeasy.entities.tasks.Task;
 
 import java.time.LocalDate;
@@ -164,22 +165,14 @@ public class TaskProgress {
     public boolean equals(Object o) {
         if(o == null || getClass() != o.getClass()) return false;
         TaskProgress that = (TaskProgress) o;
-        return attempts == that.attempts &&
-                Objects.equals(taskProgressId, that.taskProgressId) &&
+        return Objects.equals(taskProgressId, that.taskProgressId) &&
                 Objects.equals(userId, that.userId) &&
                 Objects.equals(taskId, that.taskId) &&
-                Objects.equals(lessonId, that.lessonId) &&
-                Objects.equals(taskTitle, that.taskTitle) &&
-                status == that.status &&
-                Objects.equals(lastInput, that.lastInput) &&
-                Objects.equals(lastError, that.lastError) &&
-                Objects.equals(startedAt, that.startedAt) &&
-                Objects.equals(completedAt, that.completedAt);
+                Objects.equals(lessonId, that.lessonId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(taskProgressId, userId, taskId, status, lessonId, taskTitle,
-                attempts, lastInput, lastError, startedAt, completedAt);
+        return Objects.hash(taskProgressId, userId, taskId, lessonId);
     }
 }

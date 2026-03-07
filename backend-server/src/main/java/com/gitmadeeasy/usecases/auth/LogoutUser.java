@@ -13,7 +13,7 @@ public class LogoutUser {
     }
 
     public void execute(String token) {
-        tokenGateway.invalidateToken(token);
+        this.tokenGateway.invalidateToken(token);
         log.info("JWT Token invalidated successfully.");
     }
 }

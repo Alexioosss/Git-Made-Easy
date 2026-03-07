@@ -41,15 +41,16 @@ class UserControllerTest {
     @Test
     @DisplayName("Create User - Valid Payload Returns Expected Successful Response")
     void createUser_WhenValidPayload_ReturnsUserResponse() throws Exception {
+        //Arrange
         CreateUserRequest validRequest = new CreateUserRequest(
                 "Alessio", "Cocuzza",
                 "myemail1@gmail.com", "MyPassword123'"
         );
-
         User createdUser = new User("1", "Alessio",  "Cocuzza", "myemail1@gmail.com");
         UserResponse expectedResponse = this.userResponseMapper.toUserResponse(createdUser);
-
         when(this.createUser.execute(validRequest)).thenReturn(createdUser);
+
+        // Act & Assert
         this.mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonUtil.objectToJson(validRequest)))
@@ -99,11 +100,11 @@ class UserControllerTest {
     void getUserByEmail_WhenUserExists_ReturnsUserResponse() throws Exception {
         // Arrange
         User foundUser = new User("1", "Alessio", "Cocuzza", "myemail1@gmail.com");
-        UserResponse expectedResponse = userResponseMapper.toUserResponse(foundUser);
-        when(getUserByEmail.execute("myemail1@gmail.com")).thenReturn(foundUser);
+        UserResponse expectedResponse = this.userResponseMapper.toUserResponse(foundUser);
+        when(this.getUserByEmail.execute("myemail1@gmail.com")).thenReturn(foundUser);
 
         // Act & Assert
-        mockMvc.perform(get("/users")
+        this.mockMvc.perform(get("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -118,10 +119,10 @@ class UserControllerTest {
     @DisplayName("Get User By Email - User Not Found - Returns Unsuccessful Response / 404")
     void getUserByEmail_WhenUserNotFound_ReturnsNotFound() throws Exception {
         // Arrange
-        when(getUserByEmail.execute("missing@gmail.com")).thenThrow(new UserNotFoundWithEmailException("missing@gmail.com"));
+        when(this.getUserByEmail.execute("missing@gmail.com")).thenThrow(new UserNotFoundWithEmailException("missing@gmail.com"));
 
         // Act & Assert
-        mockMvc.perform(get("/users")
+        this.mockMvc.perform(get("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {

@@ -21,7 +21,7 @@ export class FetchLessonGateway implements LessonGateway {
     }
 
     getNextLesson(lessonId: string): Promise<Lesson> {
-        return this.apiClient.apiRequest(`/lessons/${lessonId}/next`, HttpMethods.GET);
+        return this.apiClient.apiRequest(`/lessons/${lessonId}/next`, HttpMethods.GET, undefined, { cache: "force-cache" });
     }
 
     getTasksForLesson(lessonId: string): Promise<Task[]> {

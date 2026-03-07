@@ -112,8 +112,8 @@ class AttemptTaskDatabaseGatewayTest {
         // Arrange
         JpaTaskAttemptSchema schema = TaskTestDataFactory.taskAttemptSchemaWithId("1");
         TaskProgress mapped = TaskTestDataFactory.taskProgressWithId("1");
-        when(taskAttemptRepository.findByUserIdAndTaskId("1", "1")).thenReturn(Optional.of(schema));
-        when(taskAttemptSchemaMapper.toEntity(schema)).thenReturn(mapped);
+        when(this.taskAttemptRepository.findByUserIdAndTaskId("1", "1")).thenReturn(Optional.of(schema));
+        when(this.taskAttemptSchemaMapper.toEntity(schema)).thenReturn(mapped);
 
         // Act
         Optional<TaskProgress> result = this.jpaTaskAttemptDatabaseGateway.findByUserIdAndTaskId("1", "1");
@@ -128,7 +128,7 @@ class AttemptTaskDatabaseGatewayTest {
     @DisplayName("Find Task Attempt - Record Does Not Exists")
     void findByUserIdAndTaskId_WhenTaskAttemptDoesNotExist_ReturnsNull() {
         // Arrange
-        when(taskAttemptRepository.findByUserIdAndTaskId("1", "1")).thenReturn(Optional.empty());
+        when(this.taskAttemptRepository.findByUserIdAndTaskId("1", "1")).thenReturn(Optional.empty());
 
         // Act
         Optional<TaskProgress> result = this.jpaTaskAttemptDatabaseGateway.findByUserIdAndTaskId("1", "1");

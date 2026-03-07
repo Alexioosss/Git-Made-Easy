@@ -34,13 +34,13 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
-        log.info("POST /users - Creating a new user with email address={}", request.emailAddress());
+        log.info("POST /users - Creating a new user with Email Address {}", request.emailAddress());
         CreateUserRequest newUserRequest = new CreateUserRequest(
                 request.firstName(), request.lastName(),
                 request.emailAddress(), request.password()
         );
         User createdUser = this.createUserUseCase.execute(newUserRequest);
-        log.info("User created successfully. UserID={}", createdUser.getUserId());
+        log.info("User created successfully. User ID {}", createdUser.getUserId());
 
         UserResponse userResponse = this.userResponseMapper.toUserResponse(createdUser);
         return ResponseEntity.created(URI.create("/users/" + userResponse.id())).body(userResponse);
@@ -50,7 +50,7 @@ public class UserController {
     public ResponseEntity<UserResponse> getUserById(@PathVariable("userId") String userId) {
         log.info("GET /users/{} - Fetching user by their ID", userId);
         User foundUser = this.getUserById.execute(userId);
-        log.info("User found successfully. UserID={}", foundUser.getUserId());
+        log.info("User found successfully. User ID {}", foundUser.getUserId());
         UserResponse userResponse = this.userResponseMapper.toUserResponse(foundUser);
         return ResponseEntity.ok(userResponse);
     }
@@ -59,7 +59,7 @@ public class UserController {
     public ResponseEntity<UserResponse> getUserByEmailAddress(@Valid @RequestBody EmailUserLookupRequest request) {
         log.info("GET /users/{} - Fetching user by their email address", request.emailAddress());
         User foundUser = this.getUserByEmail.execute(request.emailAddress());
-        log.info("User found successfully. UserID={}, email address={}", foundUser.getUserId(), foundUser.getEmailAddress());
+        log.info("User found successfully. User ID {}, Email Address {}", foundUser.getUserId(), foundUser.getEmailAddress());
         UserResponse userResponse = this.userResponseMapper.toUserResponse(foundUser);
         return ResponseEntity.ok(userResponse);
     }

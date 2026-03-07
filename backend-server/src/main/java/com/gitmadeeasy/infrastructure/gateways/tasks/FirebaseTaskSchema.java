@@ -1,5 +1,7 @@
 package com.gitmadeeasy.infrastructure.gateways.tasks;
 
+import java.util.Objects;
+
 public class FirebaseTaskSchema {
     private String id;
     private String lessonId;
@@ -57,4 +59,16 @@ public class FirebaseTaskSchema {
     public void setId(String id) { this.id = id; }
 
     public void setDifficulty(String difficulty) { this.difficulty = difficulty; }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || getClass() != o.getClass()) return false;
+        FirebaseTaskSchema that = (FirebaseTaskSchema) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

@@ -1,10 +1,11 @@
 package com.gitmadeeasy.infrastructure.gateways.taskAttempts;
 
-import com.gitmadeeasy.entities.taskAttempts.TaskCompletionStatus;
+import com.gitmadeeasy.entities.enums.TaskCompletionStatus;
 import com.gitmadeeasy.infrastructure.gateways.tasks.JpaTaskSchema;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity @Table(name = "task_attempts")
 public class JpaTaskAttemptSchema {
@@ -109,5 +110,17 @@ public class JpaTaskAttemptSchema {
 
     public void setCompletedAt(LocalDate completedAt) {
         this.completedAt = completedAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || getClass() != o.getClass()) return false;
+        JpaTaskAttemptSchema that = (JpaTaskAttemptSchema) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

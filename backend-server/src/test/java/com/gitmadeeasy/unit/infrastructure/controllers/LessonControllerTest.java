@@ -62,7 +62,8 @@ class LessonControllerTest {
     @DisplayName("Create Lesson - Invalid Payload Returns Unsuccessful Response / 400")
     void createLesson_WhenInvalidPayload_ReturnsBadRequest() throws Exception {
         // Arrange
-        CreateLessonRequest invalidRequest = new CreateLessonRequest("", "", "", 0, null, null);
+        CreateLessonRequest invalidRequest = new CreateLessonRequest(
+                "", "", "", 0, null, null);
 
         // Act & Assert
         this.mockMvc.perform(post("/lessons")

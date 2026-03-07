@@ -3,7 +3,6 @@ package com.gitmadeeasy.infrastructure.controllers;
 import com.gitmadeeasy.entities.lessonProgress.LessonProgress;
 import com.gitmadeeasy.usecases.lessonProgress.GetAllLessonProgress;
 import com.gitmadeeasy.usecases.lessonProgress.GetLessonProgress;
-import com.gitmadeeasy.usecases.lessons.GetAllLessons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;

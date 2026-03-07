@@ -236,8 +236,7 @@ class JpaLessonDatabaseGatewayTest {
 
     private static JpaLessonSchema provideLessonSchema() {
         return new JpaLessonSchema(
-                "Intro to Git",
-                "A simple introduction to a popular industry-relevant tool, Git.",
+                "Intro to Git","A simple introduction to a popular industry-relevant tool, Git.",
                 DifficultyLevels.EASY, 1);
     }
 }

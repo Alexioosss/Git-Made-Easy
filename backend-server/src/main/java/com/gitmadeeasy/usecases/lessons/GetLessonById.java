@@ -22,8 +22,7 @@ public class GetLessonById {
     }
 
     public Lesson execute(String lessonId) {
-        Lesson lesson = this.lessonGateway.getLessonById(lessonId)
-                .orElseThrow(() -> new LessonNotFoundWithIdException(lessonId));
+        Lesson lesson = this.lessonGateway.getLessonById(lessonId).orElseThrow(() -> new LessonNotFoundWithIdException(lessonId));
         log.info("Lesson found successfully by its id");
 
         List<Task> tasks = this.taskGateway.getTasksByIds(lesson.getTaskIds());

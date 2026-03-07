@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity @Table(name = "lessons")
 public class JpaLessonSchema {
@@ -66,5 +67,17 @@ public class JpaLessonSchema {
 
     public void setTasks(List<JpaTaskSchema> tasks) {
         this.tasks = tasks;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || getClass() != o.getClass()) return false;
+        JpaLessonSchema that = (JpaLessonSchema) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

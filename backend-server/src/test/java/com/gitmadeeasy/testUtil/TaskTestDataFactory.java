@@ -1,7 +1,7 @@
 package com.gitmadeeasy.testUtil;
 
 import com.gitmadeeasy.entities.enums.DifficultyLevels;
-import com.gitmadeeasy.entities.taskAttempts.TaskCompletionStatus;
+import com.gitmadeeasy.entities.enums.TaskCompletionStatus;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.infrastructure.gateways.taskAttempts.JpaTaskAttemptSchema;

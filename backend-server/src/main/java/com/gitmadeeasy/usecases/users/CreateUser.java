@@ -54,7 +54,7 @@ public class CreateUser {
         User userToSave = new User(firebaseUid, request.firstName(), request.lastName(), request.emailAddress());
 
         User createdUser = this.userGateway.createUser(userToSave);
-        log.info("User persisted successfully. userID={}, emailAddress={}", createdUser.getUserId(), createdUser.getEmailAddress());
+        log.info("User persisted successfully. User ID {}, Email Address {}", createdUser.getUserId(), createdUser.getEmailAddress());
 
         String verificationLink = this.identityProvider.generateVerificationEmail(request.emailAddress());
         log.info("Verification email generated successfully");

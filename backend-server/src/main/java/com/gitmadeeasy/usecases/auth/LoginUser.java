@@ -27,14 +27,14 @@ public class LoginUser {
 
     public AuthToken execute(LoginRequest request) {
         String firebaseUid = this.identityProvider.login(request.email(), request.password());
-        log.info("Firebase login successful for emailAddress={}", request.email());
+        log.info("Firebase login successful for Email Address {}", request.email());
 
         User user = this.userGateway.getUserByEmailAddress(request.email())
                 .orElseThrow(InvalidCredentialsException::new);
         user.setFirebaseUid(firebaseUid);
-        log.info("user found with emailAddress={}", request.email());
+        log.info("User found with Email Address {}", request.email());
 
-        if(requireEmailVerification && !this.identityProvider.isEmailVerified(firebaseUid)) {
+        if(this.requireEmailVerification && !this.identityProvider.isEmailVerified(firebaseUid)) {
             throw new EmailNotVerifiedException();
         }
 
