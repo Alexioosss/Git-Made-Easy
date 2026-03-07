@@ -3,7 +3,7 @@ import { safeCallWrapper } from "./safeCallWrapper";
 describe("safeCallWrapper", () => {
     it("Should return a success object when the promise resolves / is successful", async () => {
         const mockData = { id: 1, name: "Test" };
-        const result = await safeCallWrapper(Promise.resolve(mockData));
+        const result = await safeCallWrapper(() => Promise.resolve(mockData));
 
         expect(result).toEqual({
             ok: true,
@@ -15,7 +15,7 @@ describe("safeCallWrapper", () => {
     it("Should return an error object when the promise rejects / fails with an error message", async () => {
         const errorMsg = "Something went wrong";
         const mockPromise = Promise.reject(new Error(errorMsg));
-        const result = await safeCallWrapper(mockPromise);
+        const result = await safeCallWrapper(() => mockPromise);
 
         expect(result).toEqual({
             ok: false,
@@ -33,7 +33,7 @@ describe("safeCallWrapper", () => {
             code: "PAYMENT_REQUIRED"
         };
         const mockPromise = Promise.reject(errorObj);
-        const result = await safeCallWrapper(mockPromise);
+        const result = await safeCallWrapper(() => mockPromise);
 
         expect(result).toEqual({
             ok: false,

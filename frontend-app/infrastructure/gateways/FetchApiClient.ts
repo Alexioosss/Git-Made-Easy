@@ -56,12 +56,10 @@ export class FetchApiClient extends ApiClient {
     private async refreshToken(): Promise<boolean> {
         if(this.isRefreshing) { return this.refreshPromise!; }
         this.isRefreshing = true;
-        this.refreshPromise = fetch(`${this.BACKEND_URL}/auth/refresh`, {
-            method: "POST",
-            credentials: "include"
-        }).then(response => {
-            return response.ok;
-        }).finally(() => {
+
+        this.refreshPromise = fetch(`${this.BACKEND_URL}/auth/refresh`, { method: "POST", credentials: "include"})
+        .then(response => { return response.ok; })
+        .finally(() => {
             this.isRefreshing = false;
             this.refreshPromise = null;
         });

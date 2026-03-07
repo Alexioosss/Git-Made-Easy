@@ -26,7 +26,7 @@ export function BackOnlineBanner() {
     if(!show) { return null; }
 
     return (
-        <div className="sticky top-[56px] md:top-[64px] z-50 w-full bg-green-600 text-white text-center py-2 text-sm font-medium">
+        <div className="sticky top-[56px] md:top-[64px] z-50 w-full bg-green-600 text-white text-center py-2 text-md font-medium">
             Woohoo! We are back online. Your changes will now sync.
         </div>
     );

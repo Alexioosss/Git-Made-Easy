@@ -5,8 +5,8 @@ import { CTASection } from "@/components/landing/cta-section";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Home"
-}
+  title: "Home | Git Made Easy"
+};
 
 export default function HomePage() {
   return (

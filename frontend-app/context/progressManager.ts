@@ -1,4 +1,4 @@
-import { LocalTaskProgress, ProgressData } from "@/infrastructure/persistence/localProgressData";
+import { LocalTaskProgress, ProgressData } from "@/types/localProgressData";
 import { LocalStorageProgressStorage } from "@/infrastructure/persistence/localStorageProgressStorage";
 import { ProgressStorage } from "@/infrastructure/persistence/progressStorage";
 import { Lesson } from "@/types/lesson";
@@ -8,7 +8,7 @@ class ProgressManager {
     private static instance: ProgressManager;
     private storage: ProgressStorage;
     private progress: ProgressData = {};
-    private initialized: boolean = false;
+    private isProgressLoaded: boolean = false;
 
     private constructor() { this.storage = new LocalStorageProgressStorage(); }
 
@@ -17,17 +17,12 @@ class ProgressManager {
         return ProgressManager.instance;
     }
 
-    async init() {
-        if(!this.initialized) {
-            this.progress = await this.storage.getProgress();
-            this.initialized = true;
-        }
-    }
-
     async getProgress() {
-        const reloadedProgress = await this.storage.getProgress();
-        this.progress = reloadedProgress;
-        return reloadedProgress;
+        if(!this.isProgressLoaded) {
+            this.progress = await this.storage.getProgress();
+            this.isProgressLoaded = true;
+        }
+        return this.progress;
     }
 
     async updateLesson(lessonId: string, taskProgress: LocalTaskProgress) {
@@ -35,13 +30,12 @@ class ProgressManager {
         if(!current[lessonId]) { current[lessonId] = { lessonId, tasks: {} } }
         current[lessonId].tasks[taskProgress.taskId] = taskProgress;
         await this.storage.setProgress(current);
-        this.progress = current;
     }
 
     async clearProgress() {
         await this.storage.clearProgress();
         this.progress = {};
-        this.initialized = false;
+        this.isProgressLoaded = false;
     }
 
     convertLocalToLessonProgress(localProgress: ProgressData, lessons: Lesson[]) {

@@ -1,4 +1,4 @@
-import { LocalTaskProgress } from "@/infrastructure/persistence/localProgressData";
+import { LocalTaskProgress } from "@/types/localProgressData";
 import { TaskProgress } from "@/types/taskProgress";
 
 export interface TaskProgressGateway {

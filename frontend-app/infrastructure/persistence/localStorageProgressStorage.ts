@@ -1,4 +1,4 @@
-import { LocalTaskProgress, ProgressData } from "./localProgressData";
+import { LocalTaskProgress, ProgressData } from "../../types/localProgressData";
 import { ProgressStorage } from "./progressStorage";
 
 export class LocalStorageProgressStorage implements ProgressStorage {

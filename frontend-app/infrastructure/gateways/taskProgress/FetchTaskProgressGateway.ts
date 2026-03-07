@@ -2,7 +2,7 @@ import { TaskProgress } from "@/types/taskProgress";
 import { ApiClient } from "../ApiClient";
 import { TaskProgressGateway } from "./TaskProgressGateway";
 import { HttpMethods } from "../HttpMethods";
-import { LocalTaskProgress } from "@/infrastructure/persistence/localProgressData";
+import { LocalTaskProgress } from "@/types/localProgressData";
 
 export class FetchTaskProgressGateway implements TaskProgressGateway {
 

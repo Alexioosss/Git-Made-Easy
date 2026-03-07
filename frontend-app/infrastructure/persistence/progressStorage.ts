@@ -1,4 +1,4 @@
-import { ProgressData } from "./localProgressData";
+import { ProgressData } from "../../types/localProgressData";
 
 export interface ProgressStorage {
     getProgress(): Promise<ProgressData>;

@@ -11,8 +11,8 @@ import { CheckCircle2, ChevronDown, ChevronUp, KeyRound, Lightbulb, RotateCcw, S
 import { DifficultyLevels } from "@/types/difficultyLevels";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { TaskProgress } from "@/types/taskProgress";
-import progressManager from "@/lib/progressManager";
-import { LocalTaskProgress } from "@/infrastructure/persistence/localProgressData";
+import progressManager from "@/context/progressManager";
+import { LocalTaskProgress } from "@/types/localProgressData";
 import { ProgressStatus } from "@/types/progressStatus";
 
 interface TaskItemProps {

@@ -4,7 +4,7 @@ import { LessonCard } from "@/components/lessons/lesson-card";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { getCurrentUser } from "@/lib/auth";
-import progressManager from "@/lib/progressManager";
+import progressManager from "@/context/progressManager";
 import { safeCallWrapper } from "@/lib/safeCallWrapper";
 import { Lesson } from "@/types/lesson";
 import { LessonProgress } from "@/types/taskProgress";

@@ -1,6 +1,6 @@
 "use client";
 
-import ProgressManager from "@/lib/progressManager";
+import ProgressManager from "@/context/progressManager";
 import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Lesson } from "@/types/lesson";
@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, PartyPopper } from "lucide-react";
 import { getCurrentUser, hasToken } from "@/lib/auth";
 import { GatewayFactory } from "@/config/GatewayFactory";
-import { LocalTaskProgress } from "@/infrastructure/persistence/localProgressData";
-import progressManager from "@/lib/progressManager";
+import { LocalTaskProgress } from "@/types/localProgressData";
+import progressManager from "@/context/progressManager";
 import { ProgressStatus } from "@/types/progressStatus";
 
 interface TaskListProps {

@@ -1,6 +1,6 @@
 import { GatewayFactory } from "@/config/GatewayFactory";
-import progressManager from "./progressManager";
-import { ProgressData } from "@/infrastructure/persistence/localProgressData";
+import progressManager from "../context/progressManager";
+import { ProgressData } from "@/types/localProgressData";
 
 export async function syncProgressFromTemporaryStorage() {
     const localProgress: ProgressData = await progressManager.getProgress();
