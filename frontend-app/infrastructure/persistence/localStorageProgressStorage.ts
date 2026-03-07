@@ -2,11 +2,11 @@ import { LocalTaskProgress, ProgressData } from "../../types/localProgressData";
 import { ProgressStorage } from "./progressStorage";
 
 export class LocalStorageProgressStorage implements ProgressStorage {
-    private readonly key = "user_progress";
+    private readonly key = "user_progress"; // Key used to represent user's local storage object with progress made so far
 
     async getProgress(): Promise<ProgressData> {
         const json = localStorage.getItem(this.key);
-        if(!json) return {};
+        if(!json) { return {} };
         try {
             const rawObject = JSON.parse(json);
             const progress: ProgressData = {};

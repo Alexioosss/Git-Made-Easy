@@ -2,11 +2,9 @@ import { Metadata } from "next";
 import LogoutClient from "./LogoutClient";
 
 export const metadata: Metadata = {
-    title: "Logging out..."
+    title: "Logout"
 };
 
 export default function LogoutPage() {
-    return (
-        <LogoutClient />
-    );
+    return ( <LogoutClient /> );
 }

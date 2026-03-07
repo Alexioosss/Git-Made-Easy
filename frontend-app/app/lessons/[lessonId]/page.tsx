@@ -1,14 +1,14 @@
 import { Metadata } from "next";
-import LessonDetail from "./LessonDetail";
+import LessonPage from "./LessonDetail";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { safeCallWrapper } from "@/lib/safeCallWrapper";
 import { LessonProgress } from "@/types/taskProgress";
 
 export const metadata: Metadata = {
-  title: "Lesson Details",
-}
+  title: "Lesson Details"
+};
 
-export default async function LessonDetailPage({ params }: { params: Promise<{ lessonId: string }>}) {
+export default async function SingleLessonPage({ params }: { params: Promise<{ lessonId: string }>}) {
   const { lessonId } = await params;
 
   const lessonGateway = GatewayFactory.instance.lessonGateway;
@@ -33,5 +33,5 @@ export default async function LessonDetailPage({ params }: { params: Promise<{ l
   try { progress = await progressGateway.getLessonProgress(lessonId); }
   catch {}
 
-  return <LessonDetail lesson={lesson} progress={progress} nextLesson={nextLesson} />;
+  return <LessonPage lesson={lesson} progress={progress} nextLesson={nextLesson} />;
 }

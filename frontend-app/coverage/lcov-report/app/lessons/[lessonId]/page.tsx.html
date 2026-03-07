@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">53.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/15</span>
+                <span class='fraction'>15/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">58.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/12</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -110,49 +110,49 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Metadata } from "next";
-import LessonDetail from "./LessonDetail";
+import LessonPage from "./LessonDetail";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { safeCallWrapper } from "@/lib/safeCallWrapper";
 import { LessonProgress } from "@/types/taskProgress";
 &nbsp;
 export const metadata: Metadata = {
-  title: "Lesson Details",
-}
+  title: "Lesson Details"
+};
 &nbsp;
-export default async function LessonDetailPage({ params }: { params: Promise&lt;{ lessonId: string }&gt;}) {
+export default async function SingleLessonPage({ params }: { params: Promise&lt;{ lessonId: string }&gt;}) {
   const { lessonId } = await params;
 &nbsp;
   const lessonGateway = GatewayFactory.instance.lessonGateway;
   const progressGateway = GatewayFactory.instance.lessonProgressGateway;
   
   const lessonResponse = await safeCallWrapper(() =&gt; lessonGateway.getById(lessonId));
-  <span class="missing-if-branch" title="else path not taken" >E</span>if(!lessonResponse.ok || !lessonResponse.data) {
+  if(!lessonResponse.ok || !lessonResponse.data) {
     return (
       &lt;div className="min-h-[calc(100dvh-3.5rem)] sm:min-h-[calc(100dvh-4rem)] flex items-center justify-center px-6"&gt;
         &lt;p className="text-center text-foreground text-2xl"&gt;
@@ -163,14 +163,14 @@ export default async function LessonDetailPage({ params }: { params: Promise&lt;
     );
   }
 &nbsp;
-  const lesson = <span class="cstat-no" title="statement not covered" >lessonResponse.data;</span>
-  const nextLesson = <span class="cstat-no" title="statement not covered" >(await safeCallWrapper(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >lessonGateway.getNextLesson(lessonId))</span>).data;</span>
+  const lesson = lessonResponse.data;
+  const nextLesson = (await safeCallWrapper(() =&gt; lessonGateway.getNextLesson(lessonId))).data;
 &nbsp;
-  let progress: LessonProgress | undefined = <span class="cstat-no" title="statement not covered" >undefined;</span>
-<span class="cstat-no" title="statement not covered" >  try { <span class="cstat-no" title="statement not covered" >progress = await progressGateway.getLessonProgress(lessonId); </span>}</span>
+  let progress: LessonProgress | undefined = undefined;
+  try { progress = await progressGateway.getLessonProgress(lessonId); }
   catch {}
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return &lt;LessonDetail lesson={lesson} progress={progress} nextLesson={nextLesson} /&gt;;</span>
+  return &lt;LessonPage lesson={lesson} progress={progress} nextLesson={nextLesson} /&gt;;
 }</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -178,7 +178,7 @@ export default async function LessonDetailPage({ params }: { params: Promise&lt;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-07T15:32:06.023Z
+                at 2026-03-07T18:51:09.119Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

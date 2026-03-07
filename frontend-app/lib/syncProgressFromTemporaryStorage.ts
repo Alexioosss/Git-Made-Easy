@@ -5,7 +5,7 @@ import { ProgressData } from "@/types/localProgressData";
 export async function syncProgressFromTemporaryStorage() {
     const localProgress: ProgressData = await progressManager.getProgress();
     if(localProgress) {
-        for (const lessonId in localProgress) {
+        for(const lessonId in localProgress) {
             const lesson = localProgress[lessonId];
 
             const taskUpdates = Object.values(lesson.tasks).map((task) => ({

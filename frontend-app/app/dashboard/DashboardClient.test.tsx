@@ -3,6 +3,7 @@ import DashboardClient from "./DashboardClient";
 import { GatewayFactory } from "@/config/GatewayFactory";
 
 const mockPush = jest.fn();
+const mockUseAuth = jest.fn();
 
 jest.mock("@/config/GatewayFactory", () => ({
   GatewayFactory: {
@@ -17,6 +18,10 @@ jest.mock("@/config/GatewayFactory", () => ({
 jest.mock("@/lib/auth", () => ({
   getCurrentUser: jest.fn(),
   hasToken: jest.fn()
+}));
+
+jest.mock("@/context/AuthContext", () => ({
+    useAuth: () => mockUseAuth()
 }));
 
 jest.mock("next/navigation", () => ({
@@ -46,10 +51,11 @@ const { getCurrentUser } = jest.requireMock("@/lib/auth");
 describe("DashboardClient", () => {
     beforeEach(() => {
         jest.clearAllMocks();
+        mockUseAuth.mockReturnValue({ isAuthenticated: true });
     });
 
     test("Redirects to /login when no user is found", async () => {
-        getCurrentUser.mockResolvedValueOnce(null);
+        mockUseAuth.mockReturnValueOnce({ isAuthenticated: false });
 
         await act(async () => {
             render(<DashboardClient />);

@@ -62,7 +62,7 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
       const updated: LocalTaskProgress = {
         taskId: task.taskId,
         lastInput: userInput,
-        lastError: existing ? existing.lastError : isCorrect ? "" : "Not quite right. Try again!", // Use user's last error message, or show message based on answer being correct or not
+        lastError: existing ? existing.lastError : isCorrect ? "" : "Not quite right. Try again!", // Use the user's last error message, or show a message based on the answer being in/correct
         attempts: existing ? existing.attempts + 1 : 1,
         status: isCorrect ? "COMPLETED" : "IN_PROGRESS",
         startedAt: existing ? existing.startedAt : new Date().toISOString()
@@ -112,15 +112,12 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
           </span>
 
         </div>
-
         {isExpanded ? (<ChevronUp className="h-4 w-4 shrink-0 text-muted-foreground" />) : (<ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />)}
       </button>
 
       {isExpanded && (
         <div className="border-t border-border px-3 pb-3 pt-3 sm:px-4 sm:pb-4">
-          <p className="mb-4 text-md leading-relaxed text-muted-foreground">
-            {task.content}
-          </p>
+          <p className="mb-4 text-md leading-relaxed text-muted-foreground">{task.content}</p>
 
           {showHint ? (
             <div className="mb-4 flex items-start gap-2 rounded-lg bg-secondary p-3">
@@ -139,9 +136,7 @@ export function TaskItem({ task, lessonId, isExpanded, onToggle, onComplete, isA
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row">
             <div className="relative flex-1">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 font-mono text-sm text-primary">
-                $
-              </span>
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 font-mono text-sm text-primary">$</span>
               <Input ref={currentInputReference} value={userInput} disabled={inputDisabled} onChange={(e) => { setUserInput(e.target.value); if(feedback) setFeedback(null); }}
               placeholder="Type your git command..." className="bg-secondary pl-7 font-mono text-sm text-foreground placeholder:text-muted-foreground placeholder:text-lg"/>
             </div>

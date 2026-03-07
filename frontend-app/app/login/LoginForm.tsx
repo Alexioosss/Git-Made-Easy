@@ -103,7 +103,7 @@ export default function LoginForm() {
                                 <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                                 title={showPassword ? "Hide password" : "Show password"}
                                 onClick={() => setShowPassword(!showPassword)}>
-                                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                                 </button>
                             </div>
                         </div>
@@ -117,10 +117,10 @@ export default function LoginForm() {
             
                         <Button type="submit" className="mt-4 w-full h-16 text-xl transition-colors duration-500" disabled={isLoading}>
                             {isLoading ? (
-                            <>
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                Signing in...
-                            </>
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Signing in...
+                                </>
                             ) : ( "Sign In" )}
                         </Button>
                     </form>

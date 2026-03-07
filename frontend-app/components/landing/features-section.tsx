@@ -7,7 +7,7 @@ const features = [
   { icon: Users,      title: "No Account Required",     description: "Start learning immediately. Create an account only when you want to save your progress." }
 ];
 
-export function FeaturesSection() {
+export function HighlightsSection() {
   return (
     <div className="border-t border-border px-4 py-14 sm:py-20">
       <div className="mx-auto max-w-6xl">

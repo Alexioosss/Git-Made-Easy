@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
-export function HeroSection() {
+export function IntroSection() {
   const { isAuthenticated } = useAuth();
 
   return (

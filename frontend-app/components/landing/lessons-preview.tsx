@@ -46,8 +46,7 @@ export async function LessonsPreview() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          {lessons.slice(0, 4).map((lesson) => { // Show a maximum of 4 lessons in the home page lessons preview / catalog
-
+          {lessons.slice(0, 4).map((lesson) => { // Show a maximum of X lessons in the home page lessons preview / catalog, can be changed to show more / less
             return (
               <Link key={lesson.lessonId} href={`/lessons/${lesson.lessonId}`} title={`Lesson ${lesson.lessonOrder} - ${lesson.title}`}
                 className="group flex flex-col rounded-xl border border-border bg-card p-5 transition-all
@@ -75,7 +74,6 @@ export async function LessonsPreview() {
           })}
         </div>
 
-        {/* Mobile "View all" button */}
         <div className="mt-6 flex justify-center sm:hidden">
           <Button variant="outline" asChild className="w-full bg-transparent hover:font-bold" title="View lessons catalog">
             <Link href="/lessons" className="gap-2">

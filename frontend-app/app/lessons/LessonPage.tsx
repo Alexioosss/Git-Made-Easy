@@ -10,7 +10,7 @@ import { Lesson } from "@/types/lesson";
 import { LessonProgress } from "@/types/taskProgress";
 import { useEffect, useState } from "react";
 
-export default function LessonPage() {
+export default function LessonsPage() {
     const [lessons, setLessons] = useState<Lesson[]>([]);
     const [progressMap, setProgressMap] = useState<Record<string, LessonProgress>>({});
     const [loading, setLoading] = useState(true);
@@ -48,7 +48,6 @@ export default function LessonPage() {
                 }
             } else {
                 const raw = await progressManager.getProgress();
-                console.log(raw);
                 const localMap = progressManager.convertLocalToLessonProgress(raw, lessonsWithTasks);
                 setProgressMap(localMap);
             }
@@ -86,7 +85,7 @@ export default function LessonPage() {
         
                 <div className="grid gap-4 sm:gap-6">
                     {lessons.map((lesson) => (
-                    <LessonCard key={lesson.lessonId} lesson={lesson} progress={progressMap[lesson.lessonId]} />
+                        <LessonCard key={lesson.lessonId} lesson={lesson} progress={progressMap[lesson.lessonId]} />
                     ))}
                 </div>
             </div>

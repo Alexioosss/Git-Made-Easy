@@ -5,7 +5,7 @@ import { DashboardData } from "@/types/dashboard";
 
 interface DashboardLessonsProps {
   lessons: DashboardData["lessons"];
-}
+};
 
 export function DashboardLessons({ lessons }: DashboardLessonsProps) {
   const hasLessons = lessons && lessons.length > 0;

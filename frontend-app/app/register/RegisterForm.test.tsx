@@ -36,18 +36,15 @@ describe("RegisterForm", () => {
         expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/^password$/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/confirm password/i)).toBeInTheDocument();
     });
 
     test("Calls register with correct values", async () => {
         mockRegister.mockResolvedValueOnce({});
 
         render(<RegisterForm />);
-
-        fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: "John" } });
-        fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: "Doe" } });
-        fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: "john@example.com" } });
-        fireEvent.change(screen.getByLabelText(/password/i), { target: { value: "password123" } });
+        fillRegistrationForm();
         fireEvent.submit(screen.getByRole("button", { name: /create account/i }));
 
         await waitFor(() => {
@@ -60,7 +57,7 @@ describe("RegisterForm", () => {
         mockRegister.mockRejectedValueOnce({ message: "Email already exists" });
 
         render(<RegisterForm />);
-
+        fillRegistrationForm();
         fireEvent.submit(screen.getByRole("button", { name: /create account/i }));
 
         expect(await screen.findByText(/email already exists/i)).toBeInTheDocument();
@@ -70,7 +67,7 @@ describe("RegisterForm", () => {
         mockRegister.mockRejectedValueOnce({});
 
         render(<RegisterForm />);
-
+        fillRegistrationForm();
         fireEvent.submit(screen.getByRole("button", { name: /create account/i }));
 
         expect(await screen.findByText(/something went wrong/i)).toBeInTheDocument();
@@ -80,7 +77,7 @@ describe("RegisterForm", () => {
         mockRegister.mockResolvedValueOnce({});
 
         render(<RegisterForm />);
-
+        fillRegistrationForm();
         fireEvent.submit(screen.getByRole("button", { name: /create account/i }));
 
         expect(await screen.findByText(/account created successfully/i)).toBeInTheDocument();
@@ -90,7 +87,7 @@ describe("RegisterForm", () => {
         mockRegister.mockResolvedValueOnce({});
 
         render(<RegisterForm />);
-
+        fillRegistrationForm();
         fireEvent.submit(screen.getByRole("button", { name: /create account/i }));
 
         await screen.findByText(/account created successfully/i);
@@ -99,3 +96,11 @@ describe("RegisterForm", () => {
         expect(mockPush).toHaveBeenCalledWith("/login");
     });
 });
+
+function fillRegistrationForm() {
+  fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: "John" } });
+  fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: "Doe" } });
+  fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: "john@example.com" } });
+  fireEvent.change(screen.getByLabelText(/^password$/i), { target: { value: "password123" } });
+  fireEvent.change(screen.getByLabelText(/confirm password/i), { target: { value: "password123" } });
+}

@@ -10,8 +10,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function RegisterForm() {
-  const router = useRouter();
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
@@ -22,8 +20,9 @@ export default function RegisterForm() {
   const [error, setError] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const router = useRouter();
   const userGateway = GatewayFactory.instance.userGateway;
-
+  
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
@@ -35,11 +34,9 @@ export default function RegisterForm() {
       await userGateway.register(firstName, lastName, emailAddress, password);
       setIsSuccess(true);
       setTimeout(() => router.push("/login"), 4000);
-    } catch(error: any) {
-      setError(error.message || "Something went wrong");
-    } finally {
-      setIsLoading(false);
     }
+    catch(error: any) { setError(error.message || "Something went wrong"); }
+    finally { setIsLoading(false); }
   }
 
   if(isSuccess) {

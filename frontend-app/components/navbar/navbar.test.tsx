@@ -130,3 +130,14 @@ describe("Navbar Responsive Rendering", () => {
         expect(within(desktopNav).getByText("Lessons")).toBeInTheDocument();
     });
 });
+
+test("Mobile menu shows the 'Sign In' and 'Get Started' buttons when the user islogged out", () => {
+  mockAuthentication.isAuthenticated = false;
+
+  render(<Navbar />);
+  fireEvent.click(screen.getByLabelText("Open menu"));
+  const mobileMenu = document.querySelector("div.md\\:hidden") as HTMLElement;
+
+  expect(within(mobileMenu).getByText("Sign In")).toBeInTheDocument();
+  expect(within(mobileMenu).getByText("Get Started")).toBeInTheDocument();
+});

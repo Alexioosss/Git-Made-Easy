@@ -24,11 +24,9 @@ export default function DashboardClient() {
             try {
                 const response: DashboardData = await GatewayFactory.instance.dashboardGateway.getDashboardData();
                 setData(response);
-            } catch(err: any) {
-                setError(err.message || "An error occurred while loading the dashboard.");
-            } finally {
-                setLoading(false);
             }
+            catch(err: any) { setError(err.message || "An unexpected error occurred while loading the dashboard."); }
+            finally { setLoading(false); }
         }
         loadDashboard();
     }, [router]);
@@ -43,17 +41,15 @@ export default function DashboardClient() {
             completed: progress.status === "COMPLETED",
             date: progress.completedAt || progress.startedAt
         };
-    }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()); // Sort the completed tasks by completion time, newest to oldest
 
-    if(isLoading) {
-        return ( <LoadingSpinner message={isAuthenticated ? "Your personalised dashboard will be displayed soon." : "If your dashboard does not load, please log in again."} /> );
-    }
+    if(isLoading) { return ( <LoadingSpinner message={isAuthenticated ? "Your personalised dashboard will be displayed soon." : "If your dashboard does not load, please log in again."} /> ); }
 
     if(error) {
         return (
-        <div className="flex min-h-screen items-center justify-center bg-background">
-            <p className="text-xl text-destructive">{error ? error[0].toUpperCase() + error.slice(1) : ""}</p>
-        </div>
+            <div className="flex min-h-screen items-center justify-center bg-background">
+                <p className="text-xl text-destructive">{error ? error[0].toUpperCase() + error.slice(1) : ""}</p>
+            </div>
         );
     }
 

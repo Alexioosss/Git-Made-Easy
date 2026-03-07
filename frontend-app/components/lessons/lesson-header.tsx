@@ -7,7 +7,7 @@ import { ArrowLeft } from "lucide-react";
 interface LessonHeaderProps {
   lesson: Lesson;
   progress?: LessonProgress;
-}
+};
 
 export function LessonHeader({ lesson, progress }: LessonHeaderProps) {
   let progressPercentage: number | null = null;
@@ -25,28 +25,16 @@ export function LessonHeader({ lesson, progress }: LessonHeaderProps) {
           {String(lesson.lessonOrder).padStart(2, "0")}
         </span>
         <div className="flex-1">
-          <h1 className="text-xl font-bold text-foreground sm:text-2xl md:text-3xl">
-            {lesson.title}
-          </h1>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
-            {lesson.description}
-          </p>
+          <h1 className="text-xl font-bold text-foreground sm:text-2xl md:text-3xl">{lesson.title}</h1>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">{lesson.description}</p>
 
-          {lesson.longDescription && (
-            <div className="rounded-lg bg-muted/30 p-5 text-sm leading-relaxed text-muted-foreground border border-border/50">
-              {lesson.longDescription}
-            </div>
-          )}
+          {lesson.longDescription && ( <div className="rounded-lg bg-muted/30 p-5 text-sm leading-relaxed text-muted-foreground border border-border/50">{lesson.longDescription}</div> )}
 
           {progress && (
             <div className="mt-4 flex items-center gap-2 sm:gap-3">
               <Progress value={progressPercentage} className="h-2 flex-1 sm:max-w-xs"/>
-              <span className="shrink-0 text-sm font-medium text-foreground">
-                {progressPercentage}%
-              </span>
-              <span className="hidden shrink-0 text-sm text-muted-foreground sm:inline">
-                ({progress.completedTasksCount}/{progress.totalTasksCount} tasks)
-              </span>
+              <span className="shrink-0 text-sm font-medium text-foreground">{progressPercentage}%</span>
+              <span className="hidden shrink-0 text-sm text-muted-foreground sm:inline">({progress.completedTasksCount}/{progress.totalTasksCount} tasks)</span>
             </div>
           )}
         </div>

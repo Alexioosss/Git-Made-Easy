@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">23.07% </span>
+                <span class="strong">42.3% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/26</span>
+                <span class='fraction'>11/26</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">10% </span>
+                <span class="strong">20% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/10</span>
+                <span class='fraction'>2/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">22.22% </span>
+                <span class="strong">44.44% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/9</span>
+                <span class='fraction'>4/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">22.72% </span>
+                <span class="strong">45.45% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/22</span>
+                <span class='fraction'>10/22</span>
             </div>
         
             
@@ -144,21 +144,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -166,6 +160,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -204,12 +204,12 @@ class ProgressManager {
         return ProgressManager.instance;
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    as</span>ync getProgress() {
-<span class="cstat-no" title="statement not covered" >        if(!this.isProgressLoaded) {</span>
-<span class="cstat-no" title="statement not covered" >            this.progress = await this.storage.getProgress();</span>
-<span class="cstat-no" title="statement not covered" >            this.isProgressLoaded = true;</span>
+    async getProgress() {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if(!this.isProgressLoaded) {
+            this.progress = await this.storage.getProgress();
+            this.isProgressLoaded = true;
         }
-<span class="cstat-no" title="statement not covered" >        return this.progress;</span>
+        return this.progress;
     }
 &nbsp;
 <span class="fstat-no" title="function not covered" >    as</span>ync updateLesson(lessonId: string, taskProgress: LocalTaskProgress) {
@@ -225,8 +225,8 @@ class ProgressManager {
 <span class="cstat-no" title="statement not covered" >        this.isProgressLoaded = false;</span>
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    co</span>nvertLocalToLessonProgress(localProgress: ProgressData, lessons: Lesson[]) {
-<span class="cstat-no" title="statement not covered" >        return Object.fromEntries(</span>
+    convertLocalToLessonProgress(localProgress: ProgressData, lessons: Lesson[]) {
+        return Object.fromEntries(
             Object.values(localProgress).map(<span class="fstat-no" title="function not covered" >lp</span> =&gt; {
                 const lesson = <span class="cstat-no" title="statement not covered" >lessons.find(<span class="fstat-no" title="function not covered" >l </span>=&gt; <span class="cstat-no" title="statement not covered" >l.lessonId === lp.lessonId)</span>;</span>
                 const totalTasksCount = <span class="cstat-no" title="statement not covered" >lesson?.tasks?.length ?? 0;</span>
@@ -253,7 +253,7 @@ export default ProgressManager.getInstance();</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-07T15:32:06.023Z
+                at 2026-03-07T18:51:09.119Z
             </div>
         <script src="../prettify.js"></script>
         <script>

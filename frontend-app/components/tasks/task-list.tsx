@@ -1,10 +1,10 @@
 "use client";
 
 import ProgressManager from "@/context/progressManager";
-import { useState, useCallback, useMemo, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Lesson } from "@/types/lesson";
-import { TaskItem } from "@/components/lessons/task-item";
+import { TaskItem } from "@/components/tasks/task-item";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, PartyPopper } from "lucide-react";
@@ -41,7 +41,7 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
   }, []);
   
   useEffect(() => {
-    if(Object.keys(taskProgressMap).length === 0) return;
+    if(Object.keys(taskProgressMap).length === 0) { return };
     const nextTask = lesson.tasks.find(task => { const p = taskProgressMap[task.taskId]; return p?.status !== ProgressStatus.COMPLETED; });
     if(nextTask) { setExpandedTaskIds(prev => { const next = new Set(prev); next.add(nextTask.taskId); return next; }); }
   }, [lesson.tasks, taskProgressMap]);
@@ -64,9 +64,7 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
       const raw = await progressManager.getProgress();
       const lessonProgress = raw[lesson.lessonId]?.tasks ?? {};
       map = {};
-      for(const task of lesson.tasks) {
-        map[task.taskId] = lessonProgress[task.taskId] ?? { status: ProgressStatus.NOT_STARTED, attempts: 0 };
-      }
+      for(const task of lesson.tasks) { map[task.taskId] = lessonProgress[task.taskId] ?? { status: ProgressStatus.NOT_STARTED, attempts: 0 }; }
       setTaskProgressMap(map);
     }
     loadProgress();
@@ -87,7 +85,7 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
     setExpandedTaskIds(prev => {
       const next = new Set(prev);
       if(next.has(taskId)) next.delete(taskId);
-      else next.add(taskId);
+      else { next.add(taskId) };
       return next;
     });
   };
@@ -106,8 +104,8 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
       completedAt: newStatus === ProgressStatus.COMPLETED ? prev?.completedAt || new Date().toISOString() : prev?.completedAt
     };
 
-    if (!hasToken()) { await ProgressManager.updateLesson(lesson.lessonId, taskProgress); }
-    else {} // Backend already recorded the user attempt
+    if (!hasToken()) { await ProgressManager.updateLesson(lesson.lessonId, taskProgress); } // Record the user attempt in the local storage
+    else {} // Backend already recorded the user attempt on answer submission
     setTaskProgressMap(prevMap => ({ ...prevMap, [taskId]: taskProgress }));
     if(isCorrect) {
       const tasks = lesson.tasks;
@@ -135,12 +133,8 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold text-foreground">Tasks</h2>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-foreground">
-              {completionPercentage}%
-            </span>
-            <span className="text-sm text-muted-foreground">
-              ({completedCount}/{lesson.tasks.length} completed)
-            </span>
+            <span className="text-sm font-medium text-foreground">{completionPercentage}%</span>
+            <span className="text-sm text-muted-foreground">({completedCount}/{lesson.tasks.length} completed)</span>
           </div>
         </div>
         <Progress value={completionPercentage} className="h-1.5" />
@@ -177,11 +171,7 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
                 </Link>
               </Button>
             </>
-          ) : (
-            <p className="text-sm text-muted-foreground">
-              You have finished all available lessons. Great work!
-            </p>
-          )}
+          ) : ( <p className="text-sm text-muted-foreground">You have finished all available lessons. Great work!</p> )}
         </div>
       )}
     </div>

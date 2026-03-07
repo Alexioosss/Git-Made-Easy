@@ -1,12 +1,7 @@
-import { render, screen } from "@testing-library/react";
-import LessonPage from "./LessonPage";
+import { act, render, screen } from "@testing-library/react";
+import LessonsPage from "./LessonPage";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { hasToken, getCurrentUser } from "@/lib/auth";
-import { Lesson } from "@/types/lesson";
-
-jest.mock("@/components/lessons/lesson-card", () => ({
-  LessonCard: ({ lesson }: { lesson: Lesson }) => <div data-testid="lesson-card">{lesson.title}</div>
-}));
 
 jest.mock("@/lib/auth", () => ({
   hasToken: jest.fn(),
@@ -17,7 +12,7 @@ jest.mock("@/config/GatewayFactory", () => ({
   GatewayFactory: {
     instance: {
       lessonGateway: {
-        getAll: jest.fn(),
+        getAllLessons: jest.fn(),
         getTasksForLesson: jest.fn()
       },
       lessonProgressGateway: {
@@ -29,12 +24,7 @@ jest.mock("@/config/GatewayFactory", () => ({
 
 jest.mock("@/components/lessons/lesson-card", () => ({
   LessonCard: ({ lesson, progress }: any) => (
-    <div
-      data-testid="lesson-card"
-      data-progress={progress ? "true" : "false"}
-    >
-      {lesson.title}
-    </div>
+    <div data-testid="lesson-card" data-progress={progress ? "true" : "false"}>{lesson.title}</div>
   )
 }));
 
@@ -46,7 +36,7 @@ describe("LessonPage", () => {
     (GatewayFactory.instance.lessonGateway.getAllLessons as jest.Mock).mockResolvedValue([{ lessonId: "1", title: "Lesson 1" }]);
     (GatewayFactory.instance.lessonGateway.getTasksForLesson as jest.Mock).mockResolvedValue([{ taskId: "t1" }]);
 
-    render(<LessonPage />);
+    await act(async () => { render(<LessonsPage />); });
 
     const lessonCard = await screen.findByTestId("lesson-card");
     expect(lessonCard).toBeInTheDocument();
@@ -63,7 +53,7 @@ describe("LessonPage", () => {
 
     (getCurrentUser as jest.Mock).mockResolvedValue({ id: "user1" });
 
-    render(<LessonPage />);
+    await act(async () => { render(<LessonsPage />); });
 
     expect(await screen.findByTestId("lesson-card")).toBeInTheDocument();
   });
@@ -75,7 +65,7 @@ describe("LessonPage", () => {
       (GatewayFactory.instance.lessonGateway.getAllLessons as jest.Mock).mockResolvedValue([{ lessonId: "1", title: "Lesson 1" }]);
       (GatewayFactory.instance.lessonGateway.getTasksForLesson as jest.Mock).mockResolvedValue([{ taskId: "t1" }, { taskId: "t2" }]);
 
-      render(<LessonPage />);
+      await act(async () => { render(<LessonsPage />); });
 
       expect(await screen.findByText("Lesson 1")).toBeInTheDocument();
   });

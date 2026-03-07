@@ -15,9 +15,9 @@ export default function NotFound() {
             <p className="text-lg text-gray-700 dark:text-gray-200 mt-2 text-center">
                 Oops... looks like the page you're looking for doesn't exist.
             </p>
-            <Link href="/" title="Go to home page"
+            <Link href="/" title="Go to the home page"
             className="mt-6 px-6 py-3 bg-blue-700 text-white rounded-md hover:bg-blue-800 transition cursor-pointer transform hover:-translate-y-1 hover:scale-105">
-                Go back home
+                Go back to the home page
             </Link>
         </div>
     );

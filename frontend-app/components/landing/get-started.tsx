@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
-export function CTASection() {
+export function GetStartedSection() {
   return (
     <section className="border-t border-border px-4 py-14 sm:py-20">
       <div className="mx-auto max-w-6xl text-center">

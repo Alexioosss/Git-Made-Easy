@@ -1,7 +1,7 @@
-import { HeroSection } from "@/components/landing/hero-section";
-import { FeaturesSection } from "@/components/landing/features-section";
+import { IntroSection } from "@/components/landing/hero-section";
+import { HighlightsSection } from "@/components/landing/features-section";
 import { LessonsPreview } from "@/components/landing/lessons-preview";
-import { CTASection } from "@/components/landing/cta-section";
+import { GetStartedSection } from "@/components/landing/get-started";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,10 +12,10 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       <main>
-        <HeroSection />
-        <FeaturesSection />
+        <IntroSection />
+        <HighlightsSection />
         <LessonsPreview />
-        <CTASection />
+        <GetStartedSection />
       </main>
     </div>
   );

@@ -9,7 +9,7 @@ import { DifficultyLevels } from "@/types/difficultyLevels";
 interface LessonCardProps {
   lesson: Lesson;
   progress?: LessonProgress;
-}
+};
 
 export function LessonCard({ lesson, progress }: LessonCardProps) {
   const difficultyDistribution = (lesson.tasks ?? []).reduce((acc, task) => { acc[task.difficulty] = (acc[task.difficulty] || 0) + 1; return acc; }, {} as Record<string, number>);
@@ -26,30 +26,20 @@ export function LessonCard({ lesson, progress }: LessonCardProps) {
         <span className="text-2xl font-bold text-muted-foreground/40 group-hover:text-primary/100 transition-colors md:text-3xl">
           {String(lesson.lessonOrder).padStart(2, "0")}
         </span>
-        <h3 className="text-base font-semibold text-card-foreground group-hover:text-primary transition-colors md:hidden">
-          {lesson.title}
-        </h3>
-        {isComplete && (
-          <CheckCircle2 className="ml-auto h-5 w-5 text-primary md:hidden" />
-        )}
+        <h3 className="text-base font-semibold text-card-foreground group-hover:text-primary transition-colors md:hidden">{lesson.title}</h3>
+        {isComplete && ( <CheckCircle2 className="ml-auto h-5 w-5 text-primary md:hidden" /> )}
       </div>
 
       <div className="flex flex-1 flex-col gap-3 p-5 sm:p-6">
         <div className="hidden items-center gap-3 md:flex">
-          <h3 className="text-lg font-semibold text-card-foreground group-hover:text-primary transition-colors">
-            {lesson.title}
-          </h3>
+          <h3 className="text-lg font-semibold text-card-foreground group-hover:text-primary transition-colors">{lesson.title}</h3>
           {isComplete && <CheckCircle2 className="h-5 w-5 text-primary" />}
         </div>
 
-        <p className="text-sm leading-relaxed text-muted-foreground">
-          {lesson.description}
-        </p>
+        <p className="text-sm leading-relaxed text-muted-foreground">{lesson.description}</p>
 
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs text-muted-foreground">
-            {lesson.taskIds.length} tasks
-          </span>
+          <span className="text-xs text-muted-foreground">{lesson.taskIds.length} tasks</span>
           <span className="text-muted-foreground/30">|</span>
           {Object.entries(difficultyDistribution).map(
             ([difficulty, count]) => (
@@ -66,10 +56,8 @@ export function LessonCard({ lesson, progress }: LessonCardProps) {
 
         <div className="flex flex-col items-center text-sm text-foreground">
           <span className="text-lg font-bold">{progressPercentage}%</span>
-            <span className="text-muted-foreground/60">
-              {completedTasks}/{totalTasks}
-            </span>
-            <Progress value={progressPercentage} className="mt-1 h-1.5 w-full rounded-full" />
+          <span className="text-muted-foreground/60">{completedTasks}/{totalTasks}</span>
+          <Progress value={progressPercentage} className="mt-1 h-1.5 w-full rounded-full" />
         </div>
       </div>
     </Link>

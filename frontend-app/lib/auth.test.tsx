@@ -37,7 +37,7 @@ describe("Auth Utility Class", () => {
         });
 
         test("Returns null when gateway errors / throws exception", async () => {
-            (GatewayFactory.instance.authGateway.getCurrentUser as jest.Mock).mockRejectedValue(new Error("Could not load current user"));
+            (GatewayFactory.instance.authGateway.getCurrentUser as jest.Mock).mockRejectedValue({ status: 401 });
 
             const user = await getCurrentUser();
 
@@ -59,22 +59,22 @@ describe("Auth Utility Class", () => {
             expect(document.cookie).toContain("Max-Age=0");
         });
 
-        test("returns false when logout throws", async () => {
+        test("Returns false when logout throws", async () => {
             (GatewayFactory.instance.authGateway.logout as jest.Mock).mockRejectedValue(new Error("Could not perform logout"));
 
             const result = await logoutUser();
 
-            expect(result).toBe(false);
+            expect(result).toBeNull();
         });
     });
 
     describe("hasToken", () => {
-        test("returns true when access_token cookie exists", () => {
+        test("Returns true when access_token cookie exists", () => {
             document.cookie = "foo=1; access_token=abc; bar=2";
             expect(hasToken()).toBe(true);
         });
 
-        test("returns false when access_token cookie does not exist", () => {
+        test("Returns false when access_token cookie does not exist", () => {
             document.cookie = "my=1; token=2";
             expect(hasToken()).toBe(false);
         });

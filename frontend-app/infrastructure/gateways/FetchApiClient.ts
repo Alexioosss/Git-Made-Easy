@@ -7,7 +7,6 @@ export class FetchApiClient extends ApiClient {
 
     async apiRequest<T>(path: string, method: HttpMethods, body?: any, options?: RequestInit & { next?: { revalidate?: number | false } }): Promise<T> {
         const isAuthRequest = path.startsWith("/auth/");
-
         try {
             return await this.performRequest<T>(path, method, body, options);
         } catch(error: any) {
