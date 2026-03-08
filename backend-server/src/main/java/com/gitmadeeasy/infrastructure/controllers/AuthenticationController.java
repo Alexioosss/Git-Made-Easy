@@ -1,6 +1,8 @@
 package com.gitmadeeasy.infrastructure.controllers;
 
 import com.gitmadeeasy.entities.users.User;
+import com.gitmadeeasy.usecases.auth.ResendVerificationEmail;
+import com.gitmadeeasy.usecases.shared.dtos.EmailRequest;
 import com.gitmadeeasy.infrastructure.dto.users.UserResponse;
 import com.gitmadeeasy.infrastructure.mappers.users.UserResponseMapper;
 import com.gitmadeeasy.usecases.auth.LoginUser;
@@ -26,15 +28,18 @@ public class AuthenticationController {
     private final LogoutUser logoutUser;
     private final RefreshToken refreshToken;
     private final GetUserById getUserById;
+    private final ResendVerificationEmail resendVerificationEmail;
     private final UserResponseMapper userResponseMapper;
     private final Logger log = LoggerFactory.getLogger(AuthenticationController.class);
 
     public AuthenticationController(LoginUser loginUser, LogoutUser logoutUser, RefreshToken refreshToken,
-                                    GetUserById getUserById, UserResponseMapper userResponseMapper) {
+                                    GetUserById getUserById, ResendVerificationEmail resendVerificationEmail,
+                                    UserResponseMapper userResponseMapper) {
         this.loginUser = loginUser;
         this.logoutUser = logoutUser;
         this.refreshToken = refreshToken;
         this.getUserById = getUserById;
+        this.resendVerificationEmail = resendVerificationEmail;
         this.userResponseMapper = userResponseMapper;
     }
 
@@ -77,15 +82,22 @@ public class AuthenticationController {
 
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getCurrentUser(Principal principal) {
-        log.info("GET /me = Retrieving current user");
+        log.info("GET /me - Retrieving current user");
         if(principal == null) { // No token was sent over with the request, potentially expired but valid
             log.info("No token detected. Could not retrieve current user.");
             return ResponseEntity.status(401).build();
         }
         User foundUser = this.getUserById.execute(principal.getName());
         UserResponse userResponse = this.userResponseMapper.toUserResponse(foundUser);
-        log.info("Found current user. User ID {}", userResponse.id());
+        log.info("Found current user. {}", userResponse.id() != null ? "User ID: " + userResponse.id() : "");
         return ResponseEntity.ok(userResponse);
+    }
+
+    @PostMapping("/resend-verification")
+    public ResponseEntity<Void> resendVerificationEmail(@Valid @RequestBody EmailRequest emailRequest) {
+        log.info("POST /resend-verification - Resending verification email to {}", emailRequest.emailAddress());
+        this.resendVerificationEmail.execute(emailRequest.emailAddress());
+        return ResponseEntity.noContent().build();
     }
 
 

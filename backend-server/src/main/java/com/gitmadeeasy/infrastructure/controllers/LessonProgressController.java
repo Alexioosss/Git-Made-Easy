@@ -38,6 +38,10 @@ public class LessonProgressController {
     @GetMapping("/progress")
     public ResponseEntity<List<LessonProgress>> getAllLessonProgress(Principal principal) {
         log.info("GET /lessons/progress - Fetching all lesson progress for authenticated user");
+        if(principal == null || principal.getName() == null) {
+            log.info("No token detected. Cannot continue processing the request");
+            return ResponseEntity.status(401).build();
+        }
         List<LessonProgress> progressList = this.getAllLessonProgress.execute(principal.getName());
         return ResponseEntity.ok(progressList);
     }

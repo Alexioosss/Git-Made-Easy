@@ -1,12 +1,12 @@
-package com.gitmadeeasy.unit.usecases.attemptTask;
+package com.gitmadeeasy.unit.usecases.taskProgress;
 
 import com.gitmadeeasy.entities.enums.TaskCompletionStatus;
 import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
 import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
-import com.gitmadeeasy.usecases.attemptTask.SyncTaskProgress;
-import com.gitmadeeasy.usecases.attemptTask.dto.TaskProgressUpdateRequest;
+import com.gitmadeeasy.usecases.taskProgress.SyncTaskProgress;
+import com.gitmadeeasy.usecases.taskProgress.dto.TaskProgressUpdateRequest;
 import com.gitmadeeasy.usecases.lessonProgress.LessonProgressFacade;
 import com.gitmadeeasy.usecases.tasks.exceptions.TaskNotFoundWithIdException;
 import org.junit.jupiter.api.DisplayName;

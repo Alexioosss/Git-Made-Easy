@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { useAuth } from "@/context/AuthContext";
+import { safeCallWrapper } from "@/lib/safeCallWrapper";
 import { Eye, EyeOff, GitBranch, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,12 +14,14 @@ import { useState } from "react";
 export default function LoginForm() {
     const router = useRouter();
     const { refreshUser } = useAuth();
-    const [emailAddress, setEmailAddress] = useState("");
-    const [password, setPassword] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState("");
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
+    const [emailAddress, setEmailAddress] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>("");
+    const [isSuccess, setIsSuccess] = useState<boolean>(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [needsEmailVerification, setNeedsEmailVerification] = useState<boolean>(false);
+    const [secondsBeforeResending, setSecondsBeforeResending] = useState<number>(0);
     const authGateway = GatewayFactory.instance.authGateway;
 
 
@@ -26,23 +29,37 @@ export default function LoginForm() {
         e.preventDefault();
         setError("");
         setIsLoading(true);
-
-        try {
-            await authGateway.login(emailAddress, password);
-            setIsSuccess(true);
-            await refreshUser();
-            setTimeout(() => { router.push("/dashboard"); }, 2000);
-        } catch(error: any) {
-            if(error.code === "INVALID_CREDENTIALS") {
-                setError(error.message);
-            } else if(error.code === "EMAIL_NOT_VERIFIED") {
-                setError(error.message + "\nIf the email address exists, verify your email address via the verification link.");
-            } else if(error.code === "AUTH_REQUIRED") {
-                setError("Your session has expired. Please log in again.");
-            } else { setError(error.message || "Something went wrong"); }
-        } finally {
+        const response = await safeCallWrapper(() => authGateway.login(emailAddress, password));
+        if(!response.ok) {
+            if(response.code === "INVALID_CREDENTIALS") { setError(response.error); }
+            else if(response.code === "EMAIL_NOT_VERIFIED") {
+                setError(response.error + "\nIf the email address exists, verify your email address via the verification link.");
+                setNeedsEmailVerification(true);
+            }
+            else if(response.code === "NETWORK_ERROR") { setError(response.error); }
+            else { setError(response.error || "Something went wrong"); }
             setIsLoading(false);
+            return;
         }
+        setIsLoading(false);
+        setIsSuccess(true);
+        await new Promise(resolve => setTimeout(resolve, 50));
+        await refreshUser();
+        setTimeout(() => { router.push("/dashboard"); }, 1500);
+    }
+
+    async function handleResendVerificationEmail() {
+        if(secondsBeforeResending > 0) { return; }
+        const response = await safeCallWrapper(() => authGateway.resendVerificationEmail(emailAddress));
+        if(!response.ok) { setError(response.error || "Could not resend the verification email."); return; }
+        setError("A new verification email has been sent.");
+        setSecondsBeforeResending(60);
+        const interval = setInterval(() => {
+            setSecondsBeforeResending(previous => {
+                if(previous <= 1) { clearInterval(interval); return 0; }
+                return previous - 1;
+            });
+        }, 1000);
     }
 
     if(isSuccess) {
@@ -124,7 +141,14 @@ export default function LoginForm() {
                             ) : ( "Sign In" )}
                         </Button>
                     </form>
-        
+
+                    {needsEmailVerification && secondsBeforeResending === 0 && (
+                        <Button type="button" title="Resend the verification email to your email address"
+                        variant="outline" className="w-full h-12 text-lg mt-2" onClick={handleResendVerificationEmail}>
+                            Resend verification email
+                        </Button>
+                    )}
+
                     <p className="mt-6 text-center text-xl text-muted-foreground">
                         {"Don't have an account? "}
                         <Link href="/register" title="Create an account" className="text-primary transition-colors hover:text-primary/80 hover:underline">

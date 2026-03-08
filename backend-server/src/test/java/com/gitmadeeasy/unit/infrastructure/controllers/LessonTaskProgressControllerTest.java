@@ -1,14 +1,14 @@
 package com.gitmadeeasy.unit.infrastructure.controllers;
 
 import com.gitmadeeasy.entities.taskAttempts.TaskProgress;
-import com.gitmadeeasy.infrastructure.controllers.TaskProgressController;
+import com.gitmadeeasy.infrastructure.controllers.LessonTaskProgressController;
 import com.gitmadeeasy.infrastructure.gateways.security.UserPrincipal;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.testUtil.TaskTestDataFactory;
-import com.gitmadeeasy.usecases.attemptTask.AttemptTask;
-import com.gitmadeeasy.usecases.attemptTask.GetTaskProgress;
-import com.gitmadeeasy.usecases.attemptTask.SyncTaskProgress;
-import com.gitmadeeasy.usecases.attemptTask.dto.TaskAttemptRequest;
+import com.gitmadeeasy.usecases.taskProgress.AttemptTask;
+import com.gitmadeeasy.usecases.taskProgress.GetTaskProgress;
+import com.gitmadeeasy.usecases.taskProgress.SyncTaskProgress;
+import com.gitmadeeasy.usecases.taskProgress.dto.TaskAttemptRequest;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonNotFoundWithIdException;
 import com.gitmadeeasy.usecases.tasks.exceptions.TaskNotFoundWithIdException;
 import com.gitmadeeasy.usecases.tasks.exceptions.TaskNotInLessonException;
@@ -31,9 +31,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(TaskProgressController.class)
+@WebMvcTest(LessonTaskProgressController.class)
 @AutoConfigureMockMvc
-class TaskProgressControllerTest {
+class LessonTaskProgressControllerTest {
     @Autowired private MockMvc mockMvc;
     @MockitoBean private AttemptTask attemptTask;
     @MockitoBean private GetTaskProgress getTaskProgress;

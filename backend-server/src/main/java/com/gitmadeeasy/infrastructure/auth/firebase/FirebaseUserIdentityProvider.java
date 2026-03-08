@@ -64,7 +64,7 @@ public class FirebaseUserIdentityProvider implements UserIdentityProvider {
                     .uri(URI.create("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + apiKey))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(payload)).build();
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = this.httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if(response.statusCode() != 200) { throw new InvalidCredentialsException(); }
 
             FirebaseLoginResponse loginResponse = new ObjectMapper().readValue(response.body(), FirebaseLoginResponse.class);

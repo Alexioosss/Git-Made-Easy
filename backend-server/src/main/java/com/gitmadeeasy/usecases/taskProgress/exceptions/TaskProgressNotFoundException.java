@@ -1,4 +1,4 @@
-package com.gitmadeeasy.usecases.attemptTask.exceptions;
+package com.gitmadeeasy.usecases.taskProgress.exceptions;
 
 public class TaskProgressNotFoundException extends RuntimeException {
     public TaskProgressNotFoundException(String userId, String taskId) {

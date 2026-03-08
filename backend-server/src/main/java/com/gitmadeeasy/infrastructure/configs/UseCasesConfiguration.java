@@ -6,15 +6,14 @@ import com.gitmadeeasy.entities.security.TokenGateway;
 import com.gitmadeeasy.entities.taskAttempts.TaskAttemptGateway;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
 import com.gitmadeeasy.entities.users.UserGateway;
-import com.gitmadeeasy.usecases.attemptTask.AttemptTask;
-import com.gitmadeeasy.usecases.attemptTask.GetTaskProgress;
-import com.gitmadeeasy.usecases.attemptTask.SyncTaskProgress;
-import com.gitmadeeasy.usecases.auth.LoginUser;
-import com.gitmadeeasy.usecases.auth.LogoutUser;
-import com.gitmadeeasy.usecases.auth.RefreshToken;
-import com.gitmadeeasy.usecases.auth.UserIdentityProvider;
+import com.gitmadeeasy.usecases.taskProgress.AttemptTask;
+import com.gitmadeeasy.usecases.taskProgress.GetAllTaskProgress;
+import com.gitmadeeasy.usecases.taskProgress.GetTaskProgress;
+import com.gitmadeeasy.usecases.taskProgress.SyncTaskProgress;
+import com.gitmadeeasy.usecases.auth.*;
 import com.gitmadeeasy.usecases.dashboard.GetDashboardData;
 import com.gitmadeeasy.usecases.email.EmailSender;
+import com.gitmadeeasy.usecases.email.VerificationEmailService;
 import com.gitmadeeasy.usecases.lessonProgress.GetAllLessonProgress;
 import com.gitmadeeasy.usecases.lessonProgress.GetLessonProgress;
 import com.gitmadeeasy.usecases.lessonProgress.LessonProgressFacade;
@@ -42,8 +41,9 @@ public class UseCasesConfiguration {
     // ----- User-Related Use Cases ----- //
 
     @Bean
-    public CreateUser createUserUseCase(UserGateway userGateway, UserIdentityProvider identityProvider, EmailSender emailSender) {
-        return new CreateUser(userGateway, identityProvider, emailSender);
+    public CreateUser createUser(UserGateway userGateway, UserIdentityProvider identityProvider,
+                                 VerificationEmailService verificationEmailService) {
+        return new CreateUser(userGateway, identityProvider, verificationEmailService);
     }
 
     @Bean
@@ -71,6 +71,12 @@ public class UseCasesConfiguration {
     @Bean
     public RefreshToken refreshToken(UserGateway userGateway, TokenGateway tokenGateway) {
         return new RefreshToken(userGateway, tokenGateway);
+    }
+
+    @Bean
+    public ResendVerificationEmail resendVerificationEmail(UserGateway userGateway, UserIdentityProvider userIdentityProvider,
+                                                           VerificationEmailService verificationEmailService) {
+        return new ResendVerificationEmail(userGateway, userIdentityProvider, verificationEmailService);
     }
 
 
@@ -136,6 +142,11 @@ public class UseCasesConfiguration {
         return new SyncTaskProgress(taskAttemptGateway, taskGateway, lessonGateway);
     }
 
+    @Bean
+    public GetAllTaskProgress getAllTaskProgress(TaskAttemptGateway taskAttemptGateway) {
+        return new GetAllTaskProgress(taskAttemptGateway);
+    }
+
 
 
     // ----- Lesson Progress-Related Use Cases ----- //
@@ -164,5 +175,14 @@ public class UseCasesConfiguration {
     public GetDashboardData getDashboardData(UserGateway userGateway, LessonGateway lessonGateway,
                                              LessonProgressGateway lessonProgressGateway, TaskAttemptGateway taskAttemptGateway) {
         return new GetDashboardData(userGateway, lessonGateway, lessonProgressGateway, taskAttemptGateway);
+    }
+
+
+
+    // ----- Email-Related Services ----- //
+
+    @Bean
+    public VerificationEmailService verificationEmailService(UserIdentityProvider userIdentityProvider, EmailSender emailSender) {
+        return new VerificationEmailService(userIdentityProvider, emailSender);
     }
 }

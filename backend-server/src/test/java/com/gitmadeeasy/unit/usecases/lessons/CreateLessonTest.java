@@ -6,7 +6,7 @@ import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.usecases.lessons.CreateLesson;
 import com.gitmadeeasy.usecases.lessons.dto.CreateLessonRequest;
 import com.gitmadeeasy.usecases.lessons.exceptions.DifficultyLevelNotRecognisedException;
-import com.gitmadeeasy.usecases.validation.exceptions.MissingRequiredFieldException;
+import com.gitmadeeasy.usecases.shared.exceptions.MissingRequiredFieldException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

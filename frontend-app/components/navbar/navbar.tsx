@@ -12,7 +12,7 @@ import ThemeToggle from "../theme/theme-toggle";
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const router = useRouter();
   const pathName = usePathname();
 
@@ -72,7 +72,7 @@ export function Navbar() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout} title="Sign out"
+                <DropdownMenuItem onClick={handleLogout} title="Sign out of your account"
                 className="cursor-pointer flex items-center gap-2 py-3 text-destructive focus:text-destructive text-xl hover:text-white transition-colors duration-400">
                   <LogOut className="h-5 w-5" />
                   Sign Out

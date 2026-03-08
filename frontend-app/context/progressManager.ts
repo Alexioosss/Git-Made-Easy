@@ -25,6 +25,12 @@ class ProgressManager {
         return this.progress;
     }
 
+    async setProgress(progress: ProgressData) {
+        this.progress = progress;
+        this.isProgressLoaded = true;
+        await this.storage.setProgress(progress);
+    }
+
     async updateLesson(lessonId: string, taskProgress: LocalTaskProgress) {
         const current = await this.getProgress();
         if(!current[lessonId]) { current[lessonId] = { lessonId, tasks: {} } }

@@ -16,8 +16,8 @@ export class FetchTaskProgressGateway implements TaskProgressGateway {
         return this.apiClient.apiRequest(`/lessons/${lessonId}/tasks/${taskId}/progress`, HttpMethods.GET);
     }
 
-    getAllLessonProgress(): Promise<TaskProgress[]> {
-        return this.apiClient.apiRequest(`/progress`, HttpMethods.GET);
+    getAllTaskProgress(): Promise<TaskProgress[]> {
+        return this.apiClient.apiRequest(`/tasks/progress`, HttpMethods.GET);
     }
 
     syncLocalProgress(lessonId: string, body: LocalTaskProgress[]): Promise<TaskProgress> {

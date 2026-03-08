@@ -14,10 +14,8 @@ export default function DashboardClient() {
     const [data, setData] = useState<DashboardData | null>(null);
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, isLoadingUser } = useAuth();
     const router = useRouter();
-
-    if(!isAuthenticated) { router.push("/login"); return; }
 
     useEffect(() => {
         async function loadDashboard() {
@@ -29,7 +27,13 @@ export default function DashboardClient() {
             finally { setLoading(false); }
         }
         loadDashboard();
-    }, [router]);
+    }, []);
+
+    useEffect(() => {
+        if(!isAuthenticated && !isLoadingUser) { router.push("/login"); }
+    }, [isAuthenticated, isLoadingUser]);
+
+    if(!isAuthenticated) { return null; }
 
     const activities = (data?.tasksProgress ?? []).filter(progress => progress.status !== "NOT_STARTED").map(progress => {
         const lesson = data?.lessons.find(l => l.lessonId === progress.lessonId);
@@ -43,7 +47,12 @@ export default function DashboardClient() {
         };
     }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()); // Sort the completed tasks by completion time, newest to oldest
 
-    if(isLoading) { return ( <LoadingSpinner message={isAuthenticated ? "Your personalised dashboard will be displayed soon." : "If your dashboard does not load, please log in again."} /> ); }
+    if(isLoading || isLoadingUser) {
+        return (
+            <LoadingSpinner message={isAuthenticated ?
+                "Your personalised dashboard will be displayed soon." : "If your dashboard does not load, please log in again."}/>
+        );
+    }
 
     if(error) {
         return (

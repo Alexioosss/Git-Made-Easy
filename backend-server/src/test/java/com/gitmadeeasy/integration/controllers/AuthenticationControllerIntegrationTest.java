@@ -2,7 +2,6 @@ package com.gitmadeeasy.integration.controllers;
 
 import com.gitmadeeasy.infrastructure.gateways.users.JpaUserSchema;
 import com.gitmadeeasy.infrastructure.gateways.users.repositories.jpa.JpaUserRepository;
-import com.gitmadeeasy.infrastructure.mappers.users.UserResponseMapper;
 import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.auth.dto.LoginRequest;
 import io.jsonwebtoken.Jwts;
@@ -16,7 +15,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.charset.StandardCharsets;
@@ -35,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AuthenticationControllerIntegrationTest {
     @Autowired MockMvc mockMvc;
     @Autowired JpaUserRepository userRepository;
-    @MockitoBean private UserResponseMapper mapper;
 
     @BeforeEach
     public void setUp() { this.userRepository.deleteAll(); }
@@ -151,7 +148,7 @@ class AuthenticationControllerIntegrationTest {
         // Act & Assert
         this.mockMvc.perform(get("/auth/me")
                         .header("Authorization", "Bearer " + accessToken)
-                        .principal(user::getId))
+                        .principal(() -> user.getId()))
                 .andExpect(status().isOk());
     }
 

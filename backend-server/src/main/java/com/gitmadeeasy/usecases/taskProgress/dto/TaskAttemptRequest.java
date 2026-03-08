@@ -1,4 +1,4 @@
-package com.gitmadeeasy.usecases.attemptTask.dto;
+package com.gitmadeeasy.usecases.taskProgress.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

@@ -5,4 +5,5 @@ export interface AuthGateway {
     logout(): Promise<void>;
     refresh(): Promise<string>;
     getCurrentUser(): Promise<UserResponse>;
+    resendVerificationEmail(emailAddress: string): Promise<void>;
 }

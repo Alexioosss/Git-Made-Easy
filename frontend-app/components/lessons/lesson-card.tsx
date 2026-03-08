@@ -33,7 +33,13 @@ export function LessonCard({ lesson, progress }: LessonCardProps) {
       <div className="flex flex-1 flex-col gap-3 p-5 sm:p-6">
         <div className="hidden items-center gap-3 md:flex">
           <h3 className="text-lg font-semibold text-card-foreground group-hover:text-primary transition-colors">{lesson.title}</h3>
-          {isComplete && <CheckCircle2 className="h-5 w-5 text-primary" />}
+          {isComplete && (
+            <>
+              <CheckCircle2 className="h-5 w-5 text-primary" />
+              <span className="text-primary font-bold text-xl mx-1">|</span>
+              <span className="text-md font-medium text-primary">Completed</span>
+            </>
+          )}
         </div>
 
         <p className="text-sm leading-relaxed text-muted-foreground">{lesson.description}</p>
@@ -49,6 +55,22 @@ export function LessonCard({ lesson, progress }: LessonCardProps) {
             )
           )}
         </div>
+      </div>
+
+      <div className="flex md:hidden items-center justify-between w-full px-5 py-3 border-t border-border">
+        <div className="flex items-center gap-3 flex-1">
+          <Progress value={progressPercentage} className="h-2 flex-1 rounded-full" />
+
+          <span className="text-sm font-semibold text-foreground whitespace-nowrap">
+            {progressPercentage}%
+          </span>
+
+          <span className="text-xs text-muted-foreground whitespace-nowrap">
+            {completedTasks}/{totalTasks}
+          </span>
+        </div>
+
+        <ArrowRight className="h-5 w-5 text-muted-foreground/40 ml-3" />
       </div>
 
       <div className="hidden md:flex flex-col items-center px-6 py-4 gap-2">

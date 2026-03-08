@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GatewayFactory } from "@/config/GatewayFactory";
+import { safeCallWrapper } from "@/lib/safeCallWrapper";
 import { Eye, EyeOff, GitBranch, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -30,13 +31,15 @@ export default function RegisterForm() {
 
     if(password != confirmPassword) { setError("Passwords do not match."); setIsLoading(false); return; }
 
-    try {
-      await userGateway.register(firstName, lastName, emailAddress, password);
-      setIsSuccess(true);
-      setTimeout(() => router.push("/login"), 4000);
+    const response = await safeCallWrapper(() => userGateway.register(firstName, lastName, emailAddress, password));
+    if(!response.ok) {
+      setError(response.error || "Something went wrong");
+      setIsLoading(false);
+      return;
     }
-    catch(error: any) { setError(error.message || "Something went wrong"); }
-    finally { setIsLoading(false); }
+    setIsLoading(false);
+    setIsSuccess(true);
+    setTimeout(() => router.push("/login"), 4000);
   }
 
   if(isSuccess) {

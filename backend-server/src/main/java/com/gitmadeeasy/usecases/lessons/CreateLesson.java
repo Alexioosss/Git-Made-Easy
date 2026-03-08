@@ -5,7 +5,7 @@ import com.gitmadeeasy.entities.lessons.Lesson;
 import com.gitmadeeasy.entities.lessons.LessonGateway;
 import com.gitmadeeasy.usecases.lessons.dto.CreateLessonRequest;
 import com.gitmadeeasy.usecases.lessons.exceptions.DifficultyLevelNotRecognisedException;
-import com.gitmadeeasy.usecases.validation.exceptions.MissingRequiredFieldException;
+import com.gitmadeeasy.usecases.shared.exceptions.MissingRequiredFieldException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

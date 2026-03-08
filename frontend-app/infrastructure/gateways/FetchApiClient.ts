@@ -25,22 +25,27 @@ export class FetchApiClient extends ApiClient {
     }
 
     private async performRequest<T>(path: string, method: HttpMethods, body?: any, options?: RequestInit & { next?: { revalidate?: number | false } }): Promise<T> {
-        const response = await fetch(`${this.BACKEND_URL}${path}`, {
-            method,
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            body: body ? JSON.stringify(body) : undefined,
-            cache: options?.cache ?? "no-store",
-            next: options?.next
-        });
-        const contentType = response.headers.get("Content-Type") ?? "";
-
-        let data: any = null;
-        if(contentType.toLowerCase().includes("application/json")) {
-            data = await response.json();
-        } else if(contentType.includes("text/plain")) {
-            data = await response.text();
+        let response: Response;
+        try {
+            response = await fetch(`${this.BACKEND_URL}${path}`, {
+                method,
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: body ? JSON.stringify(body) : undefined,
+                cache: options?.cache ?? "no-store",
+                next: options?.next
+            });
+        } catch(error: any) {
+            const err: any = new Error("Unable to reach the server. Please try again later.");
+            err.status = 0;
+            err.code = "NETWORK_ERROR";
+            throw err;
         }
+        const contentType = response.headers.get("Content-Type") ?? "";
+        let data: any = null;
+        if(contentType.toLowerCase().includes("application/json")) { data = await response.json(); }
+        else if(contentType.includes("text/plain")) { data = await response.text(); }
+        
         if(!response.ok) {
             const message = data?.error_message || data?.message || response.statusText || "Request Failed";
             const err: any = new Error(message);
@@ -48,7 +53,6 @@ export class FetchApiClient extends ApiClient {
             err.code = data?.errorCode || data?.code;
             throw err;
         }
-        
         return data;
     }
 

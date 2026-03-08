@@ -2,12 +2,13 @@
 
 import { getCurrentUser, logoutUser } from "@/lib/auth";
 import { syncProgressFromTemporaryStorage } from "@/lib/syncProgressFromTemporaryStorage";
-import { isAbsoluteUrl } from "next/dist/shared/lib/utils";
+import { syncProgressFromBackendStorage } from "@/lib/syncProgressFromBackendStorage";
 import { createContext, ReactNode, useContext, useEffect, useRef, useState } from "react";
 
 export type AuthContextType = {
     user: any | null;
     isAuthenticated: boolean;
+    isLoadingUser: boolean;
     isServerAvailable: boolean;
     refreshUser: () => Promise<void>;
     logout: () => Promise<void>;
@@ -17,12 +18,20 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<any | null>(null);
+    const [isLoadingUser, setIsLoadingUser] = useState<boolean>(true);
     const [isServerAvailable, setIsServerAvailable] = useState<boolean>(true);
     const isAuthenticated = !!user;
 
     async function refreshUser() { const user = await getCurrentUser(); setUser(user ?? null); }
 
-    async function logout() { await logoutUser(); setUser(null); }
+    async function logout() {
+        try {
+            await logoutUser();
+        } catch(err: any) {
+            if(err.status !== 401) { throw err; }
+        }
+        setUser(null);
+    }
 
     useEffect(() => {
         let isMounted = true;
@@ -32,10 +41,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 setUser(user);
                 setIsServerAvailable(true);
             } catch(err: any) {
-                if(!isMounted) { return; }
-                if(err.message === "SERVER_UNAVAILABLE") {
-                    setIsServerAvailable(false);
+                if(err.status === 401) {
+                    setUser(null);
+                    return;
                 }
+                if(!isMounted) { return; }
+                if(err.message === "SERVER_UNAVAILABLE") { setIsServerAvailable(false); }
+            } finally {
+                setIsLoadingUser(false);
             }
         }
         check();
@@ -45,14 +58,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const prevAuthRef = useRef<boolean>(false);
     useEffect(() => {
-        if(isAuthenticated && !prevAuthRef.current) { // If the user has logged in
-            syncProgressFromTemporaryStorage(); // Save any progress made while logged out (if any)
+        async function syncAfterLoggingIn() {
+            const wasAuthenticated = prevAuthRef.current;
+            prevAuthRef.current = isAuthenticated;
+            if(!isAuthenticated) { return; }
+            if(isAuthenticated && !wasAuthenticated) { // If the user has logged in
+                await new Promise(r => setTimeout(r, 50));
+                await syncProgressFromTemporaryStorage(); // Save any progress made while logged out (if any) to the database
+                await syncProgressFromBackendStorage();
+            }
         }
-        prevAuthRef.current = isAuthenticated;
+        syncAfterLoggingIn();
     }, [isAuthenticated]);
 
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated: !!user, isServerAvailable, refreshUser, logout }}>
+        <AuthContext.Provider value={{ user, isAuthenticated: !!user, isLoadingUser, isServerAvailable, refreshUser, logout }}>
             {children}
         </AuthContext.Provider>
     );

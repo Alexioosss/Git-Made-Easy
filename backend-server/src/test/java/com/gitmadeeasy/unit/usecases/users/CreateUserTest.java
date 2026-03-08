@@ -3,11 +3,11 @@ package com.gitmadeeasy.unit.usecases.users;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.auth.UserIdentityProvider;
-import com.gitmadeeasy.usecases.email.EmailSender;
+import com.gitmadeeasy.usecases.email.VerificationEmailService;
 import com.gitmadeeasy.usecases.users.CreateUser;
 import com.gitmadeeasy.usecases.users.dto.CreateUserRequest;
 import com.gitmadeeasy.usecases.users.exceptions.DuplicatedEmailException;
-import com.gitmadeeasy.usecases.validation.exceptions.MissingRequiredFieldException;
+import com.gitmadeeasy.usecases.shared.exceptions.MissingRequiredFieldException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.*;
 class CreateUserTest {
     @Mock private UserGateway userGateway;
     @Mock private UserIdentityProvider identityProvider;
-    @Mock private EmailSender emailSender;
+    @Mock private VerificationEmailService verificationEmailService;
     @InjectMocks private CreateUser createUser;
 
     private static final String USER_ID = "user-123";
@@ -47,8 +47,7 @@ class CreateUserTest {
                 request.firstName(), request.lastName(),
                 request.emailAddress(), request.password())).thenReturn(USER_ID);
         when(this.userGateway.createUser(any(User.class))).thenReturn(user);
-        when(this.identityProvider.generateVerificationEmail(anyString())).thenReturn("test-verification-email@gmail.com");
-        doNothing().when(this.emailSender).send(eq(request.emailAddress()), anyString(), anyString());
+        doNothing().when(this.verificationEmailService).sendVerificationEmail(eq(request.emailAddress()), eq(request.firstName()));
 
         // Act
         User result = this.createUser.execute(request);

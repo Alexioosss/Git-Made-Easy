@@ -56,8 +56,7 @@ public class TaskController {
     public ResponseEntity<List<Task>> getTasksForLesson(@PathVariable("lessonId") String lessonId) {
         log.info("GET /lessons/{}/tasks - Fetching all tasks for lesson", lessonId);
         List<Task> tasks = this.getTasksForLesson.execute(lessonId);
-        log.info("Tasks found successfully. Lesson ID {}, tasks found: {}",
-                lessonId, tasks.size());
+        log.info("Tasks found successfully. Lesson ID {}, tasks found: {}", lessonId, tasks.size());
         return ResponseEntity.ok(tasks);
     }
 }

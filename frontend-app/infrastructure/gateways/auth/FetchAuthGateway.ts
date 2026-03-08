@@ -22,4 +22,8 @@ export class FetchAuthGateway implements AuthGateway {
     getCurrentUser(): Promise<UserResponse> {
         return this.apiClient.apiRequest("/auth/me", HttpMethods.GET);
     }
+
+    resendVerificationEmail(emailAddress: string): Promise<void> {
+        return this.apiClient.apiRequest("/auth/resend-verification", HttpMethods.POST, { emailAddress });
+    }
 }

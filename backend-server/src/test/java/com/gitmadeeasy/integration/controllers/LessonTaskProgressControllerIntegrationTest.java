@@ -7,7 +7,7 @@ import com.gitmadeeasy.infrastructure.gateways.taskAttempts.repositories.jpa.Jpa
 import com.gitmadeeasy.infrastructure.gateways.tasks.JpaTaskSchema;
 import com.gitmadeeasy.infrastructure.gateways.tasks.repositories.jpa.JpaTaskRepository;
 import com.gitmadeeasy.testUtil.JsonUtil;
-import com.gitmadeeasy.usecases.attemptTask.dto.TaskAttemptRequest;
+import com.gitmadeeasy.usecases.taskProgress.dto.TaskAttemptRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class TaskProgressControllerIntegrationTest {
+class LessonTaskProgressControllerIntegrationTest {
     @Autowired private MockMvc mockMvc;
     @Autowired private JpaTaskAttemptRepository taskAttemptRepository;
     @Autowired private JpaTaskRepository taskRepository;

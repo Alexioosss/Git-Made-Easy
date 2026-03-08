@@ -1,7 +1,7 @@
-import { IntroSection } from "@/components/landing/hero-section";
-import { HighlightsSection } from "@/components/landing/features-section";
-import { LessonsPreview } from "@/components/landing/lessons-preview";
-import { GetStartedSection } from "@/components/landing/get-started";
+import { IntroSection } from "@/components/home-page/hero-section";
+import { HighlightsSection } from "@/components/home-page/features-section";
+import { LessonsPreview } from "@/components/home-page/lessons-preview";
+import { GetStartedSection } from "@/components/home-page/get-started";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

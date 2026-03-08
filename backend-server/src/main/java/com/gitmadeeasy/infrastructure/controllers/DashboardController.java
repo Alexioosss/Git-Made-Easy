@@ -23,7 +23,7 @@ public class DashboardController {
 
     @GetMapping
     public ResponseEntity<DashboardResponse> getDashboard(Principal principal) {
-        if(principal == null) {
+        if(principal == null || principal.getName() == null) {
             log.info("No token detected. Cannot continue processing the request");
             return ResponseEntity.status(401).build();
         }
