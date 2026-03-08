@@ -45,7 +45,10 @@ export default function LoginForm() {
         setIsSuccess(true);
         await new Promise(resolve => setTimeout(resolve, 50));
         await refreshUser();
-        setTimeout(() => { router.push("/dashboard"); }, 1500);
+        setTimeout(() => {
+            console.log("Redirecting to dashboard...");
+            router.push("/dashboard");
+        }, 1500);
     }
 
     async function handleResendVerificationEmail() {

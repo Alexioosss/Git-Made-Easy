@@ -1,16 +1,16 @@
 package com.gitmadeeasy.infrastructure.controllers;
 
 import com.gitmadeeasy.entities.users.User;
-import com.gitmadeeasy.usecases.auth.ResendVerificationEmail;
-import com.gitmadeeasy.usecases.shared.dtos.EmailRequest;
 import com.gitmadeeasy.infrastructure.dto.users.UserResponse;
 import com.gitmadeeasy.infrastructure.mappers.users.UserResponseMapper;
 import com.gitmadeeasy.usecases.auth.LoginUser;
 import com.gitmadeeasy.usecases.auth.LogoutUser;
 import com.gitmadeeasy.usecases.auth.RefreshToken;
+import com.gitmadeeasy.usecases.auth.ResendVerificationEmail;
 import com.gitmadeeasy.usecases.auth.dto.AuthToken;
 import com.gitmadeeasy.usecases.auth.dto.LoginRequest;
 import com.gitmadeeasy.usecases.auth.exceptions.InvalidTokenException;
+import com.gitmadeeasy.usecases.shared.dtos.EmailRequest;
 import com.gitmadeeasy.usecases.users.GetUserById;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -36,6 +36,16 @@ public class JpaTaskSchema {
         this.difficulty = difficulty;
     }
 
+    public JpaTaskSchema(String title, String content, String expectedCommand,
+                         String hint, Integer taskOrder, DifficultyLevels difficulty) {
+        this.title = title;
+        this.content = content;
+        this.expectedCommand = expectedCommand;
+        this.hint = hint;
+        this.taskOrder = taskOrder;
+        this.difficulty = difficulty;
+    }
+
     public String getId() {
         return id;
     }

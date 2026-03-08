@@ -84,6 +84,14 @@ public final class TaskTestDataFactory {
         );
     }
 
+    public static List<TaskProgress> taskProgressesList() {
+        return List.of(
+                new TaskProgress("1", "1", "1", "1", "Title",
+                        TaskCompletionStatus.NOT_STARTED, 1, "git",
+                        "", LocalDate.now().minusDays(1), LocalDate.now())
+        );
+    }
+
 
     // ----- TASK ATTEMPT SCHEMAS ----- //
 

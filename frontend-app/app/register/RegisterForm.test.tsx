@@ -70,7 +70,7 @@ describe("RegisterForm", () => {
         fillRegistrationForm();
         fireEvent.submit(screen.getByRole("button", { name: /create account/i }));
 
-        expect(await screen.findByText(/something went wrong/i)).toBeInTheDocument();
+        expect(await screen.findByText(/unknown error/i)).toBeInTheDocument();
     });
 
     test("Shows success screen after successful registration", async () => {

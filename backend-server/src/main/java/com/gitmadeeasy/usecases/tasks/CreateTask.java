@@ -6,8 +6,8 @@ import com.gitmadeeasy.entities.tasks.Task;
 import com.gitmadeeasy.entities.tasks.TaskGateway;
 import com.gitmadeeasy.usecases.lessons.exceptions.DifficultyLevelNotRecognisedException;
 import com.gitmadeeasy.usecases.lessons.exceptions.LessonNotFoundWithIdException;
-import com.gitmadeeasy.usecases.tasks.dto.CreateTaskRequest;
 import com.gitmadeeasy.usecases.shared.exceptions.MissingRequiredFieldException;
+import com.gitmadeeasy.usecases.tasks.dto.CreateTaskRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

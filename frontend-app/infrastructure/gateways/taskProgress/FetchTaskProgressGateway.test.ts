@@ -32,12 +32,12 @@ describe("FetchTaskProgressGateway", () => {
         expect(response).toEqual(mockResponse);
     });
 
-    test("getAllLessonProgress Calls ApiRequest Correctly", async () => {
+    test("getAllTaskProgress Calls ApiRequest Correctly", async () => {
         const mockResponse = [ createMockTaskProgress({ taskId: "1" }), createMockTaskProgress({ taskId: "2" }) ];
         apiClient.apiRequest.mockResolvedValue(mockResponse);
-        const response = await gateway.getAllLessonProgress();
+        const response = await gateway.getAllTaskProgress();
 
-        expect(apiClient.apiRequest).toHaveBeenCalledWith("/progress", HttpMethods.GET);
+        expect(apiClient.apiRequest).toHaveBeenCalledWith("/tasks/progress", HttpMethods.GET);
         expect(response).toEqual(mockResponse);
     });
 

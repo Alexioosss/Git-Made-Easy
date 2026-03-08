@@ -3,9 +3,9 @@ package com.gitmadeeasy.usecases.auth;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.email.VerificationEmailService;
+import com.gitmadeeasy.usecases.shared.exceptions.MissingRequiredFieldException;
 import com.gitmadeeasy.usecases.users.exceptions.EmailAlreadyVerifiedException;
 import com.gitmadeeasy.usecases.users.exceptions.UserNotFoundWithEmailException;
-import com.gitmadeeasy.usecases.shared.exceptions.MissingRequiredFieldException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
