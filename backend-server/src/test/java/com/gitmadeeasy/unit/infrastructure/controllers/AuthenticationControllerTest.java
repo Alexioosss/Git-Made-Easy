@@ -8,7 +8,6 @@ import com.gitmadeeasy.testUtil.JsonUtil;
 import com.gitmadeeasy.usecases.auth.LoginUser;
 import com.gitmadeeasy.usecases.auth.LogoutUser;
 import com.gitmadeeasy.usecases.auth.RefreshToken;
-import com.gitmadeeasy.usecases.auth.ResendVerificationEmail;
 import com.gitmadeeasy.usecases.auth.dto.AuthToken;
 import com.gitmadeeasy.usecases.auth.dto.LoginRequest;
 import com.gitmadeeasy.usecases.users.GetUserById;
@@ -37,7 +36,6 @@ class AuthenticationControllerTest {
     @MockitoBean private LogoutUser logoutUser;
     @MockitoBean private RefreshToken refreshToken;
     @MockitoBean private GetUserById getUserById;
-    @MockitoBean private ResendVerificationEmail resendVerificationEmail;
     @MockitoBean private UserResponseMapper userResponseMapper;
 
 

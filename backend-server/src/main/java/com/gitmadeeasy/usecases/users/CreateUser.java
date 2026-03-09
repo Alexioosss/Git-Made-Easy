@@ -3,7 +3,6 @@ package com.gitmadeeasy.usecases.users;
 import com.gitmadeeasy.entities.users.User;
 import com.gitmadeeasy.entities.users.UserGateway;
 import com.gitmadeeasy.usecases.auth.UserIdentityProvider;
-import com.gitmadeeasy.usecases.email.VerificationEmailService;
 import com.gitmadeeasy.usecases.shared.exceptions.MissingRequiredFieldException;
 import com.gitmadeeasy.usecases.users.dto.CreateUserRequest;
 import com.gitmadeeasy.usecases.users.exceptions.DuplicatedEmailException;
@@ -13,14 +12,11 @@ import org.slf4j.LoggerFactory;
 public class CreateUser {
     private final UserGateway userGateway;
     private final UserIdentityProvider identityProvider;
-    private final VerificationEmailService emailVerificationService;
     private static final Logger log = LoggerFactory.getLogger(CreateUser.class);
 
-    public CreateUser(UserGateway userGateway, UserIdentityProvider identityProvider,
-                      VerificationEmailService emailVerificationService) {
+    public CreateUser(UserGateway userGateway, UserIdentityProvider identityProvider) {
         this.userGateway = userGateway;
         this.identityProvider = identityProvider;
-        this.emailVerificationService = emailVerificationService;
     }
 
     public User execute(CreateUserRequest request) {
@@ -57,7 +53,7 @@ public class CreateUser {
         User createdUser = this.userGateway.createUser(userToSave);
         log.info("User persisted successfully. User ID {}, Email Address {}", createdUser.getUserId(), createdUser.getEmailAddress());
 
-        this.emailVerificationService.sendVerificationEmail(request.emailAddress(), request.firstName());
+//        this.emailVerificationService.sendVerificationEmail(request.emailAddress(), request.firstName());
 //
 //        String verificationLink = this.identityProvider.generateVerificationEmail(request.emailAddress());
 //        log.info("Verification email generated successfully");

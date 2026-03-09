@@ -5,7 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { useAuth } from "@/context/AuthContext";
+import { auth } from "@/lib/firebase";
 import { safeCallWrapper } from "@/lib/safeCallWrapper";
+import { sendEmailVerification, signInWithEmailAndPassword } from "firebase/auth";
 import { Eye, EyeOff, GitBranch, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -33,7 +35,7 @@ export default function LoginForm() {
         if(!response.ok) {
             if(response.code === "INVALID_CREDENTIALS") { setError(response.error); }
             else if(response.code === "EMAIL_NOT_VERIFIED") {
-                setError(response.error + "\nIf the email address exists, verify your email address via the verification link.");
+                setError(response.error + "\nThe email address is not verified yet. Please check your inbox for the verification link, it may also be in your spam or junk folder.");
                 setNeedsEmailVerification(true);
             }
             else if(response.code === "NETWORK_ERROR") { setError(response.error); }
@@ -41,6 +43,9 @@ export default function LoginForm() {
             setIsLoading(false);
             return;
         }
+        try { await signInWithEmailAndPassword(auth, emailAddress, password); }
+        catch(firebaseError) { console.error("Firebase login failed: ", firebaseError); }
+
         setIsLoading(false);
         setIsSuccess(true);
         await new Promise(resolve => setTimeout(resolve, 50));
@@ -53,16 +58,20 @@ export default function LoginForm() {
 
     async function handleResendVerificationEmail() {
         if(secondsBeforeResending > 0) { return; }
-        const response = await safeCallWrapper(() => authGateway.resendVerificationEmail(emailAddress));
-        if(!response.ok) { setError(response.error || "Could not resend the verification email."); return; }
-        setError("A new verification email has been sent.");
-        setSecondsBeforeResending(60);
-        const interval = setInterval(() => {
-            setSecondsBeforeResending(previous => {
-                if(previous <= 1) { clearInterval(interval); return 0; }
-                return previous - 1;
-            });
-        }, 1000);
+        try {
+            await signInWithEmailAndPassword(auth, emailAddress, password);
+            if(auth.currentUser) { await sendEmailVerification(auth.currentUser); }
+            setError("A new verification email has been sent.");
+            setSecondsBeforeResending(60);
+            const interval = setInterval(() => {
+                setSecondsBeforeResending(previous => {
+                    if(previous <= 1) { clearInterval(interval); return 0; }
+                    return previous - 1;
+                });
+            }, 1000);
+        } catch(err) {
+            setError("Could not resend the verification email.");
+        }
     }
 
     if(isSuccess) {

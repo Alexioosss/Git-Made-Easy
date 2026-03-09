@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GatewayFactory } from "@/config/GatewayFactory";
+import { auth } from "@/lib/firebase";
 import { safeCallWrapper } from "@/lib/safeCallWrapper";
+import { sendEmailVerification, signInWithEmailAndPassword } from "firebase/auth";
 import { Eye, EyeOff, GitBranch, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -39,6 +41,8 @@ export default function RegisterForm() {
     }
     setIsLoading(false);
     setIsSuccess(true);
+    await signInWithEmailAndPassword(auth, emailAddress, password);
+    if(auth.currentUser) { await sendEmailVerification(auth.currentUser); }
     setTimeout(() => router.push("/login"), 4000);
   }
 

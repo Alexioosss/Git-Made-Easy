@@ -6,11 +6,9 @@ import com.gitmadeeasy.infrastructure.mappers.users.UserResponseMapper;
 import com.gitmadeeasy.usecases.auth.LoginUser;
 import com.gitmadeeasy.usecases.auth.LogoutUser;
 import com.gitmadeeasy.usecases.auth.RefreshToken;
-import com.gitmadeeasy.usecases.auth.ResendVerificationEmail;
 import com.gitmadeeasy.usecases.auth.dto.AuthToken;
 import com.gitmadeeasy.usecases.auth.dto.LoginRequest;
 import com.gitmadeeasy.usecases.auth.exceptions.InvalidTokenException;
-import com.gitmadeeasy.usecases.shared.dtos.EmailRequest;
 import com.gitmadeeasy.usecases.users.GetUserById;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,18 +26,16 @@ public class AuthenticationController {
     private final LogoutUser logoutUser;
     private final RefreshToken refreshToken;
     private final GetUserById getUserById;
-    private final ResendVerificationEmail resendVerificationEmail;
     private final UserResponseMapper userResponseMapper;
     private final Logger log = LoggerFactory.getLogger(AuthenticationController.class);
 
     public AuthenticationController(LoginUser loginUser, LogoutUser logoutUser, RefreshToken refreshToken,
-                                    GetUserById getUserById, ResendVerificationEmail resendVerificationEmail,
-                                    UserResponseMapper userResponseMapper) {
+                                    GetUserById getUserById, UserResponseMapper userResponseMapper) {
         this.loginUser = loginUser;
         this.logoutUser = logoutUser;
         this.refreshToken = refreshToken;
         this.getUserById = getUserById;
-        this.resendVerificationEmail = resendVerificationEmail;
+//        this.resendVerificationEmail = resendVerificationEmail;
         this.userResponseMapper = userResponseMapper;
     }
 
@@ -91,13 +87,6 @@ public class AuthenticationController {
         UserResponse userResponse = this.userResponseMapper.toUserResponse(foundUser);
         log.info("Found current user. {}", userResponse.id() != null ? "User ID: " + userResponse.id() : "");
         return ResponseEntity.ok(userResponse);
-    }
-
-    @PostMapping("/resend-verification")
-    public ResponseEntity<Void> resendVerificationEmail(@Valid @RequestBody EmailRequest emailRequest) {
-        log.info("POST /resend-verification - Resending verification email to {}", emailRequest.emailAddress());
-        this.resendVerificationEmail.execute(emailRequest.emailAddress());
-        return ResponseEntity.noContent().build();
     }
 
 

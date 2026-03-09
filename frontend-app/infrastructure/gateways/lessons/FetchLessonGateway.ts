@@ -13,18 +13,18 @@ export class FetchLessonGateway implements LessonGateway {
     }
 
     getById(lessonId: string): Promise<Lesson> {
-        return this.apiClient.apiRequest(`/lessons/${lessonId}`, HttpMethods.GET, undefined, { next: { revalidate: 3600 } });
+        return this.apiClient.apiRequest(`/lessons/${lessonId}`, HttpMethods.GET, undefined);
     }
 
     getAllLessons(): Promise<Lesson[]> {
-        return this.apiClient.apiRequest("/lessons", HttpMethods.GET, undefined, { next: { revalidate: 3600 } });
+        return this.apiClient.apiRequest("/lessons", HttpMethods.GET, undefined);
     }
 
     getNextLesson(lessonId: string): Promise<Lesson> {
-        return this.apiClient.apiRequest(`/lessons/${lessonId}/next`, HttpMethods.GET, undefined, { next: { revalidate: 3600 } });
+        return this.apiClient.apiRequest(`/lessons/${lessonId}/next`, HttpMethods.GET, undefined);
     }
 
     getTasksForLesson(lessonId: string): Promise<Task[]> {
-        return this.apiClient.apiRequest(`/lessons/${lessonId}/tasks`, HttpMethods.GET, undefined, { next: { revalidate: 3600 } });
+        return this.apiClient.apiRequest(`/lessons/${lessonId}/tasks`, HttpMethods.GET, undefined);
     }
 }

@@ -35,15 +35,6 @@ public class FirebaseUserIdentityProvider implements UserIdentityProvider {
     }
 
     @Override
-    public String generateVerificationEmail(String emailAddress) {
-       try {
-           return FirebaseAuth.getInstance().generateEmailVerificationLink(emailAddress);
-       } catch(Exception e) {
-           throw new RuntimeException("Failed to generate email verification link: " + e.getMessage(), e);
-       }
-    }
-
-    @Override
     public boolean isEmailVerified(String userId) {
         try {
             return FirebaseAuth.getInstance().getUser(userId).isEmailVerified();
