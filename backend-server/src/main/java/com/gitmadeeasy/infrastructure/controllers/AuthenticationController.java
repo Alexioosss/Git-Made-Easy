@@ -35,7 +35,6 @@ public class AuthenticationController {
         this.logoutUser = logoutUser;
         this.refreshToken = refreshToken;
         this.getUserById = getUserById;
-//        this.resendVerificationEmail = resendVerificationEmail;
         this.userResponseMapper = userResponseMapper;
     }
 

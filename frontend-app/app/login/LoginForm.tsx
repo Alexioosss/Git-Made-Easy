@@ -52,7 +52,6 @@ export default function LoginForm() {
         await new Promise(resolve => setTimeout(resolve, 50));
         await refreshUser();
         setTimeout(() => {
-            console.log("Redirecting to dashboard...");
             router.push("/dashboard");
         }, 1500);
     }
