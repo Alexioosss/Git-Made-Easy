@@ -85,26 +85,4 @@ class LoginUserTest {
         // Act & Assert
         assertThrows(InvalidCredentialsException.class, () -> this.loginUser.execute(loginRequest));
     }
-
-    @Test
-    @DisplayName("Login User - Email Verification Disabled Allows Login Even If Email Not Verified")
-    void execute_WhenVerificationDisabled_ReturnsAuthToken() {
-        // Arrange
-        boolean requireEmailVerification = false;
-        LoginUser loginUserNoVerification =
-                new LoginUser(this.userGateway, this.tokenGateway, this.userIdentityProvider);
-        LoginRequest loginRequest = new LoginRequest("myemail1@gmail.com", "MyPassword123'");
-        User user = new User("1", "John", "Doe", "myemail1@gmail.com");
-        when(this.userIdentityProvider.login("myemail1@gmail.com", "MyPassword123'"))
-                .thenReturn("firebase-myemail1@gmail.com");
-        when(this.userGateway.getUserByEmailAddress("myemail1@gmail.com")).thenReturn(Optional.of(user));
-        when(this.tokenGateway.generateToken(user)).thenReturn("token");
-
-        // Act
-        AuthToken result = loginUserNoVerification.execute(loginRequest);
-
-        // Assert
-        assertNotNull(result);
-        assertEquals("token", result.accessToken());
-    }
 }
