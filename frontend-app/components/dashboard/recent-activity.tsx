@@ -21,7 +21,7 @@ export function RecentActivity({ activities }: RecentActivityProps) {
       <div className="rounded-xl border border-border bg-card">
         {!hasActivities ? ( <div className="p-6 text-center text-sm text-muted-foreground">No activity yet. Start a lesson to see your progress here.</div> ) : (
           <div className="divide-y divide-border">
-            {activities.map((activity) => (
+            {activities.splice(0, 10).map((activity) => ( // Show the last 10 tasks completed by the user
               <div key={activity.taskId} className="flex items-start gap-3 p-4">
                 {activity.date ? ( <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" /> ) : ( <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" /> )}
                 <div className="flex-1">

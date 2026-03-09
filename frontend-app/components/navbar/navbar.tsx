@@ -24,7 +24,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:h-16">
-        <Link href="/" title="Go to home page" className="flex items-center gap-2">
+        <Link href="/" title="Go to the home page" className="flex items-center gap-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
             <GitBranch className="h-6 w-6 text-primary-foreground" />
           </div>

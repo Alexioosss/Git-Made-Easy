@@ -61,8 +61,8 @@ public class LessonSeedData {
                 "Learn how to create, switch, and manage branches in Git.", DifficultyLevels.MEDIUM, 3);
         branchingBasics.setTasks(List.of(
                 new Task(branchingBasics.getLessonId(), "Create a new branch", "Create a new branch for your own work. " +
-                        "Let's call it 'my-new-branch'", "git branch my-new-branch",
-                        "Specify the branch name after the keyword branch, and don't forget quotes", 1, DifficultyLevels.EASY),
+                        "Let's call it my-new-branch", "git branch my-new-branch",
+                        "Specify the branch name after the keyword branch", 1, DifficultyLevels.EASY),
                 new Task(branchingBasics.getLessonId(), "Switch to a branch", "Move to the branch you just created",
                         "git checkout my-new-branch",
                         "The branch is called my-new-branch", 2, DifficultyLevels.MEDIUM),
@@ -93,22 +93,18 @@ public class LessonSeedData {
                 "Learn how to combine changes from different branches and resolve conflicts.", DifficultyLevels.MEDIUM, 4);
         mergingAndConflicts.setTasks(List.of(
                 new Task(mergingAndConflicts.getLessonId(), "Merge a branch",
-                        "Let's just say we did not delete the previous branch, so let's combine changes from" +
-                                "one branch into another. Let's merge into branch 'my-new-branch'",
+                        "Let's just say we did not delete the previous branch, so let's combine changes from one branch into another. Let's merge into branch 'my-new-branch'",
                         "git merge my-new-branch",
                         "Specify the branch that you want to merge into", 1, DifficultyLevels.MEDIUM),
-                new Task(mergingAndConflicts.getLessonId(), "View merge conflicts", "See files that have conflicts after a merge",
+                new Task(mergingAndConflicts.getLessonId(), "View merge conflicts", "After merging, check the status of the repository to check if any files have conflicts that need resolving.",
                         "git status",
-                        "Git will mark conflicted files as 'both modified'; check these before committing." +
-                                "Run the command to check the status of the repository", 2, DifficultyLevels.MEDIUM),
+                        "Files with conflicts will be marked as 'both modified'; check these before committing. Use this command to find files that need checking before completing the merge.", 2, DifficultyLevels.MEDIUM),
                 new Task(mergingAndConflicts.getLessonId(), "Resolve a conflict", "Edit the conflicted files and mark as resolved",
-                        "git add my-new-file", "Once conflicting files have been resolved; for example missing lines," +
-                                "they are then pushed to the repository. Let's just pretend that we just fixed a file conflict..." +
-                        "Let's push the file 'my-new-file'", 3, DifficultyLevels.MEDIUM),
+                        "git add my-new-file", "Once conflicting files have been resolved, " +
+                                "they are then pushed to the repository. Let's just pretend that we just fixed a file conflict... Let's stage the file 'my-new-file'", 3, DifficultyLevels.MEDIUM),
                 new Task(mergingAndConflicts.getLessonId(), "Finalize the merge", "Complete the merge after resolving conflicts",
                         "git commit",
-                        "If conflicts were resolved manually, Git requires a commit to finalize the merge." +
-                                "Recalling a previous task...", 4, DifficultyLevels.MEDIUM)
+                        "If conflicts were resolved manually, Git requires a commit to finalize the merge. Recalling a previous task...", 4, DifficultyLevels.MEDIUM)
         ));
         mergingAndConflicts.setLongDescription("""
                 Now that you have changes from other people in the remote-tracking branches, you need to combine them, perhaps also with your changes.
@@ -128,8 +124,8 @@ public class LessonSeedData {
                         "git clone https://github.com/onaly/storage",
                         "Clone the repository using its public URL", 1, DifficultyLevels.MEDIUM),
                 new Task(remoteRepositories.getLessonId(), "Push a local branch to a remote repository",
-                        "Push your local branch to the remote repository", "git push main my-new-branch",
-                        "Let's push our local branch to the `main` branch of the remote repository. Remote repository is called my-new-branch",
+                        "Push your local branch to the remote repository", "git push origin my-new-branch",
+                        "Let's push our local branch, my-new-branch, to the remote repository (origin). This updates the remote repository with your local changes.",
                         2, DifficultyLevels.MEDIUM)
         ));
         remoteRepositories.setLongDescription("""

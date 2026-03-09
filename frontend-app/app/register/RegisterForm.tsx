@@ -1,5 +1,6 @@
 "use client"
 
+import SuccessMessage from "@/components/SuccessMessage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -46,28 +47,7 @@ export default function RegisterForm() {
     setTimeout(() => router.push("/login"), 4000);
   }
 
-  if(isSuccess) {
-    return (
-      <div className="min-h-[calc(100dvh-56px)] sm:min-h-[calc(100dvh-64px)] bg-background flex flex-col justify-center">
-        <div className="flex justify-center px-4">
-          <div className="w-full max-w-xl bg-card px-6 py-10 rounded-xl shadow text-center space-y-4 animate-fade-in">
-            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-600">
-              <svg className="h-12 w-12 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h2 className="text-3xl font-bold text-foreground">
-              Account created successfully
-            </h2>
-
-            <p className="text-lg text-muted-foreground">
-              Redirecting you to the login page...
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  if(isSuccess) { return ( <SuccessMessage title="Account created successfully!" message="Redirecting you to the login page..." /> ); }
 
   return (
     <div className="min-h-[calc(100dvh-56px)] sm:min-h-[calc(100dvh-64px)] bg-background flex flex-col justify-center">

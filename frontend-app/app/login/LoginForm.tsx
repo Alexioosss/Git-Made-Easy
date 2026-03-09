@@ -1,5 +1,6 @@
 "use client"
 
+import SuccessMessage from "@/components/SuccessMessage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -74,29 +75,7 @@ export default function LoginForm() {
         }
     }
 
-    if(isSuccess) {
-        return (
-            <div className="min-h-[calc(100dvh-56px)] sm:min-h-[calc(100dvh-64px)] bg-background flex justify-center items-center overflow-y-auto px-4 py-6">
-                <div className="flex justify-center px-4">
-                    <div className="w-full max-w-xl bg-card px-6 pt-6 pb-4 rounded-xl shadow text-lg space-y-3 animate-fade-in">
-                        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-600">
-                            <svg className="h-12 w-12 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                            </svg>
-                        </div>
-
-                        <h2 className="text-3xl font-bold text-foreground">
-                            Logged in successfully!
-                        </h2>
-
-                        <p className="text-lg text-muted-foreground">
-                            Redirecting you to your dashboard...
-                        </p>
-                    </div>
-                </div>
-            </div>
-        );
-    }
+    if(isSuccess) { return ( <SuccessMessage title="Logged in successfully!" message="Redirecting you to your personalised dashboard..." /> ); }
 
     return (
         <div className="min-h-[calc(100dvh-56px)] sm:min-h-[calc(100dvh-64px)] bg-background flex flex-col justify-center">

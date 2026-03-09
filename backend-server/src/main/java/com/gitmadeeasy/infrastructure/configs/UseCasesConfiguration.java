@@ -25,16 +25,11 @@ import com.gitmadeeasy.usecases.tasks.GetTasksForLesson;
 import com.gitmadeeasy.usecases.users.CreateUser;
 import com.gitmadeeasy.usecases.users.GetUserByEmail;
 import com.gitmadeeasy.usecases.users.GetUserById;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class UseCasesConfiguration {
-    @Value("${auth.require-email-verification:true}")
-    private boolean requireEmailVerification;
-
-
 
     // ----- User-Related Use Cases ----- //
 
@@ -59,7 +54,7 @@ public class UseCasesConfiguration {
 
     @Bean
     public LoginUser loginUser(UserGateway userGateway, TokenGateway tokenGateway, UserIdentityProvider identityProvider) {
-        return new LoginUser(userGateway, tokenGateway, identityProvider, requireEmailVerification);
+        return new LoginUser(userGateway, tokenGateway, identityProvider);
     }
 
     @Bean

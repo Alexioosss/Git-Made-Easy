@@ -31,7 +31,7 @@ class LoginUserTest {
     @BeforeEach
     void setUp() {
         boolean requireEmailVerification = true;
-        loginUser = new LoginUser(userGateway, tokenGateway, userIdentityProvider, requireEmailVerification);
+        loginUser = new LoginUser(userGateway, tokenGateway, userIdentityProvider);
     }
 
 
@@ -92,7 +92,7 @@ class LoginUserTest {
         // Arrange
         boolean requireEmailVerification = false;
         LoginUser loginUserNoVerification =
-                new LoginUser(this.userGateway, this.tokenGateway, this.userIdentityProvider, requireEmailVerification);
+                new LoginUser(this.userGateway, this.tokenGateway, this.userIdentityProvider);
         LoginRequest loginRequest = new LoginRequest("myemail1@gmail.com", "MyPassword123'");
         User user = new User("1", "John", "Doe", "myemail1@gmail.com");
         when(this.userIdentityProvider.login("myemail1@gmail.com", "MyPassword123'"))
