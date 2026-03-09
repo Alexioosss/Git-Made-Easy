@@ -30,7 +30,7 @@ public class AuthenticationController {
     private final Logger log = LoggerFactory.getLogger(AuthenticationController.class);
 
     public AuthenticationController(LoginUser loginUser, LogoutUser logoutUser, RefreshToken refreshToken,
-                                    GetUserById getUserById, UserResponseMapper userResponseMapper) {
+            GetUserById getUserById, UserResponseMapper userResponseMapper) {
         this.loginUser = loginUser;
         this.logoutUser = logoutUser;
         this.refreshToken = refreshToken;
@@ -39,8 +39,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthToken> loginUser(@Valid @RequestBody LoginRequest loginRequest,
-                                               HttpServletResponse response) {
+    public ResponseEntity<AuthToken> loginUser(
+            @Valid @RequestBody LoginRequest loginRequest,
+            HttpServletResponse response) {
         log.info("POST /login - Logging a user in with email address {}", loginRequest.email());
 
         AuthToken authToken = this.loginUser.execute(loginRequest);
