@@ -30,7 +30,7 @@ public class GlobalExceptionAdvice extends BaseErrorAdvice {
 
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<ApiError> handleInvalidCredentials(InvalidCredentialsException ex) {
-        return this.buildError(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS", "email or password is incorrect");
+        return this.buildError(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS", "Email or password is incorrect");
     }
 
     @ExceptionHandler

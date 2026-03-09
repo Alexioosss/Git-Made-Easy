@@ -7,6 +7,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +19,7 @@ import java.io.IOException;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final TokenGateway tokenGateway;
+    private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
     public JwtAuthenticationFilter(TokenGateway tokenGateway) {
         this.tokenGateway = tokenGateway;
@@ -48,6 +51,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String resolveToken(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if(cookies == null) { log.info("DEBUGGING - No cookies received on request to {}", request.getRequestURI()); }
+        else {
+            log.info("DEBUGGING - Cookies received:");
+            for(Cookie cookie : cookies) {
+                log.info(" - {}={}", cookie.getName(), cookie.getValue());
+            }
+        }
+
         // Try retrieving the JWT Token via the Authorization header first
         String authorizationHeader = request.getHeader("Authorization");
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
