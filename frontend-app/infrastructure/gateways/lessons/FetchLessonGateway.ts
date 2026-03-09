@@ -13,18 +13,18 @@ export class FetchLessonGateway implements LessonGateway {
     }
 
     getById(lessonId: string): Promise<Lesson> {
-        return this.apiClient.apiRequest(`/lessons/${lessonId}`, HttpMethods.GET, undefined, { cache: "force-cache" });
+        return this.apiClient.apiRequest(`/lessons/${lessonId}`, HttpMethods.GET, undefined, { next: { revalidate: 3600 } });
     }
 
     getAllLessons(): Promise<Lesson[]> {
-        return this.apiClient.apiRequest("/lessons", HttpMethods.GET, undefined, { cache: "force-cache" });
+        return this.apiClient.apiRequest("/lessons", HttpMethods.GET, undefined, { next: { revalidate: 3600 } });
     }
 
     getNextLesson(lessonId: string): Promise<Lesson> {
-        return this.apiClient.apiRequest(`/lessons/${lessonId}/next`, HttpMethods.GET, undefined, { cache: "force-cache" });
+        return this.apiClient.apiRequest(`/lessons/${lessonId}/next`, HttpMethods.GET, undefined, { next: { revalidate: 3600 } });
     }
 
     getTasksForLesson(lessonId: string): Promise<Task[]> {
-        return this.apiClient.apiRequest(`/lessons/${lessonId}/tasks`, HttpMethods.GET, undefined, { cache: "force-cache" });
+        return this.apiClient.apiRequest(`/lessons/${lessonId}/tasks`, HttpMethods.GET, undefined, { next: { revalidate: 3600 } });
     }
 }
