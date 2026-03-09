@@ -54,7 +54,7 @@ jobs:
             "# \(.ruleId)\n
             **Severity:** \(.level)\n
             **Message:** \(.message.text)\n
-            **Affected Package:** \(.locations[].logicalLocations[].fullyQualifiedName)\n
-            **Fix:** \(.fixes[].description.text)\n
+            **Affected Package:** \(.locations[]?.logicalLocations[]?.fullyQualifiedName)\n
+            **Fix:** \(.fixes[]?.description.text)\n
             "
           ' backend-dependency-vulnerabilities.sarif >> $GITHUB_STEP_SUMMARY  
