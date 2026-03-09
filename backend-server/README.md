@@ -45,4 +45,4 @@ Thanks to its **modular and layered architecture**, the platform can easily be a
 - Firebase credentials and project setup
 - Configure environment variables or `.properties` files
 
-### To install, use `npm install` to install all the required dependencies, then `npm run dev` to run the server.
+### To install, use `npm install` to install all the required dependencies, then `npm run dev` to run the backend application.
