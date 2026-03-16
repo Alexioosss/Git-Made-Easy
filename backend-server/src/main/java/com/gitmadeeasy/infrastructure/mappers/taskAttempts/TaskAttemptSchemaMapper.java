@@ -10,15 +10,13 @@ import java.time.LocalDate;
 public class TaskAttemptSchemaMapper {
 
     public JpaTaskAttemptSchema toSchema(TaskProgress entity, JpaTaskSchema task) {
-        return new JpaTaskAttemptSchema(
-                entity.getUserId(), entity.getStatus(),
+        return new JpaTaskAttemptSchema(entity.getUserId(), entity.getStatus(),
                 entity.getAttempts(), entity.getLastInput(), entity.getLastError(),
                 entity.getStartedAt(), entity.getCompletedAt(), task);
     }
 
     public TaskProgress toEntity(JpaTaskAttemptSchema schema) {
-        return new TaskProgress(
-                schema.getId(), schema.getUserId(), schema.getTask().getId(),
+        return new TaskProgress(schema.getId(), schema.getUserId(), schema.getTask().getId(),
                 schema.getTask().getLessonId(), schema.getTask().getTitle(),
                 schema.getStatus(), schema.getAttempts(), schema.getLastInput(),
                 schema.getLastError(), schema.getStartedAt(), schema.getCompletedAt());
@@ -33,6 +31,7 @@ public class TaskAttemptSchemaMapper {
         existing.setLastError(entity.getLastError());
         existing.setStartedAt(entity.getStartedAt());
         existing.setCompletedAt(entity.getCompletedAt());
+
         return existing;
     }
 
@@ -42,16 +41,11 @@ public class TaskAttemptSchemaMapper {
 
     public FirebaseTaskAttemptSchema toFirebaseSchema(TaskProgress progress) {
         FirebaseTaskAttemptSchema schema = new FirebaseTaskAttemptSchema(
-                progress.getUserId(),
-                progress.getTaskId(),
-                progress.getStatus(),
-                progress.getAttempts(),
-                progress.getLastInput(),
-                progress.getLastError(),
+                progress.getUserId(), progress.getTaskId(), progress.getStatus(),
+                progress.getAttempts(), progress.getLastInput(),progress.getLastError(),
                 progress.getStartedAt() != null ? progress.getStartedAt().toString() : null,
                 progress.getCompletedAt() != null ? progress.getCompletedAt().toString() : null
         );
-
         schema.setId(progress.getTaskProgressId());
         schema.setLessonId(progress.getLessonId());
         schema.setTaskTitle(progress.getTaskTitle());
@@ -61,18 +55,10 @@ public class TaskAttemptSchemaMapper {
 
 
     public TaskProgress fromFirebaseSchema(FirebaseTaskAttemptSchema schema) {
-        return new TaskProgress(
-                schema.getId(),
-                schema.getUserId(),
-                schema.getTaskId(),
-                schema.getLessonId(),
-                schema.getTaskTitle(),
-                schema.getStatus(),
-                schema.getAttempts(),
-                schema.getLastInput(),
-                schema.getLastError(),
+        return new TaskProgress(schema.getId(), schema.getUserId(), schema.getTaskId(),
+                schema.getLessonId(), schema.getTaskTitle(), schema.getStatus(),
+                schema.getAttempts(),schema.getLastInput(), schema.getLastError(),
                 schema.getStartedAt() != null ? LocalDate.parse(schema.getStartedAt()) : null,
-                schema.getCompletedAt() != null ? LocalDate.parse(schema.getCompletedAt()) : null
-        );
+                schema.getCompletedAt() != null ? LocalDate.parse(schema.getCompletedAt()) : null);
     }
 }

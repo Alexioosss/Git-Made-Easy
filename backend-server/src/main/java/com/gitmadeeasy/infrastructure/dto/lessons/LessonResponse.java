@@ -5,20 +5,10 @@ import com.gitmadeeasy.entities.lessons.Lesson;
 
 import java.util.List;
 
-public class LessonResponse {
-    public String lessonId;
-    public String title;
-    public String description;
-    public DifficultyLevels difficulty;
-    public Integer lessonOrder;
-    public List<String> taskIds;
-
+public record LessonResponse(String lessonId, String title, String description,
+                             DifficultyLevels difficulty, Integer lessonOrder, List<String> taskIds) {
     public LessonResponse(Lesson lesson) {
-        this.lessonId = lesson.getLessonId();
-        this.title = lesson.getTitle();
-        this.description = lesson.getDescription();
-        this.difficulty = lesson.getDifficulty();
-        this.lessonOrder = lesson.getLessonOrder();
-        this.taskIds = lesson.getTaskIds();
+        this(lesson.getLessonId(), lesson.getTitle(), lesson.getDescription(),
+                lesson.getDifficulty(), lesson.getLessonOrder(), lesson.getTaskIds());
     }
 }

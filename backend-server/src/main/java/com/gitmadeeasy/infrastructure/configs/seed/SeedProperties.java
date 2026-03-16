@@ -5,8 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-@Configuration
-@ConfigurationProperties(prefix = "seed")
+@Configuration @ConfigurationProperties(prefix = "seed")
 public class SeedProperties {
     private boolean fromFile;
     private List<String> filePath;

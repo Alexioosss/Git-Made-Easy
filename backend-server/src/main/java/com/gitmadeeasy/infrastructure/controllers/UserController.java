@@ -36,9 +36,7 @@ public class UserController {
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
         log.info("POST /users - Creating a new user with Email Address {}", request.emailAddress());
         CreateUserRequest newUserRequest = new CreateUserRequest(
-                request.firstName(), request.lastName(),
-                request.emailAddress(), request.password()
-        );
+                request.firstName(), request.lastName(), request.emailAddress(), request.password());
         User createdUser = this.createUserUseCase.execute(newUserRequest);
         log.info("User created successfully. User ID {}", createdUser.getUserId());
 

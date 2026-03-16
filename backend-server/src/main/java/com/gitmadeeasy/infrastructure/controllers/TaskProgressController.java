@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.util.List;
 
-@RestController
-@RequestMapping("/tasks/progress")
+@RestController @RequestMapping("/tasks/progress")
 public class TaskProgressController {
     private final GetAllTaskProgress getAllTaskProgress;
 

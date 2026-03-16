@@ -24,19 +24,13 @@ export class GatewayFactory {
 
     static get instance(): GatewayFactory { return this._instance ??= new GatewayFactory(); }
 
-    get apiClient() { return getApiClient(); }
+    get apiClient() { return this._apiClient; }
 
     get userGateway() { return this._userGateway; }
-
     get authGateway() { return this._authGateway; }
-
     get lessonGateway() { return this._lessonGateway; }
-
     get taskGateway() { return this._taskGateway; }
-
     get taskProgressGateway() { return this._taskProgressGateway; }
-
     get lessonProgressGateway() { return this._lessonProgressGateway; }
-
     get dashboardGateway() { return this._dashboardGateway; }
 }

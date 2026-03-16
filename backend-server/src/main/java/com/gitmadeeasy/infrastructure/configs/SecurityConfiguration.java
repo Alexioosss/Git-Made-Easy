@@ -20,14 +20,15 @@ import java.util.List;
 @Configuration
 public class SecurityConfiguration {
     @Value("${app.cors.allowed-origins}")
-    private List<String> allowedOrigins;
+    private List<String> allowedOrigins; // Read the list of allowed origins, i.e. frontend URls, from environment variables
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter,
                                            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) throws Exception {
         http.cors(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable)
-                // Apply the custom filter, using JWT Tokens, to authenticate users
+                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF since JWT Tokens are used instead of CSRF Tokens
+                // Apply the custom filter found at infrastructure.gateways.security.JwtAuthenticationFilter
+                // Using JWT Tokens to authenticate users upon each authenticated route entry
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
         .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET, "/firestore-test").permitAll()
@@ -53,7 +54,7 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.GET, "/dashboard").authenticated()
                 .anyRequest().denyAll()
         )
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // Add the JwtAuthenticationFilter as the filter before all authenticated requests
         .httpBasic(Customizer.withDefaults());
         return http.build();
     }
@@ -63,10 +64,9 @@ public class SecurityConfiguration {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(allowedOrigins);
-        configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Cookie"));
-        configuration.setExposedHeaders(List.of("Set-Cookie"));
-        configuration.setAllowCredentials(true); // Required setting for JWT Cookies or Authorization headers
+        configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS")); // Allowed HTTP Methods for the system
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type")); // Minimal cookies allowed
+        configuration.setAllowCredentials(false); // Setting for using JWT Tokens in Cookies
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

@@ -12,7 +12,7 @@ public class TaskExceptionAdvice extends BaseErrorAdvice {
 
     @ExceptionHandler(TaskNotFoundWithIdException.class)
     public ResponseEntity<ApiError> handleTaskNotFoundWithId(TaskNotFoundWithIdException ex) {
-        return this.buildError(HttpStatus.NOT_FOUND, "TASK_NOT_FOUND", ex.getMessage());
+        return this.buildError(HttpStatus.NOT_FOUND, "TASK_NOT_FOUND_BY_ID", ex.getMessage());
     }
 
     @ExceptionHandler(TaskNotInLessonException.class)

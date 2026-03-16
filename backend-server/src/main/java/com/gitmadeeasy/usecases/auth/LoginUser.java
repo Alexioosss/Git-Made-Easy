@@ -31,9 +31,7 @@ public class LoginUser {
         user.setFirebaseUid(firebaseUid);
         log.info("User found with Email Address {}", request.email());
 
-        if(!this.identityProvider.isEmailVerified(firebaseUid)) {
-            throw new EmailNotVerifiedException();
-        }
+        if(!this.identityProvider.isEmailVerified(firebaseUid)) { throw new EmailNotVerifiedException(); }
 
         String accessToken = this.tokenGateway.generateToken(user);
         log.info("JWT Token generated successfully");

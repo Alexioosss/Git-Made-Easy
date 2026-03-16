@@ -17,6 +17,7 @@ import java.util.UUID;
 public class TokenDatabaseGateway implements TokenGateway {
     private final String secret;
     private static Key key;
+    private static final int milliseconds = 1000 * 60 * 15; // The duration of the tokens in milliseconds
     private static final Set<String> tokensBlacklist = new HashSet<>();
 
     public TokenDatabaseGateway(String secret) { this.secret = secret; }
@@ -34,7 +35,7 @@ public class TokenDatabaseGateway implements TokenGateway {
                 .claim("email", user.getEmailAddress())
                 .claim("firebaseUid", user.getFirebaseUid())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15)) // Short-lived token - 15 minutes
+                .setExpiration(new Date(System.currentTimeMillis() + milliseconds)) // Short-lived token - 15 minutes
                 .signWith(key)
                 .compact();
     }
@@ -52,7 +53,7 @@ public class TokenDatabaseGateway implements TokenGateway {
                 .claim("email", user.getEmailAddress())
                 .claim("firebaseUid", user.getFirebaseUid())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15))
+                .setExpiration(new Date(System.currentTimeMillis() + milliseconds))
                 .signWith(key)
                 .compact();
     }

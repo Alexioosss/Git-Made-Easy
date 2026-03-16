@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 
 /**
  * Abstract Class to act as an adapter between application / use-case exceptions and HTTP responses
- * Belongs in the infrastructure layer since it deals with the outside world, and with infrastructural concerns.
+ * Belongs in the infrastructure layer since it deals with the outside world, and with infrastructural concerns, i.e. returning error objects
  */
 public abstract class BaseErrorAdvice {
     protected ResponseEntity<ApiError> buildError(HttpStatus httpStatus, String code, String message) {

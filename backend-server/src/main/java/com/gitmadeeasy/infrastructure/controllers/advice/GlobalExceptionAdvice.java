@@ -29,7 +29,8 @@ public class GlobalExceptionAdvice extends BaseErrorAdvice {
     }
 
     @ExceptionHandler(InvalidCredentialsException.class)
-    public ResponseEntity<ApiError> handleInvalidCredentials(InvalidCredentialsException ex) {
+    public ResponseEntity<ApiError> handleInvalidCredentials(InvalidCredentialsException ignoredEx) {
+        // Keep the message general for invalid email or password since revealing which field is incorrect leaks information
         return this.buildError(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS", "Email or password is incorrect");
     }
 

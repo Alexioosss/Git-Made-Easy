@@ -45,22 +45,13 @@ public class CreateUser {
 
         // Let firebase create the user and hash the password
         String firebaseUid = this.identityProvider.createUser(
-                request.firstName(), request.lastName(),
-                request.emailAddress(), request.password());
+                request.firstName(), request.lastName(), request.emailAddress(), request.password());
 
         User userToSave = new User(firebaseUid, request.firstName(), request.lastName(), request.emailAddress());
 
         User createdUser = this.userGateway.createUser(userToSave);
-        log.info("User persisted successfully. User ID {}, Email Address {}", createdUser.getUserId(), createdUser.getEmailAddress());
-
-//        this.emailVerificationService.sendVerificationEmail(request.emailAddress(), request.firstName());
-//
-//        String verificationLink = this.identityProvider.generateVerificationEmail(request.emailAddress());
-//        log.info("Verification email generated successfully");
-//
-//        this.emailSender.send(request.emailAddress(), "Verify your email",
-//                "Welcome to GitMadeEasy!\n\nPlease verify your email using the link below:\n\n" + verificationLink);
-//        log.info("Verification email sent to {}", request.emailAddress());
+        log.info("User persisted successfully. User ID {}, Email Address {}",
+                createdUser.getUserId(), createdUser.getEmailAddress());
 
         return createdUser;
     }

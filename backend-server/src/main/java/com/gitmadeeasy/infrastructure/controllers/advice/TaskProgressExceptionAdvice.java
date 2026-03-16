@@ -11,6 +11,6 @@ public class TaskProgressExceptionAdvice extends BaseErrorAdvice {
 
     @ExceptionHandler(TaskProgressNotFoundException.class)
     public ResponseEntity<ApiError> handleTaskProgressNotFound(TaskProgressNotFoundException ex) {
-        return this.buildError(HttpStatus.NOT_FOUND, "TASK_PROGRESS_NOT_FOUND", ex.getMessage());
+        return this.buildError(HttpStatus.NOT_FOUND, "TASK_PROGRESS_NOT_FOUND_BY_ID", ex.getMessage());
     }
 }
