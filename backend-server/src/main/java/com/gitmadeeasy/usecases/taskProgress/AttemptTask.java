@@ -24,22 +24,23 @@ public class AttemptTask {
     }
 
     public TaskProgress attempt(String userId, String lessonId, String taskId, TaskAttemptRequest request) {
-        // Validate task exists
+        // Ensure the task exists
         Task task = this.taskGateway.getTaskByLessonIdAndTaskId(lessonId, taskId)
                 .orElseThrow(() -> new TaskNotFoundWithIdException(lessonId, taskId));
         log.info("Task found successfully for Lesson ID {}", lessonId);
 
-        // Find an existing task progress for the user, or create a new one
+        // Find an existing task progress for the current user, or create a new one
         TaskProgress taskProgress = this.taskAttemptGateway.findByUserIdAndTaskId(userId, taskId)
                 .orElse(new TaskProgress(null, userId, taskId, lessonId, task.getTitle()));
         log.info("Task progress found for User ID {}", userId);
 
-        // Attempt the task, check if input matches expected command, increase number of attempts, mark task as completed if correct
+        // Attempt the task, check if input matches expected command, increase number of attempts, update task completion status
         taskProgress.attempt(task, request.input());
 
+        // Save the task progress
         TaskProgress savedTaskProgress = this.taskAttemptGateway.save(taskProgress);
         log.info("Saved user's task attempt");
-        this.lessonProgressFacade.update(userId, lessonId, savedTaskProgress);
+        this.lessonProgressFacade.update(userId, lessonId, savedTaskProgress); // Update the overall lesson progress
         log.info("Updating user progress on Lesson ID {}", lessonId);
         return savedTaskProgress;
     }

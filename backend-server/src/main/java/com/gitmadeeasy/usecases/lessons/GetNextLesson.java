@@ -12,7 +12,8 @@ public class GetNextLesson {
     }
 
     public Lesson execute(String lessonId) {
-        Lesson currentLesson = this.lessonGateway.getLessonById(lessonId).orElseThrow(() -> new LessonNotFoundWithIdException(lessonId));
+        Lesson currentLesson = this.lessonGateway.getLessonById(lessonId)
+                .orElseThrow(() -> new LessonNotFoundWithIdException(lessonId));
         return this.lessonGateway.getNextLesson(currentLesson.getLessonOrder());
     }
 }

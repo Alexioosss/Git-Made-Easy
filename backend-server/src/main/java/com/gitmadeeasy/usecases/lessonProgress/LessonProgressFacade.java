@@ -28,20 +28,20 @@ public class LessonProgressFacade {
             log.info("Lesson progress already exists. Updating existing lesson progress for User ID {}", userId);
 
             existing.setCurrentTaskProgressId(taskProgress.getTaskProgressId());
-            int completed = this.taskAttemptGateway.countCompletedTasks(userId, lessonId);
-            int total = this.taskGateway.countTasksInLesson(lessonId);
-            existing.updateTasksCounts(completed, total);
-            this.lessonProgressGateway.save(existing);
+            int completed = this.taskAttemptGateway.countCompletedTasks(userId, lessonId); // Find the completed tasks
+            int total = this.taskGateway.countTasksInLesson(lessonId); // Find the total tasks
+            existing.updateTasksCounts(completed, total); // Update the tasks count
+            this.lessonProgressGateway.save(existing); // Save the lesson with the updated fields
             log.info("Lesson progress updated successfully.");
         }, () -> { // If no lesson progress was found for the user for this lesson, create a new lesson progress
             log.info("Lesson progress did not already exist. Creating new lesson progress for User ID {}", userId);
 
-            int total = this.taskGateway.countTasksInLesson(lessonId);
+            int total = this.taskGateway.countTasksInLesson(lessonId); // Find total tasks for the current lesson
             LessonProgress newProgress = new LessonProgress(
                     null, userId, lessonId, taskProgress.getTaskProgressId(),
                     taskProgress.getStatus() == TaskCompletionStatus.COMPLETED ? 1: 0,
                     total);
-            this.lessonProgressGateway.save(newProgress);
+            this.lessonProgressGateway.save(newProgress); // Save the newly-created lessonProgress object
             log.info("Saving new lesson progress for User ID {}" , userId);
         });
     }

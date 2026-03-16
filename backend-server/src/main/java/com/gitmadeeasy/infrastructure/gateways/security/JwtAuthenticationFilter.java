@@ -53,12 +53,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String resolveToken(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if(cookies == null) { log.info("DEBUGGING - No cookies received on request to {}", request.getRequestURI()); }
-        else {
-            log.info("DEBUGGING - Cookies received:");
-            for(Cookie cookie : cookies) {
-                log.info(" - {}={}", cookie.getName(), cookie.getValue());
-            }
-        }
 
         // Try retrieving the JWT Token via the Authorization header first
         String authorizationHeader = request.getHeader("Authorization");

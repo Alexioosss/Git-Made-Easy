@@ -20,6 +20,7 @@ public class GetTaskProgress {
     }
 
     public Optional<TaskProgress> execute(String userId, String lessonId, String taskId) {
+        // If no lesson exists, no tasks link to this lesson, thus no task progress can be found
         if(!this.lessonGateway.existsById(lessonId)) {
             log.warn("Lesson not found with Lesson ID {}", lessonId);
             throw new LessonNotFoundWithIdException(lessonId);

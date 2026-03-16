@@ -22,16 +22,17 @@ public class GetLessonById {
     }
 
     public Lesson execute(String lessonId) {
-        Lesson lesson = this.lessonGateway.getLessonById(lessonId).orElseThrow(() -> new LessonNotFoundWithIdException(lessonId));
+        // Find the lesson by the ID
+        Lesson lesson = this.lessonGateway.getLessonById(lessonId)
+                .orElseThrow(() -> new LessonNotFoundWithIdException(lessonId));
         log.info("Lesson found successfully by its id");
 
+        // Find all tasks associated with the lesson
         List<Task> tasks = this.taskGateway.getTasksByIds(lesson.getTaskIds());
-        tasks = tasks.stream().sorted(Comparator.comparing(Task::getTaskOrder)).toList();
-        lesson.setTasks(tasks);
+        tasks = tasks.stream().sorted(Comparator.comparing(Task::getTaskOrder)).toList(); // Sort them by taskOrder
+        lesson.setTasks(tasks); // Set the tasks in the lesson
 
-        if(!lesson.getTasks().isEmpty()) { log.info("Lesson tasks have been populated successfully."); }
-        else { log.info("No lesson tasks have been populated. No tasks exist for this lesson."); }
-
+        if(lesson.getTasks().isEmpty()) { log.info("No tasks exist for this lesson."); }
         return lesson;
     }
 }

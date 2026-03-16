@@ -22,11 +22,13 @@ public class CreateTask {
     }
 
     public Task execute(String lessonId, CreateTaskRequest request) {
+        // Ensure the lesson exists by the ID
         if(!this.lessonGateway.existsById(lessonId)) {
             log.warn("CreateTask failed: lesson does not exist with ID{}", lessonId);
             throw new LessonNotFoundWithIdException(lessonId);
         }
 
+        // Ensure all required fields are not missing, null or blank
         if(request.title() == null || request.title().isBlank()) {
             log.warn("CreateTask failed: missing title field from request");
             throw new MissingRequiredFieldException("task title cannot be left blank");
@@ -42,18 +44,21 @@ public class CreateTask {
             throw new MissingRequiredFieldException("expected command cannot be left blank");
         }
 
+        // Use the inputted taskOrder, or calculate the next task order for the current lesson
         Integer taskOrder = request.taskOrder() != null && request.taskOrder() >= 0
                 ? request.taskOrder() : this.taskGateway.getNextTaskOrderForLesson(lessonId);
         log.info("Task order has been produced for current task");
 
+        // Try and parse the inputted difficulty level for the task, or throw an exception
         DifficultyLevels taskDifficulty;
         try { taskDifficulty = DifficultyLevels.valueOf(request.taskDifficulty().toUpperCase()); }
         catch(IllegalArgumentException e) { throw new DifficultyLevelNotRecognisedException(request.taskDifficulty()); }
 
+        // Create the new task object with the validated fields
         Task newTask = new Task(
                 lessonId, request.title(), request.content(), request.expectedCommand(),
                 request.hint(), taskOrder, taskDifficulty);
 
-        return this.taskGateway.createTask(newTask);
+        return this.taskGateway.createTask(newTask); // Save the task
     }
 }

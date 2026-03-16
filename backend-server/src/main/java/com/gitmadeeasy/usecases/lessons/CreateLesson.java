@@ -18,6 +18,7 @@ public class CreateLesson {
     }
 
     public Lesson execute(CreateLessonRequest request) {
+        // Ensure all the required fields are not missing, null or blank
         if(request.title() == null || request.title().isBlank()) {
             log.warn("CreateLesson failed: missing title field from request");
             throw new MissingRequiredFieldException("title cannot be left blank");
@@ -40,10 +41,12 @@ public class CreateLesson {
             throw new DifficultyLevelNotRecognisedException(request.difficulty());
         }
 
+        // If the lesson order entered is valid, use it, otherwise, fetch the next lesson order from data store
         Integer lessonOrder = (request.lessonOrder() != null && request.lessonOrder() >= 0)
                 ? request.lessonOrder() : this.lessonGateway.getNextLessonOrder();
         log.info("Lesson order has been produced for current lesson");
 
+        // Create the lesson object with the request data
         Lesson newLesson = new Lesson(request.title(), request.description(), difficulty, lessonOrder);
         return this.lessonGateway.createLesson(newLesson);
     }

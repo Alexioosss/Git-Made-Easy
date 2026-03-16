@@ -65,8 +65,9 @@ public class SecurityConfiguration {
 
         configuration.setAllowedOrigins(allowedOrigins);
         configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS")); // Allowed HTTP Methods for the system
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type")); // Minimal cookies allowed
-        configuration.setAllowCredentials(false); // Setting for using JWT Tokens in Cookies
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Cookies")); // Minimal cookies allowed
+        configuration.setExposedHeaders(List.of("Set-Cookie"));
+        configuration.setAllowCredentials(true); // Setting for using JWT Tokens in Cookies
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

@@ -32,15 +32,19 @@ public class GetDashboardData {
     public DashboardResponse execute(String userId) {
         log.info("Loading all data for User with ID {}", userId);
 
+        // Find the user
         User user = this.userGateway.getUserById(userId).orElseThrow(() -> new UserNotFoundWithIdException(userId));
         log.info("User found. User ID {}, Email Address {}", user.getUserId(), user.getEmailAddress());
 
+        // Fetch all lessons
         List<Lesson> allLessons = this.lessonGateway.findAllLessons();
         log.info("All lessons found. Lessons found: {}", allLessons.size());
 
+        // Fetch all progress made by the user
         List<LessonProgress> lessonsProgressList = this.lessonProgressGateway.findAllByUserId(userId);
         log.info("Lessons progress found. Progress found: {} lesson progresses.", lessonsProgressList.size());
 
+        // For each lesson, return a lesson summary object
         List<LessonSummary> lessonSummaries = allLessons.stream().map(lesson -> {
             LessonProgress progress = lessonsProgressList.stream()
                     .filter(p -> p.getLessonId().equals(lesson.getLessonId()))
@@ -51,6 +55,7 @@ public class GetDashboardData {
                     progress.getCompletedTasksCount(), lesson.getTaskIds().size());
         }).toList();
 
+        // Find all task progresses made by the user across all lessons
         List<TaskProgress> tasksProgress = this.taskAttemptGateway.findAllByUserId(userId);
         log.info("Tasks progress found. Progress found: {} task progresses.", tasksProgress.size());
 

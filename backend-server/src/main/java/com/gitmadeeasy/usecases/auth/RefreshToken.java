@@ -21,7 +21,7 @@ public class RefreshToken {
     public AuthToken execute(String token) {
         User user = this.userGateway.getUserById(this.tokenGateway.getUserIdFromToken(token))
                 .orElseThrow(InvalidTokenException::new);
-        log.info("Found user via the userID, parsed from the JWT Token claims");
+        log.info("Found user via the User ID, parsed from the JWT Token claims");
         return new AuthToken(this.tokenGateway.refreshToken(user));
     }
 }

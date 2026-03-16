@@ -20,6 +20,7 @@ public class CreateUser {
     }
 
     public User execute(CreateUserRequest request) {
+        // Ensure no required field is missing, null, or blank
         if(request.firstName() == null || request.firstName().isBlank()) {
             log.warn("CreateUser failed: missing firstName field from request");
             throw new MissingRequiredFieldException("first name cannot be left blank");
@@ -37,22 +38,24 @@ public class CreateUser {
             throw new MissingRequiredFieldException("password cannot be left blank");
         }
 
-        // Ensure the email does not already exist in the database, meaning this email is already registered
+        // Ensure the email does not already exist in the database, meaning this email is already tied to an account
         if(this.userGateway.existsByEmailAddress(request.emailAddress())) {
             log.warn("CreateUser failed: duplicated emailAddress");
             throw new DuplicatedEmailException(request.emailAddress());
         }
 
-        // Let firebase create the user and hash the password
+        // Let firebase create the user and deal with passwords
         String firebaseUid = this.identityProvider.createUser(
                 request.firstName(), request.lastName(), request.emailAddress(), request.password());
 
+        // Create the local user object to store
         User userToSave = new User(firebaseUid, request.firstName(), request.lastName(), request.emailAddress());
 
+        // Save the user
         User createdUser = this.userGateway.createUser(userToSave);
         log.info("User persisted successfully. User ID {}, Email Address {}",
                 createdUser.getUserId(), createdUser.getEmailAddress());
 
-        return createdUser;
+        return createdUser; // Return the saved user object
     }
 }

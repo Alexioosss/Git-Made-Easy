@@ -26,7 +26,7 @@ public class GetAllLessonProgress {
         // Find all lesson progress for the user
         List<LessonProgress> progressList = this.lessonProgressGateway.findAllByUserId(userId);
 
-        // For each lesson progress, find the lesson, and sort the progressList by lessonOrder, or by Integer.MAX_VALUE
+        // For each lesson progress, find the lesson and sort progress by lessonOrder, or by Integer.MAX_VALUE
         return progressList.stream().sorted(Comparator.comparing(p ->
                 this.lessonGateway.getLessonById(p.getLessonId())
                         .map(Lesson::getLessonOrder).orElse(Integer.MAX_VALUE))).toList();

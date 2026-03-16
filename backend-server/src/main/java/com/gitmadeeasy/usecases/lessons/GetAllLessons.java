@@ -18,11 +18,14 @@ public class GetAllLessons {
     }
 
     public List<Lesson> execute() {
+        // Fetch all lessons
         List<Lesson> lessons = this.lessonGateway.findAllLessons();
         for(Lesson lesson : lessons) {
-            List<Task> tasks = lesson.getTaskIds().stream().map(this.taskGateway::findById).flatMap(Optional::stream).toList();
-            lesson.setTasks(tasks);
+            // For each lesson
+            List<Task> tasks = lesson.getTaskIds().stream()
+                    .map(this.taskGateway::findById).flatMap(Optional::stream).toList(); // Find all tasks for that lesson
+            lesson.setTasks(tasks); // Set the tasks for the lesson
         }
-        return lessons;
+        return lessons; // Return the list of lessons with their associated tasks
     }
 }

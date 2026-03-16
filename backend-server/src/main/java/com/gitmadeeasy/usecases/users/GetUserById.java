@@ -18,11 +18,12 @@ public class GetUserById {
     }
 
     public User execute(String userId) {
+        // Try and find the user by the ID, throw an exception if not found by the given ID
         User user = this.userGateway.getUserById(userId)
                 .orElseThrow(() -> new UserNotFoundWithIdException(userId));
         log.info("User found successfully by its id");
-        boolean verified = this.identityProvider.isEmailVerified(userId);
-        log.info("User's email address verified: {}", verified);
-        return user;
+        boolean verified = this.identityProvider.isEmailVerified(userId); // Also check if the user's email is verified
+        log.info("User's email address verified: {}", verified); // Log the verification status of the email address
+        return user; // Return the found user object
     }
 }

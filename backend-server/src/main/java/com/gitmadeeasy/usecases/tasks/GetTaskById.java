@@ -19,11 +19,12 @@ public class GetTaskById {
     }
 
     public Task execute(String lessonId, String taskId) {
-        if(!this.lessonGateway.existsById(lessonId)) {
+        if(!this.lessonGateway.existsById(lessonId)) { // If no lesson exists, no task can exist either
             log.warn("GetTaskById failed: lesson does not exist by ID {}", lessonId);
             throw new LessonNotFoundWithIdException(lessonId);
         }
 
+        // Return the task for the lesson, or throw an exception since the task could not be found
         return this.taskGateway.getTaskByLessonIdAndTaskId(lessonId, taskId)
                 .orElseThrow(() -> new TaskNotFoundWithIdException(lessonId, taskId));
     }
