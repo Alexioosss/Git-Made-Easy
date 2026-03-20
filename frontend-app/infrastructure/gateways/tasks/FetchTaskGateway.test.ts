@@ -1,6 +1,5 @@
 import { createMockApiClient } from "@/tests/mocks/mockApiClient";
 import { FetchTaskGateway } from "./FetchTaskGateway";
-import { DifficultyLevels } from "@/types/difficultyLevels";
 import { HttpMethods } from "../HttpMethods";
 import { createMockTask } from "@/tests/mocks/mockTask";
 
@@ -20,7 +19,7 @@ describe("FetchTaskGateway", () => {
         apiClient.apiRequest.mockResolvedValue(mockResponse);
         const response = await gateway.getById(lessonId, taskId);
         expect(apiClient.apiRequest).toHaveBeenCalledWith(
-            `/lessons/${lessonId}/tasks/${taskId}`, HttpMethods.GET, undefined, { "cache": "force-cache" });
+            `/lessons/${lessonId}/tasks/${taskId}`, HttpMethods.GET, undefined, { next: { revalidate: 3600 } });
         expect(response).toEqual(mockResponse);
     });
 });

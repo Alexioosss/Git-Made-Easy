@@ -73,10 +73,10 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
   useEffect(() => {
     if(!allCompleted) { return; }
     setTimeout(() => {
-      const el = completionReference.current;
-      if(!el) { return; }
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-      const button = el.querySelector("a, button") as HTMLElement | null;
+      const nextLessonBannerReference = completionReference.current;
+      if(!nextLessonBannerReference) { return; }
+      nextLessonBannerReference.scrollIntoView({ behavior: "smooth", block: "start" });
+      const button = nextLessonBannerReference.querySelector("a, button") as HTMLElement | null;
       button?.focus();
     }, 400);
   }, [allCompleted]);
@@ -118,13 +118,12 @@ export function TaskList({ lesson, nextLesson }: TaskListProps) {
           return next;
         });
         setTimeout(() => {
-          const el = document.getElementById(`task-${nextTask.taskId}`);
-          el?.scrollIntoView({ behavior: "smooth", block: "start" });
+          const nextTaskReference = document.getElementById(`task-${nextTask.taskId}`);
+          nextTaskReference?.scrollIntoView({ behavior: "smooth", block: "start" });
           inputReferences.current[nextTask.taskId]?.focus();
         }, 600);
       }
     }
-
   }, [lesson.lessonId, taskProgressMap]);
 
   return (

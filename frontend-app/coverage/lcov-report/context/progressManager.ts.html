@@ -130,7 +130,23 @@
 <a name='L65'></a><a href='#L65'>65</a>
 <a name='L66'></a><a href='#L66'>66</a>
 <a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -174,6 +190,12 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -202,48 +224,59 @@ import { LocalStorageProgressStorage } from "@/infrastructure/persistence/localS
 import { ProgressStorage } from "@/infrastructure/persistence/progressStorage";
 import { Lesson } from "@/types/lesson";
 import { ProgressStatus } from "@/types/progressStatus";
+import { LessonProgress } from "@/types/taskProgress";
 &nbsp;
+/**
+ * Singleton object to act as a centralised manager class for the user's progress, to allow for local and persisted progress syncing
+ * Class makes use of the singleton object to ensure that only a single instance of the user's local progress can exist, avoiding repetition, data duplication, and conflicts between data and object instances
+ */
 class ProgressManager {
     private static instance: ProgressManager;
     private storage: ProgressStorage;
     private progress: ProgressData = {};
     private isProgressLoaded: boolean = false;
 &nbsp;
-    private constructor() { this.storage = new LocalStorageProgressStorage(); }
+    private constructor() { this.storage = new LocalStorageProgressStorage(); } // Do not allow the creation of another instance of the user's local progress, which can lead to conflicts
 &nbsp;
     public static getInstance() {
-        <span class="missing-if-branch" title="else path not taken" >E</span>if(!ProgressManager.instance) { ProgressManager.instance = new ProgressManager(); }
-        return ProgressManager.instance;
+        <span class="missing-if-branch" title="else path not taken" >E</span>if(!ProgressManager.instance) { ProgressManager.instance = new ProgressManager(); } // If a singleton instance does not already exist, set one
+        return ProgressManager.instance; // Return the instance of this singleton object for global reference / access
     }
 &nbsp;
     async getProgress() {
         <span class="missing-if-branch" title="else path not taken" >E</span>if(!this.isProgressLoaded) {
-            this.progress = await this.storage.getProgress();
+            this.progress = await this.storage.getProgress(); // Get the storage from the storage method of choice, i.e. localStorage. Can be extended to implement further storage implementations, i.e. Session Storage, In-Memory etc.
             this.isProgressLoaded = true;
         }
         return this.progress;
     }
 &nbsp;
 <span class="fstat-no" title="function not covered" >    as</span>ync setProgress(progress: ProgressData) {
-<span class="cstat-no" title="statement not covered" >        this.progress = progress;</span>
+<span class="cstat-no" title="statement not covered" >        this.progress = progress; </span>// Sets the progress into the memory object
 <span class="cstat-no" title="statement not covered" >        this.isProgressLoaded = true;</span>
-<span class="cstat-no" title="statement not covered" >        await this.storage.setProgress(progress);</span>
+<span class="cstat-no" title="statement not covered" >        await this.storage.setProgress(progress); </span>// Saves it to the method of storage, i.e. Local Storage
     }
 &nbsp;
 <span class="fstat-no" title="function not covered" >    as</span>ync updateLesson(lessonId: string, taskProgress: LocalTaskProgress) {
-        const current = <span class="cstat-no" title="statement not covered" >await this.getProgress();</span>
-<span class="cstat-no" title="statement not covered" >        if(!current[lessonId]) { <span class="cstat-no" title="statement not covered" >current[lessonId] = { lessonId, tasks: {} } </span>}</span>
-<span class="cstat-no" title="statement not covered" >        current[lessonId].tasks[taskProgress.taskId] = taskProgress;</span>
-<span class="cstat-no" title="statement not covered" >        await this.storage.setProgress(current);</span>
+        const current = <span class="cstat-no" title="statement not covered" >await this.getProgress();</span> // Fetches the current progress object
+<span class="cstat-no" title="statement not covered" >        if(!current[lessonId]) { <span class="cstat-no" title="statement not covered" >current[lessonId] = { lessonId, tasks: {} } </span>} </span>// If the progress to be updated does nto exist, create it
+<span class="cstat-no" title="statement not covered" >        current[lessonId].tasks[taskProgress.taskId] = taskProgress; </span>// Update its tasks' progress with the user's progress for those tasks
+<span class="cstat-no" title="statement not covered" >        await this.storage.setProgress(current); </span>// Save the updated user progress
     }
 &nbsp;
 <span class="fstat-no" title="function not covered" >    as</span>ync clearProgress() {
-<span class="cstat-no" title="statement not covered" >        await this.storage.clearProgress();</span>
-<span class="cstat-no" title="statement not covered" >        this.progress = {};</span>
+<span class="cstat-no" title="statement not covered" >        await this.storage.clearProgress(); </span>// Clear the object from the method of storage, i.e. Local Storage
+<span class="cstat-no" title="statement not covered" >        this.progress = {}; </span>// Set the memory reference of the progress object to an empty object
 <span class="cstat-no" title="statement not covered" >        this.isProgressLoaded = false;</span>
     }
 &nbsp;
-    convertLocalToLessonProgress(localProgress: ProgressData, lessons: Lesson[]) {
+    /**
+     * 
+     * @param localProgress The user's local progress object, collected after the user completes a task
+     * @param lessons The list of lessons available, used to match a lesson with its tasks, and a task with the user's progress
+     * @returns Returns the a list of lesson progress for each lesson available, based on the current user's progress
+     */
+    convertLocalToLessonProgress(localProgress: ProgressData, lessons: Lesson[]): Record&lt;string, LessonProgress&gt; {
         return Object.fromEntries(
             Object.values(localProgress).map(<span class="fstat-no" title="function not covered" >lp</span> =&gt; {
                 const lesson = <span class="cstat-no" title="statement not covered" >lessons.find(<span class="fstat-no" title="function not covered" >l </span>=&gt; <span class="cstat-no" title="statement not covered" >l.lessonId === lp.lessonId)</span>;</span>
@@ -271,7 +304,7 @@ export default ProgressManager.getInstance();</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-08T21:43:21.867Z
+                at 2026-03-17T13:20:29.141Z
             </div>
         <script src="../prettify.js"></script>
         <script>

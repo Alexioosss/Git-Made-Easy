@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for components/LoadingSpinner.tsx</title>
+    <title>Code coverage report for components/SuccessMessage.tsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">components</a> LoadingSpinner.tsx</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">components</a> SuccessMessage.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -78,12 +78,19 @@
 <a name='L13'></a><a href='#L13'>13</a>
 <a name='L14'></a><a href='#L14'>14</a>
 <a name='L15'></a><a href='#L15'>15</a>
-<a name='L16'></a><a href='#L16'>16</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -93,18 +100,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">interface LoadingSpinnerProps {
-    message: string;
-};
-&nbsp;
-export default function LoadingSpinner({ message }: LoadingSpinnerProps) {
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export default function SuccessMessage({ title, message } : { title: string, message: string }) {
     return (
-        &lt;div className="flex min-h-screen flex-col items-center justify-center bg-background"&gt;
-            &lt;div className="flex flex-col items-center"&gt;
-                &lt;div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" /&gt;
-                &lt;p className="mt-5 text-center text-gray-700 dark:text-white text-lg md:text-3xl max-w-sm md:max-w-3xl mx-auto"&gt;
-                    {message}
-                &lt;/p&gt;
+        &lt;div className="min-h-[calc(100dvh-56px)] sm:min-h-[calc(100dvh-64px)] text-white dark:text-black flex justify-center items-center overflow-y-auto px-4 py-6"&gt;
+            &lt;div className="flex justify-center px-4"&gt;
+                &lt;div className="w-full max-w-xl bg-black text-white dark:bg-white dark:text-black px-6 pt-6 pb-4 rounded-xl shadow text-lg space-y-3 animate-fade-in"&gt;
+                    &lt;div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-600"&gt;
+                        &lt;svg className="h-12 w-12 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"&gt;
+                            &lt;path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /&gt;
+                        &lt;/svg&gt;
+                    &lt;/div&gt;
+&nbsp;
+                    &lt;h2 className="text-3xl font-bold text-center text-opacity/60"&gt;
+                        {title}
+                    &lt;/h2&gt;
+&nbsp;
+                    &lt;p className="text-lg text-center text-opacity/60"&gt;
+                        {message}
+                    &lt;/p&gt;
+                &lt;/div&gt;
             &lt;/div&gt;
         &lt;/div&gt;
     );

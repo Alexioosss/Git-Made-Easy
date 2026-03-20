@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">82.5% </span>
+                <span class="strong">83.72% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>33/40</span>
+                <span class='fraction'>36/43</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">69.23% </span>
+                <span class="strong">67.85% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>18/26</span>
+                <span class='fraction'>19/28</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.93% </span>
+                <span class="strong">94.11% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>31/33</span>
+                <span class='fraction'>32/34</span>
             </div>
         
             
@@ -209,23 +209,10 @@
 <a name='L144'></a><a href='#L144'>144</a>
 <a name='L145'></a><a href='#L145'>145</a>
 <a name='L146'></a><a href='#L146'>146</a>
-<a name='L147'></a><a href='#L147'>147</a>
-<a name='L148'></a><a href='#L148'>148</a>
-<a name='L149'></a><a href='#L149'>149</a>
-<a name='L150'></a><a href='#L150'>150</a>
-<a name='L151'></a><a href='#L151'>151</a>
-<a name='L152'></a><a href='#L152'>152</a>
-<a name='L153'></a><a href='#L153'>153</a>
-<a name='L154'></a><a href='#L154'>154</a>
-<a name='L155'></a><a href='#L155'>155</a>
-<a name='L156'></a><a href='#L156'>156</a>
-<a name='L157'></a><a href='#L157'>157</a>
-<a name='L158'></a><a href='#L158'>158</a>
-<a name='L159'></a><a href='#L159'>159</a>
-<a name='L160'></a><a href='#L160'>160</a>
-<a name='L161'></a><a href='#L161'>161</a>
-<a name='L162'></a><a href='#L162'>162</a>
-<a name='L163'></a><a href='#L163'>163</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L147'></a><a href='#L147'>147</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -267,30 +254,11 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">38x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -389,11 +357,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use client"
 &nbsp;
+import SuccessMessage from "@/components/SuccessMessage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GatewayFactory } from "@/config/GatewayFactory";
+import { auth } from "@/lib/firebase";
 import { safeCallWrapper } from "@/lib/safeCallWrapper";
+import { sendEmailVerification, signInWithEmailAndPassword } from "firebase/auth";
 import { Eye, EyeOff, GitBranch, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -428,31 +399,12 @@ export default function RegisterForm() {
     }
     setIsLoading(false);
     setIsSuccess(true);
+    await signInWithEmailAndPassword(auth, emailAddress, password);
+    <span class="missing-if-branch" title="else path not taken" >E</span>if(auth.currentUser) { await sendEmailVerification(auth.currentUser); }
     setTimeout(() =&gt; router.push("/login"), 4000);
   }
 &nbsp;
-  if(isSuccess) {
-    return (
-      &lt;div className="min-h-[calc(100dvh-56px)] sm:min-h-[calc(100dvh-64px)] bg-background flex flex-col justify-center"&gt;
-        &lt;div className="flex justify-center px-4"&gt;
-          &lt;div className="w-full max-w-xl bg-card px-6 py-10 rounded-xl shadow text-center space-y-4 animate-fade-in"&gt;
-            &lt;div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-600"&gt;
-              &lt;svg className="h-12 w-12 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"&gt;
-                &lt;path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /&gt;
-              &lt;/svg&gt;
-            &lt;/div&gt;
-            &lt;h2 className="text-3xl font-bold text-foreground"&gt;
-              Account created successfully
-            &lt;/h2&gt;
-&nbsp;
-            &lt;p className="text-lg text-muted-foreground"&gt;
-              Redirecting you to the login page...
-            &lt;/p&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    );
-  }
+  if(isSuccess) { return ( &lt;SuccessMessage title="Account created successfully!" message="Redirecting you to the login page..." /&gt; ); }
 &nbsp;
   return (
     &lt;div className="min-h-[calc(100dvh-56px)] sm:min-h-[calc(100dvh-64px)] bg-background flex flex-col justify-center"&gt;
@@ -556,7 +508,7 @@ export default function RegisterForm() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-08T21:43:21.867Z
+                at 2026-03-17T13:20:29.141Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -17,7 +17,7 @@ export default function NotFound() {
             </p>
             <Link href="/" title="Go to the home page"
             className="mt-6 px-6 py-3 bg-blue-700 text-white rounded-md hover:bg-blue-800 transition cursor-pointer transform hover:-translate-y-1 hover:scale-105">
-                Go back to the home page
+                Let's go back to the home page
             </Link>
         </div>
     );

@@ -100,13 +100,34 @@
 <a name='L35'></a><a href='#L35'>35</a>
 <a name='L36'></a><a href='#L36'>36</a>
 <a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -127,11 +148,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -140,9 +168,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { LocalTaskProgress, ProgressData } from "../../types/localProgressData";
 import { ProgressStorage } from "./progressStorage";
 &nbsp;
+/**
+ * Implementation of the progress storage interface which uses the localStorage as method of local storage for when the user is offline, or for when the server is not responding
+ */
 export class LocalStorageProgressStorage implements ProgressStorage {
-    private readonly key = "user_progress"; // Key used to represent user's local storage object with progress made so far
+    private readonly key = "user_progress"; // Key used to represent the user's local storage object with their progress made so far
 &nbsp;
+    /**
+     * Fetches the user's local progress made, found in the local storage, accessible via the key above
+     * @returns Returns the local progress object converted into the domain entity ProgressData
+     */
     async getProgress(): Promise&lt;ProgressData&gt; {
         const json = localStorage.getItem(this.key);
         <span class="missing-if-branch" title="else path not taken" >E</span>if(!json) { return {} };
@@ -163,6 +198,10 @@ export class LocalStorageProgressStorage implements ProgressStorage {
         } catch { <span class="cstat-no" title="statement not covered" >return {}; </span>}
     }
 &nbsp;
+    /**
+     * Function to save the user's progress made so far locally
+     * @param progress The progress the user made that requires saving to local storage for permanent persistence
+     */
 <span class="fstat-no" title="function not covered" >    as</span>ync setProgress(progress: ProgressData): Promise&lt;void&gt; {
         const json = <span class="cstat-no" title="statement not covered" >JSON.stringify(progress, <span class="fstat-no" title="function not covered" >(k</span>ey, value) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >            if(value instanceof Set) { <span class="cstat-no" title="statement not covered" >return Array.from(value); </span>}</span>
@@ -171,6 +210,9 @@ export class LocalStorageProgressStorage implements ProgressStorage {
 <span class="cstat-no" title="statement not covered" >        localStorage.setItem(this.key, json);</span>
     }
 &nbsp;
+    /**
+     * Function to clear / remove the local progress that the user made so far, effectively emptying the local storage's user progress object
+     */
 <span class="fstat-no" title="function not covered" >    as</span>ync clearProgress(): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >        localStorage.removeItem(this.key);</span>
     }
@@ -181,7 +223,7 @@ export class LocalStorageProgressStorage implements ProgressStorage {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-08T21:43:21.867Z
+                at 2026-03-17T13:20:29.141Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

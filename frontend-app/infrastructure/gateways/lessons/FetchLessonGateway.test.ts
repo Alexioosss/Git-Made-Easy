@@ -32,7 +32,7 @@ describe("FetchLessonGateway", () => {
         apiClient.apiRequest.mockResolvedValue(mockResponse);
         const response = await gateway.getById("1");
         expect(apiClient.apiRequest).toHaveBeenCalledWith(
-            "/lessons/1", HttpMethods.GET, undefined, { cache: "force-cache" });
+            "/lessons/1", HttpMethods.GET, undefined);
         expect(response).toEqual(mockResponse);
     });
     
@@ -41,7 +41,7 @@ describe("FetchLessonGateway", () => {
         apiClient.apiRequest.mockResolvedValue(mockResponse);
         const response = await gateway.getAllLessons();
         expect(apiClient.apiRequest).toHaveBeenCalledWith(
-            "/lessons", HttpMethods.GET, undefined, { cache: "force-cache" });
+            "/lessons", HttpMethods.GET, undefined);
         expect(response).toEqual(mockResponse);
     });
     
@@ -51,7 +51,7 @@ describe("FetchLessonGateway", () => {
         apiClient.apiRequest.mockResolvedValue(mockTasks);
         const response = await gateway.getTasksForLesson(lessonId);
         expect(apiClient.apiRequest).toHaveBeenCalledWith(
-            `/lessons/${lessonId}/tasks`, HttpMethods.GET, undefined, { cache: "force-cache" });
+            `/lessons/${lessonId}/tasks`, HttpMethods.GET, undefined);
         expect(response).toEqual(mockTasks);
     });
 });

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { GatewayFactory } from "@/config/GatewayFactory";
@@ -18,7 +17,7 @@ export async function LessonsPreview() {
             Lesson Catalog
           </h2>
           <p className="mt-2 text-md text-muted-foreground">
-            Looks like the lessons are temporarily unavailable. Please try again in a moment.
+            Looks like the lessons are temporarily unavailable. Please try again.
           </p>
         </div>
       </section>

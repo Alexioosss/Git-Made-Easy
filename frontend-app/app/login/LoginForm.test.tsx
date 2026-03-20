@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import LoginForm from "./LoginForm";
 import { GatewayFactory } from "@/config/GatewayFactory";
 import { useRouter } from "next/navigation";
@@ -18,20 +18,17 @@ jest.mock("@/context/AuthContext", () => ({
 }));
 
 jest.mock("next/navigation", () => ({
-  useRouter: jest.fn().mockResolvedValue({
-    push: jest.fn()
-  })
+  useRouter: jest.fn()
 }));
 
 const mockLogin = GatewayFactory.instance.authGateway.login as jest.Mock;
-const mockPush = jest.fn();
 
 
 describe("LoginForm", () => {
     beforeEach(() => {
       jest.useFakeTimers();
       jest.clearAllMocks();
-      (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
+      (useRouter as jest.Mock).mockReturnValue({ push: jest.fn().mockResolvedValue(undefined) });
     });
     
     test("Renders email and password fields", () => {
@@ -53,9 +50,8 @@ describe("LoginForm", () => {
 
       fireEvent.submit(screen.getByRole("button", { name: /sign in/i }));
 
-      await waitFor(() => {
-        expect(mockLogin).toHaveBeenCalledWith("test@example.com", "password123");
-      });
+      await waitFor(() => { expect(mockLogin).toHaveBeenCalledWith("test@example.com", "password123"); });
+      await act(async () => {});
     });
 
     test("Shows error message on invalid credentials", async () => {
@@ -81,7 +77,7 @@ describe("LoginForm", () => {
 
       fireEvent.submit(screen.getByRole("button", { name: /sign in/i }));
 
-      expect(await screen.findByText(/verify your email address via the verification link/i)).toBeInTheDocument();
+      expect(await screen.findByText(/check your inbox for the verification link/i)).toBeInTheDocument();
     });
 
     test("Shows fallback error for unknown error", async () => {
@@ -103,5 +99,6 @@ describe("LoginForm", () => {
       fireEvent.submit(screen.getByRole("button", { name: /sign in/i }));
 
       expect(await screen.findByText(/logged in successfully/i)).toBeInTheDocument();
+      await act(async () => {});
     });
 });

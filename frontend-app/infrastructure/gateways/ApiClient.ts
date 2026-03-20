@@ -1,5 +1,9 @@
 import { HttpMethods } from "./HttpMethods";
 
+/**
+ * An abstract class to be extended to allow access to the backend URL needed to perform network requests, ideally using the backend URL available
+ * It also enforces a consistent interface to be followed for executing HTTP requests throughout different client implementations
+ */
 export abstract class ApiClient {
     protected readonly BACKEND_URL: string;
 

@@ -30,12 +30,12 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className="font-sans antialiased min-h-screen flex flex-col">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem> {/* Wrap the entire website with the theme provider, handling system, dark and light modes across pages */}
-          <AuthProvider> {/* Utility class to provide quick-access methods, i.e. isUserAuthenticated, isServerAvailable, to handle authenticated logic easier across pages */}
-            <ScrollToTop /> {/* Script to automatically scroll to the top of the page on page change, since the pages remain in the last scrolled position  */}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem> {/* Wrap the entire website around the theme provider, handling system, dark and light modes across pages */}
+          <AuthProvider> {/* Utility class to provide quick-access methods, i.e. isUserAuthenticated, isServerAvailable, to handle logic, i.e. authentication, easier and cleanly across pages */}
+            <ScrollToTop /> {/* Script to automatically scroll to the top of the page on page change, since the pages remain in the last scrolled position even on change of page */}
             <Navbar /> {/* Show the navbar on every single page across the entire website */}
 
-            <ClientShell> {/* Wrapper to show a banner just underneath the Navbar to inform the user that the server is down, or subsequently, to inform the user that the server is back online */}
+            <ClientShell> {/* Wrapper to show a banner just underneath the Navbar to inform the user if the server is down, or subsequently, to inform the user that the server is back online */}
               <main className="flex-1">
                 {children}
               </main>
