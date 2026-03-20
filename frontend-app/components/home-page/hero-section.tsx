@@ -38,13 +38,13 @@ export function IntroSection() {
             )}
           </div>
 
-          {/* Terminal preview */}
+          {/* Terminal */}
           <div className="mt-12 w-full max-w-2xl sm:mt-16">
             <div className="overflow-hidden rounded-xl border border-border bg-card shadow-2xl shadow-primary/60">
               <div className="flex items-center gap-2 border-b border-border px-3 py-2.5 sm:px-4 sm:py-3">
-                <div className="h-2.5 w-2.5 rounded-full bg-destructive/60 sm:h-3 sm:w-3" />
-                <div className="h-2.5 w-2.5 rounded-full bg-yellow-400/60 sm:h-3 sm:w-3" />
-                <div className="h-2.5 w-2.5 rounded-full bg-primary/60 sm:h-3 sm:w-3" />
+                <div className="h-2.5 w-2.5 rounded-full bg-red-500/60 sm:h-3 sm:w-3" />
+                <div className="h-2.5 w-2.5 rounded-full bg-yellow-500/60 sm:h-3 sm:w-3" />
+                <div className="h-2.5 w-2.5 rounded-full bg-green-500/60 sm:h-3 sm:w-3" />
                 <span className="ml-2 text-xs text-muted-foreground">
                   Terminal
                 </span>
