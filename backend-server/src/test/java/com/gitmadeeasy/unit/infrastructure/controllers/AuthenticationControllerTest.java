@@ -16,8 +16,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.security.Principal;
@@ -32,11 +32,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 class AuthenticationControllerTest {
     @Autowired private MockMvc mockMvc;
-    @MockitoBean private LoginUser loginUser;
-    @MockitoBean private LogoutUser logoutUser;
-    @MockitoBean private RefreshToken refreshToken;
-    @MockitoBean private GetUserById getUserById;
-    @MockitoBean private UserResponseMapper userResponseMapper;
+    @MockBean private LoginUser loginUser;
+    @MockBean private LogoutUser logoutUser;
+    @MockBean private RefreshToken refreshToken;
+    @MockBean private GetUserById getUserById;
+    @MockBean private UserResponseMapper userResponseMapper;
 
 
     @Test

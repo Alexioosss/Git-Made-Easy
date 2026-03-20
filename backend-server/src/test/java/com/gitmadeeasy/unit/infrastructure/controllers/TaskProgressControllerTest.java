@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class TaskProgressControllerTest {
     @Autowired private MockMvc mockMvc;
-    @MockitoBean private GetAllTaskProgress getAllTaskProgress;
+    @MockBean private GetAllTaskProgress getAllTaskProgress;
 
     @Test
     @DisplayName("Get All Task Progress - Task Progresses Found For User")

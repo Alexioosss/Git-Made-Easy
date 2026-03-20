@@ -17,8 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
@@ -35,9 +35,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class LessonTaskProgressControllerTest {
     @Autowired private MockMvc mockMvc;
-    @MockitoBean private AttemptTask attemptTask;
-    @MockitoBean private GetTaskProgress getTaskProgress;
-    @MockitoBean private SyncTaskProgress syncTaskProgress;
+    @MockBean private AttemptTask attemptTask;
+    @MockBean private GetTaskProgress getTaskProgress;
+    @MockBean private SyncTaskProgress syncTaskProgress;
 
     private static final String USER_ID = "1";
     private static final String LESSON_ID = "1";
